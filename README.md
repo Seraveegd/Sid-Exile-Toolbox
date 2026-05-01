@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**適用遊戲**：Path of Exile（流亡黯道）  
+**適用遊戲**：Path of Exile 1（流亡黯道 一代）  
 **開發語言**：AutoHotkey  
 **授權**：MIT License（可自由使用、修改、再發布）  
 
@@ -27,6 +27,8 @@
 | 交易組隊 | 快速交易 (確認60格/接受交易) | PgUp/PgDn |
 |          | 快速申請交易 | Home |
 |          | 快速申請組隊 | End |
+|          | 快速交易設定面板 | Win+Home |
+|          | 快速組隊設定面板 | Win+End |
 | 倉庫搜尋 | 快搜倉庫自動翻頁 | Ctrl+Alt |
 |          | 返回倉庫首頁 | Ctrl+Win |
 | 查價工具 | 呼叫外部查價視窗 | Win+V |
@@ -46,6 +48,7 @@
 
 ### 1. 環境需求
 - 安裝 [AutoHotkey v1.1](https://www.autohotkey.com/)
+- > ⚠️ 本工具基於 AHK **v1.1**，請勿安裝 v2，兩者語法不相容。
 - 本工具僅支援 **Path of Exile 視窗模式**（全螢幕視窗化或視窗化）
 
 ### 2. 下載與執行
@@ -65,8 +68,6 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 ---
 
 ## 🔍 偵測點設定 (Win + C)
-
-按下 Win + C 後，將滑鼠移到指定位置，輸入對應代號：
 
 | 代號 | 說明 |
 |------|------|
@@ -97,9 +98,21 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 
 ---
 
+## 💬 作者感言
+
+這工具從第一行代碼到現在，已經過了八年。
+
+當初寫它只是為了讓自己玩得順一點，沒想到一路改到這裡。
+既然遊戲也走到這個階段，不如就把它還給社群——
+代碼擺在那裡，想用就用，想改就改。
+
+— Sid
+
+---
+
 ## 🙏 致謝
 
 原創作者：**Sid**  
-完全獨立開發與測試，謝謝各位一直以來的支持與厚愛。
+完全獨立開發，感謝一直以來支持與厚愛，謝謝各位流亡者們。
 
 如果你喜歡這個工具，歡迎給顆 ⭐ Star，並分享給其他玩家！
