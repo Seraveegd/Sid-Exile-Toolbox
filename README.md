@@ -1,11 +1,11 @@
 # Sid 流亡超級工具箱 (開源版)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Sid-1996/Sid-Exile-Toolbox/total)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Sid-1996/Sid-Exile-Toolbox/total)
 
 
 **適用遊戲**：Path of Exile 1（流亡黯道 一代）  
 **開發語言**：AutoHotkey  
-**授權**：MIT License（可自由使用、修改、再發布）  
+**授權**：GNU AGPLv3（開源、保障使用者自由，衍生軟體需以同授權釋出）
 
 ---
 
