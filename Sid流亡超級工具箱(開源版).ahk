@@ -1,68 +1,4 @@
-﻿;★↓目錄↓★
-;[讀取記錄區]
-;[寫入預設值]
-;[菜單設置區]
-;[熱鍵設置]
-;[提示窗口基礎設定]
-;[完整功能GUI面板]
-;[工具熱鍵列表GUI面板]
-;[跳程指令區]
-;[藥劑觸發設置GUI面板]
-;[藥劑觸發GUI儲存指令]
-;[偵測喝水設置GUI面板]
-;[偵測喝水GUI儲存指令]
-;[高級喝水模式切換按鍵]
-;[偵測區(血/魔/場景)]
-;[偵測點設置區 ( Win + C )]
-;[藥劑防呆區]
-;[1|2|3|4|5藥劑按鍵區]
-;[Q|W|E|R|T技能按鍵區]
-;[技能連段指令]
-;[技能連段設置GUI面板]
-;[技能連段GUI儲存指令]
-;[自動引爆地雷設置GUI面板]
-;[自動引爆地雷GUI儲存指令]
-;[快搜倉庫頁區(熱鍵)]
-;[快搜倉庫頁區(指令)]
-;[快搜倉庫頁設置GUI面板]
-;[快搜倉庫頁GUI儲存指令]
-;[查價工具視窗指令]
-;[Space空白一鍵喝水區(熱鍵)]
-;[Space讀秒循環喝水計時器指令]
-;[Enter偵測對話框區(熱鍵)]  
-;[滑鼠區(熱鍵)]
-;[滑鼠連點區(熱鍵)]
-;[滑鼠連點設置GUI面板]
-;[PgUp/PgDn清包區(熱鍵)]
-;[PgUp/PgDn清包區(指令)]
-;[Ins循環技能區(熱鍵)]
-;[Ins循環技能設置GUI面板]
-;[Ins循環技能GUI儲存指令]
-;[Home快速交易(熱鍵)]
-;[Home快速交易設定GUI面板]
-;[End快速組隊(熱鍵)]
-;[End快速組隊設定GUI面板]
-;[End快速組隊指令]
-;[F1返回角色(熱鍵)]
-;[F1返回角色(指令)]
-;[F1返回角色切換GUI面板]
-;[F2回復模式(熱鍵)]
-;[F2回復模式切換GUI面板]
-;[F3清空背包區(熱鍵)]
-;[F3背包模式切換GUI面板]
-;[F3快速掃描背包區]
-;[F4快速開傳捲區(熱鍵)]
-;[F5一鍵返回藏身區(熱鍵)]
-;[F6一鍵取物(熱鍵)]
-;[F6一鍵取物模式切換GUI面板]
-;[F7座標定位區]
-;[F8命運卡兌換(熱鍵)]
-;[F8命運卡兌換(指令)]
-;[F8命運卡兌換模式切換GUI面板]
-;[切換角色配置GUI面板]
-;[漂亮按鈕產生代碼]
-
-#NoEnv
+﻿#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -70,9 +6,7 @@ SetBatchLines -1
 SetKeyDelay, 0
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
-
-; 直接設定為已贊助，不再讀取登錄檔
-使用者類型 = 已贊助
+使用者類型 = 已開源
 
 gosub,讀取當前角色配置
 gosub,讀取F7背包定位內容
@@ -865,7 +799,7 @@ if Autodrinkbutton = 1
 		{
 		Autodrinkbutton := 0
 		msgbox,16,錯誤,尚未設置場景偵測點(按下確認後將彈跳教學圖片)!`r已先自動關閉F10高級喝水模式!
-		run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1163223583_orig.png,,UseErrorLevel
+		run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1163223583_2.png,,UseErrorLevel
 		return
 		}
 	gosub,座標顏色讀取
@@ -1141,8 +1075,14 @@ IfWinActive,Path of Exile
  {
  if Autodrinkbutton = 1
   {
-   PixelGetColor,場景, %顏色4_X%, %顏色4_Y%
-    if 場景 = %顏色4_C%
+   ; 設定容許度（0-255），數值越大容許範圍越寬，這裡先設 10
+   容許度 := 25 
+   
+   ; 利用 PixelSearch 搜尋同一個點，並加入容許度與 RGB 模式
+   PixelSearch, FoundX, FoundY, 顏色4_X, 顏色4_Y, 顏色4_X, 顏色4_Y, %顏色4_C%, %容許度%, RGB
+   
+   ; ErrorLevel = 0 代表顏色在容許範圍內（場景沒變）
+   if (ErrorLevel = 0)
 	{
 	if 偵測場景顏色 = 變化中
 	   {
@@ -1155,7 +1095,7 @@ IfWinActive,Path of Exile
 	   偵測場景顏色 = 穩定
 	   }
 	}
-    else
+    else ; ErrorLevel = 1 代表顏色超出容許範圍（場景改變了）
 	{
 	gosub,暫停讀秒循環喝水
 	Toolbutton := 0
@@ -1167,6 +1107,7 @@ IfWinActive,Path of Exile
   }
 }
 return
+
 
 ;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
 #c::
@@ -2379,7 +2320,7 @@ if (顏色5_X = "error" or 顏色5_Y = "error" or 顏色6_X = "error" or 顏色6
    if Enter除錯提醒次數 = 0
    {
 	msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕!非常重要，不然打字會瞎雞巴亂按。`r若你第一次看到此視窗，按下確認後將跳轉教學圖片網址。`r此彈跳網頁只會顯示一次，請勿在未設置成功前關閉教學圖片。`r確定後，請依圖片，將滑鼠指定座標，再按[Win + C]，輸入代號(5)或(6)!
-	run https://lelive.weebly.com/uploads/7/7/0/3/77032051/published/1847905122.png?1578339909,,UseErrorLevel
+	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
 	Enter除錯提醒次數 := 1
    }
 }
@@ -2621,7 +2562,7 @@ Critical
 	if (對方背包左上_X = "error" or 對方背包右下_X = "error")
 	{
 	msgbox,16,錯誤,尚未設定快速交易，確認對方背包60格欄位座標。`r請隨意尋找 NPC 點擊「販賣物品」打開，使用F7設定。`r確定後，將跳轉圖片教學。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/published/1029564595.jpg?1632845524,,UseErrorLevel
+	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1029564595_2.jpg,,UseErrorLevel
 		return
 	}
 	else
@@ -2636,7 +2577,7 @@ Critical
 	if (接受交易_X = "error" or 接受交易_X = "error")
 	{
 	msgbox,16,錯誤,尚未設定快速交易，「接受」交易座標。`r請隨意尋找 NPC 點擊「販賣物品」打開，使用F7設定。`r確定後，將跳轉圖片教學。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/published/1029564595.jpg?1632845524,,UseErrorLevel
+	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1029564595_2.jpg,,UseErrorLevel
 		return
 	}
 	else
@@ -3347,7 +3288,7 @@ Critical
 	if (背包左上_X = "error" or 背包右下_X = "error")
 	{
 	msgbox,16,錯誤,尚未設定背包位置，請打開背包使用F7設定。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1127343908_orig.png,,UseErrorLevel
+	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1127343908_2.png,,UseErrorLevel
 	return
 	}
 	if 清包模式 = 按壓式
@@ -3701,12 +3642,6 @@ if (openI = "0" and Toolbutton = "0")
 ToolTip("關閉背包(I),如果操作不符合請按(ESC)")
 return
 
-~*G::
-openI := 0
-if Toolbutton = 0
-ToolTip("輿圖(G),如果操作不符合請按(ESC)，[Ctrl + F]強調輿圖")
-return
-
 ~*P::
 openI := 0
 if Toolbutton = 0
@@ -3752,10 +3687,6 @@ Send ^{V}
 sleep 25
 send {enter}
 BlockInput Off
-return
-
-#F5::
-Msgbox,16,提醒,本工具的 [Win + F5] 沒有多功能切換哦~ ^0^
 return
 
 ;[F6一鍵取物(熱鍵)]---------------------------------------------------------------------------------------------------
@@ -3957,7 +3888,7 @@ else
 if (命運卡交易_X = "error" or 命運卡格子_Y = "error")
  {
  msgbox,16,錯誤,尚未指定命運卡兌換相關座標位置!`r將滑鼠移動到正確位置，熱鍵 [F7] 指定位置，輸入6和7。`r確認後，將跳轉圖片教學。
- run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1202643573_orig.jpg,,UseErrorLevel
+ run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1202643573_2.jpg,,UseErrorLevel
  }
  else
  {
