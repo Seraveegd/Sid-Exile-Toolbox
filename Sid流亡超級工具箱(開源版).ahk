@@ -334,7 +334,7 @@ return
 ;---------------------------------------------------------
 
 彈跳網頁:
-run,https://lelive.weebly.com/,,UseErrorLevel
+run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
 return
 
 暫停讀秒循環喝水:
