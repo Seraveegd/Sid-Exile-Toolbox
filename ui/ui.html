@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sid 流亡工具箱 - 菜單設置</title>
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <style>
+    * {
+      user-select: none;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+      background-color: #12141a;
+      color: #dee2e6;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Custom Window Title Bar */
+    header {
+      width: 100%;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      background: #191c23;
+      border-bottom: 1px solid #2d323e;
+      flex-shrink: 0;
+    }
+
+    .title-bar {
+      padding: 0 14px;
+      flex-grow: 1;
+      line-height: 36px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6ea8fe;
+      cursor: move;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-bar-icon {
+      width: 14px;
+      height: 14px;
+      background: linear-gradient(135deg, #0d6efd, #6f42c1);
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .title-btn {
+      width: 44px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: Webdings;
+      font-size: 12px;
+      color: #9ea5b0;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .title-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .title-btn-close:hover {
+      background: #dc3545;
+      color: #ffffff;
+    }
+
+    /* Main Container Layout */
+    .app-container {
+      display: flex;
+      flex-grow: 1;
+      height: calc(100% - 36px);
+      overflow: hidden;
+    }
+
+    /* Left Sidebar - 菜單設置區 (加大字體與舒適間距) */
+    .sidebar {
+      width: 260px;
+      background: #161820;
+      border-right: 1px solid #2d323e;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 16px 20px 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #8b95a5;
+    }
+
+    .sidebar-menu {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 4px 10px 16px 10px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 11px 16px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #b0b8c4;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      transform: translateX(2px);
+    }
+
+    .menu-item.active {
+      background: linear-gradient(135deg, rgba(13, 110, 253, 0.28) 0%, rgba(111, 66, 193, 0.22) 100%);
+      color: #7bb0ff;
+      border-left: 4px solid #0d6efd;
+      font-weight: 700;
+    }
+
+    .menu-item .icon {
+      margin-right: 12px;
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      padding: 12px 18px;
+      border-top: 1px solid #2d323e;
+      font-size: 11.5px;
+      color: #6c757d;
+      text-align: center;
+    }
+
+    /* Right Main Content - 選單內容 (調整適中字體與精緻內距) */
+    .content-area {
+      flex-grow: 1;
+      background: #12141a;
+      overflow-y: auto;
+      padding: 20px 26px;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f8f9fa;
+    }
+
+    .panel-subtitle {
+      font-size: 12.5px;
+      color: #8c96a3;
+    }
+
+    .card {
+      background-color: #1a1d25;
+      border: 1px solid #2b303c;
+      border-radius: 10px;
+    }
+
+    .card-title {
+      font-size: 14.5px;
+      font-weight: 600;
+    }
+
+    /* Standard Bootstrap Form Input Adjustments */
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #a0abb8;
+      margin-bottom: 4px;
+    }
+
+    .form-control, .form-select {
+      background-color: #21252e;
+      border: 1px solid #353a47;
+      color: #ffffff;
+      font-size: 13.5px;
+      border-radius: 6px;
+      padding: 7px 12px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background-color: #21252e;
+      border-color: #0d6efd;
+      color: #ffffff;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .kbd-badge {
+      display: inline-block;
+      padding: 3px 7px;
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #6ea8fe;
+      background-color: #21252e;
+      border: 1px solid #353a47;
+      border-radius: 4px;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #12141a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2d323e;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #495057;
+    }
+  </style>
+
+  <!-- ES5 Compatible Core Script defined in HEAD -->
+  <script>
+    function showSection(sectionId) {
+      var items = document.querySelectorAll('.menu-item');
+      for (var i = 0; i < items.length; i++) {
+        items[i].className = items[i].className.replace(/\bactive\b/g, '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
+      }
+
+      var panels = document.querySelectorAll('.panel');
+      for (var j = 0; j < panels.length; j++) {
+        panels[j].className = panels[j].className.replace(/\bactive\b/g, '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
+      }
+
+      var targetPanel = document.getElementById(sectionId);
+      if (targetPanel) {
+        targetPanel.className += ' active';
+      }
+
+      for (var k = 0; k < items.length; k++) {
+        var onclickAttr = items[k].getAttribute('onclick') || '';
+        if (onclickAttr.indexOf("'" + sectionId + "'") !== -1 || onclickAttr.indexOf('"' + sectionId + '"') !== -1) {
+          items[k].className += ' active';
+        }
+      }
+    }
+
+    function syncDataFromAHK() {
+      try {
+        if (typeof ahk === 'undefined' || !ahk.NeutronGetSettings) return;
+        var jsonStr = ahk.NeutronGetSettings();
+        if (!jsonStr) return;
+        var data = JSON.parse(jsonStr);
+
+        if (data.profile) {
+          var profileEl = document.getElementById('currentProfileDisplay');
+          if (profileEl) profileEl.innerText = data.profileName || ('角色配置 ' + data.profile);
+        }
+        if (data.flaskMode && document.getElementById('flaskMode')) document.getElementById('flaskMode').value = data.flaskMode;
+        if (data.mainSkill && document.getElementById('mainSkill')) document.getElementById('mainSkill').value = data.mainSkill;
+        if (data.skillFlasks && document.getElementById('skillFlasks')) document.getElementById('skillFlasks').value = data.skillFlasks;
+        if (data.spaceFlasks && document.getElementById('spaceFlasks')) document.getElementById('spaceFlasks').value = data.spaceFlasks;
+
+        if (data.dur1 && document.getElementById('dur1')) document.getElementById('dur1').value = data.dur1;
+        if (data.dur2 && document.getElementById('dur2')) document.getElementById('dur2').value = data.dur2;
+        if (data.dur3 && document.getElementById('dur3')) document.getElementById('dur3').value = data.dur3;
+        if (data.dur4 && document.getElementById('dur4')) document.getElementById('dur4').value = data.dur4;
+        if (data.dur5 && document.getElementById('dur5')) document.getElementById('dur5').value = data.dur5;
+
+        if (data.comboStatus && document.getElementById('comboStatus')) document.getElementById('comboStatus').value = data.comboStatus;
+        if (data.comboKey1 && document.getElementById('comboKey1')) document.getElementById('comboKey1').value = data.comboKey1;
+        if (data.comboDelay1 && document.getElementById('comboDelay1')) document.getElementById('comboDelay1').value = data.comboDelay1;
+        if (data.comboKey2 && document.getElementById('comboKey2')) document.getElementById('comboKey2').value = data.comboKey2;
+        if (data.comboDelay2 && document.getElementById('comboDelay2')) document.getElementById('comboDelay2').value = data.comboDelay2;
+        if (data.comboKey3 && document.getElementById('comboKey3')) document.getElementById('comboKey3').value = data.comboKey3;
+
+        if (data.loop1 && document.getElementById('loop1')) document.getElementById('loop1').value = data.loop1;
+        if (data.loopT1 && document.getElementById('loopT1')) document.getElementById('loopT1').value = data.loopT1;
+        if (data.loop2 && document.getElementById('loop2')) document.getElementById('loop2').value = data.loop2;
+        if (data.loopT2 && document.getElementById('loopT2')) document.getElementById('loopT2').value = data.loopT2;
+        if (data.loop3 && document.getElementById('loop3')) document.getElementById('loop3').value = data.loop3;
+        if (data.loopT3 && document.getElementById('loopT3')) document.getElementById('loopT3').value = data.loopT3;
+
+        if (data.clickMode && document.getElementById('clickMode')) document.getElementById('clickMode').value = data.clickMode;
+        if (data.clickSpeed && document.getElementById('clickSpeed')) document.getElementById('clickSpeed').value = data.clickSpeed;
+
+        if (data.mineMode && document.getElementById('mineMode')) document.getElementById('mineMode').value = data.mineMode;
+        if (data.mineStaffMode && document.getElementById('mineStaffMode')) document.getElementById('mineStaffMode').value = data.mineStaffMode;
+        if (data.mineKey && document.getElementById('mineKey')) document.getElementById('mineKey').value = data.mineKey;
+        if (data.mineDelay1 && document.getElementById('mineDelay1')) document.getElementById('mineDelay1').value = data.mineDelay1;
+        if (data.smokeKey && document.getElementById('smokeKey')) document.getElementById('smokeKey').value = data.smokeKey;
+        if (data.mineDelay2 && document.getElementById('mineDelay2')) document.getElementById('mineDelay2').value = data.mineDelay2;
+
+      } catch (err) {
+        // Log error
+      }
+    }
+
+    function saveFlaskConfig() {
+      if (typeof ahk !== 'undefined' && ahk.NeutronSaveFlaskConfig) {
+        ahk.NeutronSaveFlaskConfig(
+          document.getElementById('flaskMode').value,
+          document.getElementById('mainSkill').value,
+          document.getElementById('skillFlasks').value,
+          document.getElementById('spaceFlasks').value,
+          document.getElementById('dur1').value,
+          document.getElementById('dur2').value,
+          document.getElementById('dur3').value,
+          document.getElementById('dur4').value,
+          document.getElementById('dur5').value
+        );
+      }
+    }
+
+    function saveComboConfig() {
+      if (typeof ahk !== 'undefined' && ahk.NeutronSaveSkillComboConfig) {
+        ahk.NeutronSaveSkillComboConfig(
+          document.getElementById('comboStatus').value,
+          document.getElementById('comboKey1').value,
+          document.getElementById('comboDelay1').value,
+          document.getElementById('comboKey2').value,
+          document.getElementById('comboDelay2').value,
+          document.getElementById('comboKey3').value
+        );
+      }
+    }
+
+    function saveLoopConfig() {
+      if (typeof ahk !== 'undefined' && ahk.NeutronSaveLoopSkillConfig) {
+        ahk.NeutronSaveLoopSkillConfig(
+          document.getElementById('loop1').value,
+          document.getElementById('loopT1').value,
+          document.getElementById('loop2').value,
+          document.getElementById('loopT2').value,
+          document.getElementById('loop3').value,
+          document.getElementById('loopT3').value
+        );
+      }
+    }
+
+    function saveClickerConfig() {
+      if (typeof ahk !== 'undefined' && ahk.NeutronSaveClickerConfig) {
+        ahk.NeutronSaveClickerConfig(
+          document.getElementById('clickMode').value,
+          document.getElementById('clickSpeed').value
+        );
+      }
+    }
+
+    function saveMineConfig() {
+      if (typeof ahk !== 'undefined' && ahk.NeutronSaveMineConfig) {
+        ahk.NeutronSaveMineConfig(
+          document.getElementById('mineMode').value,
+          document.getElementById('mineStaffMode').value,
+          document.getElementById('mineKey').value,
+          document.getElementById('mineDelay1').value,
+          document.getElementById('smokeKey').value,
+          document.getElementById('mineDelay2').value
+        );
+      }
+    }
+
+    window.onload = function () {
+      setTimeout(syncDataFromAHK, 200);
+    };
+  </script>
+</head>
+
+<body>
+
+  <!-- Custom Title Bar -->
+  <header>
+    <div class="title-bar" onmousedown="neutron.DragTitleBar()">
+      <span class="title-bar-icon"></span>
+      <span>Sid 流亡工具箱 - 菜單設置</span>
+    </div>
+    <div class="title-btn" onclick="neutron.Minimize()">0</div>
+    <div class="title-btn" onclick="neutron.Maximize()">1</div>
+    <div class="title-btn title-btn-close" onclick="neutron.Close()">r</div>
+  </header>
+
+  <!-- App Container: Left Sidebar & Right Content -->
+  <div class="app-container">
+
+    <!-- 左邊選單列表 [菜單設置區] -->
+    <div class="sidebar">
+      <div class="sidebar-header">菜單設置區</div>
+      <div class="sidebar-menu">
+        <div class="menu-item active" onclick="showSection('intro')">
+          <span class="icon">★</span> ★工具介紹★
+        </div>
+        <div class="menu-item" onclick="showSection('profile')">
+          <span class="icon">👤</span> 切換角色配置
+        </div>
+        <div class="menu-item" onclick="showSection('flask')">
+          <span class="icon">🧪</span> 藥劑觸發設置
+        </div>
+        <div class="menu-item" onclick="showSection('autoflask')">
+          <span class="icon">❤️</span> 偵測喝水設置
+        </div>
+        <div class="menu-item" onclick="showSection('combo')">
+          <span class="icon">⚔️</span> 技能連段設置
+        </div>
+        <div class="menu-item" onclick="showSection('loop')">
+          <span class="icon">🔄</span> 循環技能設置
+        </div>
+        <div class="menu-item" onclick="showSection('stash')">
+          <span class="icon">📦</span> 快搜倉庫設置
+        </div>
+        <div class="menu-item" onclick="showSection('clicker')">
+          <span class="icon">🖱️</span> 滑鼠連點設置
+        </div>
+        <div class="menu-item" onclick="showSection('mine')">
+          <span class="icon">💣</span> 自動引爆地雷
+        </div>
+        <div class="menu-item" onclick="showSection('links')">
+          <span class="icon">🌐</span> 外部連結與網站
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        Sid Exile Toolbox v1.0.0<br>開源免費版
+      </div>
+    </div>
+
+    <!-- 右邊選單內容 (使用 Bootstrap Grid 排版優化) -->
+    <div class="content-area">
+
+      <!-- Panel 1: 工具介紹 -->
+      <div id="intro" class="panel active">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div>
+            <div class="panel-title mb-1">★ 工具介紹與快捷鍵說明 ★</div>
+            <div class="panel-subtitle">本工具已完全開源免費，以下為各熱鍵與功能列表說明。</div>
+          </div>
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 small">v1.0.0</span>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">主要功能快捷鍵</h6>
+            <div class="row g-2">
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F1</span><span class="small text-light-emphasis">原始功能 / 返回角色</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F2</span><span class="small text-light-emphasis">暫離 / 勿擾 / 自動回復</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F3</span><span class="small text-light-emphasis">清包切換 / 背包顏色定位</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F4</span><span class="small text-light-emphasis">快速使用傳送卷軸</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F5</span><span class="small text-light-emphasis">返回藏身處 (城鎮)</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F6</span><span class="small text-light-emphasis">一鍵取物 / 取物定位</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F7</span><span class="small text-light-emphasis">背包座標定位</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F8</span><span class="small text-light-emphasis">單次 / 多次 兌換命運卡</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F9</span><span class="small text-light-emphasis">暫停工具 (回復鍵盤)</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F10</span><span class="small text-light-emphasis">開關高級自動喝水模式</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F11</span><span class="small text-light-emphasis">重新載入工具 (Reload)</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">F12</span><span class="small text-light-emphasis">結束工具 (ExitApp)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">其他快捷鍵</h6>
+            <div class="row g-2">
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Win + Z</span><span class="small text-light-emphasis">開啟本菜單設置視窗</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Win + V</span><span class="small text-light-emphasis">快速查價 (游標指道具)</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Win + C</span><span class="small text-light-emphasis">座標與顏色偵測校正</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Space</span><span class="small text-light-emphasis">一鍵喝水 / 循環喝水</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Insert</span><span class="small text-light-emphasis">自動循環技能開關</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">End</span><span class="small text-light-emphasis">快速申請組隊</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
+                  <span class="kbd-badge">Home</span><span class="small text-light-emphasis">快速申請交易</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: 切換角色配置 -->
+      <div id="profile" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">切換角色配置</div>
+          <div class="panel-subtitle">快速切換不同角色的喝水、技能連段與座標設置。</div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">當前角色配置</h6>
+            <div class="alert alert-info py-2 px-3 small d-flex align-items-center mb-3" role="alert">
+              <span class="me-2">ℹ️</span>
+              <div>目前使用配置：<strong id="currentProfileDisplay">角色配置 1</strong></div>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-md-4">
+                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(1)">切換至 角色配置 1</button>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(2)">切換至 角色配置 2</button>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(3)">切換至 角色配置 3</button>
+              </div>
+            </div>
+            <div class="form-text text-secondary mt-2 small">
+              注意：切換配置會自動暫停現有的循環技能與高級喝水，請重新確認偵測點。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: 藥劑觸發設置 -->
+      <div id="flask" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">藥劑觸發設置</div>
+          <div class="panel-subtitle">設定藥劑觸發模式、防呆鎖定及使用技能時自動喝水。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">觸發模式與主要按鍵</h6>
+            <div class="row g-3 mb-2">
+              <div class="col-md-6">
+                <label for="flaskMode" class="form-label">藥劑觸發模式</label>
+                <select id="flaskMode" class="form-select">
+                  <option value="無">無</option>
+                  <option value="純藥劑防呆">純藥劑防呆</option>
+                  <option value="讀秒循環喝水">讀秒循環喝水</option>
+                  <option value="使用技能時喝水">使用技能時喝水</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="mainSkill" class="form-label">主要觸發技能 key</label>
+                <select id="mainSkill" class="form-select">
+                  <option value="Q">Q</option>
+                  <option value="W">W</option>
+                  <option value="E">E</option>
+                  <option value="R">R</option>
+                  <option value="T">T</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="skillFlasks" class="form-label">技能觸發藥劑 (例: 12345)</label>
+                <input type="text" id="skillFlasks" class="form-control" placeholder="12345">
+              </div>
+              <div class="col-md-6">
+                <label for="spaceFlasks" class="form-label">一鍵喝水 (Space) 藥劑</label>
+                <input type="text" id="spaceFlasks" class="form-control" placeholder="12345">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-1">藥劑 (1~5) 持續時間 (毫秒)</h6>
+            <p class="text-secondary small mb-2">1秒 = 1000毫秒，若不使用請輸入 off</p>
+
+            <div class="row g-2 mb-2">
+              <div class="col-md-4">
+                <label class="form-label">藥劑 1</label>
+                <input type="text" id="dur1" class="form-control" placeholder="4000">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">藥劑 2</label>
+                <input type="text" id="dur2" class="form-control" placeholder="4000">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">藥劑 3</label>
+                <input type="text" id="dur3" class="form-control" placeholder="4000">
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col-md-6">
+                <label class="form-label">藥劑 4</label>
+                <input type="text" id="dur4" class="form-control" placeholder="4000">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">藥劑 5</label>
+                <input type="text" id="dur5" class="form-control" placeholder="off">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveFlaskConfig()">💾 儲存藥劑設置</button>
+      </div>
+
+      <!-- Panel 4: 偵測喝水設置 -->
+      <div id="autoflask" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">偵測喝水設置 (F10 高級喝水)</div>
+          <div class="panel-subtitle">偵測血量/魔力球顏色自動觸發藥劑或返回角色。</div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">高級偵測開關與校正</h6>
+            <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
+              請使用快捷鍵 <span class="kbd-badge ms-1 me-1">F10</span> 開關高級喝水模式。搭配 <span class="kbd-badge ms-1 me-1">Win + C</span> 重新校正座標與顏色偵測點。
+            </div>
+            <button class="btn btn-primary btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('偵測喝水設置GUI面板')">開啟詳細偵測校正介面</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: 技能連段設置 -->
+      <div id="combo" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">技能連段設置</div>
+          <div class="panel-subtitle">設定按壓技能時自動依序發放的連線招式。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">連段設置</h6>
+            <div class="mb-2">
+              <label for="comboStatus" class="form-label">技能連段功能</label>
+              <select id="comboStatus" class="form-select">
+                <option value="開啟">開啟</option>
+                <option value="關閉">關閉</option>
+              </select>
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col-md-6">
+                <label for="comboKey1" class="form-label">技能 1</label>
+                <input type="text" id="comboKey1" class="form-control" placeholder="Q">
+              </div>
+              <div class="col-md-6">
+                <label for="comboDelay1" class="form-label">延遲 1 (ms)</label>
+                <input type="number" id="comboDelay1" class="form-control" placeholder="100">
+              </div>
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col-md-6">
+                <label for="comboKey2" class="form-label">技能 2</label>
+                <input type="text" id="comboKey2" class="form-control" placeholder="W">
+              </div>
+              <div class="col-md-6">
+                <label for="comboDelay2" class="form-label">延遲 2 (ms)</label>
+                <input type="number" id="comboDelay2" class="form-control" placeholder="100">
+              </div>
+            </div>
+
+            <div class="mb-1">
+              <label for="comboKey3" class="form-label">技能 3</label>
+              <input type="text" id="comboKey3" class="form-control" placeholder="E">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveComboConfig()">💾 儲存連段設置</button>
+      </div>
+
+      <!-- Panel 6: 循環技能設置 -->
+      <div id="loop" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">循環技能設置 (Insert 開關)</div>
+          <div class="panel-subtitle">定時自動施放輔助技能或BUFF。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">技能循環 (1 ~ 3)</h6>
+
+            <div class="row g-2 mb-2">
+              <div class="col-md-6"><label class="form-label">循環技能 1 key</label><input type="text" id="loop1" class="form-control" placeholder="T"></div>
+              <div class="col-md-6"><label class="form-label">間隔時間 1 (ms / off)</label><input type="text" id="loopT1" class="form-control" placeholder="5000"></div>
+            </div>
+            <div class="row g-2 mb-2">
+              <div class="col-md-6"><label class="form-label">循環技能 2 key</label><input type="text" id="loop2" class="form-control" placeholder="r"></div>
+              <div class="col-md-6"><label class="form-label">間隔時間 2 (ms / off)</label><input type="text" id="loopT2" class="form-control" placeholder="off"></div>
+            </div>
+            <div class="row g-2">
+              <div class="col-md-6"><label class="form-label">循環技能 3 key</label><input type="text" id="loop3" class="form-control" placeholder="e"></div>
+              <div class="col-md-6"><label class="form-label">間隔時間 3 (ms / off)</label><input type="text" id="loopT3" class="form-control" placeholder="off"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveLoopConfig()">💾 儲存循環技能設置</button>
+      </div>
+
+      <!-- Panel 7: 快搜倉庫設置 -->
+      <div id="stash" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">快搜倉庫設置</div>
+          <div class="panel-subtitle">倉庫快速搜尋與頁面自動翻頁功能。</div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-1">倉庫快搜工具</h6>
+            <p class="text-secondary small mb-3">使用快捷鍵 <span class="kbd-badge ms-1 me-1">Ctrl + Alt</span> 自動翻頁快搜倉庫。</p>
+            <button class="btn btn-primary btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('倉庫頁快搜工具視窗')">開啟快搜倉庫工具面板</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 8: 滑鼠連點設置 -->
+      <div id="clicker" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">滑鼠連點設置</div>
+          <div class="panel-subtitle">自動連續點擊滑鼠左鍵。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">連點參數</h6>
+            <div class="mb-2">
+              <label for="clickMode" class="form-label">連點觸發模式</label>
+              <select id="clickMode" class="form-select">
+                <option value="滑鼠滾輪按壓">滑鼠滾輪按壓 (Middle Click)</option>
+                <option value="Ctrl + 左鍵">Ctrl + 左鍵</option>
+              </select>
+            </div>
+            <div class="mb-1">
+              <label for="clickSpeed" class="form-label">連點間隔速度 (ms)</label>
+              <input type="number" id="clickSpeed" class="form-control" placeholder="50">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveClickerConfig()">💾 儲存連點設置</button>
+      </div>
+
+      <!-- Panel 9: 自動引爆地雷 -->
+      <div id="mine" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">自動引爆地雷設置</div>
+          <div class="panel-subtitle">地雷流派自動引爆與地雷杖輔助。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">地雷引爆參數</h6>
+            <div class="row g-2 mb-2">
+              <div class="col-md-6">
+                <label for="mineMode" class="form-label">地雷模式</label>
+                <select id="mineMode" class="form-select">
+                  <option value="開啟">開啟</option>
+                  <option value="關閉">關閉</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="mineStaffMode" class="form-label">地雷杖模式</label>
+                <select id="mineStaffMode" class="form-select">
+                  <option value="開啟">開啟</option>
+                  <option value="關閉">關閉</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col-md-6"><label class="form-label">地雷 Key</label><input type="text" id="mineKey" class="form-control" placeholder="D"></div>
+              <div class="col-md-6"><label class="form-label">引爆延遲 1 (ms)</label><input type="number" id="mineDelay1" class="form-control" placeholder="300"></div>
+            </div>
+            <div class="row g-2">
+              <div class="col-md-6"><label class="form-label">煙霧地雷 Key</label><input type="text" id="smokeKey" class="form-control" placeholder="F"></div>
+              <div class="col-md-6"><label class="form-label">引爆延遲 2 (ms)</label><input type="number" id="mineDelay2" class="form-control" placeholder="300"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveMineConfig()">💾 儲存地雷設置</button>
+      </div>
+
+      <!-- Panel 10: 外部連結 -->
+      <div id="links" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">外部連結與資源</div>
+          <div class="panel-subtitle">連線至線上查價工具或作者網站。</div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">網站導覽</h6>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('引導查價安裝網址')">前往查價工具網址 (台服/國際服)</button>
+              <button class="btn btn-outline-light btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('彈跳網頁')">前往 Sid 作者官方網站</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>
