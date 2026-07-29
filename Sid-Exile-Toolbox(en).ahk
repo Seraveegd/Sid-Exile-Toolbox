@@ -8,149 +8,148 @@ SetKeyDelay, 0
 ;[Read Config Section]------------------------------------------------------------------------------------------------------
 UserType = OpenSource
 
-gosub,ReadCurrentCharacterConfig
-gosub,ReadF7BackpackLocations
-gosub,BackpackCalculation
-gosub,BackpackCalculation2
-gosub,ReadF1KeyMode
-gosub,ReadF3KeyMode
-gosub,ReadF6KeyMode
-gosub,ReadF6PickupLocations
-gosub,ReadF8KeyMode
-gosub,ReadStashTabData
-gosub,ReadBackpackBaseColor
-gosub,ReadReplyMode
-gosub,ReadAutoReplyContent
-gosub,ReadQuickTradeReminder
-gosub,ReadQuickPartyReminder
-gosub,ReadClickMode
-gosub,ReadMouseClickSpeed
-gosub,ReadColorCoordinates
-gosub,ReadMineSettings
-gosub,ReadDrinkAlertSwitch
-gosub,ReadDrinkCheckboxRecords
-gosub,ReadSkillComboData
-gosub,ReadLoopSettings
-gosub,ReadDrinkDetectionData
-gosub,ReadFlaskTriggerRecords
+gosub,ReadCurrentCharacterConfig ;讀取當前角色配置
+gosub,ReadF7BackpackLocations ;讀取背包座標
+gosub,BackpackCalculation ;計算背包物品位置
+gosub,BackpackCalculation2 ;計算背包物品位置(另一種方式)
+gosub,ReadF1KeyMode ;讀取F1按鍵模式
+gosub,ReadF3KeyMode ;讀取F3按鍵模式
+gosub,ReadF6KeyMode ;讀取F6按鍵模式
+gosub,ReadF6PickupLocations ;讀取F6拾取座標
+gosub,ReadF8KeyMode ;讀取F8按鍵模式
+gosub,ReadStashTabData ;讀取儲存格標籤
+gosub,ReadBackpackBaseColor ;讀取背包底色
+gosub,ReadReplyMode ;讀取回復模式
+gosub,ReadAutoReplyContent ;讀取自動回復內容
+gosub,ReadQuickTradeReminder ;讀取快速交易提示
+gosub,ReadQuickPartyReminder ;讀取快速組隊提示
+gosub,ReadClickMode ;讀取點擊模式
+gosub,ReadMouseClickSpeed ;讀取滑鼠點擊速度
+gosub,ReadColorCoordinates ;讀取顏色座標
+gosub,ReadMineSettings ;讀取自動佈雷設定
+gosub,ReadDrinkAlertSwitch ;讀取飲料警報開關
+gosub,ReadDrinkCheckboxRecords ;讀取飲料復仇checkbox紀錄
+gosub,ReadSkillComboData ;讀取技能連擊資料
+gosub,ReadLoopSettings ;讀取循環設定
+gosub,ReadDrinkDetectionData ;讀取飲料檢測資料
+gosub,ReadFlaskTriggerRecords ;讀取藥水觸發紀錄
 
 ;[Write Defaults]------------------------------------------------------------------------------------------------------
 
-DisclaimerShown = 0
-clickStop = false
-Toolbutton = 0
-Autodrinkbutton = 0
-SceneColorState = Changing
-EnterDebugReminderCount = 0
-openI = 0
-StopUser = 0
-FlaskLock1 = None
-FlaskLock2 = None
-FlaskLock3 = None
-FlaskLock4 = None
-FlaskLock5 = None
+DisclaimerShown = 0 ; 是否已顯示免責聲明
+clickStop = false ; 滑鼠點擊停止開關
+Toolbutton = 0 ; 工具列按鈕開關
+Autodrinkbutton = 0 ; 自動飲料開關
+SceneColorState = Changing ; 場景顏色狀態
+EnterDebugReminderCount = 0 ; 進入調試模式提醒次數
+openI = 0 ; 開啟工具列開關
+StopUser = 0 ; 使用者停止開關
+FlaskLock1 = None ; 藥水鎖定1
+FlaskLock2 = None ; 藥水鎖定2
+FlaskLock3 = None ; 藥水鎖定3
+FlaskLock4 = None ; 藥水鎖定4
+FlaskLock5 = None ; 藥水鎖定5
 ;------------------------------------------------------------------------------------------------------
 if ClickMode = ERROR
 {
-ClickMode = Mouse Middle Button
+	ClickMode = Mouse Middle Button ; 點擊模式
 }
 ;------------------------------------------------------------------------------------------------------
 if ClearMode = ERROR
 {
-ClearMode = Hold-to-Clear
+	ClearMode = Hold-to-Clear ; 清除模式
 }
 if QuickPartyReminder = ERROR
 {
-QuickPartyReminder = On
+	QuickPartyReminder = On ; 快速組隊提示
 }
 if QuickTradeReminder = ERROR
 {
-QuickTradeReminder = On
+	QuickTradeReminder = On ; 快速交易提示
 }
 ;------------------------------------------------------------------------------------------------------
 if DivinationMode = ERROR
 {
-DivinationMode = Single Exchange Mode
+	DivinationMode = Single Exchange Mode ; 占卜模式
 }
 ;------------------------------------------------------------------------------------------------------
 Loop,3
 {
-if LoopSkill%A_Index% = ERROR
-{
-LoopSkill%A_Index% = T
-}
-if LoopSkillTime%A_Index% = ERROR
-{
-LoopSkillTime%A_Index% = Off
-}
+	if LoopSkill%A_Index% = ERROR
+	{
+		LoopSkill%A_Index% = T ; 循環技能
+	}
+	if LoopSkillTime%A_Index% = ERROR
+	{
+		LoopSkillTime%A_Index% = Off ; 循環技能時間
+	}
 }
 ;------------------------------------------------------------------------------------------------------
 if FlaskTriggerMode = ERROR
 {
-FlaskTriggerMode = None
+	FlaskTriggerMode = None ; 藥水觸發模式
 }
 if FlasksOnSkillUse = ERROR
 {
-FlasksOnSkillUse = 12345
+	FlasksOnSkillUse = 12345 ; 藥水在技能使用時觸發
 }
 if MainSkill = ERROR
 {
-MainSkill = Q
+	MainSkill = Q ; 主技能
 }
 
 Loop,5
 {
-if FlaskDuration%A_Index% = ERROR
-{
-FlaskDuration%A_Index% = Off
-}
+	if FlaskDuration%A_Index% = ERROR
+	{
+		FlaskDuration%A_Index% = Off ; 藥水持續時間
+	}
 }
 ;------------------------------------------------------------------------------------------------------
 if ComboSkill1 = ERROR
 {
-ComboSkill1 = Q
+	ComboSkill1 = Q ; 技能連擊1
 }
 if ComboSkill2 = ERROR
 {
-ComboSkill2 = Off
+	ComboSkill2 = Off ; 技能連擊2
 }
 if ComboSkill3 = ERROR
 {
-ComboSkill3 = Off
+	ComboSkill3 = Off ; 技能連擊3
 }
 if ComboDelay1 = ERROR
 {
-ComboDelay1 = 100
+	ComboDelay1 = 100 ; 技能連擊延遲1
 }
 if ComboDelay2 = ERROR
 {
-ComboDelay2 = 100
+	ComboDelay2 = 100 ; 技能連擊延遲2
 }
 if SkillComboEnabled = ERROR
 {
-SkillComboEnabled = Off
+	SkillComboEnabled = Off ; 技能連擊功能
 }
 ;------------------------------------------------------------------------------------------------------
 if MineMode = ERROR
 {
-MineMode = Off
+	MineMode = Off ; 自動地雷
 }
 if MineStaffMode = ERROR
 {
-MineStaffMode = Off
+	MineStaffMode = Off ; 地雷杖模式
 }
 if DetonateDelay1 = ERROR
 {
-DetonateDelay1 = 300
+	DetonateDelay1 = 300 ; 引爆延遲1
 }
 if DetonateDelay2 = ERROR
 {
-DetonateDelay2 = 300
+	DetonateDelay2 = 300 ; 引爆延遲2
 }
 ;------------------------------------------------------------------------------------------------------
 
 gosub,StartupBox
-
 
 ;[Menu Configuration]------------------------------------------------------------------------------------------------------
 
@@ -173,617 +172,613 @@ Menu, MyMenu, Add, Go to Sid's Website, OpenSidWebsite
 return
 
 CallMenu:
-menu,mymenu,show
+	menu,mymenu,show
 return
 
 ;[Hotkey Definitions]------------------------------------------------------------------------------------------------------
 
 F9::
-Suspend
-ToolTip("Tool paused, keyboard restored. [F9] to resume.")
-Pause,,1
+	Suspend
+	ToolTip("Tool paused, keyboard restored. [F9] to resume.")
+	Pause,,1
 return
 
 F11::
-reload
+	reload
 return
 
 F12::
-msgbox,,Notice, Tool exited ლ(・ω・ლ)摸摸
+	msgbox,,Notice, Tool exited ლ(・ω・ლ)摸摸
 exitapp
 return
 
 ~*esc::
-IfWinActive,rchin-poe-trade
-  WinActivate ,Path of Exile
-openI := 0
-Toolbutton := 0
-ifwinactive, Path of Exile
-ToolTip("(ESC) closed panel, back to game mode")
+	IfWinActive,rchin-poe-trade
+		WinActivate ,Path of Exile
+	openI := 0
+	Toolbutton := 0
+	ifwinactive, Path of Exile
+		ToolTip("(ESC) closed panel, back to game mode")
 return
 
 GetDriveTailSerial()
 {
-    for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
-    {
-        serial := objItem.SerialNumber
-        if (serial != "" && !InStr(serial, "00000000"))
-        {
-            clean := RegExReplace(serial, "[^a-zA-Z0-9]")
-            if (StrLen(clean) >= 12)
-                return SubStr(clean, -11)
-            else
-                return clean
-        }
-    }
-    return "UNKNOWN"
+	for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
+	{
+		serial := objItem.SerialNumber
+		if (serial != "" && !InStr(serial, "00000000"))
+		{
+			clean := RegExReplace(serial, "[^a-zA-Z0-9]")
+			if (StrLen(clean) >= 12)
+				return SubStr(clean, -11)
+			else
+				return clean
+		}
+	}
+	return "UNKNOWN"
 }
 
 #ifwinactive, Path of Exile
 
-#Z::
-gosub,CallMenu
-return
+	#Z::
+		gosub,CallMenu
+	return
 
-#V::
-gosub,PriceCheckWindow
-return
+	#V::
+		gosub,PriceCheckWindow
+	return
 
-;[Tooltip Base Setup]------------------------------------------------------------------------------------------------------
+	;[Tooltip Base Setup]------------------------------------------------------------------------------------------------------
 
-ToolTip(label)
-{
-ToolTip, %label%, 0, 40
-SetTimer, RemoveToolTip, 3000
-WinActivate ,Path of Exile
-return
+	ToolTip(label)
+	{
+		ToolTip, %label%, 0, 40
+		SetTimer, RemoveToolTip, 3000
+		WinActivate ,Path of Exile
+		return
 
-RemoveToolTip:
-SetTimer, RemoveToolTip, Off
-ToolTip
-Return
-}
+		RemoveToolTip:
+		SetTimer, RemoveToolTip, Off
+		ToolTip
+		Return
+	}
 
-;[Full Feature List GUI]-----------------------------------------------------------------------------------------------------------------------------------------------------
+	;[Full Feature List GUI]-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-FullFeatureList:
-gui,FullFeatureList:new,,Full Feature List (This tool is fully open-source and free)
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[F1] Original Function / Return to Character
-Gui, Add,Text,cBlue,[F2] Toggle AFK / DND / Auto-Reply
-Gui, Add,Link,cBlue,[F3] Hold/Auto/Scan/Search+Clear modes = <a href="https://youtu.be/MzIH2rn72NE">Demo Video</a>
-Gui, Add,Text,cBlue,[F4] Use Portal Scroll from backpack
-Gui, Add,Text,cBlue,[F5] Return to Hideout
-Gui, Add,Text,cBlue,[F6] Quick Pickup
-Gui, Add,Text,cBlue,[F7] Backpack coordinate setup
-Gui, Add,Text,cBlue,[F8] Single / Batch Divination Card exchange
-Gui, Add,Text,cBlue,[F9] Restore keyboard (pause tool)
-Gui, Add,Text,cBlue,[F10] Advanced drink mode (HP/Mana/Scene detection)
-Gui, Add,Text,cBlue,[End] Quick party invite
-Gui, Add,Text,cBlue,[Home] Quick trade request
-Gui, Add,Text,cBlue,[PgUp] Quick trade: check 60 slots
-Gui, Add,Text,cBlue,[PgDn] Quick trade: accept
-Gui, Add,Text,cBlue,[Space] Quick drink / loop drink / flask lock
-Gui, Add,Text,cBlue,[Insert] Toggle loop skills
-Gui, Add,Text,cBlue,[Win + V] Quick price check
-Gui, Add,Text,cBlue,[Win + Z] Tool menu & settings
-Gui, Add,Text,cBlue,[Ctrl + Alt] Quick stash auto-page
-Gui, Add,Text,cBlue,[Ctrl + Win] Return to stash first page
-Gui, Add,Text,cBlue,[Middle Click] or [Ctrl + LButton] Mouse auto-click
-Gui Font
-Gui Add, StatusBar,, All features free and open-source, feel free to share and improve.
-Gui, Show
-return
+	FullFeatureList:
+		gui,FullFeatureList:new,,Full Feature List (This tool is fully open-source and free)
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[F1] Original Function / Return to Character
+		Gui, Add,Text,cBlue,[F2] Toggle AFK / DND / Auto-Reply
+		Gui, Add,Link,cBlue,[F3] Hold/Auto/Scan/Search+Clear modes = <a href="https://youtu.be/MzIH2rn72NE">Demo Video</a>
+		Gui, Add,Text,cBlue,[F4] Use Portal Scroll from backpack
+		Gui, Add,Text,cBlue,[F5] Return to Hideout
+		Gui, Add,Text,cBlue,[F6] Quick Pickup
+		Gui, Add,Text,cBlue,[F7] Backpack coordinate setup
+		Gui, Add,Text,cBlue,[F8] Single / Batch Divination Card exchange
+		Gui, Add,Text,cBlue,[F9] Restore keyboard (pause tool)
+		Gui, Add,Text,cBlue,[F10] Advanced drink mode (HP/Mana/Scene detection)
+		Gui, Add,Text,cBlue,[End] Quick party invite
+		Gui, Add,Text,cBlue,[Home] Quick trade request
+		Gui, Add,Text,cBlue,[PgUp] Quick trade: check 60 slots
+		Gui, Add,Text,cBlue,[PgDn] Quick trade: accept
+		Gui, Add,Text,cBlue,[Space] Quick drink / loop drink / flask lock
+		Gui, Add,Text,cBlue,[Insert] Toggle loop skills
+		Gui, Add,Text,cBlue,[Win + V] Quick price check
+		Gui, Add,Text,cBlue,[Win + Z] Tool menu & settings
+		Gui, Add,Text,cBlue,[Ctrl + Alt] Quick stash auto-page
+		Gui, Add,Text,cBlue,[Ctrl + Win] Return to stash first page
+		Gui, Add,Text,cBlue,[Middle Click] or [Ctrl + LButton] Mouse auto-click
+		Gui Font
+		Gui Add, StatusBar,, All features free and open-source, feel free to share and improve.
+		Gui, Show
+	return
 
-;[Hotkey List GUI]------------------------------------------------------------------------------------------------------
+	;[Hotkey List GUI]------------------------------------------------------------------------------------------------------
 
-HotkeyListGUI:
-Gui,HotkeyList:new,,Hotkey List
-Gui Color, 0xC0C0C0
-Gui, Font, s10 Bold, Verdana
-Gui, Add,Text,cBlue,[F1 ~ F12] (Keys with "/" support multi‑mode switching, see bottom tips.)
-Gui, Font
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[F1] = Original / Return to character
-Gui, Add,Text,cBlue,[F2] = AFK / DND / Auto-Reply
-Gui, Add,Link,cBlue,[F3] = Hold / Auto / Scan / Scan+Search clear / Backpack color mapping. Video:<a href="https://youtu.be/MzIH2rn72NE">click</a>
-Gui, Add,Text,cBlue,[F4] = Use portal scroll
-Gui, Add,Text,cBlue,[F5] = Return to hideout (town only)
-Gui, Add,Link,cBlue,[F6] = Quick pickup / pickup coordinate setup. Video:<a href="https://youtu.be/yV8FdhSmz2Y">click</a>
-Gui, Add,Text,cBlue,[F7] = Backpack coordinate setup
-Gui, Add,Link,cBlue,[F8] = Single / Batch divination card exchange. Video:<a href="https://youtu.be/zBKJ99hFg9Y">click</a>
-Gui, Add,Text,cBlue,[F9] = Restore keyboard (pause tool)
-Gui, Add,Text,cBlue,[F10] = Toggle advanced drink mode
-Gui, Add,Text,cBlue,[F11] = Restart tool
-Gui, Add,Text,cBlue,[F12] = Exit tool
-Gui, Font, s10 Bold, Verdana
-Gui, Add,Text,cBlue,[Other Hotkeys]
-Gui, Font
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[End] = Quick party invite / toggle reminder
-Gui, Add,Text,cBlue,[Home] = Quick trade request / toggle reminder
-Gui, Add,Text,cBlue,[PgUp] = Quick trade check 60 slots
-Gui, Add,Text,cBlue,[PgDn] = Quick trade accept
-Gui, Add,Text,cBlue,[Space] = Quick drink / loop / lock (Win+Z: Flask settings)
-Gui, Add,Text,cBlue,[Insert] = Toggle loop skills
-Gui, Add,Link,cBlue,[Win + C] = Coordinate & color mapping for detection points. Video:<a href="https://youtu.be/dTk3BO54_8Y">click</a>
-Gui, Add,Text,cBlue,[Win + V] = Quick price check (hover item)
-Gui, Add,Text,cBlue,[Win + End] = Toggle party reminder
-Gui, Add,Link,cBlue,[Ctrl + Alt] = Auto-page (quick stash search). Video:<a href="https://youtu.be/StpFz8qbB44">click</a>
-Gui, Add,Text,cBlue,[Ctrl + Win] = Return to stash first page
-Gui, Add,Text,cBlue,[Middle Click] or [Ctrl + LButton] = Mouse auto-click
-Gui, Font, underline
-Gui, Add,Text,cBlue,Open-source version – free to use and modify.
-Gui, Font
-Gui Add, StatusBar,, ▲ Tip: Multi‑mode switching means e.g. Win+F1 toggles F1 behavior, etc.
-Gui, Show
-return
+	HotkeyListGUI:
+		Gui,HotkeyList:new,,Hotkey List
+		Gui Color, 0xC0C0C0
+		Gui, Font, s10 Bold, Verdana
+		Gui, Add,Text,cBlue,[F1 ~ F12] (Keys with "/" support multi‑mode switching, see bottom tips.)
+		Gui, Font
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[F1] = Original / Return to character
+		Gui, Add,Text,cBlue,[F2] = AFK / DND / Auto-Reply
+		Gui, Add,Link,cBlue,[F3] = Hold / Auto / Scan / Scan+Search clear / Backpack color mapping. Video:<a href="https://youtu.be/MzIH2rn72NE">click</a>
+		Gui, Add,Text,cBlue,[F4] = Use portal scroll
+		Gui, Add,Text,cBlue,[F5] = Return to hideout (town only)
+		Gui, Add,Link,cBlue,[F6] = Quick pickup / pickup coordinate setup. Video:<a href="https://youtu.be/yV8FdhSmz2Y">click</a>
+		Gui, Add,Text,cBlue,[F7] = Backpack coordinate setup
+		Gui, Add,Link,cBlue,[F8] = Single / Batch divination card exchange. Video:<a href="https://youtu.be/zBKJ99hFg9Y">click</a>
+		Gui, Add,Text,cBlue,[F9] = Restore keyboard (pause tool)
+		Gui, Add,Text,cBlue,[F10] = Toggle advanced drink mode
+		Gui, Add,Text,cBlue,[F11] = Restart tool
+		Gui, Add,Text,cBlue,[F12] = Exit tool
+		Gui, Font, s10 Bold, Verdana
+		Gui, Add,Text,cBlue,[Other Hotkeys]
+		Gui, Font
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[End] = Quick party invite / toggle reminder
+		Gui, Add,Text,cBlue,[Home] = Quick trade request / toggle reminder
+		Gui, Add,Text,cBlue,[PgUp] = Quick trade check 60 slots
+		Gui, Add,Text,cBlue,[PgDn] = Quick trade accept
+		Gui, Add,Text,cBlue,[Space] = Quick drink / loop / lock (Win+Z: Flask settings)
+		Gui, Add,Text,cBlue,[Insert] = Toggle loop skills
+		Gui, Add,Link,cBlue,[Win + C] = Coordinate & color mapping for detection points. Video:<a href="https://youtu.be/dTk3BO54_8Y">click</a>
+		Gui, Add,Text,cBlue,[Win + V] = Quick price check (hover item)
+		Gui, Add,Text,cBlue,[Win + End] = Toggle party reminder
+		Gui, Add,Link,cBlue,[Ctrl + Alt] = Auto-page (quick stash search). Video:<a href="https://youtu.be/StpFz8qbB44">click</a>
+		Gui, Add,Text,cBlue,[Ctrl + Win] = Return to stash first page
+		Gui, Add,Text,cBlue,[Middle Click] or [Ctrl + LButton] = Mouse auto-click
+		Gui, Font, underline
+		Gui, Add,Text,cBlue,Open-source version – free to use and modify.
+		Gui, Font
+		Gui Add, StatusBar,, ▲ Tip: Multi‑mode switching means e.g. Win+F1 toggles F1 behavior, etc.
+		Gui, Show
+	return
 
-;[Jump Labels]---------------------------------------------------------------------------------------------------
+	;[Jump Labels]---------------------------------------------------------------------------------------------------
 
-StartupBox:
-msgbox,,Sid's PoE Toolbox (Open Source),Tool started. Use (Win+Z) to show menu.`rThis version is fully open-source, all features free to use.
-return
+	StartupBox:
+		msgbox,,Sid's PoE Toolbox (Open Source),Tool started. Use (Win+Z) to show menu.`rThis version is fully open-source, all features free to use.
+	return
 
-StopReminder:
-ToolTip("Hold [~] to stop")
-if(GetKeyState("~","P"))
-settimer,StopReminder,off
-return
+	StopReminder:
+		ToolTip("Hold [~] to stop")
+		if(GetKeyState("~","P"))
+			settimer,StopReminder,off
+	return
 
-;---------------------------------------------------------
+	;---------------------------------------------------------
 
-OpenSidWebsite:
-run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
-return
+	OpenSidWebsite:
+		run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
+	return
 
-PauseLoopDrink:
-SetTimer, Flask1, off
-SetTimer, Flask2, off
-SetTimer, Flask3, off
-SetTimer, Flask4, off
-SetTimer, Flask5, off
-return
+	PauseLoopDrink:
+		SetTimer, Flask1, off
+		SetTimer, Flask2, off
+		SetTimer, Flask3, off
+		SetTimer, Flask4, off
+		SetTimer, Flask5, off
+	return
 
-StopDetectionLoops:
-settimer,DetectSceneChange,off
-settimer,DetectHealthGlobe,OFF
-settimer,DetectHealthBar,OFF
-settimer,DetectManaGlobe,OFF
-settimer,DetectHealthBarReturn,OFF
-settimer,DetectChaosPenetration,OFF
-settimer,DetectChaosPenetrationReturn,OFF
-return
+	StopDetectionLoops:
+		settimer,DetectSceneChange,off
+		settimer,DetectHealthGlobe,OFF
+		settimer,DetectHealthBar,OFF
+		settimer,DetectManaGlobe,OFF
+		settimer,DetectHealthBarReturn,OFF
+		settimer,DetectChaosPenetration,OFF
+		settimer,DetectChaosPenetrationReturn,OFF
+	return
 
-;[Flask Trigger Settings GUI]------------------------------------------------------------------------------------------------------
+	;[Flask Trigger Settings GUI]------------------------------------------------------------------------------------------------------
 
-FlaskTriggerSettingsGUI:
-Gui,FlaskTriggerSettings:new,,Flask Trigger Settings
-Gui +LabelFlaskTriggerSettings -Resize  -MinimizeBox -MaximizeBox
-Gui Color, 0xC0C0C0
-Gui Font, s12 Bold
-Gui Add, Text, x31 y152 w135 h23, Flask(1) Duration:
-Gui Add, Text, x31 y177 w135 h23, Flask(2) Duration:
-Gui Add, Text, x31 y202 w135 h23, Flask(3) Duration:
-Gui Add, Text, x31 y227 w135 h23, Flask(4) Duration:
-Gui Add, Text, x31 y252 w135 h23, Flask(5) Duration:
-Gui Add, Text, x30 y97 w100 h23, When using skill:
-Gui Add, Text, x171 y97 w111 h23, use flasks:
-Gui Add, Text, x30 y8 w145 h23, Flask trigger mode:
-Gui Add, Text, x31 y125 w219 h23, Quick drink (Space) uses flasks: 
-Gui Add, Button,gSaveFlaskTriggerSettings x298 y204 w384 h67, Save & Close
-Gui Font
-Gui Font, s12
-Gui Add, ComboBox, vFlaskTriggerMode x184 y5 w143 -Theme, None|Pure Flask Lock|Loop Drink|Drink on Skill Use|%FlaskTriggerMode%||
-Gui Add, ComboBox, vMainSkill x126 y96 w40 -Theme, Q|W|E|R|T|%MainSkill%||
-Gui Font
-Gui Font, s10 cBlue
-Gui Add, Text, x30 y35 w607 h20, Pure Flask Lock: manual flask use, tool prevents re‑use during duration. Good for intense situations.
-Gui Add, Text, x30 y55 w604 h20, Loop Drink: press Space in map to start loop, flasks re‑use after duration ends. Good for zoom zoom builds.
-Gui Add, Text, x30 y75 w440 h20, Drink on Skill Use: only drink when you use a skill – avoid wasteful drinking outside combat.
-Gui Add, Text, x363 y96 w320 h23 +0x200, Example: enter 12345 = use flasks 1‑5, enter 135 = use 1,3,5.
-Gui Add, Text, x295 y152 w210 h23 +0x200, (1s = 1000ms), use "off" to disable.
-Gui Add, Text, x295 y177 w150 h23 +0x200, Life flasks usually set to off.
-Gui Font
-Gui Font, s10
-Gui Add, Edit, vFlaskDuration1 x171 y152 w120 h21 -Theme, %FlaskDuration1%
-Gui Add, Edit, vFlaskDuration2 x171 y177 w120 h21 -Theme, %FlaskDuration2%
-Gui Add, Edit, vFlaskDuration3 x171 y202 w120 h21 -Theme, %FlaskDuration3%
-Gui Add, Edit, vFlaskDuration4 x171 y227 w120 h21 -Theme, %FlaskDuration4%
-Gui Add, Edit, vFlaskDuration5 x171 y252 w120 h21 -Theme, %FlaskDuration5%
-Gui Add, Edit, vFlasksOnSkillUse x281 y96 w78 h21 +Number -Theme, %FlasksOnSkillUse%
-Gui Add, Edit, vQuickDrinkFlasks x255 y123 w120 h21 +Number -Theme, %QuickDrinkFlasks%
-Gui Font
-Gui Add, StatusBar,, ▲ Tip: In Pure Flask Lock mode, manual 1‑5 keys reset the lock timer immediately.
-Gui Show, w691 h301, Flask Trigger Settings
-Return
-
-;[Flask Trigger GUI Save Button]------------------------------------------------------------------------------------------------------
-
-FlaskTriggerSettingsEscape:
-FlaskTriggerSettingsClose:
-Msgbox,4,Notice,Settings not saved. Close anyway? (Yes / No)
-IfMsgBox No
+	FlaskTriggerSettingsGUI:
+		Gui,FlaskTriggerSettings:new,,Flask Trigger Settings
+		Gui +LabelFlaskTriggerSettings -Resize  -MinimizeBox -MaximizeBox
+		Gui Color, 0xC0C0C0
+		Gui Font, s12 Bold
+		Gui Add, Text, x31 y152 w135 h23, Flask(1) Duration:
+		Gui Add, Text, x31 y177 w135 h23, Flask(2) Duration:
+		Gui Add, Text, x31 y202 w135 h23, Flask(3) Duration:
+		Gui Add, Text, x31 y227 w135 h23, Flask(4) Duration:
+		Gui Add, Text, x31 y252 w135 h23, Flask(5) Duration:
+		Gui Add, Text, x30 y97 w100 h23, When using skill:
+		Gui Add, Text, x171 y97 w111 h23, use flasks:
+		Gui Add, Text, x30 y8 w145 h23, Flask trigger mode:
+		Gui Add, Text, x31 y125 w219 h23, Quick drink (Space) uses flasks:
+		Gui Add, Button,gSaveFlaskTriggerSettings x298 y204 w384 h67, Save & Close
+		Gui Font
+		Gui Font, s12
+		Gui Add, ComboBox, vFlaskTriggerMode x184 y5 w143 -Theme, None|Pure Flask Lock|Loop Drink|Drink on Skill Use|%FlaskTriggerMode%||
+		Gui Add, ComboBox, vMainSkill x126 y96 w40 -Theme, Q|W|E|R|T|%MainSkill%||
+		Gui Font
+		Gui Font, s10 cBlue
+		Gui Add, Text, x30 y35 w607 h20, Pure Flask Lock: manual flask use, tool prevents re‑use during duration. Good for intense situations.
+		Gui Add, Text, x30 y55 w604 h20, Loop Drink: press Space in map to start loop, flasks re‑use after duration ends. Good for zoom zoom builds.
+		Gui Add, Text, x30 y75 w440 h20, Drink on Skill Use: only drink when you use a skill – avoid wasteful drinking outside combat.
+		Gui Add, Text, x363 y96 w320 h23 +0x200, Example: enter 12345 = use flasks 1‑5, enter 135 = use 1,3,5.
+		Gui Add, Text, x295 y152 w210 h23 +0x200, (1s = 1000ms), use "off" to disable.
+		Gui Add, Text, x295 y177 w150 h23 +0x200, Life flasks usually set to off.
+		Gui Font
+		Gui Font, s10
+		Gui Add, Edit, vFlaskDuration1 x171 y152 w120 h21 -Theme, %FlaskDuration1%
+		Gui Add, Edit, vFlaskDuration2 x171 y177 w120 h21 -Theme, %FlaskDuration2%
+		Gui Add, Edit, vFlaskDuration3 x171 y202 w120 h21 -Theme, %FlaskDuration3%
+		Gui Add, Edit, vFlaskDuration4 x171 y227 w120 h21 -Theme, %FlaskDuration4%
+		Gui Add, Edit, vFlaskDuration5 x171 y252 w120 h21 -Theme, %FlaskDuration5%
+		Gui Add, Edit, vFlasksOnSkillUse x281 y96 w78 h21 +Number -Theme, %FlasksOnSkillUse%
+		Gui Add, Edit, vQuickDrinkFlasks x255 y123 w120 h21 +Number -Theme, %QuickDrinkFlasks%
+		Gui Font
+		Gui Add, StatusBar,, ▲ Tip: In Pure Flask Lock mode, manual 1‑5 keys reset the lock timer immediately.
+		Gui Show, w691 h301, Flask Trigger Settings
 	Return
+
+	;[Flask Trigger GUI Save Button]------------------------------------------------------------------------------------------------------
+
+	FlaskTriggerSettingsEscape:
+	FlaskTriggerSettingsClose:
+		Msgbox,4,Notice,Settings not saved. Close anyway? (Yes / No)
+		IfMsgBox No
+			Return
 Else
 	Gui,submit
-Return
-
-;[Flask Trigger GUI Save Routine]------------------------------------------------------------------------------------------------------
-
-SaveFlaskTriggerSettings:
-Gui,submit
-Gosub,SaveFlaskTriggerRecords
-Gosub,ReadFlaskTriggerRecords
-Return
-
-SaveFlaskTriggerRecords:
-if CurrentProfile = 1
-{
-IniWrite,	% MainSkill,	sidtooldata.ini, FlaskTriggerData, MainSkill
-IniWrite,	% FlaskTriggerMode,	sidtooldata.ini, FlaskTriggerData, FlaskTriggerMode
-IniWrite,	% FlaskDuration1,	sidtooldata.ini, FlaskTriggerData, FlaskDuration1
-IniWrite,	% FlaskDuration2,	sidtooldata.ini, FlaskTriggerData, FlaskDuration2
-IniWrite,	% FlaskDuration3,	sidtooldata.ini, FlaskTriggerData, FlaskDuration3
-IniWrite,	% FlaskDuration4,	sidtooldata.ini, FlaskTriggerData, FlaskDuration4
-IniWrite,	% FlaskDuration5,	sidtooldata.ini, FlaskTriggerData, FlaskDuration5
-IniWrite,	% FlasksOnSkillUse,	sidtooldata.ini, FlaskTriggerData, FlasksOnSkillUse
-IniWrite,	% QuickDrinkFlasks,	sidtooldata.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-if CurrentProfile = 2
-{
-IniWrite,	% MainSkill,	sidtooldata2.ini, FlaskTriggerData, MainSkill
-IniWrite,	% FlaskTriggerMode,	sidtooldata2.ini, FlaskTriggerData, FlaskTriggerMode
-IniWrite,	% FlaskDuration1,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration1
-IniWrite,	% FlaskDuration2,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration2
-IniWrite,	% FlaskDuration3,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration3
-IniWrite,	% FlaskDuration4,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration4
-IniWrite,	% FlaskDuration5,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration5
-IniWrite,	% FlasksOnSkillUse,	sidtooldata2.ini, FlaskTriggerData, FlasksOnSkillUse
-IniWrite,	% QuickDrinkFlasks,	sidtooldata2.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-if CurrentProfile = 3
-{
-IniWrite,	% MainSkill,	sidtooldata3.ini, FlaskTriggerData, MainSkill
-IniWrite,	% FlaskTriggerMode,	sidtooldata3.ini, FlaskTriggerData, FlaskTriggerMode
-IniWrite,	% FlaskDuration1,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration1
-IniWrite,	% FlaskDuration2,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration2
-IniWrite,	% FlaskDuration3,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration3
-IniWrite,	% FlaskDuration4,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration4
-IniWrite,	% FlaskDuration5,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration5
-IniWrite,	% FlasksOnSkillUse,	sidtooldata3.ini, FlaskTriggerData, FlasksOnSkillUse
-IniWrite,	% QuickDrinkFlasks,	sidtooldata3.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-Return
-
-ReadFlaskTriggerRecords:
-if CurrentProfile = 1
-{
- Iniread,	 MainSkill,	sidtooldata.ini, FlaskTriggerData, MainSkill
- Iniread,	 FlaskTriggerMode,	sidtooldata.ini, FlaskTriggerData, FlaskTriggerMode
- Iniread,	 FlaskDuration1,	sidtooldata.ini, FlaskTriggerData, FlaskDuration1
- Iniread,	 FlaskDuration2,	sidtooldata.ini, FlaskTriggerData, FlaskDuration2
- Iniread,	 FlaskDuration3,	sidtooldata.ini, FlaskTriggerData, FlaskDuration3
- Iniread,	 FlaskDuration4,	sidtooldata.ini, FlaskTriggerData, FlaskDuration4
- Iniread,	 FlaskDuration5,	sidtooldata.ini, FlaskTriggerData, FlaskDuration5
- Iniread,	 FlasksOnSkillUse,	sidtooldata.ini, FlaskTriggerData, FlasksOnSkillUse
- Iniread,	 QuickDrinkFlasks,	sidtooldata.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-if CurrentProfile = 2
-{
- Iniread,	 MainSkill,	sidtooldata2.ini, FlaskTriggerData, MainSkill
- Iniread,	 FlaskTriggerMode,	sidtooldata2.ini, FlaskTriggerData, FlaskTriggerMode
- Iniread,	 FlaskDuration1,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration1
- Iniread,	 FlaskDuration2,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration2
- Iniread,	 FlaskDuration3,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration3
- Iniread,	 FlaskDuration4,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration4
- Iniread,	 FlaskDuration5,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration5
- Iniread,	 FlasksOnSkillUse,	sidtooldata2.ini, FlaskTriggerData, FlasksOnSkillUse
- Iniread,	 QuickDrinkFlasks,	sidtooldata2.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-if CurrentProfile = 3
-{
- Iniread,	 MainSkill,	sidtooldata3.ini, FlaskTriggerData, MainSkill
- Iniread,	 FlaskTriggerMode,	sidtooldata3.ini, FlaskTriggerData, FlaskTriggerMode
- Iniread,	 FlaskDuration1,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration1
- Iniread,	 FlaskDuration2,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration2
- Iniread,	 FlaskDuration3,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration3
- Iniread,	 FlaskDuration4,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration4
- Iniread,	 FlaskDuration5,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration5
- Iniread,	 FlasksOnSkillUse,	sidtooldata3.ini, FlaskTriggerData, FlasksOnSkillUse
- Iniread,	 QuickDrinkFlasks,	sidtooldata3.ini, FlaskTriggerData, QuickDrinkFlasks
-}
-Return
-
-
-
-;[Drink Detection Settings GUI]------------------------------------------------------------------------------------------------------
-
-DrinkDetectionSettingsGUI:
-gosub,ConvertDrinkCheckboxRecords
-Gui,DrinkDetectionSettings:new,,Drink Detection Settings
-Gui +LabelDrinkDetectionSettings -Resize  -MinimizeBox -MaximizeBox
-Gui Font, s12
-Gui Add, Text, x10 y25 w275 h16, Use flask when health bar below detection point (1)
-Gui Add, Text, x360 y25 w243 h16, , and return to character below detection point (2).
-Gui Add, Text, x10 y165 w280 h16, Use flask when health globe below detection point (9)
-Gui Add, Text, x10 y85 w275 h16, Use flask when mana globe below detection point (3)
-Gui Add, Text, x10 y125 w280 h16, Use flask when chaos penetration below point (7)
-Gui Add, Text, x360 y125 w275 h16, , and return to character below point (8).
-Gui Add, Text, x9 y185 w142 h16, Detection interval (ms)
-Gui Add, Text, x213 y185 w352 h16, , adjust based on instant / recovery flasks.
-Gui Add, Text, x470 y70 w120 h16, Drink alerts:
-Gui Add, DropDownList, vDrinkAlertSwitch x578 y68 w60 -Theme, On|Off|%DrinkAlertSwitch%||
-Gui Font, s11 cRed
-Gui Add, Text, x14 y45 h14, Example: only flask1 -> enter 1. Two flasks -> 12. Mining -> 16, skill -> 16R.
-Gui Font
-Gui Font, s12 c0x0080FF
-Gui Add, CheckBox, hWndcheckbox1 vHealthBarDrinkCheck x10 y4 w165 h18 %HealthBarDrinkChecked%, Enable Health Bar Drink↓
-Gui Add, CheckBox, hWndcheckbox2 vHealthBarReturnCheck x360 y4 w165 h18 %HealthBarReturnChecked%, Enable Health Bar Return↓
-Gui Add, CheckBox, hWndcheckbox3 vManaGlobeDrinkCheck x10 y64 w165 h18 %ManaGlobeDrinkChecked%, Enable Mana Globe Drink↓
-Gui Add, CheckBox, hWndcheckbox4 vChaosPenetrationCheck x10 y104 w165 h18 %ChaosPenetrationChecked%, Enable Chaos Penetration Drink↓
-Gui Add, CheckBox, hWndcheckbox5 vChaosPenetrationReturnCheck x360 y105 w200 h18 %ChaosPenetrationReturnChecked%, Enable Chaos Penetration Return↓
-Gui Add, CheckBox, hWndcheckbox6 vHealthGlobeCheck x10 y144 w150 h18 %HealthGlobeChecked%, Enable Health Globe Drink↓
-Gui, Add,Link,cRed x548 y4, Click <a href="https://youtu.be/dTk3BO54_8Y">Video Demo</a>
-Gui Font
-Gui Add, Button, gSaveDrinkDetectionSettings x578 y182 w80 h23 -Theme, Save & Close
-Gui Add, StatusBar,, ▲ Tip: Enable both [Health Bar Return] and [Health Globe] to greatly reduce false return triggers. ㊣ Made By Sid
-Gui Font
-Gui Add, Edit, vFlaskKey1 x293 y23 w60 h20  -Theme,%FlaskKey1%
-Gui Add, Edit, vFlaskKey2 x293 y81 w60 h20  -Theme,%FlaskKey2%
-Gui Add, Edit, vFlaskKey3 x293 y123 w60 h20  -Theme,%FlaskKey3%
-Gui Add, Edit, vFlaskKey4 x293 y163 w60 h20  -Theme,%FlaskKey4%
-Gui Add, ComboBox, vDetectionInterval x157 y183 w50 -Theme, 100|300|500|800|1000|2000|3000|%DetectionInterval%||
-Gui Show, w668 h234, Drink Detection Settings (works only in F10 advanced mode)
-Return
-
-;[Drink Detection GUI Save Button]------------------------------------------------------------------------------------------------------
-
-DrinkDetectionSettingsEscape:
-DrinkDetectionSettingsClose:
-Msgbox,4,Notice,Settings not saved. Close anyway? (Yes / No)
-IfMsgBox No
 	Return
+
+	;[Flask Trigger GUI Save Routine]------------------------------------------------------------------------------------------------------
+
+	SaveFlaskTriggerSettings:
+		Gui,submit
+		Gosub,SaveFlaskTriggerRecords
+		Gosub,ReadFlaskTriggerRecords
+	Return
+
+	SaveFlaskTriggerRecords:
+		if CurrentProfile = 1
+		{
+			IniWrite,	% MainSkill,	sidtooldata.ini, FlaskTriggerData, MainSkill
+			IniWrite,	% FlaskTriggerMode,	sidtooldata.ini, FlaskTriggerData, FlaskTriggerMode
+			IniWrite,	% FlaskDuration1,	sidtooldata.ini, FlaskTriggerData, FlaskDuration1
+			IniWrite,	% FlaskDuration2,	sidtooldata.ini, FlaskTriggerData, FlaskDuration2
+			IniWrite,	% FlaskDuration3,	sidtooldata.ini, FlaskTriggerData, FlaskDuration3
+			IniWrite,	% FlaskDuration4,	sidtooldata.ini, FlaskTriggerData, FlaskDuration4
+			IniWrite,	% FlaskDuration5,	sidtooldata.ini, FlaskTriggerData, FlaskDuration5
+			IniWrite,	% FlasksOnSkillUse,	sidtooldata.ini, FlaskTriggerData, FlasksOnSkillUse
+			IniWrite,	% QuickDrinkFlasks,	sidtooldata.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+		if CurrentProfile = 2
+		{
+			IniWrite,	% MainSkill,	sidtooldata2.ini, FlaskTriggerData, MainSkill
+			IniWrite,	% FlaskTriggerMode,	sidtooldata2.ini, FlaskTriggerData, FlaskTriggerMode
+			IniWrite,	% FlaskDuration1,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration1
+			IniWrite,	% FlaskDuration2,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration2
+			IniWrite,	% FlaskDuration3,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration3
+			IniWrite,	% FlaskDuration4,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration4
+			IniWrite,	% FlaskDuration5,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration5
+			IniWrite,	% FlasksOnSkillUse,	sidtooldata2.ini, FlaskTriggerData, FlasksOnSkillUse
+			IniWrite,	% QuickDrinkFlasks,	sidtooldata2.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+		if CurrentProfile = 3
+		{
+			IniWrite,	% MainSkill,	sidtooldata3.ini, FlaskTriggerData, MainSkill
+			IniWrite,	% FlaskTriggerMode,	sidtooldata3.ini, FlaskTriggerData, FlaskTriggerMode
+			IniWrite,	% FlaskDuration1,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration1
+			IniWrite,	% FlaskDuration2,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration2
+			IniWrite,	% FlaskDuration3,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration3
+			IniWrite,	% FlaskDuration4,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration4
+			IniWrite,	% FlaskDuration5,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration5
+			IniWrite,	% FlasksOnSkillUse,	sidtooldata3.ini, FlaskTriggerData, FlasksOnSkillUse
+			IniWrite,	% QuickDrinkFlasks,	sidtooldata3.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+	Return
+
+	ReadFlaskTriggerRecords:
+		if CurrentProfile = 1
+		{
+			Iniread,	 MainSkill,	sidtooldata.ini, FlaskTriggerData, MainSkill
+			Iniread,	 FlaskTriggerMode,	sidtooldata.ini, FlaskTriggerData, FlaskTriggerMode
+			Iniread,	 FlaskDuration1,	sidtooldata.ini, FlaskTriggerData, FlaskDuration1
+			Iniread,	 FlaskDuration2,	sidtooldata.ini, FlaskTriggerData, FlaskDuration2
+			Iniread,	 FlaskDuration3,	sidtooldata.ini, FlaskTriggerData, FlaskDuration3
+			Iniread,	 FlaskDuration4,	sidtooldata.ini, FlaskTriggerData, FlaskDuration4
+			Iniread,	 FlaskDuration5,	sidtooldata.ini, FlaskTriggerData, FlaskDuration5
+			Iniread,	 FlasksOnSkillUse,	sidtooldata.ini, FlaskTriggerData, FlasksOnSkillUse
+			Iniread,	 QuickDrinkFlasks,	sidtooldata.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+		if CurrentProfile = 2
+		{
+			Iniread,	 MainSkill,	sidtooldata2.ini, FlaskTriggerData, MainSkill
+			Iniread,	 FlaskTriggerMode,	sidtooldata2.ini, FlaskTriggerData, FlaskTriggerMode
+			Iniread,	 FlaskDuration1,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration1
+			Iniread,	 FlaskDuration2,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration2
+			Iniread,	 FlaskDuration3,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration3
+			Iniread,	 FlaskDuration4,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration4
+			Iniread,	 FlaskDuration5,	sidtooldata2.ini, FlaskTriggerData, FlaskDuration5
+			Iniread,	 FlasksOnSkillUse,	sidtooldata2.ini, FlaskTriggerData, FlasksOnSkillUse
+			Iniread,	 QuickDrinkFlasks,	sidtooldata2.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+		if CurrentProfile = 3
+		{
+			Iniread,	 MainSkill,	sidtooldata3.ini, FlaskTriggerData, MainSkill
+			Iniread,	 FlaskTriggerMode,	sidtooldata3.ini, FlaskTriggerData, FlaskTriggerMode
+			Iniread,	 FlaskDuration1,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration1
+			Iniread,	 FlaskDuration2,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration2
+			Iniread,	 FlaskDuration3,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration3
+			Iniread,	 FlaskDuration4,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration4
+			Iniread,	 FlaskDuration5,	sidtooldata3.ini, FlaskTriggerData, FlaskDuration5
+			Iniread,	 FlasksOnSkillUse,	sidtooldata3.ini, FlaskTriggerData, FlasksOnSkillUse
+			Iniread,	 QuickDrinkFlasks,	sidtooldata3.ini, FlaskTriggerData, QuickDrinkFlasks
+		}
+	Return
+
+	;[Drink Detection Settings GUI]------------------------------------------------------------------------------------------------------
+
+	DrinkDetectionSettingsGUI:
+		gosub,ConvertDrinkCheckboxRecords
+		Gui,DrinkDetectionSettings:new,,Drink Detection Settings
+		Gui +LabelDrinkDetectionSettings -Resize  -MinimizeBox -MaximizeBox
+		Gui Font, s12
+		Gui Add, Text, x10 y25 w275 h16, Use flask when health bar below detection point (1)
+		Gui Add, Text, x360 y25 w243 h16, , and return to character below detection point (2).
+		Gui Add, Text, x10 y165 w280 h16, Use flask when health globe below detection point (9)
+		Gui Add, Text, x10 y85 w275 h16, Use flask when mana globe below detection point (3)
+		Gui Add, Text, x10 y125 w280 h16, Use flask when chaos penetration below point (7)
+		Gui Add, Text, x360 y125 w275 h16, , and return to character below point (8).
+		Gui Add, Text, x9 y185 w142 h16, Detection interval (ms)
+		Gui Add, Text, x213 y185 w352 h16, , adjust based on instant / recovery flasks.
+		Gui Add, Text, x470 y70 w120 h16, Drink alerts:
+		Gui Add, DropDownList, vDrinkAlertSwitch x578 y68 w60 -Theme, On|Off|%DrinkAlertSwitch%||
+		Gui Font, s11 cRed
+		Gui Add, Text, x14 y45 h14, Example: only flask1 -> enter 1. Two flasks -> 12. Mining -> 16, skill -> 16R.
+		Gui Font
+		Gui Font, s12 c0x0080FF
+		Gui Add, CheckBox, hWndcheckbox1 vHealthBarDrinkCheck x10 y4 w165 h18 %HealthBarDrinkChecked%, Enable Health Bar Drink↓
+		Gui Add, CheckBox, hWndcheckbox2 vHealthBarReturnCheck x360 y4 w165 h18 %HealthBarReturnChecked%, Enable Health Bar Return↓
+		Gui Add, CheckBox, hWndcheckbox3 vManaGlobeDrinkCheck x10 y64 w165 h18 %ManaGlobeDrinkChecked%, Enable Mana Globe Drink↓
+		Gui Add, CheckBox, hWndcheckbox4 vChaosPenetrationCheck x10 y104 w165 h18 %ChaosPenetrationChecked%, Enable Chaos Penetration Drink↓
+		Gui Add, CheckBox, hWndcheckbox5 vChaosPenetrationReturnCheck x360 y105 w200 h18 %ChaosPenetrationReturnChecked%, Enable Chaos Penetration Return↓
+		Gui Add, CheckBox, hWndcheckbox6 vHealthGlobeCheck x10 y144 w150 h18 %HealthGlobeChecked%, Enable Health Globe Drink↓
+		Gui, Add,Link,cRed x548 y4, Click <a href="https://youtu.be/dTk3BO54_8Y">Video Demo</a>
+		Gui Font
+		Gui Add, Button, gSaveDrinkDetectionSettings x578 y182 w80 h23 -Theme, Save & Close
+		Gui Add, StatusBar,, ▲ Tip: Enable both [Health Bar Return] and [Health Globe] to greatly reduce false return triggers. ㊣ Made By Sid
+		Gui Font
+		Gui Add, Edit, vFlaskKey1 x293 y23 w60 h20  -Theme,%FlaskKey1%
+		Gui Add, Edit, vFlaskKey2 x293 y81 w60 h20  -Theme,%FlaskKey2%
+		Gui Add, Edit, vFlaskKey3 x293 y123 w60 h20  -Theme,%FlaskKey3%
+		Gui Add, Edit, vFlaskKey4 x293 y163 w60 h20  -Theme,%FlaskKey4%
+		Gui Add, ComboBox, vDetectionInterval x157 y183 w50 -Theme, 100|300|500|800|1000|2000|3000|%DetectionInterval%||
+		Gui Show, w668 h234, Drink Detection Settings (works only in F10 advanced mode)
+	Return
+
+	;[Drink Detection GUI Save Button]------------------------------------------------------------------------------------------------------
+
+	DrinkDetectionSettingsEscape:
+	DrinkDetectionSettingsClose:
+		Msgbox,4,Notice,Settings not saved. Close anyway? (Yes / No)
+		IfMsgBox No
+			Return
 Else
 	Gui,submit
-Return
+	Return
 
+	;[Drink Detection GUI Save Routine]------------------------------------------------------------------------------------------------------
 
-;[Drink Detection GUI Save Routine]------------------------------------------------------------------------------------------------------
+	ConvertDrinkCheckboxRecords:
+		if HealthBarDrinkChecked = +checked
+		{
+			HealthBarDrinkChecked = +checked
+		}
+		else
+		{
+			HealthBarDrinkChecked = -checked
+		}
 
+		if HealthBarReturnChecked = +checked
+		{
+			HealthBarReturnChecked = +checked
+		}
+		else
+		{
+			HealthBarReturnChecked = -checked
+		}
 
-ConvertDrinkCheckboxRecords:
-	if HealthBarDrinkChecked = +checked
-	{
-	HealthBarDrinkChecked = +checked
-	}
-	else
-	{
-	HealthBarDrinkChecked = -checked
-	}
+		if ManaGlobeDrinkChecked = +checked
+		{
+			ManaGlobeDrinkChecked = +checked
+		}
+		else
+		{
+			ManaGlobeDrinkChecked = -checked
+		}
 
-	if HealthBarReturnChecked = +checked
-	{
-	HealthBarReturnChecked = +checked
-	}
-	else
-	{
-	HealthBarReturnChecked = -checked
-	}
+		if ChaosPenetrationChecked = +checked
+		{
+			ChaosPenetrationChecked = +checked
+		}
+		else
+		{
+			ChaosPenetrationChecked = -checked
+		}
 
-	if ManaGlobeDrinkChecked = +checked
-	{
-	ManaGlobeDrinkChecked = +checked
-	}
-	else
-	{
-	ManaGlobeDrinkChecked = -checked
-	}
+		if ChaosPenetrationReturnChecked = +checked
+		{
+			ChaosPenetrationReturnChecked = +checked
+		}
+		else
+		{
+			ChaosPenetrationReturnChecked = -checked
+		}
 
-	if ChaosPenetrationChecked = +checked
-	{
-	ChaosPenetrationChecked = +checked
-	}
-	else
-	{
-	ChaosPenetrationChecked = -checked
-	}
+		if HealthGlobeChecked = +checked
+		{
+			HealthGlobeChecked = +checked
+		}
+		else
+		{
+			HealthGlobeChecked = -checked
+		}
+	return
 
-	if ChaosPenetrationReturnChecked = +checked
-	{
-	ChaosPenetrationReturnChecked = +checked
-	}
-	else
-	{
-	ChaosPenetrationReturnChecked = -checked
-	}
+	SaveDrinkDetectionSettings:
+		Gui,submit
+		If HealthBarDrinkCheck = 1
+			HealthBarDrinkChecked = +Checked
+		If HealthBarDrinkCheck = 0
+			HealthBarDrinkChecked = -Checked
+		If HealthBarReturnCheck = 1
+			HealthBarReturnChecked = +Checked
+		If HealthBarReturnCheck = 0
+			HealthBarReturnChecked = -Checked
+		If ManaGlobeDrinkCheck = 1
+			ManaGlobeDrinkChecked = +Checked
+		If ManaGlobeDrinkCheck = 0
+			ManaGlobeDrinkChecked = -Checked
+		If ChaosPenetrationCheck = 1
+			ChaosPenetrationChecked = +Checked
+		If ChaosPenetrationCheck = 0
+			ChaosPenetrationChecked = -Checked
+		If ChaosPenetrationReturnCheck = 1
+			ChaosPenetrationReturnChecked = +Checked
+		If ChaosPenetrationReturnCheck = 0
+			ChaosPenetrationReturnChecked = -Checked
+		If HealthGlobeCheck = 1
+			HealthGlobeChecked = +Checked
+		If HealthGlobeCheck = 0
+			HealthGlobeChecked = -Checked
+		gosub,SaveDrinkCheckboxRecords
+		gosub,SaveDrinkDetectionData
+		gosub,SaveDrinkAlertSwitch
+		gosub,ReadDrinkCheckboxRecords
+		gosub,ReadDrinkDetectionData
+		gosub,ReadDrinkAlertSwitch
+		if Autodrinkbutton = 1
+		{
+			Autodrinkbutton := 0
+			msgbox,48,Notice,You just changed settings. F10 advanced mode has been turned off.`rTurn it on again to apply changes.
+		}
+	Return
 
-	if HealthGlobeChecked = +checked
-	{
-	HealthGlobeChecked = +checked
-	}
-	else
-	{
-	HealthGlobeChecked = -checked
-	}
-return
+	SaveDrinkAlertSwitch:
+		IniWrite,	% DrinkAlertSwitch,	sidtooldata.ini, DrinkDetectionData, DrinkAlertSwitch
+	Return
 
-SaveDrinkDetectionSettings:
-Gui,submit
-If HealthBarDrinkCheck = 1
-HealthBarDrinkChecked = +Checked
-If HealthBarDrinkCheck = 0
-HealthBarDrinkChecked = -Checked
-If HealthBarReturnCheck = 1
-HealthBarReturnChecked = +Checked
-If HealthBarReturnCheck = 0
-HealthBarReturnChecked = -Checked
-If ManaGlobeDrinkCheck = 1
-ManaGlobeDrinkChecked = +Checked
-If ManaGlobeDrinkCheck = 0
-ManaGlobeDrinkChecked = -Checked
-If ChaosPenetrationCheck = 1
-ChaosPenetrationChecked = +Checked
-If ChaosPenetrationCheck = 0
-ChaosPenetrationChecked = -Checked
-If ChaosPenetrationReturnCheck = 1
-ChaosPenetrationReturnChecked = +Checked
-If ChaosPenetrationReturnCheck = 0
-ChaosPenetrationReturnChecked = -Checked
-If HealthGlobeCheck = 1
-HealthGlobeChecked = +Checked
-If HealthGlobeCheck = 0
-HealthGlobeChecked = -Checked
-gosub,SaveDrinkCheckboxRecords
-gosub,SaveDrinkDetectionData
-gosub,SaveDrinkAlertSwitch
-gosub,ReadDrinkCheckboxRecords
-gosub,ReadDrinkDetectionData
-gosub,ReadDrinkAlertSwitch
-if Autodrinkbutton = 1
-{
-Autodrinkbutton := 0
-msgbox,48,Notice,You just changed settings. F10 advanced mode has been turned off.`rTurn it on again to apply changes.
-}
-Return
+	ReadDrinkAlertSwitch:
+		Iniread,	 DrinkAlertSwitch,	sidtooldata.ini, DrinkDetectionData, DrinkAlertSwitch
+		if DrinkAlertSwitch = error
+		{
+			ToolTipOff = 0
+			DrinkAlertSwitch = On
+		}
+		if DrinkAlertSwitch = On
+		{
+			ToolTipOff = 0
+		}
+		if DrinkAlertSwitch = Off
+		{
+			ToolTipOff = 1
+		}
+	Return
 
-SaveDrinkAlertSwitch:
-IniWrite,	% DrinkAlertSwitch,	sidtooldata.ini, DrinkDetectionData, DrinkAlertSwitch
-Return
+	SaveDrinkCheckboxRecords:
+		if CurrentProfile = 1
+		{
+			IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			IniWrite,	% HealthBarDrinkChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarDrinkChecked
+			IniWrite,	% HealthBarReturnChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarReturnChecked
+			IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			IniWrite,	% ChaosPenetrationChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationChecked
+			IniWrite,	% HealthGlobeChecked,	sidtooldata.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+		if CurrentProfile = 2
+		{
+			IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			IniWrite,	% HealthBarDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarDrinkChecked
+			IniWrite,	% HealthBarReturnChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarReturnChecked
+			IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			IniWrite,	% ChaosPenetrationChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationChecked
+			IniWrite,	% HealthGlobeChecked,	sidtooldata2.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+		if CurrentProfile = 3
+		{
+			IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			IniWrite,	% HealthBarDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarDrinkChecked
+			IniWrite,	% HealthBarReturnChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarReturnChecked
+			IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			IniWrite,	% ChaosPenetrationChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationChecked
+			IniWrite,	% HealthGlobeChecked,	sidtooldata3.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+	Return
 
-ReadDrinkAlertSwitch:
- Iniread,	 DrinkAlertSwitch,	sidtooldata.ini, DrinkDetectionData, DrinkAlertSwitch
-	if DrinkAlertSwitch = error
-	{
-	ToolTipOff = 0
-	DrinkAlertSwitch = On
-	}
-	if DrinkAlertSwitch = On
-	{
-	ToolTipOff = 0
-	}
-	if DrinkAlertSwitch = Off
-	{
-	ToolTipOff = 1
-	}
-Return
+	ReadDrinkCheckboxRecords:
+		if CurrentProfile = 1
+		{
+			Iniread,	ChaosPenetrationReturnChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			Iniread,	HealthBarDrinkChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarDrinkChecked
+			Iniread,	HealthBarReturnChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarReturnChecked
+			Iniread,	ManaGlobeDrinkChecked,	sidtooldata.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			Iniread,	ChaosPenetrationChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationChecked
+			Iniread,	HealthGlobeChecked,	sidtooldata.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+		if CurrentProfile = 2
+		{
+			Iniread,	ChaosPenetrationReturnChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			Iniread,	HealthBarDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarDrinkChecked
+			Iniread,	HealthBarReturnChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarReturnChecked
+			Iniread,	ManaGlobeDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			Iniread,	ChaosPenetrationChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationChecked
+			Iniread,	HealthGlobeChecked,	sidtooldata2.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+		if CurrentProfile = 3
+		{
+			Iniread,	ChaosPenetrationReturnChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
+			Iniread,	HealthBarDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarDrinkChecked
+			Iniread,	HealthBarReturnChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarReturnChecked
+			Iniread,	ManaGlobeDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, ManaGlobeDrinkChecked
+			Iniread,	ChaosPenetrationChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationChecked
+			Iniread,	HealthGlobeChecked,	sidtooldata3.ini, DrinkDetectionData, HealthGlobeChecked
+		}
+	Return
 
-SaveDrinkCheckboxRecords:
-if CurrentProfile = 1
-{
-IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
-IniWrite,	% HealthBarDrinkChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarDrinkChecked
-IniWrite,	% HealthBarReturnChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarReturnChecked
-IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata.ini, DrinkDetectionData, ManaGlobeDrinkChecked
-IniWrite,	% ChaosPenetrationChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationChecked
-IniWrite,	% HealthGlobeChecked,	sidtooldata.ini, DrinkDetectionData, HealthGlobeChecked
-}
-if CurrentProfile = 2
-{
-IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
-IniWrite,	% HealthBarDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarDrinkChecked
-IniWrite,	% HealthBarReturnChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarReturnChecked
-IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, ManaGlobeDrinkChecked
-IniWrite,	% ChaosPenetrationChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationChecked
-IniWrite,	% HealthGlobeChecked,	sidtooldata2.ini, DrinkDetectionData, HealthGlobeChecked
-}
-if CurrentProfile = 3
-{
-IniWrite,	% ChaosPenetrationReturnChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
-IniWrite,	% HealthBarDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarDrinkChecked
-IniWrite,	% HealthBarReturnChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarReturnChecked
-IniWrite,	% ManaGlobeDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, ManaGlobeDrinkChecked
-IniWrite,	% ChaosPenetrationChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationChecked
-IniWrite,	% HealthGlobeChecked,	sidtooldata3.ini, DrinkDetectionData, HealthGlobeChecked
-}
-Return
+	SaveDrinkDetectionData:
+		if CurrentProfile = 1
+		{
+			IniWrite,	% FlaskKey1,	sidtooldata.ini, DrinkDetectionData, FlaskKey1
+			IniWrite,	% FlaskKey2,	sidtooldata.ini, DrinkDetectionData, FlaskKey2
+			IniWrite,	% FlaskKey3,	sidtooldata.ini, DrinkDetectionData, FlaskKey3
+			IniWrite,	% FlaskKey4,	sidtooldata.ini, DrinkDetectionData, FlaskKey4
+			IniWrite,	% DetectionInterval,	sidtooldata.ini, DrinkDetectionData, DetectionInterval
+		}
+		if CurrentProfile = 2
+		{
+			IniWrite,	% FlaskKey1,	sidtooldata2.ini, DrinkDetectionData, FlaskKey1
+			IniWrite,	% FlaskKey2,	sidtooldata2.ini, DrinkDetectionData, FlaskKey2
+			IniWrite,	% FlaskKey3,	sidtooldata2.ini, DrinkDetectionData, FlaskKey3
+			IniWrite,	% FlaskKey4,	sidtooldata2.ini, DrinkDetectionData, FlaskKey4
+			IniWrite,	% DetectionInterval,	sidtooldata2.ini, DrinkDetectionData, DetectionInterval
+		}
+		if CurrentProfile = 3
+		{
+			IniWrite,	% FlaskKey1,	sidtooldata3.ini, DrinkDetectionData, FlaskKey1
+			IniWrite,	% FlaskKey2,	sidtooldata3.ini, DrinkDetectionData, FlaskKey2
+			IniWrite,	% FlaskKey3,	sidtooldata3.ini, DrinkDetectionData, FlaskKey3
+			IniWrite,	% FlaskKey4,	sidtooldata3.ini, DrinkDetectionData, FlaskKey4
+			IniWrite,	% DetectionInterval,	sidtooldata3.ini, DrinkDetectionData, DetectionInterval
+		}
+	Return
 
-ReadDrinkCheckboxRecords:
-if CurrentProfile = 1
-{
- Iniread,	ChaosPenetrationReturnChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
- Iniread,	HealthBarDrinkChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarDrinkChecked
- Iniread,	HealthBarReturnChecked,	sidtooldata.ini, DrinkDetectionData, HealthBarReturnChecked
- Iniread,	ManaGlobeDrinkChecked,	sidtooldata.ini, DrinkDetectionData, ManaGlobeDrinkChecked
- Iniread,	ChaosPenetrationChecked,	sidtooldata.ini, DrinkDetectionData, ChaosPenetrationChecked
- Iniread,	HealthGlobeChecked,	sidtooldata.ini, DrinkDetectionData, HealthGlobeChecked
-}
-if CurrentProfile = 2
-{
- Iniread,	ChaosPenetrationReturnChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
- Iniread,	HealthBarDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarDrinkChecked
- Iniread,	HealthBarReturnChecked,	sidtooldata2.ini, DrinkDetectionData, HealthBarReturnChecked
- Iniread,	ManaGlobeDrinkChecked,	sidtooldata2.ini, DrinkDetectionData, ManaGlobeDrinkChecked
- Iniread,	ChaosPenetrationChecked,	sidtooldata2.ini, DrinkDetectionData, ChaosPenetrationChecked
- Iniread,	HealthGlobeChecked,	sidtooldata2.ini, DrinkDetectionData, HealthGlobeChecked
-}
-if CurrentProfile = 3
-{
- Iniread,	ChaosPenetrationReturnChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationReturnChecked
- Iniread,	HealthBarDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarDrinkChecked
- Iniread,	HealthBarReturnChecked,	sidtooldata3.ini, DrinkDetectionData, HealthBarReturnChecked
- Iniread,	ManaGlobeDrinkChecked,	sidtooldata3.ini, DrinkDetectionData, ManaGlobeDrinkChecked
- Iniread,	ChaosPenetrationChecked,	sidtooldata3.ini, DrinkDetectionData, ChaosPenetrationChecked
- Iniread,	HealthGlobeChecked,	sidtooldata3.ini, DrinkDetectionData, HealthGlobeChecked
-}
-Return
+	ReadDrinkDetectionData:
+		if CurrentProfile = 1
+		{
+			Iniread,	FlaskKey1,	sidtooldata.ini, DrinkDetectionData, FlaskKey1
+			Iniread,	FlaskKey2,	sidtooldata.ini, DrinkDetectionData, FlaskKey2
+			Iniread,	FlaskKey3,	sidtooldata.ini, DrinkDetectionData, FlaskKey3
+			Iniread,	FlaskKey4,	sidtooldata.ini, DrinkDetectionData, FlaskKey4
+			Iniread,	DetectionInterval,	sidtooldata.ini, DrinkDetectionData, DetectionInterval
+		}
+		if CurrentProfile = 2
+		{
+			Iniread,	FlaskKey1,	sidtooldata2.ini, DrinkDetectionData, FlaskKey1
+			Iniread,	FlaskKey2,	sidtooldata2.ini, DrinkDetectionData, FlaskKey2
+			Iniread,	FlaskKey3,	sidtooldata2.ini, DrinkDetectionData, FlaskKey3
+			Iniread,	FlaskKey4,	sidtooldata2.ini, DrinkDetectionData, FlaskKey4
+			Iniread,	DetectionInterval,	sidtooldata2.ini, DrinkDetectionData, DetectionInterval
+		}
+		if CurrentProfile = 3
+		{
+			Iniread,	FlaskKey1,	sidtooldata3.ini, DrinkDetectionData, FlaskKey1
+			Iniread,	FlaskKey2,	sidtooldata3.ini, DrinkDetectionData, FlaskKey2
+			Iniread,	FlaskKey3,	sidtooldata3.ini, DrinkDetectionData, FlaskKey3
+			Iniread,	FlaskKey4,	sidtooldata3.ini, DrinkDetectionData, FlaskKey4
+			Iniread,	DetectionInterval,	sidtooldata3.ini, DrinkDetectionData, DetectionInterval
+		}
+	Return
 
-SaveDrinkDetectionData:
-if CurrentProfile = 1
-{
-IniWrite,	% FlaskKey1,	sidtooldata.ini, DrinkDetectionData, FlaskKey1
-IniWrite,	% FlaskKey2,	sidtooldata.ini, DrinkDetectionData, FlaskKey2
-IniWrite,	% FlaskKey3,	sidtooldata.ini, DrinkDetectionData, FlaskKey3
-IniWrite,	% FlaskKey4,	sidtooldata.ini, DrinkDetectionData, FlaskKey4
-IniWrite,	% DetectionInterval,	sidtooldata.ini, DrinkDetectionData, DetectionInterval
-}
-if CurrentProfile = 2
-{
-IniWrite,	% FlaskKey1,	sidtooldata2.ini, DrinkDetectionData, FlaskKey1
-IniWrite,	% FlaskKey2,	sidtooldata2.ini, DrinkDetectionData, FlaskKey2
-IniWrite,	% FlaskKey3,	sidtooldata2.ini, DrinkDetectionData, FlaskKey3
-IniWrite,	% FlaskKey4,	sidtooldata2.ini, DrinkDetectionData, FlaskKey4
-IniWrite,	% DetectionInterval,	sidtooldata2.ini, DrinkDetectionData, DetectionInterval
-}
-if CurrentProfile = 3
-{
-IniWrite,	% FlaskKey1,	sidtooldata3.ini, DrinkDetectionData, FlaskKey1
-IniWrite,	% FlaskKey2,	sidtooldata3.ini, DrinkDetectionData, FlaskKey2
-IniWrite,	% FlaskKey3,	sidtooldata3.ini, DrinkDetectionData, FlaskKey3
-IniWrite,	% FlaskKey4,	sidtooldata3.ini, DrinkDetectionData, FlaskKey4
-IniWrite,	% DetectionInterval,	sidtooldata3.ini, DrinkDetectionData, DetectionInterval
-}
-Return
-
-ReadDrinkDetectionData:
-if CurrentProfile = 1
-{
- Iniread,	FlaskKey1,	sidtooldata.ini, DrinkDetectionData, FlaskKey1
- Iniread,	FlaskKey2,	sidtooldata.ini, DrinkDetectionData, FlaskKey2
- Iniread,	FlaskKey3,	sidtooldata.ini, DrinkDetectionData, FlaskKey3
- Iniread,	FlaskKey4,	sidtooldata.ini, DrinkDetectionData, FlaskKey4
- Iniread,	DetectionInterval,	sidtooldata.ini, DrinkDetectionData, DetectionInterval
-}
-if CurrentProfile = 2
-{
- Iniread,	FlaskKey1,	sidtooldata2.ini, DrinkDetectionData, FlaskKey1
- Iniread,	FlaskKey2,	sidtooldata2.ini, DrinkDetectionData, FlaskKey2
- Iniread,	FlaskKey3,	sidtooldata2.ini, DrinkDetectionData, FlaskKey3
- Iniread,	FlaskKey4,	sidtooldata2.ini, DrinkDetectionData, FlaskKey4
- Iniread,	DetectionInterval,	sidtooldata2.ini, DrinkDetectionData, DetectionInterval
-}
-if CurrentProfile = 3
-{
- Iniread,	FlaskKey1,	sidtooldata3.ini, DrinkDetectionData, FlaskKey1
- Iniread,	FlaskKey2,	sidtooldata3.ini, DrinkDetectionData, FlaskKey2
- Iniread,	FlaskKey3,	sidtooldata3.ini, DrinkDetectionData, FlaskKey3
- Iniread,	FlaskKey4,	sidtooldata3.ini, DrinkDetectionData, FlaskKey4
- Iniread,	DetectionInterval,	sidtooldata3.ini, DrinkDetectionData, DetectionInterval
-}
-Return
-
-;[Advanced Drink Mode Toggle]----------------------------------------------------------
-~F10::
+	;[Advanced Drink Mode Toggle]----------------------------------------------------------
+	~F10::
 (Autodrinkbutton = 0 ? (Autodrinkbutton := 1,ToolTip("Advanced drink mode ON")) : (Autodrinkbutton := 0,ToolTip("Advanced drink mode OFF")))
 if Autodrinkbutton = 0
 	{
@@ -852,7 +847,6 @@ if (HealthBarDrinkChecked = "+Checked" and Autodrinkbutton = "1")
 }
 return
 
-
 DetectHealthBarReturn:
 IfWinActive,Path of Exile
 {
@@ -902,7 +896,6 @@ if (HealthBarReturnChecked = "+Checked" and Autodrinkbutton = "1")
    }
 }
 return
-
 
 DetectManaGlobe:
 IfWinActive,Path of Exile
@@ -1075,7 +1068,7 @@ IfWinActive,Path of Exile
  {
  if Autodrinkbutton = 1
   {
-   Tolerance := 25 
+   Tolerance := 25
    PixelSearch, FoundX, FoundY, Color4_X, Color4_Y, Color4_X, Color4_Y, %Color4_C%, %Tolerance%, RGB
    if (ErrorLevel = 0)
 	{
@@ -1102,7 +1095,6 @@ IfWinActive,Path of Exile
   }
 }
 return
-
 
 ;[Detection Point Setup ( Win + C )]-----------------------------------------------------------------------------------
 #c::
@@ -1174,7 +1166,6 @@ if CurrentProfile = 3
  }
 }
 return
-
 
 ;[Flask Lock Section]------------------------------------------------------------------------------------------
 
@@ -1779,8 +1770,6 @@ return
 Gosub,GoFirstPage
 return
 
-
-
 GoFirstPage:
 clipboard =
 Send {left %ReturnPage%}
@@ -1847,7 +1836,6 @@ Send {left %CalcValue%}
 return
 }
 return
-
 
 SecondCheckUnidentified:
 IfInString,TempClipContent,Rarity: Rare	,gosub,ThirdCheckUnidentified
@@ -2549,7 +2537,6 @@ ReadClickMode:
  Iniread, ClickMode, sidtooldata.ini, KeyModeSwitch, ClickMode
 Return
 
-
 ;[PgUp/PgDn Clear Area]------------------------------------------------------------------------------------------
 
 PgUp::
@@ -2610,7 +2597,6 @@ ScanVerticalCount2 := 5
 SlotWidth2 := floor((ScanStartBR2_X - ScanStartTL2_X) / ScanHorizontalCount2)
 SlotHeight2 := floor((ScanStartBR2_Y - ScanStartTL2_Y) / ScanVerticalCount2)
 return
-
 
 ;[Insert Loop Skills]------------------------------------------------------------------------------------------
 
@@ -3088,8 +3074,6 @@ ReadF1KeyMode:
  Iniread, F1Mode, sidtooldata.ini, KeyModeSwitch, F1Mode
 Return
 
-
-
 ;[F2 Reply Mode]------------------------------------------------------------------------------------------------------
 
 F2::
@@ -3430,14 +3414,12 @@ Return
 
 ;[F3 Scan Backpack Routines].............................................................................................................................
 
-
 ReadBackpackBaseColor:
 loop,60
 {
 iniread, BackpackBaseColor%A_Index%, sidtooldata.ini, ScanColors, BackpackBaseColor%A_Index%
 }
 return
-
 
 ScanBackpackColorsAndSave:
 LoopCount:= 0
@@ -3707,8 +3689,6 @@ Return
 #F6::
 gosub,PickupModeSwitch
 Return
-
-
 
 F6QuickPickup:
 MouseGetPos, thisPosX, thisPosY
@@ -4172,7 +4152,6 @@ if CurrentProfile = Error
 CurrentProfile = 1
 }
 Return
-
 
 ;[Fancy Button Generator]----------------------------------------------------------------------------------------------
 

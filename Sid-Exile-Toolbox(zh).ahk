@@ -52,105 +52,104 @@ StopUser = 0
 ;------------------------------------------------------------------------------------------------------
 if 連點模式 = ERROR
 {
-連點模式 = 滑鼠滾輪按壓
+	連點模式 = 滑鼠滾輪按壓
 }
 ;------------------------------------------------------------------------------------------------------
 if 清包模式 = ERROR
 {
-清包模式 = 按壓式
+	清包模式 = 按壓式
 }
 if 快速組隊提醒 = ERROR
 {
-快速組隊提醒 = 開啟
+	快速組隊提醒 = 開啟
 }
 if 快速交易提醒 = ERROR
 {
-快速交易提醒 = 開啟
+	快速交易提醒 = 開啟
 }
 ;------------------------------------------------------------------------------------------------------
 if 命運卡兌換模式 = ERROR
 {
-命運卡兌換模式 = 單次兌換模式
+	命運卡兌換模式 = 單次兌換模式
 }
 ;------------------------------------------------------------------------------------------------------
 Loop,3
 {
-if 循環技能%A_Index% = ERROR
-{
-循環技能%A_Index% = T
-}
-if 循環技能時間%A_Index% = ERROR
-{
-循環技能時間%A_Index% = Off
-}
+	if 循環技能%A_Index% = ERROR
+	{
+		循環技能%A_Index% = T
+	}
+	if 循環技能時間%A_Index% = ERROR
+	{
+		循環技能時間%A_Index% = Off
+	}
 }
 ;------------------------------------------------------------------------------------------------------
 if 藥劑觸發模式 = ERROR
 {
-藥劑觸發模式 = 無
+	藥劑觸發模式 = 無
 }
 if 使用技能時觸發的藥劑 = ERROR
 {
-使用技能時觸發的藥劑 = 12345
+	使用技能時觸發的藥劑 = 12345
 }
 if 主要技能 = ERROR
 {
-主要技能 = Q
+	主要技能 = Q
 }
 
 Loop,5
 {
-if 藥劑持續時間%A_Index% = ERROR
-{
-藥劑持續時間%A_Index% = Off
-}
+	if 藥劑持續時間%A_Index% = ERROR
+	{
+		藥劑持續時間%A_Index% = Off
+	}
 }
 ;------------------------------------------------------------------------------------------------------
 if 技1 = ERROR
 {
-技1 = Q
+	技1 = Q
 }
 if 技2 = ERROR
 {
-技2 = Off
+	技2 = Off
 }
 if 技3 = ERROR
 {
-技3 = Off
+	技3 = Off
 }
 if 技1延遲 = ERROR
 {
-技1延遲 = 100
+	技1延遲 = 100
 }
 if 技2延遲 = ERROR
 {
-技2延遲 = 100
+	技2延遲 = 100
 }
 if 技能連段功能 = ERROR
 {
-技能連段功能 = 關閉
+	技能連段功能 = 關閉
 }
 ;------------------------------------------------------------------------------------------------------
 if 地雷模式 = ERROR
 {
-地雷模式 = 關閉
+	地雷模式 = 關閉
 }
 if 地雷杖模式 = ERROR
 {
-地雷杖模式 = 關閉
+	地雷杖模式 = 關閉
 }
 if 引爆延遲1 = ERROR
 {
-引爆延遲1 = 300
+	引爆延遲1 = 300
 }
 if 引爆延遲2 = ERROR
 {
-引爆延遲2 = 300
+	引爆延遲2 = 300
 }
 ;------------------------------------------------------------------------------------------------------
 
 gosub,起始盒子
-
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
 
@@ -173,617 +172,613 @@ Menu, MyMenu, Add, 前往Sid作者的網站, 彈跳網頁
 return
 
 呼叫菜單:
-menu,mymenu,show
+	menu,mymenu,show
 return
 
 ;[熱鍵設置]------------------------------------------------------------------------------------------------------
 
 F9::
-Suspend
-ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作。")
-Pause,,1
+	Suspend
+	ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作。")
+	Pause,,1
 return
 
 F11::
-reload
+	reload
 return
 
 F12::
-msgbox,,提示, 工具已結束 ლ(・ω・ლ)摸摸
+	msgbox,,提示, 工具已結束 ლ(・ω・ლ)摸摸
 exitapp
 return
 
 ~*esc::
-IfWinActive,rchin-poe-trade
-  WinActivate ,Path of Exile
-openI := 0
-Toolbutton := 0
-ifwinactive, Path of Exile
-ToolTip("(ESC)，關閉面板，返回遊戲模式")
+	IfWinActive,rchin-poe-trade
+		WinActivate ,Path of Exile
+	openI := 0
+	Toolbutton := 0
+	ifwinactive, Path of Exile
+		ToolTip("(ESC)，關閉面板，返回遊戲模式")
 return
 
 GetDriveTailSerial()
 {
-    for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
-    {
-        serial := objItem.SerialNumber
-        if (serial != "" && !InStr(serial, "00000000"))
-        {
-            clean := RegExReplace(serial, "[^a-zA-Z0-9]")
-            if (StrLen(clean) >= 12)
-                return SubStr(clean, -11)
-            else
-                return clean
-        }
-    }
-    return "UNKNOWN"
+	for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
+	{
+		serial := objItem.SerialNumber
+		if (serial != "" && !InStr(serial, "00000000"))
+		{
+			clean := RegExReplace(serial, "[^a-zA-Z0-9]")
+			if (StrLen(clean) >= 12)
+				return SubStr(clean, -11)
+			else
+				return clean
+		}
+	}
+	return "UNKNOWN"
 }
 
 #ifwinactive, Path of Exile
 
-#Z::
-gosub,呼叫菜單
-return
+	#Z::
+		gosub,呼叫菜單
+	return
 
-#V::
-gosub,查價工具視窗
-return
+	#V::
+		gosub,查價工具視窗
+	return
 
-;[提示窗口基礎設定]------------------------------------------------------------------------------------------------------
+	;[提示窗口基礎設定]------------------------------------------------------------------------------------------------------
 
-ToolTip(label)
-{
-ToolTip, %label%, 0, 40
-SetTimer, RemoveToolTip, 3000
-WinActivate ,Path of Exile
-return
+	ToolTip(label)
+	{
+		ToolTip, %label%, 0, 40
+		SetTimer, RemoveToolTip, 3000
+		WinActivate ,Path of Exile
+		return
 
-RemoveToolTip:
-SetTimer, RemoveToolTip, Off
-ToolTip
-Return
-}
+		RemoveToolTip:
+		SetTimer, RemoveToolTip, Off
+		ToolTip
+		Return
+	}
 
-;[完整功能GUI面板]-----------------------------------------------------------------------------------------------------------------------------------------------------
+	;[完整功能GUI面板]-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-完整功能:
-gui,完整功能列表:new,,完整功能列表（本工具已完全開源免費）
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[F1] 原始功能/返回角色
-Gui, Add,Text,cBlue,[F2] 一鍵暫離/勿擾/自動回復
-Gui, Add,Link,cBlue,[F3] 按壓式/自動式/掃描式/掃描快搜清包 = <a href="https://youtu.be/MzIH2rn72NE">示範影片</a>
-Gui, Add,Text,cBlue,[F4] 快速使用背包傳卷
-Gui, Add,Text,cBlue,[F5] 返回藏身
-Gui, Add,Text,cBlue,[F6] 快速一鍵取物
-Gui, Add,Text,cBlue,[F7] 背包相關座標定位
-Gui, Add,Text,cBlue,[F8] 單次/多次兌換命運卡
-Gui, Add,Text,cBlue,[F9] 回復鍵盤功能 (暫停工具)
-Gui, Add,Text,cBlue,[F10] 高級喝水模式 (偵測血/魔/場景自動喝水返角)
-Gui, Add,Text,cBlue,[End] 快速申請組隊
-Gui, Add,Text,cBlue,[Home] 快速申請交易
-Gui, Add,Text,cBlue,[PgUp] 快速交易:確認60格欄位
-Gui, Add,Text,cBlue,[PgDn] 快速交易:接受交易
-Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
-Gui, Add,Text,cBlue,[Insert] 自動循環技能
-Gui, Add,Text,cBlue,[Win + V] 快速查價
-Gui, Add,Text,cBlue,[Win + Z] 工具菜單與各項設置
-Gui, Add,Text,cBlue,[Ctrl + Alt] 快搜倉庫自動翻頁
-Gui, Add,Text,cBlue,[Ctrl + Win] 返回倉庫首頁
-Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] 滑鼠連點
-Gui Font
-Gui Add, StatusBar,, 所有功能完全免費開源，歡迎分享與改進。
-Gui, Show
-return
+	完整功能:
+		gui,完整功能列表:new,,完整功能列表（本工具已完全開源免費）
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[F1] 原始功能/返回角色
+		Gui, Add,Text,cBlue,[F2] 一鍵暫離/勿擾/自動回復
+		Gui, Add,Link,cBlue,[F3] 按壓式/自動式/掃描式/掃描快搜清包 = <a href="https://youtu.be/MzIH2rn72NE">示範影片</a>
+		Gui, Add,Text,cBlue,[F4] 快速使用背包傳卷
+		Gui, Add,Text,cBlue,[F5] 返回藏身
+		Gui, Add,Text,cBlue,[F6] 快速一鍵取物
+		Gui, Add,Text,cBlue,[F7] 背包相關座標定位
+		Gui, Add,Text,cBlue,[F8] 單次/多次兌換命運卡
+		Gui, Add,Text,cBlue,[F9] 回復鍵盤功能 (暫停工具)
+		Gui, Add,Text,cBlue,[F10] 高級喝水模式 (偵測血/魔/場景自動喝水返角)
+		Gui, Add,Text,cBlue,[End] 快速申請組隊
+		Gui, Add,Text,cBlue,[Home] 快速申請交易
+		Gui, Add,Text,cBlue,[PgUp] 快速交易:確認60格欄位
+		Gui, Add,Text,cBlue,[PgDn] 快速交易:接受交易
+		Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
+		Gui, Add,Text,cBlue,[Insert] 自動循環技能
+		Gui, Add,Text,cBlue,[Win + V] 快速查價
+		Gui, Add,Text,cBlue,[Win + Z] 工具菜單與各項設置
+		Gui, Add,Text,cBlue,[Ctrl + Alt] 快搜倉庫自動翻頁
+		Gui, Add,Text,cBlue,[Ctrl + Win] 返回倉庫首頁
+		Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] 滑鼠連點
+		Gui Font
+		Gui Add, StatusBar,, 所有功能完全免費開源，歡迎分享與改進。
+		Gui, Show
+	return
 
-;[工具熱鍵列表GUI面板]------------------------------------------------------------------------------------------------------
+	;[工具熱鍵列表GUI面板]------------------------------------------------------------------------------------------------------
 
-工具熱鍵列表GUI面板:
-Gui,工具熱鍵列表:new,,工具熱鍵列表
-Gui Color, 0xC0C0C0
-Gui, Font, s10 Bold, Verdana
-Gui, Add,Text,cBlue,【F1 ~ F12】(所有含有" / "符號，表示支援多功能切換，詳情看底部小知識。)
-Gui, Font
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[F1] = 原始功能 / 返回角色
-Gui, Add,Text,cBlue,[F2] = 暫離 / 勿擾 / 自動回復
-Gui, Add,Link,cBlue,[F3] = 按壓 / 自動/掃描/掃描快搜清包 / 背包顏色定位。 影片介紹:<a href="https://youtu.be/MzIH2rn72NE">點我</a>
-Gui, Add,Text,cBlue,[F4] = 使用傳送券軸
-Gui, Add,Text,cBlue,[F5] = 返回藏身處 (城鎮限定)
-Gui, Add,Link,cBlue,[F6] = 快速一鍵取物/取物座標定位。 影片介紹:<a href="https://youtu.be/yV8FdhSmz2Y">點我</a>
-Gui, Add,Text,cBlue,[F7] = 背包座標定位
-Gui, Add,Link,cBlue,[F8] = 單次 / 多次 兌換命運卡。 影片介紹:<a href="https://youtu.be/zBKJ99hFg9Y">點我</a>
-Gui, Add,Text,cBlue,[F9] = 回復鍵盤功能 (暫停工具)
-Gui, Add,Text,cBlue,[F10] = 開關高級喝水模式
-Gui, Add,Text,cBlue,[F11] = 重新啟動工具
-Gui, Add,Text,cBlue,[F12] = 結束工具
-Gui, Font, s10 Bold, Verdana
-Gui, Add,Text,cBlue,【其他熱鍵】(對按鍵名稱不熟的，請自行Google。)
-Gui, Font
-Gui, Font, s10, Verdana
-Gui, Add,Text,cBlue,[End] = 快速申請組隊 / 開關提醒
-Gui, Add,Text,cBlue,[Home] = 快速申請交易 / 開關提醒
-Gui, Add,Text,cBlue,[PgUp] = 快速交易，確認對方60格欄位
-Gui, Add,Text,cBlue,[PgDn] = 快速交易，接受交易
-Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (Win + Z :藥劑觸發設置)
-Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
-Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
-Gui, Add,Text,cBlue,[Win + V] = 快速查價 (滑鼠指道具使用)
-Gui, Add,Text,cBlue,[Win + End] = 開關組隊提醒
-Gui, Add,Link,cBlue,[Ctrl + Alt] = 自動翻頁 (快搜倉庫頁功能)。 影片介紹:<a href="https://youtu.be/StpFz8qbB44">點我</a>
-Gui, Add,Text,cBlue,[Ctrl + Win] = 返回倉庫首頁
-Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] = 滑鼠連點
-Gui, Font, underline
-Gui, Add,Text,cBlue,開源版本，歡迎自由使用與修改。
-Gui, Font
-Gui Add, StatusBar,, ▲工具小知識:多功能切換的意思，例如:當使用(Win + F1)時，你會看到有兩個選項，可改變(F1)的功能，以此類推。
-Gui, Show
-return
+	工具熱鍵列表GUI面板:
+		Gui,工具熱鍵列表:new,,工具熱鍵列表
+		Gui Color, 0xC0C0C0
+		Gui, Font, s10 Bold, Verdana
+		Gui, Add,Text,cBlue,【F1 ~ F12】(所有含有" / "符號，表示支援多功能切換，詳情看底部小知識。)
+		Gui, Font
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[F1] = 原始功能 / 返回角色
+		Gui, Add,Text,cBlue,[F2] = 暫離 / 勿擾 / 自動回復
+		Gui, Add,Link,cBlue,[F3] = 按壓 / 自動/掃描/掃描快搜清包 / 背包顏色定位。 影片介紹:<a href="https://youtu.be/MzIH2rn72NE">點我</a>
+		Gui, Add,Text,cBlue,[F4] = 使用傳送券軸
+		Gui, Add,Text,cBlue,[F5] = 返回藏身處 (城鎮限定)
+		Gui, Add,Link,cBlue,[F6] = 快速一鍵取物/取物座標定位。 影片介紹:<a href="https://youtu.be/yV8FdhSmz2Y">點我</a>
+		Gui, Add,Text,cBlue,[F7] = 背包座標定位
+		Gui, Add,Link,cBlue,[F8] = 單次 / 多次 兌換命運卡。 影片介紹:<a href="https://youtu.be/zBKJ99hFg9Y">點我</a>
+		Gui, Add,Text,cBlue,[F9] = 回復鍵盤功能 (暫停工具)
+		Gui, Add,Text,cBlue,[F10] = 開關高級喝水模式
+		Gui, Add,Text,cBlue,[F11] = 重新啟動工具
+		Gui, Add,Text,cBlue,[F12] = 結束工具
+		Gui, Font, s10 Bold, Verdana
+		Gui, Add,Text,cBlue,【其他熱鍵】(對按鍵名稱不熟的，請自行Google。)
+		Gui, Font
+		Gui, Font, s10, Verdana
+		Gui, Add,Text,cBlue,[End] = 快速申請組隊 / 開關提醒
+		Gui, Add,Text,cBlue,[Home] = 快速申請交易 / 開關提醒
+		Gui, Add,Text,cBlue,[PgUp] = 快速交易，確認對方60格欄位
+		Gui, Add,Text,cBlue,[PgDn] = 快速交易，接受交易
+		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (Win + Z :藥劑觸發設置)
+		Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
+		Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
+		Gui, Add,Text,cBlue,[Win + V] = 快速查價 (滑鼠指道具使用)
+		Gui, Add,Text,cBlue,[Win + End] = 開關組隊提醒
+		Gui, Add,Link,cBlue,[Ctrl + Alt] = 自動翻頁 (快搜倉庫頁功能)。 影片介紹:<a href="https://youtu.be/StpFz8qbB44">點我</a>
+		Gui, Add,Text,cBlue,[Ctrl + Win] = 返回倉庫首頁
+		Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] = 滑鼠連點
+		Gui, Font, underline
+		Gui, Add,Text,cBlue,開源版本，歡迎自由使用與修改。
+		Gui, Font
+		Gui Add, StatusBar,, ▲工具小知識:多功能切換的意思，例如:當使用(Win + F1)時，你會看到有兩個選項，可改變(F1)的功能，以此類推。
+		Gui, Show
+	return
 
-;[跳程指令區]---------------------------------------------------------------------------------------------------
+	;[跳程指令區]---------------------------------------------------------------------------------------------------
 
-起始盒子:
-msgbox,,Sid流亡工具箱（開源版）,工具已啟動，使用 ( Win + Z ) 顯示工具清單。`r本版本已完全開源，所有功能均可免費使用。
-return
+	起始盒子:
+		msgbox,,Sid流亡工具箱（開源版）,工具已啟動，使用 ( Win + Z ) 顯示工具清單。`r本版本已完全開源，所有功能均可免費使用。
+	return
 
-提醒停止按鍵:
-ToolTip("提醒:長按[ ~ ]停止運作")
-if(GetKeyState("~","P"))
-settimer,提醒停止按鍵,off
-return
+	提醒停止按鍵:
+		ToolTip("提醒:長按[ ~ ]停止運作")
+		if(GetKeyState("~","P"))
+			settimer,提醒停止按鍵,off
+	return
 
-;---------------------------------------------------------
+	;---------------------------------------------------------
 
-彈跳網頁:
-run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
-return
+	彈跳網頁:
+		run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
+	return
 
-暫停讀秒循環喝水:
-SetTimer, 藥劑1, off
-SetTimer, 藥劑2, off
-SetTimer, 藥劑3, off
-SetTimer, 藥劑4, off
-SetTimer, 藥劑5, off
-return
+	暫停讀秒循環喝水:
+		SetTimer, 藥劑1, off
+		SetTimer, 藥劑2, off
+		SetTimer, 藥劑3, off
+		SetTimer, 藥劑4, off
+		SetTimer, 藥劑5, off
+	return
 
-停止循環偵測:
-settimer,偵測場景變化,off
-settimer,偵測血球,OFF
-settimer,偵測血條,OFF
-settimer,偵測魔力球,OFF
-settimer,偵測血條返角,OFF
-settimer,偵測混傷穿透血條,OFF
-settimer,偵測混傷穿透血條返角,OFF
-return
+	停止循環偵測:
+		settimer,偵測場景變化,off
+		settimer,偵測血球,OFF
+		settimer,偵測血條,OFF
+		settimer,偵測魔力球,OFF
+		settimer,偵測血條返角,OFF
+		settimer,偵測混傷穿透血條,OFF
+		settimer,偵測混傷穿透血條返角,OFF
+	return
 
-;[藥劑觸發設置GUI面板]------------------------------------------------------------------------------------------------------
+	;[藥劑觸發設置GUI面板]------------------------------------------------------------------------------------------------------
 
-藥劑觸發設置GUI面板:
-Gui,藥劑觸發設置:new,,藥劑觸發設置
-Gui +Label藥劑觸發設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Color, 0xC0C0C0
-Gui Font, s12 Bold
-Gui Add, Text, x31 y152 w135 h23, 藥劑(1)持續時間:
-Gui Add, Text, x31 y177 w135 h23, 藥劑(2)持續時間:
-Gui Add, Text, x31 y202 w135 h23, 藥劑(3)持續時間:
-Gui Add, Text, x31 y227 w135 h23, 藥劑(4)持續時間:
-Gui Add, Text, x31 y252 w135 h23, 藥劑(5)持續時間:
-Gui Add, Text, x30 y97 w100 h23, 當使用技能:
-Gui Add, Text, x171 y97 w111 h23, 時，使用藥劑:
-Gui Add, Text, x30 y8 w145 h23, 藥劑觸發模式選擇:
-Gui Add, Text, x31 y125 w219 h23, 一鍵喝水(Space)，使用藥劑: 
-Gui Add, Button,g儲存藥劑觸發設置 x298 y204 w384 h67, 儲存並關閉
-Gui Font
-Gui Font, s12
-Gui Add, ComboBox, v藥劑觸發模式 x184 y5 w143 -Theme, 無|純藥劑防呆|讀秒循環喝水|使用技能時喝水|%藥劑觸發模式%||
-Gui Add, ComboBox, v主要技能 x126 y96 w40 -Theme, Q|W|E|R|T|%主要技能%||
-Gui Font
-Gui Font, s10 cBlue
-Gui Add, Text, x30 y35 w607 h20, 純藥劑防呆 : 玩家手動喝水，工具幫助您鎖定藥劑持續時間內，不會再次誤觸。適合需高強度控水的場合。
-Gui Add, Text, x30 y55 w604 h20, 讀秒循環喝水 : 進圖後使用[Space]空白鍵觸發循環，藥劑持續時間結束後再次使用。適合速刷走路流派。
-Gui Add, Text, x30 y75 w440 h20, 使用技能時喝水 : 只有在使用技能時才喝水，可避免非戰鬥時多餘的喝水。
-Gui Add, Text, x363 y96 w320 h23 +0x200, 舉例 : 輸入 12345 = 使用12345罐，輸入 135 = 使用135罐。
-Gui Add, Text, x295 y152 w210 h23 +0x200, (1秒=1000毫秒)，不使用請輸入 off 。
-Gui Add, Text, x295 y177 w150 h23 +0x200, 生命藥劑通常輸入 off 。
-Gui Font
-Gui Font, s10
-Gui Add, Edit, v藥劑持續時間1 x171 y152 w120 h21 -Theme, %藥劑持續時間1%
-Gui Add, Edit, v藥劑持續時間2 x171 y177 w120 h21 -Theme, %藥劑持續時間2%
-Gui Add, Edit, v藥劑持續時間3 x171 y202 w120 h21 -Theme, %藥劑持續時間3%
-Gui Add, Edit, v藥劑持續時間4 x171 y227 w120 h21 -Theme, %藥劑持續時間4%
-Gui Add, Edit, v藥劑持續時間5 x171 y252 w120 h21 -Theme, %藥劑持續時間5%
-Gui Add, Edit, v使用技能時觸發的藥劑 x281 y96 w78 h21 +Number -Theme, %使用技能時觸發的藥劑%
-Gui Add, Edit, v一鍵喝水時觸發的藥劑 x255 y123 w120 h21 +Number -Theme, %一鍵喝水時觸發的藥劑%
-Gui Font
-Gui Add, StatusBar,, ▲工具小知識: 純藥劑防呆模式下支援一鍵喝水(Space)，水沒了卻還在防呆時間內?試試手動1~5吧，立即重置防呆冷卻。
-Gui Show, w691 h301, 藥劑觸發設置
-Return
-
-;[藥劑觸發GUI儲存按鈕]------------------------------------------------------------------------------------------------------
-
-藥劑觸發設置Escape:
-藥劑觸發設置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
+	藥劑觸發設置GUI面板:
+		Gui,藥劑觸發設置:new,,藥劑觸發設置
+		Gui +Label藥劑觸發設置 -Resize  -MinimizeBox -MaximizeBox
+		Gui Color, 0xC0C0C0
+		Gui Font, s12 Bold
+		Gui Add, Text, x31 y152 w135 h23, 藥劑(1)持續時間:
+		Gui Add, Text, x31 y177 w135 h23, 藥劑(2)持續時間:
+		Gui Add, Text, x31 y202 w135 h23, 藥劑(3)持續時間:
+		Gui Add, Text, x31 y227 w135 h23, 藥劑(4)持續時間:
+		Gui Add, Text, x31 y252 w135 h23, 藥劑(5)持續時間:
+		Gui Add, Text, x30 y97 w100 h23, 當使用技能:
+		Gui Add, Text, x171 y97 w111 h23, 時，使用藥劑:
+		Gui Add, Text, x30 y8 w145 h23, 藥劑觸發模式選擇:
+		Gui Add, Text, x31 y125 w219 h23, 一鍵喝水(Space)，使用藥劑:
+		Gui Add, Button,g儲存藥劑觸發設置 x298 y204 w384 h67, 儲存並關閉
+		Gui Font
+		Gui Font, s12
+		Gui Add, ComboBox, v藥劑觸發模式 x184 y5 w143 -Theme, 無|純藥劑防呆|讀秒循環喝水|使用技能時喝水|%藥劑觸發模式%||
+		Gui Add, ComboBox, v主要技能 x126 y96 w40 -Theme, Q|W|E|R|T|%主要技能%||
+		Gui Font
+		Gui Font, s10 cBlue
+		Gui Add, Text, x30 y35 w607 h20, 純藥劑防呆 : 玩家手動喝水，工具幫助您鎖定藥劑持續時間內，不會再次誤觸。適合需高強度控水的場合。
+		Gui Add, Text, x30 y55 w604 h20, 讀秒循環喝水 : 進圖後使用[Space]空白鍵觸發循環，藥劑持續時間結束後再次使用。適合速刷走路流派。
+		Gui Add, Text, x30 y75 w440 h20, 使用技能時喝水 : 只有在使用技能時才喝水，可避免非戰鬥時多餘的喝水。
+		Gui Add, Text, x363 y96 w320 h23 +0x200, 舉例 : 輸入 12345 = 使用12345罐，輸入 135 = 使用135罐。
+		Gui Add, Text, x295 y152 w210 h23 +0x200, (1秒=1000毫秒)，不使用請輸入 off 。
+		Gui Add, Text, x295 y177 w150 h23 +0x200, 生命藥劑通常輸入 off 。
+		Gui Font
+		Gui Font, s10
+		Gui Add, Edit, v藥劑持續時間1 x171 y152 w120 h21 -Theme, %藥劑持續時間1%
+		Gui Add, Edit, v藥劑持續時間2 x171 y177 w120 h21 -Theme, %藥劑持續時間2%
+		Gui Add, Edit, v藥劑持續時間3 x171 y202 w120 h21 -Theme, %藥劑持續時間3%
+		Gui Add, Edit, v藥劑持續時間4 x171 y227 w120 h21 -Theme, %藥劑持續時間4%
+		Gui Add, Edit, v藥劑持續時間5 x171 y252 w120 h21 -Theme, %藥劑持續時間5%
+		Gui Add, Edit, v使用技能時觸發的藥劑 x281 y96 w78 h21 +Number -Theme, %使用技能時觸發的藥劑%
+		Gui Add, Edit, v一鍵喝水時觸發的藥劑 x255 y123 w120 h21 +Number -Theme, %一鍵喝水時觸發的藥劑%
+		Gui Font
+		Gui Add, StatusBar,, ▲工具小知識: 純藥劑防呆模式下支援一鍵喝水(Space)，水沒了卻還在防呆時間內?試試手動1~5吧，立即重置防呆冷卻。
+		Gui Show, w691 h301, 藥劑觸發設置
 	Return
+
+	;[藥劑觸發GUI儲存按鈕]------------------------------------------------------------------------------------------------------
+
+	藥劑觸發設置Escape:
+	藥劑觸發設置Close:
+		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
+		IfMsgBox No
+			Return
 Else
 	Gui,submit
-Return
-
-;[藥劑觸發GUI儲存指令]------------------------------------------------------------------------------------------------------
-
-儲存藥劑觸發設置:
-Gui,submit
-Gosub,儲存藥劑觸發紀錄
-Gosub,讀取藥劑觸發紀錄
-Return
-
-儲存藥劑觸發紀錄:
-if 當前角色配置 = 1
-{
-IniWrite,	% 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
-IniWrite,	% 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
-IniWrite,	% 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
-IniWrite,	% 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
-IniWrite,	% 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
-IniWrite,	% 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
-IniWrite,	% 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
-IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-if 當前角色配置 = 2
-{
-IniWrite,	% 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
-IniWrite,	% 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
-IniWrite,	% 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
-IniWrite,	% 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
-IniWrite,	% 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
-IniWrite,	% 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
-IniWrite,	% 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
-IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-if 當前角色配置 = 3
-{
-IniWrite,	% 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
-IniWrite,	% 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
-IniWrite,	% 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
-IniWrite,	% 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
-IniWrite,	% 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
-IniWrite,	% 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
-IniWrite,	% 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
-IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-Return
-
-讀取藥劑觸發紀錄:
-if 當前角色配置 = 1
-{
- Iniread,	 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
- Iniread,	 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
- Iniread,	 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
- Iniread,	 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
- Iniread,	 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
- Iniread,	 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
- Iniread,	 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
- Iniread,	 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
- Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-if 當前角色配置 = 2
-{
- Iniread,	 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
- Iniread,	 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
- Iniread,	 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
- Iniread,	 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
- Iniread,	 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
- Iniread,	 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
- Iniread,	 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
- Iniread,	 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
- Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-if 當前角色配置 = 3
-{
- Iniread,	 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
- Iniread,	 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
- Iniread,	 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
- Iniread,	 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
- Iniread,	 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
- Iniread,	 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
- Iniread,	 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
- Iniread,	 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
- Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-}
-Return
-
-
-
-;[偵測喝水設置GUI面板]------------------------------------------------------------------------------------------------------
-
-偵測喝水設置GUI面板:
-gosub,偵測喝水打勾紀錄轉換
-Gui,偵測喝水設置:new,,偵測喝水設置
-Gui +Label偵測喝水設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Font, s12
-Gui Add, Text, x10 y25 w275 h16, 角色頭上血條低於偵測點(1)時使用藥劑
-Gui Add, Text, x360 y25 w243 h16, ，血條低於偵測點(2)時返回角色。
-Gui Add, Text, x10 y165 w280 h16, 當左下角血球低於偵測點(9)時使用藥劑
-Gui Add, Text, x10 y85 w275 h16, 當右下角魔球低於偵測點(3)時使用藥劑
-Gui Add, Text, x10 y125 w280 h16, 血條混傷穿透低於偵測點(7)時使用藥劑
-Gui Add, Text, x360 y125 w275 h16, ，混傷穿透低於偵測點(8)時返回角色。
-Gui Add, Text, x9 y185 w142 h16, 偵測喝水間隔(毫秒)
-Gui Add, Text, x213 y185 w352 h16, ，斟酌調整，依據藥劑立即回復或快速回復設置。
-Gui Add, Text, x470 y70 w120 h16, 偵測喝水提示:
-Gui Add, DropDownList, v喝水提示開關 x578 y68 w60 -Theme, 開啟|關閉|%喝水提示開關%||
-Gui Font, s11 cRed
-Gui Add, Text, x14 y45 h14, 舉例:只喝第1罐請輸入1。喝2瓶，可輸入12。挖礦時補血+開燈可輸入16，使用技能輸入16R。
-Gui Font
-Gui Font, s12 c0x0080FF
-Gui Add, CheckBox, hWndcheckbox1 v偵測血條喝水開關 x10 y4 w165 h18 %偵測血條喝水打勾紀錄%, 開啟偵測血條喝水↓
-Gui Add, CheckBox, hWndcheckbox2 v偵測血條返角開關 x360 y4 w165 h18 %偵測血條返角打勾紀錄%, 開啟偵測血條返角↓
-Gui Add, CheckBox, hWndcheckbox3 v偵測魔球喝水開關 x10 y64 w165 h18 %偵測魔球喝水打勾紀錄%, 開啟偵測魔球喝水↓
-Gui Add, CheckBox, hWndcheckbox4 v偵測血條穿透開關 x10 y104 w165 h18 %偵測血條穿透打勾紀錄%, 開啟偵測血條穿透↓
-Gui Add, CheckBox, hWndcheckbox5 v偵測血條穿透返角開關 x360 y105 w200 h18 %偵測血條穿透返角打勾紀錄%, 開啟偵測血條穿透返角↓
-Gui Add, CheckBox, hWndcheckbox6 v偵測血球池開關 x10 y144 w150 h18 %偵測血球池打勾紀錄%, 開啟偵測血球池↓
-Gui, Add,Link,cRed x548 y4, 點我 <a href="https://youtu.be/dTk3BO54_8Y">影片示範</a>
-Gui Font
-Gui Add, Button, g儲存偵測喝水設置 x578 y182 w80 h23 -Theme, 儲存並關閉
-Gui Add, StatusBar,, ▲ 工具小知識: 同時開啟 [ 偵測血條返角 ] 與 [ 偵測血球池 ] 可以大幅度降低返角誤判情況。 ㊣ 工具製作 By Sid の 一人團隊
-Gui Font
-Gui Add, Edit, v藥劑按鍵1 x293 y23 w60 h20  -Theme,%藥劑按鍵1%
-Gui Add, Edit, v藥劑按鍵2 x293 y81 w60 h20  -Theme,%藥劑按鍵2%
-Gui Add, Edit, v藥劑按鍵3 x293 y123 w60 h20  -Theme,%藥劑按鍵3%
-Gui Add, Edit, v藥劑按鍵4 x293 y163 w60 h20  -Theme,%藥劑按鍵4%
-Gui Add, ComboBox, v偵測喝水間隔 x157 y183 w50 -Theme, 100|300|500|800|1000|2000|3000|%偵測喝水間隔%||
-Gui Show, w668 h234, 偵測喝水設置 (此功能只會在F10高級模式下運作)
-Return
-
-;[偵測喝水GUI儲存按鈕]------------------------------------------------------------------------------------------------------
-
-偵測喝水設置Escape:
-偵測喝水設置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
 	Return
+
+	;[藥劑觸發GUI儲存指令]------------------------------------------------------------------------------------------------------
+
+	儲存藥劑觸發設置:
+		Gui,submit
+		Gosub,儲存藥劑觸發紀錄
+		Gosub,讀取藥劑觸發紀錄
+	Return
+
+	儲存藥劑觸發紀錄:
+		if 當前角色配置 = 1
+		{
+			IniWrite,	% 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
+			IniWrite,	% 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
+			IniWrite,	% 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
+			IniWrite,	% 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
+			IniWrite,	% 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
+			IniWrite,	% 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
+			IniWrite,	% 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
+			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+		if 當前角色配置 = 2
+		{
+			IniWrite,	% 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
+			IniWrite,	% 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
+			IniWrite,	% 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
+			IniWrite,	% 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
+			IniWrite,	% 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
+			IniWrite,	% 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
+			IniWrite,	% 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
+			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+		if 當前角色配置 = 3
+		{
+			IniWrite,	% 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
+			IniWrite,	% 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
+			IniWrite,	% 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
+			IniWrite,	% 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
+			IniWrite,	% 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
+			IniWrite,	% 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
+			IniWrite,	% 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
+			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+	Return
+
+	讀取藥劑觸發紀錄:
+		if 當前角色配置 = 1
+		{
+			Iniread,	 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
+			Iniread,	 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
+			Iniread,	 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
+			Iniread,	 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
+			Iniread,	 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
+			Iniread,	 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
+			Iniread,	 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
+			Iniread,	 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+		if 當前角色配置 = 2
+		{
+			Iniread,	 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
+			Iniread,	 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
+			Iniread,	 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
+			Iniread,	 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
+			Iniread,	 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
+			Iniread,	 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
+			Iniread,	 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
+			Iniread,	 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+		if 當前角色配置 = 3
+		{
+			Iniread,	 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
+			Iniread,	 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
+			Iniread,	 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
+			Iniread,	 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
+			Iniread,	 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
+			Iniread,	 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
+			Iniread,	 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
+			Iniread,	 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		}
+	Return
+
+	;[偵測喝水設置GUI面板]------------------------------------------------------------------------------------------------------
+
+	偵測喝水設置GUI面板:
+		gosub,偵測喝水打勾紀錄轉換
+		Gui,偵測喝水設置:new,,偵測喝水設置
+		Gui +Label偵測喝水設置 -Resize  -MinimizeBox -MaximizeBox
+		Gui Font, s12
+		Gui Add, Text, x10 y25 w275 h16, 角色頭上血條低於偵測點(1)時使用藥劑
+		Gui Add, Text, x360 y25 w243 h16, ，血條低於偵測點(2)時返回角色。
+		Gui Add, Text, x10 y165 w280 h16, 當左下角血球低於偵測點(9)時使用藥劑
+		Gui Add, Text, x10 y85 w275 h16, 當右下角魔球低於偵測點(3)時使用藥劑
+		Gui Add, Text, x10 y125 w280 h16, 血條混傷穿透低於偵測點(7)時使用藥劑
+		Gui Add, Text, x360 y125 w275 h16, ，混傷穿透低於偵測點(8)時返回角色。
+		Gui Add, Text, x9 y185 w142 h16, 偵測喝水間隔(毫秒)
+		Gui Add, Text, x213 y185 w352 h16, ，斟酌調整，依據藥劑立即回復或快速回復設置。
+		Gui Add, Text, x470 y70 w120 h16, 偵測喝水提示:
+		Gui Add, DropDownList, v喝水提示開關 x578 y68 w60 -Theme, 開啟|關閉|%喝水提示開關%||
+		Gui Font, s11 cRed
+		Gui Add, Text, x14 y45 h14, 舉例:只喝第1罐請輸入1。喝2瓶，可輸入12。挖礦時補血+開燈可輸入16，使用技能輸入16R。
+		Gui Font
+		Gui Font, s12 c0x0080FF
+		Gui Add, CheckBox, hWndcheckbox1 v偵測血條喝水開關 x10 y4 w165 h18 %偵測血條喝水打勾紀錄%, 開啟偵測血條喝水↓
+		Gui Add, CheckBox, hWndcheckbox2 v偵測血條返角開關 x360 y4 w165 h18 %偵測血條返角打勾紀錄%, 開啟偵測血條返角↓
+		Gui Add, CheckBox, hWndcheckbox3 v偵測魔球喝水開關 x10 y64 w165 h18 %偵測魔球喝水打勾紀錄%, 開啟偵測魔球喝水↓
+		Gui Add, CheckBox, hWndcheckbox4 v偵測血條穿透開關 x10 y104 w165 h18 %偵測血條穿透打勾紀錄%, 開啟偵測血條穿透↓
+		Gui Add, CheckBox, hWndcheckbox5 v偵測血條穿透返角開關 x360 y105 w200 h18 %偵測血條穿透返角打勾紀錄%, 開啟偵測血條穿透返角↓
+		Gui Add, CheckBox, hWndcheckbox6 v偵測血球池開關 x10 y144 w150 h18 %偵測血球池打勾紀錄%, 開啟偵測血球池↓
+		Gui, Add,Link,cRed x548 y4, 點我 <a href="https://youtu.be/dTk3BO54_8Y">影片示範</a>
+		Gui Font
+		Gui Add, Button, g儲存偵測喝水設置 x578 y182 w80 h23 -Theme, 儲存並關閉
+		Gui Add, StatusBar,, ▲ 工具小知識: 同時開啟 [ 偵測血條返角 ] 與 [ 偵測血球池 ] 可以大幅度降低返角誤判情況。 ㊣ 工具製作 By Sid の 一人團隊
+		Gui Font
+		Gui Add, Edit, v藥劑按鍵1 x293 y23 w60 h20  -Theme,%藥劑按鍵1%
+		Gui Add, Edit, v藥劑按鍵2 x293 y81 w60 h20  -Theme,%藥劑按鍵2%
+		Gui Add, Edit, v藥劑按鍵3 x293 y123 w60 h20  -Theme,%藥劑按鍵3%
+		Gui Add, Edit, v藥劑按鍵4 x293 y163 w60 h20  -Theme,%藥劑按鍵4%
+		Gui Add, ComboBox, v偵測喝水間隔 x157 y183 w50 -Theme, 100|300|500|800|1000|2000|3000|%偵測喝水間隔%||
+		Gui Show, w668 h234, 偵測喝水設置 (此功能只會在F10高級模式下運作)
+	Return
+
+	;[偵測喝水GUI儲存按鈕]------------------------------------------------------------------------------------------------------
+
+	偵測喝水設置Escape:
+	偵測喝水設置Close:
+		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
+		IfMsgBox No
+			Return
 Else
 	Gui,submit
-Return
+	Return
 
+	;[偵測喝水GUI儲存指令]------------------------------------------------------------------------------------------------------
 
-;[偵測喝水GUI儲存指令]------------------------------------------------------------------------------------------------------
+	偵測喝水打勾紀錄轉換:
+		if 偵測血條喝水打勾紀錄 = +checked
+		{
+			偵測血條喝水打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測血條喝水打勾紀錄 = -checked
+		}
 
+		if 偵測血條返角打勾紀錄 = +checked
+		{
+			偵測血條返角打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測血條返角打勾紀錄 = -checked
+		}
 
-偵測喝水打勾紀錄轉換:
-	if 偵測血條喝水打勾紀錄 = +checked
-	{
-	偵測血條喝水打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測血條喝水打勾紀錄 = -checked
-	}
+		if 偵測魔球喝水打勾紀錄 = +checked
+		{
+			偵測魔球喝水打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測魔球喝水打勾紀錄 = -checked
+		}
 
-	if 偵測血條返角打勾紀錄 = +checked
-	{
-	偵測血條返角打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測血條返角打勾紀錄 = -checked
-	}
+		if 偵測血條穿透打勾紀錄 = +checked
+		{
+			偵測血條穿透打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測血條穿透打勾紀錄 = -checked
+		}
 
-	if 偵測魔球喝水打勾紀錄 = +checked
-	{
-	偵測魔球喝水打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測魔球喝水打勾紀錄 = -checked
-	}
+		if 偵測血條穿透返角打勾紀錄 = +checked
+		{
+			偵測血條穿透返角打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測血條穿透返角打勾紀錄 = -checked
+		}
 
-	if 偵測血條穿透打勾紀錄 = +checked
-	{
-	偵測血條穿透打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測血條穿透打勾紀錄 = -checked
-	}
+		if 偵測血球池打勾紀錄 = +checked
+		{
+			偵測血球池打勾紀錄 = +checked
+		}
+		else
+		{
+			偵測血球池打勾紀錄 = -checked
+		}
+	return
 
-	if 偵測血條穿透返角打勾紀錄 = +checked
-	{
-	偵測血條穿透返角打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測血條穿透返角打勾紀錄 = -checked
-	}
+	儲存偵測喝水設置:
+		Gui,submit
+		If 偵測血條喝水開關 = 1
+			偵測血條喝水打勾紀錄 = +Checked
+		If 偵測血條喝水開關 = 0
+			偵測血條喝水打勾紀錄 = -Checked
+		If 偵測血條返角開關 = 1
+			偵測血條返角打勾紀錄 = +Checked
+		If 偵測血條返角開關 = 0
+			偵測血條返角打勾紀錄 = -Checked
+		If 偵測魔球喝水開關 = 1
+			偵測魔球喝水打勾紀錄 = +Checked
+		If 偵測魔球喝水開關 = 0
+			偵測魔球喝水打勾紀錄 = -Checked
+		If 偵測血條穿透開關 = 1
+			偵測血條穿透打勾紀錄 = +Checked
+		If 偵測血條穿透開關 = 0
+			偵測血條穿透打勾紀錄 = -Checked
+		If 偵測血條穿透返角開關 = 1
+			偵測血條穿透返角打勾紀錄 = +Checked
+		If 偵測血條穿透返角開關 = 0
+			偵測血條穿透返角打勾紀錄 = -Checked
+		If 偵測血球池開關 = 1
+			偵測血球池打勾紀錄 = +Checked
+		If 偵測血球池開關 = 0
+			偵測血球池打勾紀錄 = -Checked
+		gosub,儲存偵測喝水打勾紀錄
+		gosub,儲存偵測喝水數據
+		gosub,儲存喝水提示開關
+		gosub,讀取偵測喝水打勾紀錄
+		gosub,讀取偵測喝水數據
+		gosub,讀取喝水提示開關
+		if Autodrinkbutton = 1
+		{
+			Autodrinkbutton := 0
+			msgbox,48,提醒,您剛剛重新調整了設定，已自動關閉[F10]高級模式。`r請重新開啟[F10]使其生效。
+		}
+	Return
 
-	if 偵測血球池打勾紀錄 = +checked
-	{
-	偵測血球池打勾紀錄 = +checked
-	}
-	else
-	{
-	偵測血球池打勾紀錄 = -checked
-	}
-return
+	儲存喝水提示開關:
+		IniWrite,	% 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
+	Return
 
-儲存偵測喝水設置:
-Gui,submit
-If 偵測血條喝水開關 = 1
-偵測血條喝水打勾紀錄 = +Checked
-If 偵測血條喝水開關 = 0
-偵測血條喝水打勾紀錄 = -Checked
-If 偵測血條返角開關 = 1
-偵測血條返角打勾紀錄 = +Checked
-If 偵測血條返角開關 = 0
-偵測血條返角打勾紀錄 = -Checked
-If 偵測魔球喝水開關 = 1
-偵測魔球喝水打勾紀錄 = +Checked
-If 偵測魔球喝水開關 = 0
-偵測魔球喝水打勾紀錄 = -Checked
-If 偵測血條穿透開關 = 1
-偵測血條穿透打勾紀錄 = +Checked
-If 偵測血條穿透開關 = 0
-偵測血條穿透打勾紀錄 = -Checked
-If 偵測血條穿透返角開關 = 1
-偵測血條穿透返角打勾紀錄 = +Checked
-If 偵測血條穿透返角開關 = 0
-偵測血條穿透返角打勾紀錄 = -Checked
-If 偵測血球池開關 = 1
-偵測血球池打勾紀錄 = +Checked
-If 偵測血球池開關 = 0
-偵測血球池打勾紀錄 = -Checked
-gosub,儲存偵測喝水打勾紀錄
-gosub,儲存偵測喝水數據
-gosub,儲存喝水提示開關
-gosub,讀取偵測喝水打勾紀錄
-gosub,讀取偵測喝水數據
-gosub,讀取喝水提示開關
-if Autodrinkbutton = 1
-{
-Autodrinkbutton := 0
-msgbox,48,提醒,您剛剛重新調整了設定，已自動關閉[F10]高級模式。`r請重新開啟[F10]使其生效。
-}
-Return
+	讀取喝水提示開關:
+		Iniread,	 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
+		if 喝水提示開關 = error
+		{
+			ToolTipOff = 0
+			喝水提示開關 = 開啟
+		}
+		if 喝水提示開關 = 開啟
+		{
+			ToolTipOff = 0
+		}
+		if 喝水提示開關 = 關閉
+		{
+			ToolTipOff = 1
+		}
+	Return
 
-儲存喝水提示開關:
-IniWrite,	% 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
-Return
+	儲存偵測喝水打勾紀錄:
+		if 當前角色配置 = 1
+		{
+			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+		if 當前角色配置 = 2
+		{
+			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+		if 當前角色配置 = 3
+		{
+			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+	Return
 
-讀取喝水提示開關:
- Iniread,	 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
-	if 喝水提示開關 = error
-	{
-	ToolTipOff = 0
-	喝水提示開關 = 開啟
-	}
-	if 喝水提示開關 = 開啟
-	{
-	ToolTipOff = 0
-	}
-	if 喝水提示開關 = 關閉
-	{
-	ToolTipOff = 1
-	}
-Return
+	讀取偵測喝水打勾紀錄:
+		if 當前角色配置 = 1
+		{
+			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			Iniread,	偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			Iniread,	偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+		if 當前角色配置 = 2
+		{
+			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			Iniread,	偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			Iniread,	偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+		if 當前角色配置 = 3
+		{
+			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+			Iniread,	偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+			Iniread,	偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
+		}
+	Return
 
-儲存偵測喝水打勾紀錄:
-if 當前角色配置 = 1
-{
-IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-if 當前角色配置 = 2
-{
-IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-if 當前角色配置 = 3
-{
-IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-Return
+	儲存偵測喝水數據:
+		if 當前角色配置 = 1
+		{
+			IniWrite,	% 藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
+			IniWrite,	% 藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
+			IniWrite,	% 藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
+			IniWrite,	% 藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
+			IniWrite,	% 偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+		if 當前角色配置 = 2
+		{
+			IniWrite,	% 藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
+			IniWrite,	% 藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
+			IniWrite,	% 藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
+			IniWrite,	% 藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
+			IniWrite,	% 偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+		if 當前角色配置 = 3
+		{
+			IniWrite,	% 藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
+			IniWrite,	% 藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
+			IniWrite,	% 藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
+			IniWrite,	% 藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
+			IniWrite,	% 偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+	Return
 
-讀取偵測喝水打勾紀錄:
-if 當前角色配置 = 1
-{
- Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
- Iniread,	偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
- Iniread,	偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
- Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
- Iniread,	偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
- Iniread,	偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-if 當前角色配置 = 2
-{
- Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
- Iniread,	偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
- Iniread,	偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
- Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
- Iniread,	偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
- Iniread,	偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-if 當前角色配置 = 3
-{
- Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
- Iniread,	偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
- Iniread,	偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
- Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
- Iniread,	偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
- Iniread,	偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-}
-Return
+	讀取偵測喝水數據:
+		if 當前角色配置 = 1
+		{
+			Iniread,	藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
+			Iniread,	藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
+			Iniread,	藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
+			Iniread,	藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
+			Iniread,	偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+		if 當前角色配置 = 2
+		{
+			Iniread,	藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
+			Iniread,	藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
+			Iniread,	藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
+			Iniread,	藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
+			Iniread,	偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+		if 當前角色配置 = 3
+		{
+			Iniread,	藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
+			Iniread,	藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
+			Iniread,	藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
+			Iniread,	藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
+			Iniread,	偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
+		}
+	Return
 
-儲存偵測喝水數據:
-if 當前角色配置 = 1
-{
-IniWrite,	% 藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
-IniWrite,	% 藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
-IniWrite,	% 藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
-IniWrite,	% 藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
-IniWrite,	% 偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-}
-if 當前角色配置 = 2
-{
-IniWrite,	% 藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
-IniWrite,	% 藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
-IniWrite,	% 藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
-IniWrite,	% 藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
-IniWrite,	% 偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
-}
-if 當前角色配置 = 3
-{
-IniWrite,	% 藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
-IniWrite,	% 藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
-IniWrite,	% 藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
-IniWrite,	% 藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
-IniWrite,	% 偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
-}
-Return
-
-讀取偵測喝水數據:
-if 當前角色配置 = 1
-{
- Iniread,	藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
- Iniread,	藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
- Iniread,	藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
- Iniread,	藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
- Iniread,	偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-}
-if 當前角色配置 = 2
-{
- Iniread,	藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
- Iniread,	藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
- Iniread,	藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
- Iniread,	藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
- Iniread,	偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
-}
-if 當前角色配置 = 3
-{
- Iniread,	藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
- Iniread,	藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
- Iniread,	藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
- Iniread,	藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
- Iniread,	偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
-}
-Return
-
-;[高級喝水模式切換按鍵]----------------------------------------------------------
-~F10::
+	;[高級喝水模式切換按鍵]----------------------------------------------------------
+	~F10::
 (Autodrinkbutton = 0 ? (Autodrinkbutton := 1,ToolTip("已開啟高級喝水模式")) : (Autodrinkbutton := 0,ToolTip("已關閉高級喝水模式")))
 if Autodrinkbutton = 0
 	{
@@ -852,7 +847,6 @@ if (偵測血條喝水打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
 }
 return
 
-
 偵測血條返角:
 IfWinActive,Path of Exile
 {
@@ -902,7 +896,6 @@ if (偵測血條返角打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    }
 }
 return
-
 
 偵測魔力球:
 IfWinActive,Path of Exile
@@ -1075,13 +1068,13 @@ IfWinActive,Path of Exile
  {
  if Autodrinkbutton = 1
   {
-   ; 設定容許度（0-255），數值越大容許範圍越寬，這裡先設 10
-   容許度 := 25 
-   
-   ; 利用 PixelSearch 搜尋同一個點，並加入容許度與 RGB 模式
+			; 設定容許度（0-255），數值越大容許範圍越寬，這裡先設 10
+   容許度 := 25
+
+			; 利用 PixelSearch 搜尋同一個點，並加入容許度與 RGB 模式
    PixelSearch, FoundX, FoundY, 顏色4_X, 顏色4_Y, 顏色4_X, 顏色4_Y, %顏色4_C%, %容許度%, RGB
-   
-   ; ErrorLevel = 0 代表顏色在容許範圍內（場景沒變）
+
+			; ErrorLevel = 0 代表顏色在容許範圍內（場景沒變）
    if (ErrorLevel = 0)
 	{
 	if 偵測場景顏色 = 變化中
@@ -1107,7 +1100,6 @@ IfWinActive,Path of Exile
   }
 }
 return
-
 
 ;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
 #c::
@@ -1179,7 +1171,6 @@ if 當前角色配置 = 3
  }
 }
 return
-
 
 ;[藥劑防呆區]------------------------------------------------------------------------------------------
 
@@ -1784,8 +1775,6 @@ return
 Gosub,返回首頁
 return
 
-
-
 返回首頁:
 clipboard =
 Send {left %返回頁數%}
@@ -1852,7 +1841,6 @@ Send {left %計算值%}
 return
 }
 return
-
 
 二次判定未鑑定物品:
 IfInString,暫存複製內容,稀有度: 稀有	,gosub,三次判定未鑑定物品
@@ -2554,7 +2542,6 @@ Return
  Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 Return
 
-
 ;[PgUp/PgDn清包區(熱鍵)]------------------------------------------------------------------------------------------
 
 PgUp::
@@ -2615,7 +2602,6 @@ return
 背包每格寬2 := floor((掃描開始右下2_X - 掃描開始左上2_X) / 掃描水平數量2)
 背包每格高2 := floor((掃描開始右下2_Y - 掃描開始左上2_Y) / 掃描垂直數量2)
 return
-
 
 ;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
@@ -3093,8 +3079,6 @@ Return
  Iniread, F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
 Return
 
-
-
 ;[F2回復模式(熱鍵)]------------------------------------------------------------------------------------------------------
 
 F2::
@@ -3435,14 +3419,12 @@ Return
 
 ;[F3快速掃描背包區].............................................................................................................................
 
-
 讀取背包初始顏色:
 loop,60
 {
 iniread, 背包初始顏色%A_Index%, sidtooldata.ini, 快速掃描顏色, 背包初始顏色%A_Index%
 }
 return
-
 
 快速掃描背包顏色並儲存:
 迴圈狀態:= 0
@@ -3712,8 +3694,6 @@ Return
 #F6::
 gosub,一鍵取物模式及時切換
 Return
-
-
 
 F6快速一鍵取物:
 MouseGetPos, thisPosX, thisPosY
@@ -4177,7 +4157,6 @@ if 當前角色配置 = Error
 當前角色配置 = 1
 }
 Return
-
 
 ;[漂亮按鈕產生代碼]----------------------------------------------------------------------------------------------
 
