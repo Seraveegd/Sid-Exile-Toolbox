@@ -6,10 +6,20 @@ SetBatchLines -1
 SetKeyDelay, 0
 SetWorkingDir, %A_ScriptDir%
 
+if A_IsCompiled
+{
+    FileCreateDir, %A_ScriptDir%\ui
+    FileInstall, ui\ui.html, ui\ui.html, 1
+    FileInstall, ui\ui.css, ui\ui.css, 1
+    FileInstall, ui\ui.js, ui\ui.js, 1
+    FileInstall, ui\bootstrap.min.css, ui\bootstrap.min.css, 1
+    FileInstall, ui\bootstrap.min.js, ui\bootstrap.min.js, 1
+}
+
 #Include Neutron.ahk
 
 global neutron := new NeutronWindow()
-neutron.Load(SetWorkingDir . "ui\ui.html")
+neutron.Load("ui\ui.html")
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
