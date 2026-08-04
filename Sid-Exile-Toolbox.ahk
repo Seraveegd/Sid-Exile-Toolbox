@@ -4524,6 +4524,55 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！")
 }
 
+NeutronSaveDrinkDetectionConfig(neutron, barChecked, returnChecked, manaChecked, penChecked, penReturnChecked, poolChecked, hint, interval, key1, key2, key3, key4) {
+	global
+	偵測血條喝水打勾紀錄 := barChecked
+	偵測血條返角打勾紀錄 := returnChecked
+	偵測魔球喝水打勾紀錄 := manaChecked
+	偵測血條穿透打勾紀錄 := penChecked
+	偵測血條穿透返角打勾紀錄 := penReturnChecked
+	偵測血球池打勾紀錄 := poolChecked
+	喝水提示開關 := hint
+	偵測喝水間隔 := interval
+	藥劑按鍵1 := key1
+	藥劑按鍵2 := key2
+	藥劑按鍵3 := key3
+	藥劑按鍵4 := key4
+	gosub, 儲存偵測喝水打勾紀錄
+	gosub, 儲存偵測喝水數據
+	gosub, 儲存喝水提示開關
+	gosub, 讀取偵測喝水打勾紀錄
+	gosub, 讀取偵測喝水數據
+	gosub, 讀取喝水提示開關
+	ToolTip("偵測喝水設置已儲存！")
+}
+
+NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
+	global
+	附魔裝 := enchant
+	傳奇裝 := legendary
+	傳奇戒 := legendaryRing
+	劫盜裝 := thief
+	移除2 := remove2
+	培育器 := incubator
+	深淵珠 := abyssJewel
+	星團珠 := clusterJewel
+	普通珠 := normalJewel
+	勢力裝頁 := faction
+	特殊地圖 := specialMap
+	裂痕戒指 := riftRing
+	未鑑定稀有頭盔 := uniqueHelmet
+	未鑑定稀有衣服 := uniqueArmour
+	未鑑定稀有腰帶 := uniqueBelt
+	未鑑定稀有手套 := uniqueGloves
+	未鑑定稀有鞋子 := uniqueBoots
+	未鑑定稀有飾品 := uniqueAccessory
+	未鑑定稀有武器 := uniqueWeapon
+	返回頁數 := returnPage
+	gosub, 儲存並讀取倉庫頁數據
+	ToolTip("倉庫頁面設置已儲存！")
+}
+
 NeutronGetSettings(neutron) {
 	global
 	json := "{"
