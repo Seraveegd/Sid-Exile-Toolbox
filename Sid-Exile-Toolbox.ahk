@@ -1,14 +1,15 @@
-#NoEnv
+﻿#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
 SetKeyDelay, 0
+SetWorkingDir, %A_ScriptDir%
 
-#Include %A_ScriptDir%\Neutron.ahk
+#Include Neutron.ahk
 
 global neutron := new NeutronWindow()
-neutron.Load("ui/ui.html")
+neutron.Load(SetWorkingDir . "ui\ui.html")
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
