@@ -43,7 +43,7 @@
           <span class="icon">🧪</span> 藥劑觸發設置
         </div>
         <div class="menu-item" onclick="showSection('autoflask')">
-          <span class="icon">❤️</span> 偵測喝水設置
+          <span class="icon">❤️</span> 偵測喝水 / 偵測點設定
         </div>
         <div class="menu-item" onclick="showSection('combo')">
           <span class="icon">⚔️</span> 技能連段設置
@@ -85,66 +85,42 @@
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
             <h6 class="card-title text-light mb-2">主要功能快捷鍵</h6>
-            <div class="row g-2">
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F1</span><span class="small text-light-emphasis">原始功能 / 返回角色</span>
-                </div>
+            <div class="shortcut-grid">
+              <div class="shortcut-item">
+                <span class="kbd-badge">F1</span><span>原始功能 / 返回角色</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F2</span><span class="small text-light-emphasis">暫離 / 勿擾 / 自動回復</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F2</span><span>暫離 / 勿擾 / 自動回復</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F3</span><span class="small text-light-emphasis">清包切換 / 背包顏色定位</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F3</span><span>清包切換 / 背包顏色定位</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F4</span><span class="small text-light-emphasis">快速使用傳送卷軸</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F4</span><span>快速使用傳送卷軸</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F5</span><span class="small text-light-emphasis">返回藏身處 (城鎮)</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F5</span><span>返回藏身處 (城鎮)</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F6</span><span class="small text-light-emphasis">一鍵取物 / 取物定位</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F6</span><span>一鍵取物 / 取物定位</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F7</span><span class="small text-light-emphasis">背包座標定位</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F7</span><span>背包座標定位</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F8</span><span class="small text-light-emphasis">單次 / 多次 兌換命運卡</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F8</span><span>單次 / 多次 兌換命運卡</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F9</span><span class="small text-light-emphasis">暫停工具 (回復鍵盤)</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F9</span><span>暫停工具 / 回復鍵盤</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F10</span><span class="small text-light-emphasis">開關高級自動喝水模式</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F10</span><span>開關高級喝水模式</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F11</span><span class="small text-light-emphasis">重新載入工具 (Reload)</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F11</span><span>重新啟動工具</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">F12</span><span class="small text-light-emphasis">結束工具 (ExitApp)</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">F12</span><span>結束工具</span>
               </div>
             </div>
           </div>
@@ -153,41 +129,27 @@
         <div class="card shadow-sm">
           <div class="card-body py-3">
             <h6 class="card-title text-light mb-2">其他快捷鍵</h6>
-            <div class="row g-2">
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Win + Z</span><span class="small text-light-emphasis">開啟本菜單設置視窗</span>
-                </div>
+            <div class="shortcut-grid">
+              <div class="shortcut-item">
+                <span class="kbd-badge">Win + Z</span><span>開啟本菜單設置視窗</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Win + V</span><span class="small text-light-emphasis">快速查價 (游標指道具)</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">Win + V</span><span>快速查價 (游標指道具)</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Win + C</span><span class="small text-light-emphasis">座標與顏色偵測校正</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">Win + C</span><span>座標與顏色偵測校正</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Space</span><span class="small text-light-emphasis">一鍵喝水 / 循環喝水</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">Space</span><span>一鍵喝水 / 循環 / 防呆</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Insert</span><span class="small text-light-emphasis">自動循環技能開關</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">Insert</span><span>自動循環技能開關</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">End</span><span class="small text-light-emphasis">快速申請組隊</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">End</span><span>快速申請組隊</span>
               </div>
-              <div class="col-md-6 col-lg-4">
-                <div class="p-2 border rounded bg-dark d-flex align-items-center gap-2">
-                  <span class="kbd-badge">Home</span><span class="small text-light-emphasis">快速申請交易</span>
-                </div>
+              <div class="shortcut-item">
+                <span class="kbd-badge">Home</span><span>快速申請交易</span>
               </div>
             </div>
           </div>
@@ -315,6 +277,29 @@
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
           <div class="panel-title mb-1">偵測喝水設置 (F10 高級喝水)</div>
           <div class="panel-subtitle">偵測血量/魔力球顏色自動觸發藥劑或返回角色。</div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">偵測點座標與顏色定位</h6>
+            <p class="form-text text-secondary mb-3">本功能需要先設定各偵測點的座標與顏色，否則對應檢測功能會自動停用。</p>
+            <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
+              請使用快捷鍵 <span class="kbd-badge ms-1 me-1">Win + C</span> 校正偵測點位置與顏色。
+              若未設定，已啟用的偵測類型將在啟動時自動關閉。
+            </div>
+            <ul class="list-group list-group-flush mb-3 detection-points">
+              <li class="list-group-item detection-point-item">1：人物上方血條偵測點 (無血顏色)</li>
+              <li class="list-group-item detection-point-item">2：人物上方血條返角偵測點 (無血顏色)</li>
+              <li class="list-group-item detection-point-item">3：右下魔力球偵測點 (滿魔顏色)</li>
+              <li class="list-group-item detection-point-item">4：左下藥劑欄上方時間黑色區域</li>
+              <li class="list-group-item detection-point-item">5：Enter 對話框1 黑色域</li>
+              <li class="list-group-item detection-point-item">6：Enter 對話框2 黑色域</li>
+              <li class="list-group-item detection-point-item">7：人物上方混傷穿透血條偵測點</li>
+              <li class="list-group-item detection-point-item">8：人物上方混傷穿透返角偵測點</li>
+              <li class="list-group-item detection-point-item">9：左下血球池偵測點 (滿血顏色)</li>
+            </ul>
+            <p class="text-warning small mb-0">提醒：若偵測點尚未設定，系統會自動關閉高級喝水功能，請先完成偵測點校正。</p>
+          </div>
         </div>
 
         <div class="card mb-3 shadow-sm">

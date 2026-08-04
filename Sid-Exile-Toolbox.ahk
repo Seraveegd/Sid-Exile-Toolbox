@@ -2202,6 +2202,30 @@ settimer,偵測對話框2,25
 if Toolbutton = 0
 {
 	ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。")
+	if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
+	{
+		PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%
+		if (dialogCheck1 = %顏色5_C%)
+		{
+			Toolbutton := 1
+			ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
+			SetTimer,偵測對話框1,off
+			SetTimer,偵測對話框2,off
+			return
+		}
+	}
+	if (顏色6_X != "error" && 顏色6_Y != "error" && 顏色6_C != "error")
+	{
+		PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%
+		if (dialogCheck2 = %顏色6_C%)
+		{
+			Toolbutton := 1
+			ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
+			SetTimer,偵測對話框1,off
+			SetTimer,偵測對話框2,off
+			return
+		}
+	}
 	if 一鍵喝水時觸發的藥劑 = error
 	{
 	msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! Win+Z => 藥劑觸發設置。
@@ -2351,10 +2375,7 @@ else
 	ToolTip("偵測到對話框1，變更為文字模式")
 	gosub,暫停讀秒循環喝水
 	settimer,偵測對話框1,off
-	}
-	else
-	{
-	settimer,偵測對話框1,off
+	settimer,偵測對話框2,off
 	}
 }
 return
@@ -2374,10 +2395,7 @@ else
 	Toolbutton = 1
 	ToolTip("偵測到對話框2，變更為文字模式")
 	gosub,暫停讀秒循環喝水
-	settimer,偵測對話框2,off
-	}
-	else
-	{
+	settimer,偵測對話框1,off
 	settimer,偵測對話框2,off
 	}
 }
