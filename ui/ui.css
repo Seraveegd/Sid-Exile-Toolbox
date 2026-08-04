@@ -9,6 +9,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-size: 22.5px;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
     background-color: #12141a;
     color: #dee2e6;
@@ -22,7 +23,7 @@ body {
 /* Custom Window Title Bar */
 header {
     width: 100%;
-    height: 36px;
+    height: 52px;
     display: flex;
     align-items: center;
     background: #191c23;
@@ -31,35 +32,35 @@ header {
 }
 
 .title-bar {
-    padding: 0 14px;
+    padding: 0 18px;
     flex-grow: 1;
-    line-height: 36px;
-    font-size: 13px;
+    line-height: 52px;
+    font-size: 19.5px;
     font-weight: 600;
     color: #6ea8fe;
     cursor: move;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
 }
 
 .title-bar-icon {
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     background: linear-gradient(135deg, #0d6efd, #6f42c1);
     border-radius: 4px;
     display: inline-block;
 }
 
 .title-btn {
-    width: 44px;
-    height: 36px;
+    width: 54px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-family: Webdings;
-    font-size: 12px;
+    font-size: 18px;
     color: #9ea5b0;
     transition: background 0.15s ease, color 0.15s ease;
 }
@@ -78,11 +79,11 @@ header {
 .app-container {
     display: flex;
     flex-grow: 1;
-    height: calc(100% - 36px);
+    height: calc(100% - 52px);
     overflow: hidden;
 }
 
-/* Left Sidebar - 菜單設置區 (加大字體與舒適間距) */
+/* Left Sidebar - 菜單設置區 */
 .sidebar {
     width: 260px;
     background: #161820;
@@ -153,7 +154,10 @@ header {
     flex-grow: 1;
     background: #12141a;
     overflow-y: auto;
-    padding: 20px 26px;
+    padding: 30px 38px;
+    font-size: 22.5px;
+    line-height: 1.65;
+    color: #dee2e6;
 }
 
 .panel {
@@ -165,14 +169,14 @@ header {
 }
 
 .panel-title {
-    font-size: 17px;
+    font-size: 30px;
     font-weight: 700;
     color: #f8f9fa;
 }
 
 .panel-subtitle {
-    font-size: 12.5px;
-    color: #8c96a3;
+    font-size: 21px;
+    color: #b0b8c4;
 }
 
 .card {
@@ -182,16 +186,27 @@ header {
 }
 
 .card-title {
-    font-size: 14.5px;
+    font-size: 24px;
     font-weight: 600;
 }
 
-/* Standard Bootstrap Form Input Adjustments */
+.card-body {
+    font-size: 22.5px;
+}
+
+.form-text,
+.panel-subtitle,
+.card-title,
+.form-label,
+.kbd-badge {
+    line-height: 1.5;
+}
+
 .form-label {
-    font-size: 12.5px;
+    font-size: 21px;
     font-weight: 600;
     color: #a0abb8;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .form-control,
@@ -199,9 +214,79 @@ header {
     background-color: #21252e;
     border: 1px solid #353a47;
     color: #ffffff;
-    font-size: 13.5px;
+    font-size: 22.5px;
     border-radius: 6px;
-    padding: 7px 12px;
+    padding: 14px 16px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #21252e;
+    border-color: #0d6efd;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-sm {
+    padding: 0.6rem 1rem;
+    font-size: 19.5px;
+}
+
+.btn-success {
+    background-color: #198754;
+    color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    color: #ffffff;
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-outline-light {
+    background-color: transparent;
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn:hover {
+    opacity: 0.92;
+}
+
+/* Standard Bootstrap Form Input Adjustments */
+.form-label {
+    font-size: 21px;
+    font-weight: 600;
+    color: #a0abb8;
+    margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+    background-color: #21252e;
+    border: 1px solid #353a47;
+    color: #ffffff;
+    font-size: 15px;
+    border-radius: 6px;
+    padding: 10px 12px;
 }
 
 .form-control:focus,
@@ -214,15 +299,15 @@ header {
 
 .kbd-badge {
     display: inline-block;
-    padding: 3px 7px;
+    padding: 5px 10px;
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
     color: #6ea8fe;
     background-color: #21252e;
     border: 1px solid #353a47;
     border-radius: 4px;
-    min-width: 44px;
+    min-width: 60px;
     text-align: center;
 }
 
