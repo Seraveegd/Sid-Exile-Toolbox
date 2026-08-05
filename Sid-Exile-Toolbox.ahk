@@ -8,18 +8,32 @@ SetWorkingDir, %A_ScriptDir%
 
 if A_IsCompiled
 {
-    FileCreateDir, %A_ScriptDir%\ui
-    FileInstall, ui\ui.html, ui\ui.html, 1
-    FileInstall, ui\ui.css, ui\ui.css, 1
-    FileInstall, ui\ui.js, ui\ui.js, 1
-    FileInstall, ui\bootstrap.min.css, ui\bootstrap.min.css, 1
-    FileInstall, ui\bootstrap.min.js, ui\bootstrap.min.js, 1
+	FileCreateDir, %A_ScriptDir%\ui
+	FileInstall, ui\ui.html, ui\ui.html, 1
+	FileInstall, ui\ui.css, ui\ui.css, 1
+	FileInstall, ui\ui.js, ui\ui.js, 1
+	FileInstall, ui\bootstrap.min.css, ui\bootstrap.min.css, 1
+	FileInstall, ui\bootstrap.min.js, ui\bootstrap.min.js, 1
 }
 
 #Include Neutron.ahk
 
 global neutron := new NeutronWindow()
-neutron.Load("ui\ui.html")
+
+; 為解決編譯後若檔案路徑包含中文導致 res:// 協定無法載入網頁的問題，
+; 改為直接載入由 FileInstall 解壓縮至本地目錄的 ui\ui.html
+NeutronLoadLocal(neutron, "ui\ui.html")
+
+NeutronLoadLocal(neutronInstance, fileName) {
+	url := A_ScriptDir "/" fileName
+	neutronInstance.wb.Navigate(url)
+	while neutronInstance.wb.readyState < 3
+		Sleep, 50
+	neutronInstance.wnd.neutron := neutronInstance
+	neutronInstance.wnd.ahk := new neutronInstance.Dispatch(neutronInstance)
+	while neutronInstance.wb.readyState < 4
+		Sleep, 50
+}
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
