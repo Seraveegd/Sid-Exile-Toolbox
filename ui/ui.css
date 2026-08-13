@@ -403,3 +403,32 @@ header {
 ::-webkit-scrollbar-thumb:hover {
     background: #495057;
 }
+
+/* 快捷鍵輸入框對比度與高亮樣式修復 */
+.hotkey-input,
+.hotkey-input[readonly] {
+    background-color: #1a1d26 !important;
+    color: #38bdf8 !important;
+    border: 1px solid #2d3446 !important;
+    font-weight: 600;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    cursor: pointer;
+    caret-color: transparent;
+}
+
+.hotkey-input:hover {
+    border-color: #0d6efd !important;
+    background-color: #1e222d !important;
+}
+
+.hotkey-input:focus {
+    background-color: #212534 !important;
+    color: #38bdf8 !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.3) !important;
+}
+
+.hotkey-input::-webkit-input-placeholder,
+.hotkey-input::placeholder {
+    color: #6c757d !important;
+}

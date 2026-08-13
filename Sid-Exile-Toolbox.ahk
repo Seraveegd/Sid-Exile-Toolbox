@@ -300,7 +300,7 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
 		Gui, Add,Text,cBlue,[Insert] 自動循環技能
 		Gui, Add,Text,cBlue,[Win + V] 快速查價
-		Gui, Add,Text,cBlue,[Win + Z] 工具菜單與各項設置
+		Gui, Add,Text,cBlue,[``] 工具菜單與各項設置
 		Gui, Add,Text,cBlue,[Ctrl + Alt] 快搜倉庫自動翻頁
 		Gui, Add,Text,cBlue,[Ctrl + Win] 返回倉庫首頁
 		Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] 滑鼠連點
@@ -338,7 +338,7 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[Home] = 快速申請交易 / 開關提醒
 		Gui, Add,Text,cBlue,[PgUp] = 快速交易，確認對方60格欄位
 		Gui, Add,Text,cBlue,[PgDn] = 快速交易，接受交易
-		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (Win + Z :藥劑觸發設置)
+		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (`` :藥劑觸發設置)
 		Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
 		Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
 		Gui, Add,Text,cBlue,[Win + V] = 快速查價 (滑鼠指道具使用)
@@ -356,7 +356,7 @@ GetDriveTailSerial()
 	;[跳程指令區]---------------------------------------------------------------------------------------------------
 
 	起始盒子:
-		msgbox,,Sid流亡工具箱（開源版）,工具已啟動，使用 ( Win + Z ) 顯示工具清單。`r本版本已完全開源，所有功能均可免費使用。
+		msgbox,,Sid流亡工具箱（開源版）,工具已啟動，使用 ( `` ) 顯示工具清單。`r本版本已完全開源，所有功能均可免費使用。
 	return
 
 	提醒停止按鍵:
@@ -861,7 +861,7 @@ if (偵測血條喝水打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    Autodrinkbutton := 0
    gosub,停止循環偵測
    ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置偵測頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (Win + Z) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 1 " 。
+   msgbox,16,錯誤,尚未設置偵測頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 1 " 。
    return
    }
    else
@@ -892,7 +892,7 @@ if (偵測血條返角打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    	Autodrinkbutton := 0
    	gosub,停止循環偵測
    	ToolTip("已關閉高級喝水模式")
-   	msgbox,16,錯誤,尚未設置殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(Win + Z) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 2 " 。
+   	msgbox,16,錯誤,尚未設置殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 2 " 。
    	return
     }
     else
@@ -942,7 +942,7 @@ if (偵測魔球喝水打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    Autodrinkbutton := 0
    gosub,停止循環偵測
    ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置偵測右下魔力池座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r(Win + Z) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔，若無使用可關閉功能。`r設置偵測魔球座標 => 指定右下魔力球低於滑鼠當前座標時喝水[Win + C]抓取代號 " 3 " 。
+   msgbox,16,錯誤,尚未設置偵測右下魔力池座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔，若無使用可關閉功能。`r設置偵測魔球座標 => 指定右下魔力球低於滑鼠當前座標時喝水[Win + C]抓取代號 " 3 " 。
    return
    }
    else
@@ -986,7 +986,7 @@ if (偵測血條穿透打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    Autodrinkbutton := 0
    gosub,停止循環偵測
    ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置混傷穿透頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (Win + Z) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 7 " 。
+   msgbox,16,錯誤,尚未設置混傷穿透頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 7 " 。
    return
    }
    else
@@ -1017,7 +1017,7 @@ if (偵測血條穿透返角打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
    	Autodrinkbutton := 0
    	gosub,停止循環偵測
    	ToolTip("已關閉高級喝水模式")
-   	msgbox,16,錯誤,尚未設置混傷穿透殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(Win + Z) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 8 " 。
+   	msgbox,16,錯誤,尚未設置混傷穿透殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 8 " 。
    	return
     }
     else
@@ -2208,7 +2208,7 @@ return
 MouseGetPos, thisPosX, thisPosY
 if 聲明顯示 = 0
 {
-MsgBox,64,每次開起工具僅顯示一次，關閉後請再次使用 Win + V 即可。,請記得安裝並預先開啟【rchin-poe-trade】工具，並點擊 Home 返回遊戲， Win + V 才可正常運作。`r`r如未安裝，您可在 Win + Z 菜單中找到*前往查價工具的網址*的欄位`r`r申明:此查價工具並非Sid製作，也未對此功能進行任何收費。`r`r僅抱持著推廣與分享目的提供使用，請多支持原創作者。
+MsgBox,64,每次開起工具僅顯示一次，關閉後請再次使用 Win + V 即可。,請記得安裝並預先開啟【rchin-poe-trade】工具，並點擊 Home 返回遊戲， Win + V 才可正常運作。`r`r如未安裝，您可在 ( `` ) 菜單中找到*前往查價工具的網址*的欄位`r`r申明:此查價工具並非Sid製作，也未對此功能進行任何收費。`r`r僅抱持著推廣與分享目的提供使用，請多支持原創作者。
 聲明顯示 = 1
 WinActivate ,Path of Exile
 return
@@ -2255,7 +2255,7 @@ if Toolbutton = 0
 	}
 	if 一鍵喝水時觸發的藥劑 = error
 	{
-	msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! Win+Z => 藥劑觸發設置。
+	msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! (``) => 藥劑觸發設置。
 	gosub,藥劑觸發設置GUI面板
 	return
 	}
@@ -4697,7 +4697,7 @@ Iniread, 快捷鍵_F6, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F6, F6
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
 Iniread, 快捷鍵_F8, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F8, F8
 Iniread, 快捷鍵_F10, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F10, ~F10
-Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, #z
+Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
 Iniread, 快捷鍵_WinV, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinV, #v
 Iniread, 快捷鍵_WinC, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinC, #c
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space

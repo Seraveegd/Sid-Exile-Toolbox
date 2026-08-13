@@ -142,7 +142,7 @@ var defaultHotkeys = {
     hk_F7: '*F7',
     hk_F8: 'F8',
     hk_F10: '~F10',
-    hk_WinZ: '#z',
+    hk_WinZ: '`',
     hk_WinV: '#v',
     hk_WinC: '#c',
     hk_Space: '~*space',
@@ -166,6 +166,7 @@ function parseAHKHotkeyToDisplay(ahkStr) {
     if (key.toLowerCase() === 'space') key = 'Space';
     if (key.toLowerCase() === 'pgup') key = 'PgUp';
     if (key.toLowerCase() === 'pgdn') key = 'PgDn';
+    if (key.length === 1 && key >= 'a' && key <= 'z') key = key.toUpperCase();
 
     if (mods.length > 0) {
         return mods.join(' + ') + ' + ' + key;
@@ -173,16 +174,75 @@ function parseAHKHotkeyToDisplay(ahkStr) {
     return key;
 }
 
+function getRawKeyNameFromEvent(e) {
+    var keyCode = e.keyCode || e.which || 0;
+
+    if (keyCode >= 48 && keyCode <= 57) {
+        return String.fromCharCode(keyCode);
+    }
+    if (keyCode >= 65 && keyCode <= 90) {
+        return String.fromCharCode(keyCode).toLowerCase();
+    }
+    if (keyCode >= 112 && keyCode <= 123) {
+        return 'F' + (keyCode - 111);
+    }
+    if (keyCode >= 96 && keyCode <= 105) {
+        return 'Numpad' + (keyCode - 96);
+    }
+
+    switch (keyCode) {
+        case 32: return 'space';
+        case 33: return 'PgUp';
+        case 34: return 'PgDn';
+        case 35: return 'End';
+        case 36: return 'Home';
+        case 37: return 'Left';
+        case 38: return 'Up';
+        case 39: return 'Right';
+        case 40: return 'Down';
+        case 45: return 'Insert';
+        case 27: return 'Escape';
+        case 9:  return 'Tab';
+        case 192: return '`';
+        case 189: return '-';
+        case 187: return '=';
+        case 219: return '[';
+        case 221: return ']';
+        case 220: return '\\';
+        case 186: return ';';
+        case 222: return "'";
+        case 188: return ',';
+        case 190: return '.';
+        case 191: return '/';
+    }
+
+    if (e.key && e.key.length === 1 && e.key.charCodeAt(0) >= 32) {
+        return e.key.toLowerCase();
+    }
+
+    return '';
+}
+
 function initHotkeyRecorder() {
     var inputs = document.querySelectorAll('.hotkey-input');
-    inputs.forEach(function (input) {
+    Array.prototype.forEach.call(inputs, function (input) {
         input.addEventListener('keydown', function (e) {
+            e = e || window.event;
             e.preventDefault();
             e.stopPropagation();
 
-            if (e.key === 'Backspace' || e.key === 'Delete') {
+            var key = e.key || '';
+            var keyCode = e.keyCode || e.which || 0;
+
+            // 清除按鍵
+            if (key === 'Backspace' || key === 'Delete' || keyCode === 8 || keyCode === 46) {
                 input.value = '';
                 input.setAttribute('data-ahk', '');
+                return;
+            }
+
+            // 忽略單獨按下修飾鍵
+            if (['Control', 'Alt', 'Shift', 'Meta', 'OS'].indexOf(key) !== -1 || keyCode === 16 || keyCode === 17 || keyCode === 18 || keyCode === 91 || keyCode === 92 || keyCode === 225) {
                 return;
             }
 
@@ -192,24 +252,8 @@ function initHotkeyRecorder() {
             if (e.shiftKey) modifiers.push('+');
             if (e.metaKey) modifiers.push('#');
 
-            if (['Control', 'Alt', 'Shift', 'Meta'].indexOf(e.key) !== -1) {
-                return;
-            }
-
-            var keyName = e.key;
-            if (e.code.indexOf('Key') === 0) {
-                keyName = e.code.substring(3);
-            } else if (e.code.indexOf('Digit') === 0) {
-                keyName = e.code.substring(5);
-            } else if (e.code.indexOf('Numpad') === 0) {
-                keyName = e.code;
-            } else if (e.key === ' ') {
-                keyName = 'space';
-            } else if (e.key === 'PageUp') {
-                keyName = 'PgUp';
-            } else if (e.key === 'PageDown') {
-                keyName = 'PgDn';
-            }
+            var keyName = getRawKeyNameFromEvent(e);
+            if (!keyName) return;
 
             var ahkVal = modifiers.join('') + keyName;
             input.value = parseAHKHotkeyToDisplay(ahkVal);
