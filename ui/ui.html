@@ -82,75 +82,104 @@
           <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 small">v1.0.0</span>
         </div>
 
+        <!-- Custom Hotkey Configuration Panel -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">主要功能快捷鍵</h6>
-            <div class="shortcut-grid">
-              <div class="shortcut-item">
-                <span class="kbd-badge">F1</span><span>原始功能 / 返回角色</span>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="card-title text-light mb-0">自訂快捷鍵設定</h6>
+              <small class="text-secondary">點擊輸入框後按下鍵盤新按鍵，不能有重複衝突鍵</small>
+            </div>
+            <!-- Shortcut entries -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">返回角色</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F1" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F2</span><span>暫離 / 勿擾 / 自動回復</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">暫離 / 勿擾 / 自動回復</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F2" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F3</span><span>清包切換 / 背包顏色定位</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">清包切換 / 背包顏色定位</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F3" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F4</span><span>快速使用傳送卷軸</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速使用傳送卷軸</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F4" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F5</span><span>返回藏身處 (城鎮)</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">返回藏身處 (城鎮)</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F5" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F6</span><span>一鍵取物 / 取物定位</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">一鍵取物 / 取物定位</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F6" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F7</span><span>背包座標定位</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">背包座標定位</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F7" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F8</span><span>單次 / 多次 兌換命運卡</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">單次 / 多次 兌換命運卡</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F8" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F9</span><span>暫停工具 / 回復鍵盤</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">開關高級喝水模式</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F10" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F10</span><span>開關高級喝水模式</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">開啟本菜單設置視窗</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinZ" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F11</span><span>重新啟動工具</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速查價 (游標指道具)</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinV" placeholder="點擊按下新按鍵" readonly>
               </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">F12</span><span>結束工具</span>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">座標與顏色偵測校正</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinC" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">一鍵喝水 / 循環 / 防呆</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Space" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">自動循環技能開關</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Insert" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速申請組隊</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_End" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速申請交易</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Home" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速清對方交易欄</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_PgUp" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">快速接受交易</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_PgDn" placeholder="點擊按下新按鍵" readonly>
+              </div>
+              <!-- 系統固定按鍵 (保持不能自訂) -->
+              <div class="col-md-4">
+                <label class="form-label mb-1 small text-muted">暫停工具 / 回復鍵盤 (系統固定)</label>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F9" disabled readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label mb-1 small text-muted">重新啟動工具 (系統固定)</label>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F11" disabled readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label mb-1 small text-muted">結束工具 (系統固定)</label>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F12" disabled readonly>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="card shadow-sm">
-          <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">其他快捷鍵</h6>
-            <div class="shortcut-grid">
-              <div class="shortcut-item">
-                <span class="kbd-badge">Win + Z</span><span>開啟本菜單設置視窗</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">Win + V</span><span>快速查價 (游標指道具)</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">Win + C</span><span>座標與顏色偵測校正</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">Space</span><span>一鍵喝水 / 循環 / 防呆</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">Insert</span><span>自動循環技能開關</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">End</span><span>快速申請組隊</span>
-              </div>
-              <div class="shortcut-item">
-                <span class="kbd-badge">Home</span><span>快速申請交易</span>
-              </div>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-success btn-sm px-4 py-2 me-2" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
+              <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄 恢復預設快捷鍵</button>
             </div>
           </div>
         </div>

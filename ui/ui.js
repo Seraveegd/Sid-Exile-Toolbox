@@ -118,9 +118,183 @@ function syncDataFromAHK() {
             }
         });
 
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F4', 'hk_F5', 'hk_F6', 'hk_F7', 'hk_F8', 'hk_F10', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert', 'hk_End', 'hk_Home', 'hk_PgUp', 'hk_PgDn'];
+        hkFields.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el && data[id]) {
+                el.setAttribute('data-ahk', data[id]);
+                el.value = parseAHKHotkeyToDisplay(data[id]);
+            }
+        });
+
     } catch (err) {
         // Log error
     }
+}
+
+var defaultHotkeys = {
+    hk_F1: '*F1',
+    hk_F2: 'F2',
+    hk_F3: 'F3',
+    hk_F4: '*F4',
+    hk_F5: 'F5',
+    hk_F6: 'F6',
+    hk_F7: '*F7',
+    hk_F8: 'F8',
+    hk_F10: '~F10',
+    hk_WinZ: '#z',
+    hk_WinV: '#v',
+    hk_WinC: '#c',
+    hk_Space: '~*space',
+    hk_Insert: '*Insert',
+    hk_End: 'End',
+    hk_Home: 'Home',
+    hk_PgUp: 'PgUp',
+    hk_PgDn: 'PgDn'
+};
+
+function parseAHKHotkeyToDisplay(ahkStr) {
+    if (!ahkStr) return '';
+    var str = ahkStr.replace(/^[~*$]+/g, '');
+    var mods = [];
+    if (str.indexOf('#') !== -1) mods.push('Win');
+    if (str.indexOf('^') !== -1) mods.push('Ctrl');
+    if (str.indexOf('!') !== -1) mods.push('Alt');
+    if (str.indexOf('+') !== -1) mods.push('Shift');
+
+    var key = str.replace(/[#^!+]/g, '');
+    if (key.toLowerCase() === 'space') key = 'Space';
+    if (key.toLowerCase() === 'pgup') key = 'PgUp';
+    if (key.toLowerCase() === 'pgdn') key = 'PgDn';
+
+    if (mods.length > 0) {
+        return mods.join(' + ') + ' + ' + key;
+    }
+    return key;
+}
+
+function initHotkeyRecorder() {
+    var inputs = document.querySelectorAll('.hotkey-input');
+    inputs.forEach(function (input) {
+        input.addEventListener('keydown', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                input.value = '';
+                input.setAttribute('data-ahk', '');
+                return;
+            }
+
+            var modifiers = [];
+            if (e.ctrlKey) modifiers.push('^');
+            if (e.altKey) modifiers.push('!');
+            if (e.shiftKey) modifiers.push('+');
+            if (e.metaKey) modifiers.push('#');
+
+            if (['Control', 'Alt', 'Shift', 'Meta'].indexOf(e.key) !== -1) {
+                return;
+            }
+
+            var keyName = e.key;
+            if (e.code.indexOf('Key') === 0) {
+                keyName = e.code.substring(3);
+            } else if (e.code.indexOf('Digit') === 0) {
+                keyName = e.code.substring(5);
+            } else if (e.code.indexOf('Numpad') === 0) {
+                keyName = e.code;
+            } else if (e.key === ' ') {
+                keyName = 'space';
+            } else if (e.key === 'PageUp') {
+                keyName = 'PgUp';
+            } else if (e.key === 'PageDown') {
+                keyName = 'PgDn';
+            }
+
+            var ahkVal = modifiers.join('') + keyName;
+            input.value = parseAHKHotkeyToDisplay(ahkVal);
+            input.setAttribute('data-ahk', ahkVal);
+        });
+    });
+}
+
+function saveCustomHotkeys() {
+    if (typeof ahk === 'undefined') return;
+
+    var hkFields = [
+        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F4', 'hk_F5', 'hk_F6', 'hk_F7', 'hk_F8',
+        'hk_F10', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert',
+        'hk_End', 'hk_Home', 'hk_PgUp', 'hk_PgDn'
+    ];
+
+    var values = {};
+    var counts = {};
+    var labelMap = {
+        hk_F1: '返回角色',
+        hk_F2: '暫離 / 勿擾',
+        hk_F3: '清包切換',
+        hk_F4: '快速傳送卷軸',
+        hk_F5: '返回藏身處',
+        hk_F6: '一鍵取物',
+        hk_F7: '背包座標定位',
+        hk_F8: '兌換命運卡',
+        hk_F10: '高級喝水',
+        hk_WinZ: '開啟菜單視窗',
+        hk_WinV: '快速查價',
+        hk_WinC: '座標與顏色偵測',
+        hk_Space: '一鍵喝水',
+        hk_Insert: '自動循環技能',
+        hk_End: '快速申請組隊',
+        hk_Home: '快速申請交易',
+        hk_PgUp: '快速清對方交易欄',
+        hk_PgDn: '快速接受交易'
+    };
+
+    var conflictFound = false;
+
+    hkFields.forEach(function (id) {
+        var el = document.getElementById(id);
+        var val = el ? (el.getAttribute('data-ahk') || el.value) : '';
+        var normVal = val.replace(/^[~*$]+/g, '').toLowerCase();
+        values[id] = val;
+
+        if (normVal) {
+            if (!counts[normVal]) {
+                counts[normVal] = [labelMap[id]];
+            } else {
+                counts[normVal].push(labelMap[id]);
+                conflictFound = true;
+            }
+        }
+    });
+
+    if (conflictFound) {
+        var conflictMsgs = [];
+        Object.keys(counts).forEach(function (k) {
+            if (counts[k].length > 1) {
+                conflictMsgs.push('「' + counts[k].join('」與「') + '」設定了重複按鍵 [' + parseAHKHotkeyToDisplay(k) + ']');
+            }
+        });
+        alert('⚠️ 按鍵衝突，無法儲存！\n\n' + conflictMsgs.join('\n'));
+        return;
+    }
+
+    ahk.NeutronSaveCustomHotkeys(
+        values.hk_F1, values.hk_F2, values.hk_F3, values.hk_F4, values.hk_F5, values.hk_F6,
+        values.hk_F7, values.hk_F8, values.hk_F10, values.hk_WinZ, values.hk_WinV, values.hk_WinC,
+        values.hk_Space, values.hk_Insert, values.hk_End, values.hk_Home, values.hk_PgUp, values.hk_PgDn
+    );
+}
+
+function resetDefaultHotkeys() {
+    Object.keys(defaultHotkeys).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+            var defVal = defaultHotkeys[id];
+            el.value = parseAHKHotkeyToDisplay(defVal);
+            el.setAttribute('data-ahk', defVal);
+        }
+    });
 }
 
 //儲存喝水設定
@@ -235,5 +409,6 @@ function saveWarehouseConfig() {
 
 //載入時同步資料
 window.onload = function () {
+    initHotkeyRecorder();
     setTimeout(syncDataFromAHK, 200);
 };

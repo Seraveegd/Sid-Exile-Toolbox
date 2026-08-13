@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -63,6 +63,8 @@ gosub,讀取技能連段數據
 gosub,讀取循環技能設置
 gosub,讀取偵測喝水數據
 gosub,讀取藥劑觸發紀錄
+gosub,讀取自訂快捷鍵
+gosub,註冊動態熱鍵
 
 ;[寫入預設值]------------------------------------------------------------------------------------------------------
 
@@ -253,11 +255,11 @@ GetDriveTailSerial()
 
 #ifwinactive, Path of Exile
 
-	#Z::
+	HK_WinZ_Label:
 		gosub,呼叫菜單
 	return
 
-	#V::
+	HK_WinV_Label:
 		gosub,查價工具視窗
 	return
 
@@ -811,7 +813,7 @@ Else
 	Return
 
 	;[高級喝水模式切換按鍵]----------------------------------------------------------
-	~F10::
+	HK_F10_Label:
 (Autodrinkbutton = 0 ? (Autodrinkbutton := 1,ToolTip("已開啟高級喝水模式")) : (Autodrinkbutton := 0,ToolTip("已關閉高級喝水模式")))
 if Autodrinkbutton = 0
 	{
@@ -1135,7 +1137,7 @@ IfWinActive,Path of Exile
 return
 
 ;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
-#c::
+HK_WinC_Label:
 MouseGetPos, thisPosX, thisPosY
 PixelGetColor, colorabc, %thisPosX%, %thisPosY%
 PosX := ["顏色1_X","顏色2_X","顏色3_X","顏色4_X","顏色5_X","顏色6_X","顏色7_X","顏色8_X","顏色9_X"]
@@ -2221,7 +2223,7 @@ return
 
 ;[Space空白一鍵喝水區(熱鍵)]------------------------------------------------------------------------------------------
 
-~*space::
+HK_Space_Label:
 settimer,偵測對話框1,25
 settimer,偵測對話框2,25
 if Toolbutton = 0
@@ -2595,7 +2597,7 @@ Return
 
 ;[PgUp/PgDn清包區(熱鍵)]------------------------------------------------------------------------------------------
 
-PgUp::
+HK_PgUp_Label:
 Critical
 	if (對方背包左上_X = "error" or 對方背包右下_X = "error")
 	{
@@ -2610,7 +2612,7 @@ Critical
 	}
 return
 
-PgDn::
+HK_PgDn_Label:
 Critical
 	if (接受交易_X = "error" or 接受交易_X = "error")
 	{
@@ -2628,16 +2630,17 @@ return
 ;[PgUp/PgDn清包區(指令)]------------------------------------------------------------------------------------------
 
 清對方背包按壓式:
+cleanPgUpKey := CleanKeyName(快捷鍵_PgUp)
 loop % 掃描水平數量2
 {
 	PosX := (掃描開始左上2_X+(背包每格寬2/2)) + ((背包每格寬2/2)*((A_Index-1)*2))
-	if not(GetKeyState("PgUp","P"))
+	if not(GetKeyState(cleanPgUpKey,"P"))
 	return
 	loop % 掃描垂直數量2
 	{
 		PosY := (掃描開始左上2_Y+(背包每格高2/2)) + ((背包每格高2/2)*((A_Index-1)*2))
 		MouseMove, % PosX, % PosY,0
-		if not(GetKeyState("PgUp","P"))
+		if not(GetKeyState(cleanPgUpKey,"P"))
 		return
 	}
 }
@@ -2656,7 +2659,7 @@ return
 
 ;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
-*Insert::
+HK_Insert_Label:
 (StopUser = 0 ? (StopUser := 1,ToolTip("循環技能已開啟")) : (StopUser := 0,ToolTip("循環技能已關閉")))
 if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error" or 循環技能時間1 = "error" or 循環技能時間2 = "error" or 循環技能時間3 = "error")
 {
@@ -2849,7 +2852,7 @@ Return
 
 ;[Home快速交易(熱鍵)]-----------------------------------------------------------------------------------------------------------
 
-Home::
+HK_Home_Label:
 if (快速交易提醒 = "關閉")
 {
 	Gosub,獲取對方id
@@ -2883,7 +2886,7 @@ if 快速交易提醒 = 開啟
 }
 Return
 
-#Home::
+HK_WinHome_ModeLabel:
 gosub,Home快速交易設定
 Return
 
@@ -2934,7 +2937,7 @@ Return
 
 ;[End快速組隊(熱鍵)]------------------------------------------------------------------------------------------------------------
 
-End::
+HK_End_Label:
 if (快速組隊提醒 = "關閉")
 {
 	Gosub,獲取對方id
@@ -2968,7 +2971,7 @@ if 快速組隊提醒 = 開啟
 }
 Return
 
-#End::
+HK_WinEnd_ModeLabel:
 gosub,End快速組隊設定
 Return
 
@@ -3038,7 +3041,7 @@ Return
 
 ;[F1返回角色(熱鍵)]------------------------------------------------------------------------------------------------------------
 
-*F1::
+HK_F1_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -3053,11 +3056,14 @@ else
 	if F1模式 = 返角模式
 	gosub,返角
 	if F1模式 = 原始鍵盤模式
-	send {F1}
+	{
+	cleanF1Key := CleanKeyName(快捷鍵_F1)
+	send {%cleanF1Key%}
+	}
 }
 return
 
-#F1::
+HK_WinF1_ModeLabel:
 gosub,F1熱鍵切換
 return
 
@@ -3210,7 +3216,7 @@ send {enter}
 BlockInput Off
 Return
 
-#F2::
+HK_WinF2_ModeLabel:
 gosub,回復模式及時切換
 return
 
@@ -3312,7 +3318,7 @@ Return
 
 ;[F3清空背包區(熱鍵)]------------------------------------------------------------------------------------------------------------
 
-F3::
+HK_F3_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -3371,7 +3377,7 @@ return
 }
 return
 
-#F3::
+HK_WinF3_ModeLabel:
 gosub,背包模式及時切換
 return
 
@@ -3511,7 +3517,8 @@ loop % 掃描水平數量
 PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
 	if 清包模式 = 按壓式
 	{
-		if not(GetKeyState("F3","P"))
+		cleanF3Key := CleanKeyName(快捷鍵_F3)
+		if not(GetKeyState(cleanF3Key,"P"))
 		{
 		send {ctrl up}
 		send {F3 up}
@@ -3535,8 +3542,9 @@ PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_In
 MouseClick,, % PosX, % PosY,1,0
 	if 清包模式 = 按壓式
 	{
-		ToolTip, % "鬆開[F3]停止。", 0,22,3
-		if not(GetKeyState("F3","P"))
+		cleanF3Key := CleanKeyName(快捷鍵_F3)
+		ToolTip, % "鬆開[" . cleanF3Key . "]停止。", 0,22,3
+		if not(GetKeyState(cleanF3Key,"P"))
 		{
 		send {ctrl up}
 		send {F3 up}
@@ -3630,7 +3638,7 @@ return
 
 ;[F4快速開傳捲區(熱鍵)]---------------------------------------------------------------------------------------------------
 
-*F4::
+HK_F4_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -3663,7 +3671,7 @@ sleep 1000
 }
 return
 
-#F4::
+HK_WinF4_ModeLabel:
 Msgbox,16,提醒,本工具的 [Win + F4] 沒有多功能切換哦~ ^0^
 return
 
@@ -3700,7 +3708,7 @@ return
 
 ;[F5一鍵返回藏身區(熱鍵)]---------------------------------------------------------------------------------------------------
 
-F5::
+HK_F5_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -3724,7 +3732,7 @@ return
 
 ;[F6一鍵取物(熱鍵)]---------------------------------------------------------------------------------------------------
 
-F6::
+HK_F6_Label:
  if 取物模式 = error
  {
  msgbox,48,提醒,第一次使用F6的朋友你好!請先使用Win + F6 選擇取物座標定位!`r前往通貨頁抓取刷圖日常所需的通貨座標。
@@ -3742,7 +3750,7 @@ F6::
  }
 Return
 
-#F6::
+HK_WinF6_ModeLabel:
 gosub,一鍵取物模式及時切換
 Return
 
@@ -3844,11 +3852,11 @@ Return
 
 ;[F7座標定位區]------------------------------------------------------------------------------------------------------
 
-#F7::
+HK_WinF7_ModeLabel:
 Msgbox,16,提醒,本工具的 [Win + F7] 沒有多功能切換哦~ ^0^
 return
 
-*F7::
+HK_F7_Label:
 F7背包定位:
 MouseGetPos, thisPosX, thisPosY
 PixelGetColor, colorabc, %thisPosX%, %thisPosY%
@@ -3909,7 +3917,7 @@ return
 
 ;[F8命運卡兌換(熱鍵)]---------------------------------------------------------------------------------------------------
 
-F8::
+HK_F8_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -3937,7 +3945,7 @@ if (命運卡交易_X = "error" or 命運卡格子_Y = "error")
 }
 return
 
-#F8::
+HK_WinF8_ModeLabel:
 gosub,命運卡兌換模式切換
 return
 
@@ -4649,8 +4657,146 @@ NeutronGetSettings(neutron) {
 	. """smokeKey"":""" . 煙霧地雷 . ""","
 	. """mineDelay2"":""" . 引爆延遲2 . ""","
 	. """clickMode"":""" . 連點模式 . ""","
-	. """clickSpeed"":""" . 滑鼠連點速度 . """"
+	. """clickSpeed"":""" . 滑鼠連點速度 . ""","
+	. """hk_F1"":""" . 快捷鍵_F1 . ""","
+	. """hk_F2"":""" . 快捷鍵_F2 . ""","
+	. """hk_F3"":""" . 快捷鍵_F3 . ""","
+	. """hk_F4"":""" . 快捷鍵_F4 . ""","
+	. """hk_F5"":""" . 快捷鍵_F5 . ""","
+	. """hk_F6"":""" . 快捷鍵_F6 . ""","
+	. """hk_F7"":""" . 快捷鍵_F7 . ""","
+	. """hk_F8"":""" . 快捷鍵_F8 . ""","
+	. """hk_F10"":""" . 快捷鍵_F10 . ""","
+	. """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
+	. """hk_WinV"":""" . 快捷鍵_WinV . ""","
+	. """hk_WinC"":""" . 快捷鍵_WinC . ""","
+	. """hk_Space"":""" . 快捷鍵_Space . ""","
+	. """hk_Insert"":""" . 快捷鍵_Insert . ""","
+	. """hk_End"":""" . 快捷鍵_End . ""","
+	. """hk_Home"":""" . 快捷鍵_Home . ""","
+	. """hk_PgUp"":""" . 快捷鍵_PgUp . ""","
+	. """hk_PgDn"":""" . 快捷鍵_PgDn . """"
 	. "}"
 	return json
 }
+
+;[自訂快捷鍵相關函數與邏輯]----------------------------------------------------------------------------------
+
+CleanKeyName(hk) {
+	clean := RegExReplace(hk, "i)^[~*$^!+#]+", "")
+	return clean
+}
+
+讀取自訂快捷鍵:
+Iniread, 快捷鍵_F1, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F1, *F1
+Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
+Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
+Iniread, 快捷鍵_F4, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F4, *F4
+Iniread, 快捷鍵_F5, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F5, F5
+Iniread, 快捷鍵_F6, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F6, F6
+Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
+Iniread, 快捷鍵_F8, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F8, F8
+Iniread, 快捷鍵_F10, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F10, ~F10
+Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, #z
+Iniread, 快捷鍵_WinV, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinV, #v
+Iniread, 快捷鍵_WinC, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinC, #c
+Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
+Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
+Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
+Iniread, 快捷鍵_Home, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Home, Home
+Iniread, 快捷鍵_PgUp, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_PgUp, PgUp
+Iniread, 快捷鍵_PgDn, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_PgDn, PgDn
+Return
+
+註冊動態熱鍵:
+Hotkey, IfWinActive, Path of Exile
+keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+Loop, parse, keysList, % ","
+{
+    kName := A_LoopField
+    hkVal := 快捷鍵_%kName%
+    lbl := "HK_" . kName . "_Label"
+    if (hkVal != "" && hkVal != "ERROR")
+    {
+        try {
+            Hotkey, %hkVal%, %lbl%, On
+        }
+    }
+
+    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F4" || kName = "F6" || kName = "F7" || kName = "F8" || kName = "Home" || kName = "End")
+    {
+        cleanK := CleanKeyName(hkVal)
+        if (cleanK != "")
+        {
+            winHk := "#" . cleanK
+            winLbl := "HK_Win" . kName . "_ModeLabel"
+            try {
+                Hotkey, %winHk%, %winLbl%, On
+            }
+        }
+    }
+}
+Hotkey, IfWinActive
+Return
+
+解開動態熱鍵:
+Hotkey, IfWinActive, Path of Exile
+keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+Loop, parse, keysList, % ","
+{
+    kName := A_LoopField
+    hkVal := 快捷鍵_%kName%
+    if (hkVal != "" && hkVal != "ERROR")
+    {
+        try {
+            Hotkey, %hkVal%, Off
+        }
+    }
+    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F4" || kName = "F6" || kName = "F7" || kName = "F8" || kName = "Home" || kName = "End")
+    {
+        cleanK := CleanKeyName(hkVal)
+        if (cleanK != "")
+        {
+            winHk := "#" . cleanK
+            try {
+                Hotkey, %winHk%, Off
+            }
+        }
+    }
+}
+Hotkey, IfWinActive
+Return
+
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF4, hkF5, hkF6, hkF7, hkF8, hkF10, hkWinZ, hkWinV, hkWinC, hkSpace, hkInsert, hkEnd, hkHome, hkPgUp, hkPgDn) {
+	global
+	gosub, 解開動態熱鍵
+	快捷鍵_F1 := hkF1
+	快捷鍵_F2 := hkF2
+	快捷鍵_F3 := hkF3
+	快捷鍵_F4 := hkF4
+	快捷鍵_F5 := hkF5
+	快捷鍵_F6 := hkF6
+	快捷鍵_F7 := hkF7
+	快捷鍵_F8 := hkF8
+	快捷鍵_F10 := hkF10
+	快捷鍵_WinZ := hkWinZ
+	快捷鍵_WinV := hkWinV
+	快捷鍵_WinC := hkWinC
+	快捷鍵_Space := hkSpace
+	快捷鍵_Insert := hkInsert
+	快捷鍵_End := hkEnd
+	快捷鍵_Home := hkHome
+	快捷鍵_PgUp := hkPgUp
+	快捷鍵_PgDn := hkPgDn
+
+	keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+	Loop, parse, keysList, % ","
+	{
+		kName := A_LoopField
+		IniWrite, % 快捷鍵_%kName%, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_%kName%
+	}
+	gosub, 註冊動態熱鍵
+	ToolTip("自訂快捷鍵設置已儲存並生效！")
+}
+
 
