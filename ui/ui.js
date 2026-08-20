@@ -69,18 +69,7 @@ function syncDataFromAHK() {
             mineDelay1: 'mineDelay1',
             smokeKey: 'smokeKey',
             mineDelay2: 'mineDelay2',
-            drinkBarCheck: 'drinkBarCheck',
-            drinkReturnCheck: 'drinkReturnCheck',
-            drinkManaCheck: 'drinkManaCheck',
-            drinkPenCheck: 'drinkPenCheck',
-            drinkPenReturnCheck: 'drinkPenReturnCheck',
-            drinkPoolCheck: 'drinkPoolCheck',
-            drinkHint: 'drinkHint',
-            drinkInterval: 'drinkInterval',
-            drinkKey1: 'drinkKey1',
-            drinkKey2: 'drinkKey2',
-            drinkKey3: 'drinkKey3',
-            drinkKey4: 'drinkKey4',
+
             pageEnchant: 'pageEnchant',
             pageLegendary: 'pageLegendary',
             pageLegendaryRing: 'pageLegendaryRing',
@@ -113,7 +102,7 @@ function syncDataFromAHK() {
             }
         });
 
-        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F4', 'hk_F5', 'hk_F6', 'hk_F7', 'hk_F8', 'hk_F10', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert', 'hk_End', 'hk_Home', 'hk_PgUp', 'hk_PgDn'];
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && data[id]) {
@@ -131,21 +120,13 @@ var defaultHotkeys = {
     hk_F1: '*F1',
     hk_F2: 'F2',
     hk_F3: 'F3',
-    hk_F4: '*F4',
-    hk_F5: 'F5',
-    hk_F6: 'F6',
     hk_F7: '*F7',
-    hk_F8: 'F8',
-    hk_F10: '~F10',
     hk_WinZ: '`',
     hk_WinV: '#v',
     hk_WinC: '#c',
     hk_Space: '~*space',
     hk_Insert: '*Insert',
-    hk_End: 'End',
-    hk_Home: 'Home',
-    hk_PgUp: 'PgUp',
-    hk_PgDn: 'PgDn'
+    hk_End: 'End'
 };
 
 function parseAHKHotkeyToDisplay(ahkStr) {
@@ -261,9 +242,8 @@ function saveCustomHotkeys() {
     if (typeof ahk === 'undefined') return;
 
     var hkFields = [
-        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F4', 'hk_F5', 'hk_F6', 'hk_F7', 'hk_F8',
-        'hk_F10', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert',
-        'hk_End', 'hk_Home', 'hk_PgUp', 'hk_PgDn'
+        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinV', 'hk_WinC',
+        'hk_Space', 'hk_Insert', 'hk_End'
     ];
 
     var values = {};
@@ -272,21 +252,13 @@ function saveCustomHotkeys() {
         hk_F1: '返回角色',
         hk_F2: '暫離 / 勿擾',
         hk_F3: '清包切換',
-        hk_F4: '快速傳送卷軸',
-        hk_F5: '返回藏身處',
-        hk_F6: '一鍵取物',
         hk_F7: '背包座標定位',
-        hk_F8: '兌換命運卡',
-        hk_F10: '高級喝水',
         hk_WinZ: '開啟菜單視窗',
         hk_WinV: '快速查價',
         hk_WinC: '座標與顏色偵測',
         hk_Space: '一鍵喝水',
         hk_Insert: '自動循環技能',
-        hk_End: '快速申請組隊',
-        hk_Home: '快速申請交易',
-        hk_PgUp: '快速清對方交易欄',
-        hk_PgDn: '快速接受交易'
+        hk_End: '快速申請組隊'
     };
 
     var conflictFound = false;
@@ -319,9 +291,9 @@ function saveCustomHotkeys() {
     }
 
     ahk.NeutronSaveCustomHotkeys(
-        values.hk_F1, values.hk_F2, values.hk_F3, values.hk_F4, values.hk_F5, values.hk_F6,
-        values.hk_F7, values.hk_F8, values.hk_F10, values.hk_WinZ, values.hk_WinV, values.hk_WinC,
-        values.hk_Space, values.hk_Insert, values.hk_End, values.hk_Home, values.hk_PgUp, values.hk_PgDn
+        values.hk_F1, values.hk_F2, values.hk_F3, values.hk_F7,
+        values.hk_WinZ, values.hk_WinV, values.hk_WinC,
+        values.hk_Space, values.hk_Insert, values.hk_End
     );
 }
 
@@ -400,24 +372,7 @@ function saveMineConfig() {
     );
 }
 
-//儲存偵測喝水設置
-function saveDrinkDetectionConfig() {
-    if (typeof ahk === 'undefined') return;
-    ahk.NeutronSaveDrinkDetectionConfig(
-        document.getElementById('drinkBarCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkReturnCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkManaCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkPenCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkPenReturnCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkPoolCheck').checked ? '+Checked' : '-Checked',
-        document.getElementById('drinkHint').value,
-        document.getElementById('drinkInterval').value,
-        document.getElementById('drinkKey1').value,
-        document.getElementById('drinkKey2').value,
-        document.getElementById('drinkKey3').value,
-        document.getElementById('drinkKey4').value
-    );
-}
+
 
 //儲存倉庫頁面設置
 function saveWarehouseConfig() {

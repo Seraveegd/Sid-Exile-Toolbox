@@ -21,28 +21,19 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 | Category | Feature | Hotkey |
 |----------|---------|--------|
 | Combat | One-key flask / cyclic flask / flask anti-fail | Space (configured via Win+Z) |
-|        | Auto flask (detects life/mana) | F10 (requires Win+C detection points) |
-|        | Auto logout (returns to character select at low HP) | same as above |
 |        | Manual logout (F1 toggle to logout mode) | F1 (toggle with Win+F1 first) |
 |        | Skill combo | Q/W/E/R/T (configuration required) |
 |        | Auto detonate mines | Q/W/E/R/T (configuration required) |
 |        | Cycling skills | Insert |
 | Inventory | One-key cleanup (hold / auto / scan / quick scan) | F3 |
-|        | Quick pickup (one-key currency / coordinate location) | F6 (toggle mode with Win+F6 first) |
-|        | Quick open portal scroll | F4 |
-|        | Divination card exchange (single / multiple) | F8 |
-| Trade & Party | Quick trade (confirm 60 slots / accept) | PgUp / PgDn |
-|        | Quick trade request (with reminder) | Home |
-|        | Quick party request (with reminder) | End |
-|        | Trade reminder panel | Win+Home |
+| Trade & Party | Quick party request (with reminder) | End |
 |        | Party reminder panel | Win+End |
 | Stash Search | Quick search aut-paging | Ctrl+Alt |
 |        | Back to stash first page | Ctrl+Win |
 | Price Check | Open external price-check window | Win+V |
 | Mouse | Auto-click (wheel button / Ctrl+Left) | MButton / Ctrl+LButton |
 |        | Auto-click speed panel | Win+Z → Mouse auto-click settings |
-| System | Quick return to hideout | F5 |
-|        | AFK / Do-Not-Disturb / Auto-reply (3 modes) | F2 (select mode with Win+F2 first) |
+| System | AFK / Do-Not-Disturb / Auto-reply (3 modes) | F2 (select mode with Win+F2 first) |
 |        | Pause tool (restore keyboard) | F9 |
 |        | Reload tool / Exit tool | F11 / F12 |
 | Mode Detection | Text / game mode auto switch | Enter / Ctrl+F / paste item / hold left click |
@@ -51,9 +42,7 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 **Advanced Settings**:
 - **Win + Z**: Open the full feature menu for parameter adjustments
   - Tool intro (full feature list / hotkey list)
-  - Switch character profile
   - Flask trigger settings
-  - Detection flask settings
   - Skill combo settings
   - Cycling skill settings
   - Quick stash search settings
@@ -65,8 +54,6 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 - **Win + F1**: F1 hotkey toggle (original keyboard / logout mode)
 - **Win + F2**: F2 hotkey toggle (AFK / Do-Not-Disturb / Auto-reply)
 - **Win + F3**: F3 hotkey toggle (hold / auto / scan / quick-scan cleanup)
-- **Win + F6**: F6 hotkey toggle (quick pickup / pickup coordinate location)
-- **Win + F8**: F8 hotkey toggle (single / multiple divination card exchanges)
 - **F7**: Locate stash, trade window, and divination card exchange coordinates
 
 ## 📺 Tutorials
@@ -186,28 +173,19 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 | 類別 | 功能 | 熱鍵 |
 |------|------|------|
 | 戰鬥輔助 | 一鍵喝水/循環喝水/藥劑防呆 | Space (搭配 Win+Z 設定) |
-|          | 自動喝水 (偵測血球/血條/魔力) | F10 (需先設定 Win+C 偵測點) |
-|          | 自動返角 (殘血自動返回角色選單) | 同上 |
 |          | 手動返角 (F1 切換至返角模式) | F1 (需先用 Win+F1 切換) |
 |          | 技能連段 | Q/W/E/R/T (需設定) |
 |          | 自動引爆地雷 | Q/W/E/R/T (需設定) |
 |          | 循環使用技能 | Insert |
 | 背包管理 | 一鍵清包 (按壓/自動/掃描/掃描快搜) | F3 |
-|          | 快速取物 (一鍵拿取通貨 / 取物座標定位) | F6 (需先用 Win+F6 切換模式) |
-|          | 快速開傳送卷軸 | F4 |
-|          | 命運卡兌換 (單次/多次) | F8 |
-| 交易組隊 | 快速交易 (確認60格/接受交易) | PgUp/PgDn |
-|          | 快速申請交易 (含確認提醒) | Home |
-|          | 快速申請組隊 (含確認提醒) | End |
-|          | 交易提醒開關設定面板 | Win+Home |
+| 交易組隊 | 快速申請組隊 (含確認提醒) | End |
 |          | 組隊提醒開關設定面板 | Win+End |
 | 倉庫搜尋 | 快搜倉庫自動翻頁 | Ctrl+Alt |
 |          | 返回倉庫首頁 | Ctrl+Win |
 | 查價工具 | 呼叫外部查價視窗 | Win+V |
 | 滑鼠輔助 | 滑鼠連點 (滾輪下壓/Ctrl+左鍵) | MButton / Ctrl+LButton |
 |          | 滑鼠連點速度設定面板 | Win+Z → 滑鼠連點設置 |
-| 系統控制 | 快速返回藏身處 | F5 |
-|          | 暫離/勿擾/自動回復 (三模式切換) | F2 (需先用 Win+F2 選擇模式) |
+| 系統控制 | 暫離/勿擾/自動回復 (三模式切換) | F2 (需先用 Win+F2 選擇模式) |
 |          | 暫停工具 (回復鍵盤) | F9 |
 |          | 重新載入工具 / 結束工具 | F11 / F12 |
 | 模式偵測 | 文字/遊戲模式自動切換 | Enter / Ctrl+F / 貼上物品 / 長按左鍵 |
@@ -217,7 +195,6 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 - **Win + Z**：開啟完整功能菜單，可進行各項參數調整  
   - 工具介紹（完整功能列表 / 熱鍵列表）  
   - 藥劑觸發設置  
-  - 偵測喝水設置  
   - 技能連段設置  
   - 循環技能設置  
   - 快搜倉庫設置  
@@ -229,8 +206,6 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 - **Win + F1**：F1 熱鍵切換（原始鍵盤 / 返角模式）  
 - **Win + F2**：F2 熱鍵切換（暫離 / 勿擾 / 自動回復）  
 - **Win + F3**：F3 熱鍵切換（按壓 / 自動 / 掃描 / 掃描快搜清包）  
-- **Win + F6**：F6 熱鍵切換（快速一鍵取物 / 取物座標定位）  
-- **Win + F8**：F8 熱鍵切換（單次 / 多次兌換命運卡）  
 - **F7**：定位背包、交易欄位、命運卡兌換座標  
 
 ## 📺 教學影片與圖片

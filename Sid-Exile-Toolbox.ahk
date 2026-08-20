@@ -38,30 +38,21 @@ NeutronLoadLocal(neutronInstance, fileName) {
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
 
-gosub,讀取當前角色配置
 gosub,讀取F7背包定位內容
 gosub,背包運算作業
-gosub,背包運算作業2
 gosub,讀取F1按鍵模式
 gosub,讀取F3按鍵模式
-gosub,讀取F6按鍵模式
-gosub,讀取F6取物定位內容
-gosub,讀取F8按鍵模式
 gosub,讀取倉庫頁數據
 gosub,讀取背包初始顏色
 gosub,讀取回復模式
 gosub,讀取自動回復內容
-gosub,讀取快速交易提醒功能
 gosub,讀取快速組隊提醒功能
 gosub,讀取連點模式
 gosub,讀取滑鼠連點速度
 gosub,座標顏色讀取
 gosub,讀取地雷設置
-gosub,讀取喝水提示開關
-gosub,讀取偵測喝水打勾紀錄
 gosub,讀取技能連段數據
 gosub,讀取循環技能設置
-gosub,讀取偵測喝水數據
 gosub,讀取藥劑觸發紀錄
 gosub,讀取自訂快捷鍵
 gosub,註冊動態熱鍵
@@ -190,7 +181,6 @@ Menu, 工具介紹副菜單, Add, 完整功能列表, 完整功能
 Menu, MyMenu, Add, ★工具介紹★(必看), :工具介紹副菜單
 Menu, MyMenu, Add
 Menu, MyMenu, Add, 藥劑觸發設置, 藥劑觸發設置GUI面板
-Menu, MyMenu, Add, 偵測喝水設置, 偵測喝水設置GUI面板
 Menu, MyMenu, Add, 技能連段設置, 技能連段設置GUI面板
 Menu, MyMenu, Add, 循環技能設置, 循環技能設置GUI面板
 Menu, MyMenu, Add, 快搜倉庫設置, 倉庫頁快搜工具視窗
@@ -285,17 +275,9 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[F1] 原始功能/返回角色
 		Gui, Add,Text,cBlue,[F2] 一鍵暫離/勿擾/自動回復
 		Gui, Add,Link,cBlue,[F3] 按壓式/自動式/掃描式/掃描快搜清包 = <a href="https://youtu.be/MzIH2rn72NE">示範影片</a>
-		Gui, Add,Text,cBlue,[F4] 快速使用背包傳卷
-		Gui, Add,Text,cBlue,[F5] 返回藏身
-		Gui, Add,Text,cBlue,[F6] 快速一鍵取物
 		Gui, Add,Text,cBlue,[F7] 背包相關座標定位
-		Gui, Add,Text,cBlue,[F8] 單次/多次兌換命運卡
 		Gui, Add,Text,cBlue,[F9] 回復鍵盤功能 (暫停工具)
-		Gui, Add,Text,cBlue,[F10] 高級喝水模式 (偵測血/魔/場景自動喝水返角)
 		Gui, Add,Text,cBlue,[End] 快速申請組隊
-		Gui, Add,Text,cBlue,[Home] 快速申請交易
-		Gui, Add,Text,cBlue,[PgUp] 快速交易:確認60格欄位
-		Gui, Add,Text,cBlue,[PgDn] 快速交易:接受交易
 		Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
 		Gui, Add,Text,cBlue,[Insert] 自動循環技能
 		Gui, Add,Text,cBlue,[Win + V] 快速查價
@@ -320,13 +302,8 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[F1] = 原始功能 / 返回角色
 		Gui, Add,Text,cBlue,[F2] = 暫離 / 勿擾 / 自動回復
 		Gui, Add,Link,cBlue,[F3] = 按壓 / 自動/掃描/掃描快搜清包 / 背包顏色定位。 影片介紹:<a href="https://youtu.be/MzIH2rn72NE">點我</a>
-		Gui, Add,Text,cBlue,[F4] = 使用傳送券軸
-		Gui, Add,Text,cBlue,[F5] = 返回藏身處 (城鎮限定)
-		Gui, Add,Link,cBlue,[F6] = 快速一鍵取物/取物座標定位。 影片介紹:<a href="https://youtu.be/yV8FdhSmz2Y">點我</a>
 		Gui, Add,Text,cBlue,[F7] = 背包座標定位
-		Gui, Add,Link,cBlue,[F8] = 單次 / 多次 兌換命運卡。 影片介紹:<a href="https://youtu.be/zBKJ99hFg9Y">點我</a>
 		Gui, Add,Text,cBlue,[F9] = 回復鍵盤功能 (暫停工具)
-		Gui, Add,Text,cBlue,[F10] = 開關高級喝水模式
 		Gui, Add,Text,cBlue,[F11] = 重新啟動工具
 		Gui, Add,Text,cBlue,[F12] = 結束工具
 		Gui, Font, s10 Bold, Verdana
@@ -334,9 +311,6 @@ GetDriveTailSerial()
 		Gui, Font
 		Gui, Font, s10, Verdana
 		Gui, Add,Text,cBlue,[End] = 快速申請組隊 / 開關提醒
-		Gui, Add,Text,cBlue,[Home] = 快速申請交易 / 開關提醒
-		Gui, Add,Text,cBlue,[PgUp] = 快速交易，確認對方60格欄位
-		Gui, Add,Text,cBlue,[PgDn] = 快速交易，接受交易
 		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (`` :藥劑觸發設置)
 		Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
 		Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
@@ -378,15 +352,7 @@ GetDriveTailSerial()
 		SetTimer, 藥劑5, off
 	return
 
-	停止循環偵測:
-		settimer,偵測場景變化,off
-		settimer,偵測血球,OFF
-		settimer,偵測血條,OFF
-		settimer,偵測魔力球,OFF
-		settimer,偵測血條返角,OFF
-		settimer,偵測混傷穿透血條,OFF
-		settimer,偵測混傷穿透血條返角,OFF
-	return
+
 
 	;[藥劑觸發設置GUI面板]------------------------------------------------------------------------------------------------------
 
@@ -474,532 +440,7 @@ Else
 		Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
-	;[偵測喝水設置GUI面板]------------------------------------------------------------------------------------------------------
 
-	偵測喝水設置GUI面板:
-		gosub,偵測喝水打勾紀錄轉換
-		Gui,偵測喝水設置:new,,偵測喝水設置
-		Gui +Label偵測喝水設置 -Resize  -MinimizeBox -MaximizeBox
-		Gui Font, s12
-		Gui Add, Text, x10 y25 w275 h16, 角色頭上血條低於偵測點(1)時使用藥劑
-		Gui Add, Text, x360 y25 w243 h16, ，血條低於偵測點(2)時返回角色。
-		Gui Add, Text, x10 y165 w280 h16, 當左下角血球低於偵測點(9)時使用藥劑
-		Gui Add, Text, x10 y85 w275 h16, 當右下角魔球低於偵測點(3)時使用藥劑
-		Gui Add, Text, x10 y125 w280 h16, 血條混傷穿透低於偵測點(7)時使用藥劑
-		Gui Add, Text, x360 y125 w275 h16, ，混傷穿透低於偵測點(8)時返回角色。
-		Gui Add, Text, x9 y185 w142 h16, 偵測喝水間隔(毫秒)
-		Gui Add, Text, x213 y185 w352 h16, ，斟酌調整，依據藥劑立即回復或快速回復設置。
-		Gui Add, Text, x470 y70 w120 h16, 偵測喝水提示:
-		Gui Add, DropDownList, v喝水提示開關 x578 y68 w60 -Theme, 開啟|關閉|%喝水提示開關%||
-		Gui Font, s11 cRed
-		Gui Add, Text, x14 y45 h14, 舉例:只喝第1罐請輸入1。喝2瓶，可輸入12。挖礦時補血+開燈可輸入16，使用技能輸入16R。
-		Gui Font
-		Gui Font, s12 c0x0080FF
-		Gui Add, CheckBox, hWndcheckbox1 v偵測血條喝水開關 x10 y4 w165 h18 %偵測血條喝水打勾紀錄%, 開啟偵測血條喝水↓
-		Gui Add, CheckBox, hWndcheckbox2 v偵測血條返角開關 x360 y4 w165 h18 %偵測血條返角打勾紀錄%, 開啟偵測血條返角↓
-		Gui Add, CheckBox, hWndcheckbox3 v偵測魔球喝水開關 x10 y64 w165 h18 %偵測魔球喝水打勾紀錄%, 開啟偵測魔球喝水↓
-		Gui Add, CheckBox, hWndcheckbox4 v偵測血條穿透開關 x10 y104 w165 h18 %偵測血條穿透打勾紀錄%, 開啟偵測血條穿透↓
-		Gui Add, CheckBox, hWndcheckbox5 v偵測血條穿透返角開關 x360 y105 w200 h18 %偵測血條穿透返角打勾紀錄%, 開啟偵測血條穿透返角↓
-		Gui Add, CheckBox, hWndcheckbox6 v偵測血球池開關 x10 y144 w150 h18 %偵測血球池打勾紀錄%, 開啟偵測血球池↓
-		Gui, Add,Link,cRed x548 y4, 點我 <a href="https://youtu.be/dTk3BO54_8Y">影片示範</a>
-		Gui Font
-		Gui Add, Button, g儲存偵測喝水設置 x578 y182 w80 h23 -Theme, 儲存並關閉
-		Gui Add, StatusBar,, ▲ 工具小知識: 同時開啟 [ 偵測血條返角 ] 與 [ 偵測血球池 ] 可以大幅度降低返角誤判情況。 ㊣ 工具製作 By Sid の 一人團隊
-		Gui Font
-		Gui Add, Edit, v藥劑按鍵1 x293 y23 w60 h20  -Theme,%藥劑按鍵1%
-		Gui Add, Edit, v藥劑按鍵2 x293 y81 w60 h20  -Theme,%藥劑按鍵2%
-		Gui Add, Edit, v藥劑按鍵3 x293 y123 w60 h20  -Theme,%藥劑按鍵3%
-		Gui Add, Edit, v藥劑按鍵4 x293 y163 w60 h20  -Theme,%藥劑按鍵4%
-		Gui Add, ComboBox, v偵測喝水間隔 x157 y183 w50 -Theme, 100|300|500|800|1000|2000|3000|%偵測喝水間隔%||
-		Gui Show, w668 h234, 偵測喝水設置 (此功能只會在F10高級模式下運作)
-	Return
-
-	;[偵測喝水GUI儲存按鈕]------------------------------------------------------------------------------------------------------
-
-	偵測喝水設置Escape:
-	偵測喝水設置Close:
-		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-		IfMsgBox No
-			Return
-Else
-	Gui,submit
-	Return
-
-	;[偵測喝水GUI儲存指令]------------------------------------------------------------------------------------------------------
-
-	偵測喝水打勾紀錄轉換:
-		if 偵測血條喝水打勾紀錄 = +checked
-		{
-			偵測血條喝水打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測血條喝水打勾紀錄 = -checked
-		}
-
-		if 偵測血條返角打勾紀錄 = +checked
-		{
-			偵測血條返角打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測血條返角打勾紀錄 = -checked
-		}
-
-		if 偵測魔球喝水打勾紀錄 = +checked
-		{
-			偵測魔球喝水打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測魔球喝水打勾紀錄 = -checked
-		}
-
-		if 偵測血條穿透打勾紀錄 = +checked
-		{
-			偵測血條穿透打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測血條穿透打勾紀錄 = -checked
-		}
-
-		if 偵測血條穿透返角打勾紀錄 = +checked
-		{
-			偵測血條穿透返角打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測血條穿透返角打勾紀錄 = -checked
-		}
-
-		if 偵測血球池打勾紀錄 = +checked
-		{
-			偵測血球池打勾紀錄 = +checked
-		}
-		else
-		{
-			偵測血球池打勾紀錄 = -checked
-		}
-	return
-
-	儲存偵測喝水設置:
-		Gui,submit
-		If 偵測血條喝水開關 = 1
-			偵測血條喝水打勾紀錄 = +Checked
-		If 偵測血條喝水開關 = 0
-			偵測血條喝水打勾紀錄 = -Checked
-		If 偵測血條返角開關 = 1
-			偵測血條返角打勾紀錄 = +Checked
-		If 偵測血條返角開關 = 0
-			偵測血條返角打勾紀錄 = -Checked
-		If 偵測魔球喝水開關 = 1
-			偵測魔球喝水打勾紀錄 = +Checked
-		If 偵測魔球喝水開關 = 0
-			偵測魔球喝水打勾紀錄 = -Checked
-		If 偵測血條穿透開關 = 1
-			偵測血條穿透打勾紀錄 = +Checked
-		If 偵測血條穿透開關 = 0
-			偵測血條穿透打勾紀錄 = -Checked
-		If 偵測血條穿透返角開關 = 1
-			偵測血條穿透返角打勾紀錄 = +Checked
-		If 偵測血條穿透返角開關 = 0
-			偵測血條穿透返角打勾紀錄 = -Checked
-		If 偵測血球池開關 = 1
-			偵測血球池打勾紀錄 = +Checked
-		If 偵測血球池開關 = 0
-			偵測血球池打勾紀錄 = -Checked
-		gosub,儲存偵測喝水打勾紀錄
-		gosub,儲存偵測喝水數據
-		gosub,儲存喝水提示開關
-		gosub,讀取偵測喝水打勾紀錄
-		gosub,讀取偵測喝水數據
-		gosub,讀取喝水提示開關
-		if Autodrinkbutton = 1
-		{
-			Autodrinkbutton := 0
-			msgbox,48,提醒,您剛剛重新調整了設定，已自動關閉[F10]高級模式。`r請重新開啟[F10]使其生效。
-		}
-	Return
-
-	儲存喝水提示開關:
-		IniWrite,	% 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
-	Return
-
-	讀取喝水提示開關:
-		Iniread,	 喝水提示開關,	sidtooldata.ini, 偵測喝水數據, 喝水提示開關
-		if 喝水提示開關 = error
-		{
-			ToolTipOff = 0
-			喝水提示開關 = 開啟
-		}
-		if 喝水提示開關 = 開啟
-		{
-			ToolTipOff = 0
-		}
-		if 喝水提示開關 = 關閉
-		{
-			ToolTipOff = 1
-		}
-	Return
-
-	儲存偵測喝水打勾紀錄:
-		IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-		IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-		IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-		IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-		IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-		IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-	Return
-
-	讀取偵測喝水打勾紀錄:
-		Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-		Iniread,	偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-		Iniread,	偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-		Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-		Iniread,	偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-		Iniread,	偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-	Return
-
-	儲存偵測喝水數據:
-		IniWrite,	% 藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
-		IniWrite,	% 藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
-		IniWrite,	% 藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
-		IniWrite,	% 藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
-		IniWrite,	% 偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-	Return
-
-	讀取偵測喝水數據:
-		Iniread,	藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
-		Iniread,	藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
-		Iniread,	藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
-		Iniread,	藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
-		Iniread,	偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-	Return
-
-	;[高級喝水模式切換按鍵]----------------------------------------------------------
-	HK_F10_Label:
-(Autodrinkbutton = 0 ? (Autodrinkbutton := 1,ToolTip("已開啟高級喝水模式")) : (Autodrinkbutton := 0,ToolTip("已關閉高級喝水模式")))
-if Autodrinkbutton = 0
-	{
-	iniWrite,關閉, sidtooldata.ini, 高級喝水狀態, 高級喝水狀態
-	iniread,高級喝水狀態, sidtooldata.ini, 高級喝水狀態, 高級喝水狀態
-	gosub,暫停讀秒循環喝水
-	gosub,停止循環偵測
-	return
-	}
-if Autodrinkbutton = 1
-	{
-	if (顏色4_X = "error" or 顏色4_Y = "error")
-		{
-		Autodrinkbutton := 0
-		msgbox,16,錯誤,尚未設置場景偵測點(按下確認後將彈跳教學圖片)!`r已先自動關閉F10高級喝水模式!
-		run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1163223583_2.png,,UseErrorLevel
-		return
-		}
-	gosub,座標顏色讀取
-	if 偵測血條返角打勾紀錄 = +checked
-	settimer,偵測血條返角,21
-	if 偵測血條穿透返角打勾紀錄 = +checked
-	settimer,偵測混傷穿透血條返角,23,-1
-	if 偵測血條喝水打勾紀錄 = +checked
-	settimer,偵測血條,31,-1
-	if 偵測魔球喝水打勾紀錄 = +checked
-	settimer,偵測魔力球,51,-1
-	if 偵測血條穿透打勾紀錄 = +checked
-	settimer,偵測混傷穿透血條,37,-1
-	if 偵測血球池打勾紀錄 = +checked
-	settimer,偵測血球,41,-1
-	settimer,偵測場景變化,57,-1
-	}
-return
-
-;[偵測區(血/魔/場景)]---------------------------------------------------------------------------------------------------
-
-偵測血條:
-IfWinActive,Path of Exile
-{
-if (偵測血條喝水打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
- {
-   if (顏色1_Y = "error" or 藥劑按鍵1 = "error")
-   {
-   Autodrinkbutton := 0
-   gosub,停止循環偵測
-   ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置偵測頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 1 " 。
-   return
-   }
-   else
-   {
-	PixelGetColor,血量黑條, %顏色1_X%, %顏色1_Y%
-	if 血量黑條 = %顏色1_C%
-	{
-		if ToolTipOff = 0
-		ToolTip("偵測人物上方血條，偵測到需要喝第 " . 藥劑按鍵1 . " 罐藥劑")
-		if Toolbutton = 0
-		{
-		send %藥劑按鍵1%
-		sleep %偵測喝水間隔%
-		}
-	}
-   }
- }
-}
-return
-
-偵測血條返角:
-IfWinActive,Path of Exile
-{
-if (偵測血條返角打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
-   {
-    if 顏色2_Y = "error"
-    {
-   	Autodrinkbutton := 0
-   	gosub,停止循環偵測
-   	ToolTip("已關閉高級喝水模式")
-   	msgbox,16,錯誤,尚未設置殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後[Win + C]抓取代號 " 2 " 。
-   	return
-    }
-    else
-    {
-	PixelGetColor,血量黑條2, %顏色2_X%, %顏色2_Y%
-	if 偵測血球池打勾紀錄 = +checked
-	{
-		if 血球池 = %顏色9_C%
-		{
-
-		}
-		else
-		{
-   			if 血量黑條2 = %顏色2_C%
-				{
-					if ToolTipOff = 0
-					ToolTip("偵測人物上方血條與血球池，皆過低返回角色")
-					Critical
-					if Toolbutton = 0
-					gosub,返角
-				}
-		}
-	}
-	else
-	{
-		if 血量黑條2 = %顏色2_C%
-		{
-			if ToolTipOff = 0
-			ToolTip("偵測人物上方血條，血量過低返回角色")
-			Critical
-			if Toolbutton = 0
-			gosub,返角
-		}
-	}
-    }
-   }
-}
-return
-
-偵測魔力球:
-IfWinActive,Path of Exile
-{
-if (偵測魔球喝水打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
- {
-   if (顏色3_Y = "error" or 藥劑按鍵2 = "error")
-   {
-   Autodrinkbutton := 0
-   gosub,停止循環偵測
-   ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置偵測右下魔力池座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔，若無使用可關閉功能。`r設置偵測魔球座標 => 指定右下魔力球低於滑鼠當前座標時喝水[Win + C]抓取代號 " 3 " 。
-   return
-   }
-   else
-   {
-	PixelGetColor,魔力池, %顏色3_X%, %顏色3_Y%
-	if 魔力池 = %顏色3_C%
-	{
-	}
-	else
-	{
-	if 偵測場景顏色 = 穩定
-	   {
-		PixelGetColor,魔力池, %顏色3_X%, %顏色3_Y%
-		if 魔力池 = %顏色3_C%
-		{
-		}
-		else
-		{
-		if ToolTipOff = 0
-		ToolTip("偵測右下魔球，偵測到需要喝第 " . 藥劑按鍵2 . " 罐藥劑")
-			if Toolbutton = 0
-			{
-			send %藥劑按鍵2%
-			sleep %偵測喝水間隔%
-			}
-		}
-	   }
-	}
-   }
- }
-}
-return
-
-偵測混傷穿透血條:
-IfWinActive,Path of Exile
-{
-if (偵測血條穿透打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
- {
-   if (顏色7_Y = "error" or 藥劑按鍵3 = "error")
-   {
-   Autodrinkbutton := 0
-   gosub,停止循環偵測
-   ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置混傷穿透頭上血條座標或需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r (``) 呼叫菜單 => 偵測喝水設置面板 => 設定藥劑與間隔。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 7 " 。
-   return
-   }
-   else
-   {
-	PixelGetColor,血量黑條3, %顏色7_X%, %顏色7_Y%
-	if 血量黑條3 = %顏色7_C%
-	{
-		if ToolTipOff = 0
-		ToolTip("偵測人物上方血條承受混傷，偵測到需要喝第 " . 藥劑按鍵3 . " 罐藥劑")
-		if Toolbutton = 0
-		{
-		send %藥劑按鍵3%
-		sleep %偵測喝水間隔%
-		}
-	}
-   }
- }
-}
-return
-
-偵測混傷穿透血條返角:
-IfWinActive,Path of Exile
-{
-if (偵測血條穿透返角打勾紀錄 = "+Checked" and Autodrinkbutton = "1")
-   {
-    if 顏色8_Y = "error"
-    {
-   	Autodrinkbutton := 0
-   	gosub,停止循環偵測
-   	ToolTip("已關閉高級喝水模式")
-   	msgbox,16,錯誤,尚未設置混傷穿透殘血返角之頭上血條座標，已自動關閉高級喝水功能[F10]。`r(``) 呼叫菜單 => 偵測喝水設置面板 => 若無使用可關閉功能。`r設置偵測血條座標 => 使用正火燒乾血量後滿ES狀態[Win + C]抓取代號 " 8 " 。
-   	return
-    }
-    else
-    {
-	PixelGetColor,血量黑條4, %顏色8_X%, %顏色8_Y%
-	if 偵測血球池打勾紀錄 = +checked
-	{
-		if 血球池 = %顏色9_C%
-		{
-
-		}
-		else
-		{
-   			if 血量黑條4 = %顏色8_C%
-				{
-					if ToolTipOff = 0
-					ToolTip("混傷穿透護盾頭上血條與血球池，血量皆過低返回角色")
-					Critical
-					if Toolbutton = 0
-					gosub,返角
-				}
-		}
-	}
-	else
-	{
-		if 血量黑條4 = %顏色8_C%
-		{
-			if ToolTipOff = 0
-			ToolTip("混傷穿透護盾，頭上血條過低返回角色")
-			Critical
-			if Toolbutton = 0
-			gosub,返角
-		}
-	}
-    }
-   }
-}
-return
-
-偵測血球:
-IfWinActive,Path of Exile
-{
-if (偵測血球池打勾紀錄 = "+checked" and Autodrinkbutton = "1")
- {
-   if (顏色9_Y = "error" or 藥劑按鍵4 = "error")
-   {
-   Autodrinkbutton := 0
-   gosub,停止循環偵測
-   ToolTip("已關閉高級喝水模式")
-   msgbox,16,錯誤,尚未設置偵測血球池座標與需要喝的藥劑，已自動關閉高級喝水功能[F10]。`r高級喝水設置 => 偵測自動喝水 => 設定損血時需要的藥劑。`r設置偵測血球池座標 => [Win + C]抓取代號 " 9 " 。
-   return
-   }
-   else
-   {
-	PixelGetColor,血球池, %顏色9_X%, %顏色9_Y%
-	if 血球池 = %顏色9_C%
-	{
-	}
-	else
-	{
-	if 偵測場景顏色 = 穩定
-	   {
-		PixelGetColor,血球池, %顏色9_X%, %顏色9_Y%
-		if 血球池 = %顏色9_C%
-		{
-		}
-		else if Toolbutton = 0
-		{
-		if ToolTipOff = 0
-		ToolTip("偵測左下血球，偵測到需要喝第 " . 藥劑按鍵4 . " 罐藥劑")
-		send %藥劑按鍵4%
-		sleep %偵測喝水間隔%
-		}
-	   }
-	}
-   }
- }
-}
-return
-
-偵測場景變化:
-IfWinActive,Path of Exile
- {
- if Autodrinkbutton = 1
-  {
-			; 設定容許度（0-255），數值越大容許範圍越寬，這裡先設 10
-   容許度 := 25
-
-			; 利用 PixelSearch 搜尋同一個點，並加入容許度與 RGB 模式
-   PixelSearch, FoundX, FoundY, 顏色4_X, 顏色4_Y, 顏色4_X, 顏色4_Y, %顏色4_C%, %容許度%, RGB
-
-			; ErrorLevel = 0 代表顏色在容許範圍內（場景沒變）
-   if (ErrorLevel = 0)
-	{
-	if 偵測場景顏色 = 變化中
-	   {
-	   偵測場景顏色 = 中繼
-	   sleep 1000
-	   偵測場景顏色 = 穩定
-	   }
-	if 偵測場景顏色 = 穩定
-	   {
-	   偵測場景顏色 = 穩定
-	   }
-	}
-    else ; ErrorLevel = 1 代表顏色超出容許範圍（場景改變了）
-	{
-	gosub,暫停讀秒循環喝水
-	Toolbutton := 0
-	openI := 0
-	偵測場景顏色 = 變化中
-	ToolTip("切換場景中，已暫停部分循環(若持續顯示請 Win + C 重設)")
-	當前倉庫頁 = 0
-	}
-  }
-}
-return
 
 ;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
 HK_WinC_Label:
@@ -2316,58 +1757,7 @@ Return
  Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 Return
 
-;[PgUp/PgDn清包區(熱鍵)]------------------------------------------------------------------------------------------
 
-HK_PgUp_Label:
-Critical
-	if (對方背包左上_X = "error" or 對方背包右下_X = "error")
-	{
-	msgbox,16,錯誤,尚未設定快速交易，確認對方背包60格欄位座標。`r請隨意尋找 NPC 點擊「販賣物品」打開，使用F7設定。`r確定後，將跳轉圖片教學。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1029564595_2.jpg,,UseErrorLevel
-		return
-	}
-	else
-	{
-	gosub,清對方背包按壓式
-	return
-	}
-return
-
-HK_PgDn_Label:
-Critical
-	if (接受交易_X = "error" or 接受交易_X = "error")
-	{
-	msgbox,16,錯誤,尚未設定快速交易，「接受」交易座標。`r請隨意尋找 NPC 點擊「販賣物品」打開，使用F7設定。`r確定後，將跳轉圖片教學。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1029564595_2.jpg,,UseErrorLevel
-		return
-	}
-	else
-	{
-	MouseClick, Left,接受交易_X,接受交易_Y,1,0
-	return
-	}
-return
-
-;[PgUp/PgDn清包區(指令)]------------------------------------------------------------------------------------------
-
-清對方背包按壓式:
-cleanPgUpKey := CleanKeyName(快捷鍵_PgUp)
-loop % 掃描水平數量2
-{
-	PosX := (掃描開始左上2_X+(背包每格寬2/2)) + ((背包每格寬2/2)*((A_Index-1)*2))
-	if not(GetKeyState(cleanPgUpKey,"P"))
-	return
-	loop % 掃描垂直數量2
-	{
-		PosY := (掃描開始左上2_Y+(背包每格高2/2)) + ((背包每格高2/2)*((A_Index-1)*2))
-		MouseMove, % PosX, % PosY,0
-		if not(GetKeyState(cleanPgUpKey,"P"))
-		return
-	}
-}
-return
-
-背包運算作業2:
 掃描開始左上2_X := % 對方背包左上_X
 掃描開始左上2_Y := % 對方背包左上_Y
 掃描開始右下2_X := % 對方背包右下_X
@@ -2529,90 +1919,7 @@ iniread,循環技能時間2 , sidtooldata.ini, 循環技能, 循環技能時間2
 iniread,循環技能時間3 , sidtooldata.ini, 循環技能, 循環技能時間3
 Return
 
-;[Home快速交易(熱鍵)]-----------------------------------------------------------------------------------------------------------
 
-HK_Home_Label:
-if (快速交易提醒 = "關閉")
-{
-	Gosub,獲取對方id
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
-	Clipboard = /tradewith %移除後完好的ID%
-	send {enter}
-	Send ^{V}
-	sleep 1
-	Send {enter}
-}
-if 快速交易提醒 = 開啟
-{
-   Gosub,獲取對方id
-   msgbox,4,提醒,即將交易的玩家是" %移除後完好的ID% " 確定嗎?`r按鍵[ Enter ] 立即交易，按鍵[ N ]取消。`r不需提醒可使用[Win + Home]關閉。
-   IfMsgBox Yes
-	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
-	Clipboard = /tradewith %移除後完好的ID%
-	send {enter}
-	Send ^{V}
-	sleep 1
-	Send {enter}
-	}
-   else
-	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
-	}
-}
-Return
-
-HK_WinHome_ModeLabel:
-gosub,Home快速交易設定
-Return
-
-;[Home快速交易設定GUI面板]-------------------------------------------------------------------------------------------------------
-
-Home快速交易設定:
-Gui,Home快速交易設定:new,,Home快速交易設定
-Gui +LabelHome快速交易設定 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g開啟快速交易提醒 w200 hwndHBT28 ,開啟提醒
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT28,BT1Options)
-Gui, Add, Button,g關閉快速交易提醒 w200 hwndHBT29 ,關閉提醒
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT29,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前交易提醒 = "快速交易提醒 " 。 "
-Gui, Show
-return
-
-Home快速交易設定Escape:
-Home快速交易設定Close:
-Gui,submit
-Return
-
-開啟快速交易提醒:
-Gui,submit
-快速交易提醒 = 開啟
-IniWrite,% 快速交易提醒, sidtooldata.ini, 按鍵模式切換, 快速交易提醒
- Iniread, 快速交易提醒, sidtooldata.ini, 按鍵模式切換, 快速交易提醒
-ToolTip("快速交易提醒功能 = : " . 快速交易提醒 . " 。 ")
-Return
-
-關閉快速交易提醒:
-Gui,submit
-快速交易提醒 = 關閉
-IniWrite,% 快速交易提醒, sidtooldata.ini, 按鍵模式切換, 快速交易提醒
- Iniread, 快速交易提醒, sidtooldata.ini, 按鍵模式切換, 快速交易提醒
-ToolTip("快速交易提醒功能 = : " . 快速交易提醒 . " 。 ")
-Return
-
-讀取快速交易提醒功能:
- Iniread, 快速交易提醒, sidtooldata.ini, 按鍵模式切換, 快速交易提醒
-Return
 
 ;[End快速組隊(熱鍵)]------------------------------------------------------------------------------------------------------------
 
@@ -3315,219 +2622,7 @@ global 存倉掃描顏色Array := []
 }
 return
 
-;[F4快速開傳捲區(熱鍵)]---------------------------------------------------------------------------------------------------
 
-HK_F4_Label:
-if Toolbutton = 1
-{
-ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
-}
-else
-{
-gosub,快速開傳捲區
-}
-return
-
-快速開傳捲區:
-if (傳送卷軸_X = "error" or 傳送卷軸_Y = "error")
-{
-msgbox,16,錯誤,尚未指定傳送卷軸位置!將滑鼠移動到背包中傳捲位置，`r熱鍵 [F7] 指定背包內位置，輸入「8」。
-}
-else
-{
-MouseGetPos,F4PosX,F4PosY
-BlockInput On
-if openI = 0
-send {i}
-sleep 200
-MouseClick, Right,傳送卷軸_X,傳送卷軸_Y,1,1
-MouseMove,F4PosX,F4PosY,0
-sleep 100
-if openI = 0
-send {i}
-BlockInput Off
-sleep 1000
-}
-return
-
-HK_WinF4_ModeLabel:
-Msgbox,16,提醒,本工具的 [Win + F4] 沒有多功能切換哦~ ^0^
-return
-
-~*I UP::
-(openI = 0 ? (openI := 1) : (openI := 0))
-if (openI = "1" and Toolbutton = "0")
-ToolTip("開啟背包(I),如果操作不符合請按(ESC)")
-if (openI = "0" and Toolbutton = "0")
-ToolTip("關閉背包(I),如果操作不符合請按(ESC)")
-return
-
-~*P::
-openI := 0
-if Toolbutton = 0
-ToolTip("天賦(P),如果操作不符合請按(ESC)，[Ctrl + F]強調天賦")
-return
-
-~*K::
-openI := 0
-if Toolbutton = 0
-ToolTip("外觀(K),如果操作不符合請按(ESC)。")
-return
-
-~*M::
-openI := 0
-if Toolbutton = 0
-ToolTip("商城(M),如果操作不符合請按(ESC)。")
-return
-
-~*BS::
-Toolbutton = 1
-ToolTip("(Back Space)，變更為文字模式。")
-return
-
-;[F5一鍵返回藏身區(熱鍵)]---------------------------------------------------------------------------------------------------
-
-HK_F5_Label:
-if Toolbutton = 1
-{
-ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
-}
-else
-{
-gosub,返回藏身
-}
-return
-
-返回藏身:
-BlockInput On
-send {enter}
-sleep 25
-Clipboard = /hideout
-Send ^{V}
-sleep 25
-send {enter}
-BlockInput Off
-return
-
-;[F6一鍵取物(熱鍵)]---------------------------------------------------------------------------------------------------
-
-HK_F6_Label:
- if 取物模式 = error
- {
- msgbox,48,提醒,第一次使用F6的朋友你好!請先使用Win + F6 選擇取物座標定位!`r前往通貨頁抓取刷圖日常所需的通貨座標。
- }
- else
- {
-	if 取物模式 = 快速一鍵取物
-	{
-	gosub,F6快速一鍵取物
-	}
-	if 取物模式 = 取物座標定位
-	{
-	gosub,F6快速取物定位
-	}
- }
-Return
-
-HK_WinF6_ModeLabel:
-gosub,一鍵取物模式及時切換
-Return
-
-F6快速一鍵取物:
-MouseGetPos, thisPosX, thisPosY
-send {Ctrl down}
-loop,5
-{
-mouseclick,Left,通貨%A_Index%_X,通貨%A_Index%_Y,1,0
-sleep 25
-}
-send {Ctrl up}
-Mousemove, thisPosX, thisPosY
-Return
-
-F6快速取物定位:
-	MouseGetPos, thisPosX, thisPosY
-	PosX := ["通貨1_X","通貨2_X","通貨3_X","通貨4_X","通貨5_X"]
-	PosY := ["通貨1_Y","通貨2_Y","通貨3_Y","通貨4_Y","通貨5_Y"]
-	InputBox, affixID,F6快速取物定位, 使用熱鍵前的滑鼠座標 [ %thisPosX% `, %thisPosY% ]。`n如尚未指定，請按 ( Cancel )。`r正確指定座標後使用 ( F6 )。`r`r通貨1 = 1 (例:傳捲)`r通貨2 = 2 (例:知識捲)`r以此類推...`r`r請依指示輸入對應的座標代號( 1 ~ 5 ),,300,270
-	if not ErrorLevel
-	{
-		checkAffixID := RegExMatch(affixID, "[1-5]$")
-		if checkAffixID = 1
-		{
-			iniWrite,% thisPosX, sidtooldata.ini, 取物定位, % PosX[affixID]
-			iniWrite,% thisPosY, sidtooldata.ini, 取物定位, % PosY[affixID]
-			gosub,讀取F6取物定位內容
-		}
-		else if not (affixID = "1" or affixID = "2" or affixID = "3" or affixID = "4" or affixID = "5")
-		{
-			MsgBox,16,錯誤,請輸入正確的代號 1 ~ 5
-		}
-	}
-	return
-
-讀取F6取物定位內容:
-loop,5
-{
-iniread,通貨%A_Index%_X, sidtooldata.ini, 取物定位, 通貨%A_Index%_X
-iniread,通貨%A_Index%_Y, sidtooldata.ini, 取物定位, 通貨%A_Index%_Y
-}
-return
-
-;[F6一鍵取物模式切換GUI面板]----------------------------------------------------------------------------------------------
-
-一鍵取物模式及時切換:
-Gui,一鍵取物模式及時切換:new,,F6一鍵取物模式及時切換
-Gui +Label一鍵取物模式及時切換 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g變更取物模式 w200 hwndHBT13 ,快速一鍵取物
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT13,BT1Options)
-
-Gui, Add, Button,g變更取物座標定位 w200 hwndHBT14 ,取物座標定位
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT14,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前F6按鍵為 = "取物模式  " 。 "
-Gui, Show
-return
-
-一鍵取物模式及時切換Escape:
-一鍵取物模式及時切換Close:
-Gui,submit
-Return
-
-變更取物模式:
-Gui,submit
-if (通貨1_X = "error" or 通貨1_Y = "error" or 通貨2_X = "error" or 通貨2_Y = "error")
-{
-msgbox,48,提醒視窗,你正切換為快速一鍵取物模式，但工具讀取到您尚未抓取通貨座標，`r請先使用Win + F6 選擇取物座標定位!`r前往通貨頁抓取刷圖日常所需的通貨座標。
-gosub,一鍵取物模式及時切換
-}
-else
-{
-取物模式 = 快速一鍵取物
-IniWrite,% 取物模式 , sidtooldata.ini, 按鍵模式切換, 取物模式
- Iniread, 取物模式 , sidtooldata.ini, 按鍵模式切換, 取物模式
-ToolTip("取物模式 已變更為: " . 取物模式  . " 。 ")
-}
-Return
-
-變更取物座標定位:
-Gui,submit
-取物模式 = 取物座標定位
-IniWrite,% 取物模式 , sidtooldata.ini, 按鍵模式切換, 取物模式
- Iniread, 取物模式 , sidtooldata.ini, 按鍵模式切換, 取物模式
-ToolTip("取物模式 已變更為: " . 取物模式  . " 。 ")
-msgbox,48,提醒視窗,你已切換為取物座標定位模式，先將滑鼠指定好需拿取刷圖用通貨，按下F6輸入代號進行定位。
-return
-
-讀取F6按鍵模式:
- Iniread, 取物模式 , sidtooldata.ini, 按鍵模式切換, 取物模式
-Return
 
 ;[F7座標定位區]------------------------------------------------------------------------------------------------------
 
@@ -3594,172 +2689,7 @@ return
 背包每格高 := floor((掃描開始右下_Y - 掃描開始左上_Y) / 掃描垂直數量)
 return
 
-;[F8命運卡兌換(熱鍵)]---------------------------------------------------------------------------------------------------
 
-HK_F8_Label:
-if Toolbutton = 1
-{
-ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
-}
-else
-{
-if (命運卡交易_X = "error" or 命運卡格子_Y = "error")
- {
- msgbox,16,錯誤,尚未指定命運卡兌換相關座標位置!`r將滑鼠移動到正確位置，熱鍵 [F7] 指定位置，輸入6和7。`r確認後，將跳轉圖片教學。
- run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1202643573_2.jpg,,UseErrorLevel
- }
- else
- {
-	if 命運卡兌換模式 = 單次兌換模式
-	{
-	gosub,單次命運卡交易
-	return
-	}
-	if 命運卡兌換模式 = 多次兌換模式
-	{
-	gosub,多次命運卡交易
-	return
-	}
- }
-}
-return
-
-HK_WinF8_ModeLabel:
-gosub,命運卡兌換模式切換
-return
-
-;[F8命運卡兌換(指令)]---------------------------------------------------------------------------------------------------
-
-單次命運卡交易:
-MouseGetPos,F8PosX,F8PosY
-	send {Ctrl Down}
-	MouseClick, Left,F8PosX,F8PosY,1,0
-	sleep 100
-	MouseClick, Left,命運卡交易_X,命運卡交易_Y,1,0
-	sleep 100
-	MouseClick, Left,命運卡格子_X,命運卡格子_Y,1,0
-	send {Ctrl Up}
-	MouseMove,F8PosX,F8PosY,0
-return
-
-多次命運卡交易:
-次數 := 1
-SetTimer, 提醒停止按鍵, 500
-send {ctrl down}
-loop % 掃描水平數量
-{
-	if (GetKeyState("~","P"))
-	{
-	send {ctrl up}
-	SetTimer, 提醒停止按鍵, Off
-	return
-	}
-	PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
-	loop % 掃描垂直數量
-	{
-			if (GetKeyState("~","P"))
-			{
-			send {ctrl up}
-			SetTimer, 提醒停止按鍵, Off
-			return
-			}
-		PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
-		MouseClick,, % PosX, % PosY,1,0
-		sleep 100
-		PixelGetColor,兌換位置顏色,%命運卡格子_X%,%命運卡格子_Y%
-		if 兌換位置顏色 = %命運卡格子_C%
-		{
-		}
-		else
-		{
-		PixelGetColor,不可交易顏色2,%命運卡交易_X%,%命運卡交易_Y%
-			if 不可交易顏色2 = %命運卡交易_C%
-			{
-			失敗次數 := ++次數
-			MouseClick,,命運卡格子_X,命運卡格子_Y,1,0
-				if 失敗次數 = 10
-					{
-					send {ctrl up}
-					SetTimer, 提醒停止按鍵, Off
-					msgbox % "交易失敗10次，停止繼續執行，請整理一下背包欄位。"
-					return
-					}
-			}
-			else
-			{
-			sleep 100
-			MouseClick,,命運卡交易_X,命運卡交易_Y,1,0
-			Sleep 100
-			MouseClick,,命運卡格子_X,命運卡格子_Y,1,0
-			}
-		}
-	}
-}
-send {ctrl up}
-SetTimer, 提醒停止按鍵, Off
-return
-
-return
-
-;[F8命運卡兌換模式切換GUI面板]----------------------------------------------------------------------------------------------
-
-命運卡兌換模式切換:
-Gui,命運卡兌換模式切換:new,,F8命運卡兌換模式切換
-Gui +Label命運卡兌換模式切換 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g單次兌換模式 w200 hwndHBT22 ,單次兌換模式
-BT1Options:= [{BC: "99D1D3|FFFFFF", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT22,BT1Options)
-
-Gui, Add, Button,g多次兌換模式 w200 hwndHBT23 ,多次兌換模式
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT23,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前F8按鍵為 = "命運卡兌換模式  " 。 "
-Gui, Show
-return
-
-命運卡兌換模式切換Escape:
-命運卡兌換模式切換Close:
-Gui,submit
-Return
-
-單次兌換模式:
-Gui,submit
-	if (命運卡交易_X = "error" or 命運卡格子_Y = "error")
-	{
-	msgbox,48,提醒視窗,你正切換為單次兌換命運卡模式，但工具讀取到您尚未抓取座標，`r請先使用[F7] 抓取命運卡兌換相關座標!。
-	}
-	else
-	{
-	命運卡兌換模式 = 單次兌換模式
-	IniWrite,% 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
-	 Iniread, 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
-	ToolTip("命運卡兌換模式 已變更為: " . 命運卡兌換模式  . " 。 ")
-	}
-Return
-
-多次兌換模式:
-Gui,submit
-	if (命運卡交易_X = "error" or 命運卡格子_Y = "error")
-	{
-	msgbox,48,提醒視窗,你正切換為多次兌換命運卡模式，但工具讀取到您尚未抓取座標，`r請先使用[F7] 抓取命運卡兌換相關座標!。
-	}
-	else
-	{
-	命運卡兌換模式 = 多次兌換模式
-	IniWrite,% 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
-	 Iniread, 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
-	ToolTip("命運卡兌換模式 已變更為: " . 命運卡兌換模式  . " 。 ")
-	}
-Return
-
-讀取F8按鍵模式:
-Iniread, 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
-Return
 
 ;[漂亮按鈕產生代碼]----------------------------------------------------------------------------------------------
 
@@ -4106,28 +3036,7 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！")
 }
 
-NeutronSaveDrinkDetectionConfig(neutron, barChecked, returnChecked, manaChecked, penChecked, penReturnChecked, poolChecked, hint, interval, key1, key2, key3, key4) {
-	global
-	偵測血條喝水打勾紀錄 := barChecked
-	偵測血條返角打勾紀錄 := returnChecked
-	偵測魔球喝水打勾紀錄 := manaChecked
-	偵測血條穿透打勾紀錄 := penChecked
-	偵測血條穿透返角打勾紀錄 := penReturnChecked
-	偵測血球池打勾紀錄 := poolChecked
-	喝水提示開關 := hint
-	偵測喝水間隔 := interval
-	藥劑按鍵1 := key1
-	藥劑按鍵2 := key2
-	藥劑按鍵3 := key3
-	藥劑按鍵4 := key4
-	gosub, 儲存偵測喝水打勾紀錄
-	gosub, 儲存偵測喝水數據
-	gosub, 儲存喝水提示開關
-	gosub, 讀取偵測喝水打勾紀錄
-	gosub, 讀取偵測喝水數據
-	gosub, 讀取喝水提示開關
-	ToolTip("偵測喝水設置已儲存！")
-}
+
 
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
 	global
@@ -4190,21 +3099,13 @@ NeutronGetSettings(neutron) {
 	. """hk_F1"":""" . 快捷鍵_F1 . ""","
 	. """hk_F2"":""" . 快捷鍵_F2 . ""","
 	. """hk_F3"":""" . 快捷鍵_F3 . ""","
-	. """hk_F4"":""" . 快捷鍵_F4 . ""","
-	. """hk_F5"":""" . 快捷鍵_F5 . ""","
-	. """hk_F6"":""" . 快捷鍵_F6 . ""","
 	. """hk_F7"":""" . 快捷鍵_F7 . ""","
-	. """hk_F8"":""" . 快捷鍵_F8 . ""","
-	. """hk_F10"":""" . 快捷鍵_F10 . ""","
 	. """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
 	. """hk_WinV"":""" . 快捷鍵_WinV . ""","
 	. """hk_WinC"":""" . 快捷鍵_WinC . ""","
 	. """hk_Space"":""" . 快捷鍵_Space . ""","
 	. """hk_Insert"":""" . 快捷鍵_Insert . ""","
-	. """hk_End"":""" . 快捷鍵_End . ""","
-	. """hk_Home"":""" . 快捷鍵_Home . ""","
-	. """hk_PgUp"":""" . 快捷鍵_PgUp . ""","
-	. """hk_PgDn"":""" . 快捷鍵_PgDn . """"
+	. """hk_End"":""" . 快捷鍵_End . """"
 	. "}"
 	return json
 }
@@ -4220,26 +3121,18 @@ CleanKeyName(hk) {
 Iniread, 快捷鍵_F1, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F1, *F1
 Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
 Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
-Iniread, 快捷鍵_F4, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F4, *F4
-Iniread, 快捷鍵_F5, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F5, F5
-Iniread, 快捷鍵_F6, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F6, F6
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
-Iniread, 快捷鍵_F8, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F8, F8
-Iniread, 快捷鍵_F10, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F10, ~F10
 Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
 Iniread, 快捷鍵_WinV, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinV, #v
 Iniread, 快捷鍵_WinC, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinC, #c
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
 Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
 Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
-Iniread, 快捷鍵_Home, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Home, Home
-Iniread, 快捷鍵_PgUp, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_PgUp, PgUp
-Iniread, 快捷鍵_PgDn, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_PgDn, PgDn
 Return
 
 註冊動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -4252,7 +3145,7 @@ Loop, parse, keysList, % ","
         }
     }
 
-    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F4" || kName = "F6" || kName = "F7" || kName = "F8" || kName = "Home" || kName = "End")
+    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F7" || kName = "End")
     {
         cleanK := CleanKeyName(hkVal)
         if (cleanK != "")
@@ -4270,7 +3163,7 @@ Return
 
 解開動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -4281,7 +3174,7 @@ Loop, parse, keysList, % ","
             Hotkey, %hkVal%, Off
         }
     }
-    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F4" || kName = "F6" || kName = "F7" || kName = "F8" || kName = "Home" || kName = "End")
+    if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F7" || kName = "End")
     {
         cleanK := CleanKeyName(hkVal)
         if (cleanK != "")
@@ -4296,29 +3189,21 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF4, hkF5, hkF6, hkF7, hkF8, hkF10, hkWinZ, hkWinV, hkWinC, hkSpace, hkInsert, hkEnd, hkHome, hkPgUp, hkPgDn) {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinV, hkWinC, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1 := hkF1
 	快捷鍵_F2 := hkF2
 	快捷鍵_F3 := hkF3
-	快捷鍵_F4 := hkF4
-	快捷鍵_F5 := hkF5
-	快捷鍵_F6 := hkF6
 	快捷鍵_F7 := hkF7
-	快捷鍵_F8 := hkF8
-	快捷鍵_F10 := hkF10
 	快捷鍵_WinZ := hkWinZ
 	快捷鍵_WinV := hkWinV
 	快捷鍵_WinC := hkWinC
 	快捷鍵_Space := hkSpace
 	快捷鍵_Insert := hkInsert
 	快捷鍵_End := hkEnd
-	快捷鍵_Home := hkHome
-	快捷鍵_PgUp := hkPgUp
-	快捷鍵_PgDn := hkPgDn
 
-	keysList := "F1,F2,F3,F4,F5,F6,F7,F8,F10,WinZ,WinV,WinC,Space,Insert,End,Home,PgUp,PgDn"
+	keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName := A_LoopField
