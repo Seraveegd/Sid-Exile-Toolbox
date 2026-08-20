@@ -39,11 +39,6 @@ function syncDataFromAHK() {
         if (!jsonStr) return;
         var data = JSON.parse(jsonStr);
 
-        if (data.profile) {
-            var profileEl = document.getElementById('currentProfileDisplay');
-            if (profileEl) profileEl.innerText = data.profileName || ('角色配置 ' + data.profile);
-        }
-
         var fieldMap = {
             flaskMode: 'flaskMode',
             mainSkill: 'mainSkill',

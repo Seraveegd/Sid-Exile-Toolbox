@@ -36,9 +36,6 @@
         <div class="menu-item active" onclick="showSection('intro')">
           <span class="icon">★</span> ★工具介紹★
         </div>
-        <div class="menu-item" onclick="showSection('profile')">
-          <span class="icon">👤</span> 切換角色配置
-        </div>
         <div class="menu-item" onclick="showSection('flask')">
           <span class="icon">🧪</span> 藥劑觸發設置
         </div>
@@ -180,42 +177,6 @@
             <div class="d-flex align-items-center">
               <button class="btn btn-success btn-sm px-4 py-2 me-2" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
               <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄 恢復預設快捷鍵</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel 2: 切換角色配置 -->
-      <div id="profile" class="panel">
-        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">切換角色配置</div>
-          <div class="panel-subtitle">快速切換不同角色的喝水、技能連段與座標設置。</div>
-        </div>
-
-        <div class="card shadow-sm">
-          <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">當前角色配置</h6>
-            <div class="alert alert-info py-2 px-3 small d-flex align-items-center mb-3" role="alert">
-              <span class="me-2">ℹ️</span>
-              <div>目前使用配置：<strong id="currentProfileDisplay">角色配置 1</strong></div>
-            </div>
-
-            <div class="row g-2">
-              <div class="col-md-4">
-                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(1)">切換至 角色配置
-                  1</button>
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(2)">切換至 角色配置
-                  2</button>
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-outline-primary btn-sm w-100 py-2" onclick="ahk.NeutronSwitchProfile(3)">切換至 角色配置
-                  3</button>
-              </div>
-            </div>
-            <div class="form-text text-secondary mt-2 small">
-              注意：切換配置會自動暫停現有的循環技能與高級喝水，請重新確認偵測點。
             </div>
           </div>
         </div>

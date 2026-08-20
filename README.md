@@ -137,11 +137,8 @@ Settings are stored in `sidtooldata.ini`, with support for up to three character
 
 | File | Purpose |
 |------|---------|
-| `Sid-Exile-Toolbox(en).ahk` | Main program script (English) |
-| `Sid-Exile-Toolbox(zh).ahk` | Main program script (Chinese) |
+| `Sid-Exile-Toolbox.ahk` | Main program script |
 | `sidtooldata.ini` | Settings file (auto-generated) |
-| `sidtooldata2.ini` | Second character profile |
-| `sidtooldata3.ini` | Third character profile |
 
 > ⚠️ `.ini` files are included in `.gitignore`; personal coordinate data will not be uploaded.
 
@@ -219,7 +216,6 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 **進階設定**：  
 - **Win + Z**：開啟完整功能菜單，可進行各項參數調整  
   - 工具介紹（完整功能列表 / 熱鍵列表）  
-  - 切換角色配置  
   - 藥劑觸發設置  
   - 偵測喝水設置  
   - 技能連段設置  
@@ -297,7 +293,7 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 | 8 | 混傷穿透 ES 的血條返角點 |
 | 9 | 左下血球池（滿血時的顏色） |
 
-設定儲存於 `sidtooldata.ini`，最多支援三組角色配置切換。
+設定儲存於 `sidtooldata.ini`。
 
 ---
 
@@ -305,11 +301,8 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 
 | 檔案 | 用途 |
 |------|------|
-| `Sid-Exile-Toolbox(en).ahk` | 主程式腳本（英文版） |
-| `Sid-Exile-Toolbox(zh).ahk` | 主程式腳本（中文版） |
+| `Sid-Exile-Toolbox.ahk` | 主程式腳本 |
 | `sidtooldata.ini` | 設定檔（自動產生） |
-| `sidtooldata2.ini` | 第二組角色設定 |
-| `sidtooldata3.ini` | 第三組角色設定 |
 
 > ⚠️ `.ini` 檔案已納入 `.gitignore`，不會上傳個人座標資訊。
 

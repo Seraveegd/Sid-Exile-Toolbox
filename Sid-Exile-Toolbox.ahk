@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -107,11 +107,11 @@ if 命運卡兌換模式 = ERROR
 ;------------------------------------------------------------------------------------------------------
 Loop,3
 {
-	if 循環技能%A_Index% = ERROR
+	if (循環技能%A_Index% = "ERROR")
 	{
 		循環技能%A_Index% = T
 	}
-	if 循環技能時間%A_Index% = ERROR
+	if (循環技能時間%A_Index% = "ERROR")
 	{
 		循環技能時間%A_Index% = Off
 	}
@@ -189,7 +189,6 @@ Menu, 工具介紹副菜單, Add, 工具熱鍵列表, 工具熱鍵列表GUI面�
 Menu, 工具介紹副菜單, Add, 完整功能列表, 完整功能
 Menu, MyMenu, Add, ★工具介紹★(必看), :工具介紹副菜單
 Menu, MyMenu, Add
-Menu, MyMenu, Add, 切換角色配置, 切換角色配置GUI面板
 Menu, MyMenu, Add, 藥劑觸發設置, 藥劑觸發設置GUI面板
 Menu, MyMenu, Add, 偵測喝水設置, 偵測喝水設置GUI面板
 Menu, MyMenu, Add, 技能連段設置, 技能連段設置GUI面板
@@ -452,81 +451,27 @@ Else
 	Return
 
 	儲存藥劑觸發紀錄:
-		if 當前角色配置 = 1
-		{
-			IniWrite,	% 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
-			IniWrite,	% 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
-			IniWrite,	% 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
-			IniWrite,	% 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
-			IniWrite,	% 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
-			IniWrite,	% 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
-			IniWrite,	% 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
-			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
-		if 當前角色配置 = 2
-		{
-			IniWrite,	% 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
-			IniWrite,	% 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
-			IniWrite,	% 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
-			IniWrite,	% 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
-			IniWrite,	% 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
-			IniWrite,	% 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
-			IniWrite,	% 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
-			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
-		if 當前角色配置 = 3
-		{
-			IniWrite,	% 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
-			IniWrite,	% 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
-			IniWrite,	% 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
-			IniWrite,	% 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
-			IniWrite,	% 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
-			IniWrite,	% 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
-			IniWrite,	% 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
-			IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
+		IniWrite,	% 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
+		IniWrite,	% 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
+		IniWrite,	% 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
+		IniWrite,	% 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
+		IniWrite,	% 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
+		IniWrite,	% 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
+		IniWrite,	% 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
+		IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+		IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
 	讀取藥劑觸發紀錄:
-		if 當前角色配置 = 1
-		{
-			Iniread,	 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
-			Iniread,	 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
-			Iniread,	 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
-			Iniread,	 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
-			Iniread,	 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
-			Iniread,	 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
-			Iniread,	 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
-			Iniread,	 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
-		if 當前角色配置 = 2
-		{
-			Iniread,	 主要技能,	sidtooldata2.ini, 藥劑觸發數據, 主要技能
-			Iniread,	 藥劑觸發模式,	sidtooldata2.ini, 藥劑觸發數據, 藥劑觸發模式
-			Iniread,	 藥劑持續時間1,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間1
-			Iniread,	 藥劑持續時間2,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間2
-			Iniread,	 藥劑持續時間3,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間3
-			Iniread,	 藥劑持續時間4,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間4
-			Iniread,	 藥劑持續時間5,	sidtooldata2.ini, 藥劑觸發數據, 藥劑持續時間5
-			Iniread,	 使用技能時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata2.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
-		if 當前角色配置 = 3
-		{
-			Iniread,	 主要技能,	sidtooldata3.ini, 藥劑觸發數據, 主要技能
-			Iniread,	 藥劑觸發模式,	sidtooldata3.ini, 藥劑觸發數據, 藥劑觸發模式
-			Iniread,	 藥劑持續時間1,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間1
-			Iniread,	 藥劑持續時間2,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間2
-			Iniread,	 藥劑持續時間3,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間3
-			Iniread,	 藥劑持續時間4,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間4
-			Iniread,	 藥劑持續時間5,	sidtooldata3.ini, 藥劑觸發數據, 藥劑持續時間5
-			Iniread,	 使用技能時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-			Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata3.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
-		}
+		Iniread,	 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
+		Iniread,	 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
+		Iniread,	 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
+		Iniread,	 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
+		Iniread,	 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
+		Iniread,	 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
+		Iniread,	 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
+		Iniread,	 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+		Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
 	;[偵測喝水設置GUI面板]------------------------------------------------------------------------------------------------------
@@ -699,117 +644,37 @@ Else
 	Return
 
 	儲存偵測喝水打勾紀錄:
-		if 當前角色配置 = 1
-		{
-			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
-		if 當前角色配置 = 2
-		{
-			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
-		if 當前角色配置 = 3
-		{
-			IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
+		IniWrite,	% 偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+		IniWrite,	% 偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+		IniWrite,	% 偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+		IniWrite,	% 偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+		IniWrite,	% 偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+		IniWrite,	% 偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
 	Return
 
 	讀取偵測喝水打勾紀錄:
-		if 當前角色配置 = 1
-		{
-			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			Iniread,	偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			Iniread,	偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
-		if 當前角色配置 = 2
-		{
-			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			Iniread,	偵測血條返角打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			Iniread,	偵測血球池打勾紀錄,	sidtooldata2.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
-		if 當前角色配置 = 3
-		{
-			Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
-			Iniread,	偵測血條喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
-			Iniread,	偵測血條返角打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
-			Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
-			Iniread,	偵測血條穿透打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
-			Iniread,	偵測血球池打勾紀錄,	sidtooldata3.ini, 偵測喝水數據, 偵測血球池打勾紀錄
-		}
+		Iniread,	偵測血條穿透返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透返角打勾紀錄
+		Iniread,	偵測血條喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條喝水打勾紀錄
+		Iniread,	偵測血條返角打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條返角打勾紀錄
+		Iniread,	偵測魔球喝水打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測魔球喝水打勾紀錄
+		Iniread,	偵測血條穿透打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血條穿透打勾紀錄
+		Iniread,	偵測血球池打勾紀錄,	sidtooldata.ini, 偵測喝水數據, 偵測血球池打勾紀錄
 	Return
 
 	儲存偵測喝水數據:
-		if 當前角色配置 = 1
-		{
-			IniWrite,	% 藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
-			IniWrite,	% 藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
-			IniWrite,	% 藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
-			IniWrite,	% 藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
-			IniWrite,	% 偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-		}
-		if 當前角色配置 = 2
-		{
-			IniWrite,	% 藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
-			IniWrite,	% 藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
-			IniWrite,	% 藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
-			IniWrite,	% 藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
-			IniWrite,	% 偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
-		}
-		if 當前角色配置 = 3
-		{
-			IniWrite,	% 藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
-			IniWrite,	% 藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
-			IniWrite,	% 藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
-			IniWrite,	% 藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
-			IniWrite,	% 偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
-		}
+		IniWrite,	% 藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
+		IniWrite,	% 藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
+		IniWrite,	% 藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
+		IniWrite,	% 藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
+		IniWrite,	% 偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
 	Return
 
 	讀取偵測喝水數據:
-		if 當前角色配置 = 1
-		{
-			Iniread,	藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
-			Iniread,	藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
-			Iniread,	藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
-			Iniread,	藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
-			Iniread,	偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
-		}
-		if 當前角色配置 = 2
-		{
-			Iniread,	藥劑按鍵1,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵1
-			Iniread,	藥劑按鍵2,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵2
-			Iniread,	藥劑按鍵3,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵3
-			Iniread,	藥劑按鍵4,	sidtooldata2.ini, 偵測喝水數據, 藥劑按鍵4
-			Iniread,	偵測喝水間隔,	sidtooldata2.ini, 偵測喝水數據, 偵測喝水間隔
-		}
-		if 當前角色配置 = 3
-		{
-			Iniread,	藥劑按鍵1,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵1
-			Iniread,	藥劑按鍵2,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵2
-			Iniread,	藥劑按鍵3,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵3
-			Iniread,	藥劑按鍵4,	sidtooldata3.ini, 偵測喝水數據, 藥劑按鍵4
-			Iniread,	偵測喝水間隔,	sidtooldata3.ini, 偵測喝水數據, 偵測喝水間隔
-		}
+		Iniread,	藥劑按鍵1,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵1
+		Iniread,	藥劑按鍵2,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵2
+		Iniread,	藥劑按鍵3,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵3
+		Iniread,	藥劑按鍵4,	sidtooldata.ini, 偵測喝水數據, 藥劑按鍵4
+		Iniread,	偵測喝水間隔,	sidtooldata.ini, 偵測喝水數據, 偵測喝水間隔
 	Return
 
 	;[高級喝水模式切換按鍵]----------------------------------------------------------
@@ -1149,24 +1014,9 @@ InputBox, ColorID,偵測點記錄工具, 顏色編號 [ %colorabc% ] ，座標 [
 		checkColorID := RegExMatch(ColorID, "[1-9]$")
 		if checkColorID = 1
 		{
-		 if 當前角色配置 = 1
-		 {
 		 iniWrite,% thisPosX, sidtooldata.ini, 顏色座標, % PosX[ColorID]
 		 iniWrite,% thisPosY, sidtooldata.ini, 顏色座標, % PosY[ColorID]
 		 iniwrite,% colorabc, sidtooldata.ini, 顏色座標, % CosA[ColorID]
-		 }
-		 if 當前角色配置 = 2
-		 {
-		 iniWrite,% thisPosX, sidtooldata2.ini, 顏色座標, % PosX[ColorID]
-		 iniWrite,% thisPosY, sidtooldata2.ini, 顏色座標, % PosY[ColorID]
-		 iniwrite,% colorabc, sidtooldata2.ini, 顏色座標, % CosA[ColorID]
-		 }
-		 if 當前角色配置 = 3
-		 {
-		 iniWrite,% thisPosX, sidtooldata3.ini, 顏色座標, % PosX[ColorID]
-		 iniWrite,% thisPosY, sidtooldata3.ini, 顏色座標, % PosY[ColorID]
-		 iniwrite,% colorabc, sidtooldata3.ini, 顏色座標, % CosA[ColorID]
-		 }
 		}
 		else
 		{
@@ -1178,33 +1028,12 @@ InputBox, ColorID,偵測點記錄工具, 顏色編號 [ %colorabc% ] ，座標 [
 		return
 
 座標顏色讀取:
-if 當前角色配置 = 1
-{
  loop,9
  {
  IniRead,顏色%A_Index%_X,sidtooldata.ini,顏色座標,顏色%A_Index%_X
  IniRead,顏色%A_Index%_Y,sidtooldata.ini,顏色座標,顏色%A_Index%_Y
  IniRead,顏色%A_Index%_C,sidtooldata.ini,顏色座標,顏色%A_Index%_C
  }
-}
-if 當前角色配置 = 2
-{
- loop,9
- {
- IniRead,顏色%A_Index%_X,sidtooldata2.ini,顏色座標,顏色%A_Index%_X
- IniRead,顏色%A_Index%_Y,sidtooldata2.ini,顏色座標,顏色%A_Index%_Y
- IniRead,顏色%A_Index%_C,sidtooldata2.ini,顏色座標,顏色%A_Index%_C
- }
-}
-if 當前角色配置 = 3
-{
- loop,9
- {
- IniRead,顏色%A_Index%_X,sidtooldata3.ini,顏色座標,顏色%A_Index%_X
- IniRead,顏色%A_Index%_Y,sidtooldata3.ini,顏色座標,顏色%A_Index%_Y
- IniRead,顏色%A_Index%_C,sidtooldata3.ini,顏色座標,顏色%A_Index%_C
- }
-}
 return
 
 ;[藥劑防呆區]------------------------------------------------------------------------------------------
@@ -1605,8 +1434,6 @@ Return
 
 儲存並讀取技能連段數據:
 Gui,submit
-if 當前角色配置 = 1
-{
 iniWrite,% 技1		, sidtooldata.ini, 連段設置, 技1
 iniWrite,% 技2		, sidtooldata.ini, 連段設置, 技2
 iniWrite,% 技3		, sidtooldata.ini, 連段設置, 技3
@@ -1619,67 +1446,15 @@ IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
 IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
 IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
 IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-}
-if 當前角色配置 = 2
-{
-iniWrite,% 技1		, sidtooldata2.ini, 連段設置, 技1
-iniWrite,% 技2		, sidtooldata2.ini, 連段設置, 技2
-iniWrite,% 技3		, sidtooldata2.ini, 連段設置, 技3
-iniWrite,% 技1延遲	, sidtooldata2.ini, 連段設置, 技1延遲
-iniWrite,% 技2延遲	, sidtooldata2.ini, 連段設置, 技2延遲
-iniWrite,% 技能連段功能	, sidtooldata2.ini, 連段設置, 技能連段功能
-IniRead, 技1		, sidtooldata2.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata2.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata2.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata2.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata2.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata2.ini, 連段設置, 技能連段功能
-}
-if 當前角色配置 = 3
-{
-iniWrite,% 技1		, sidtooldata3.ini, 連段設置, 技1
-iniWrite,% 技2		, sidtooldata3.ini, 連段設置, 技2
-iniWrite,% 技3		, sidtooldata3.ini, 連段設置, 技3
-iniWrite,% 技1延遲	, sidtooldata3.ini, 連段設置, 技1延遲
-iniWrite,% 技2延遲	, sidtooldata3.ini, 連段設置, 技2延遲
-iniWrite,% 技能連段功能	, sidtooldata3.ini, 連段設置, 技能連段功能
-IniRead, 技1		, sidtooldata3.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata3.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata3.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata3.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata3.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata3.ini, 連段設置, 技能連段功能
-}
 Return
 
 讀取技能連段數據:
-if 當前角色配置 = 1
-{
 IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
 IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
 IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
 IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
 IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
 IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-}
-if 當前角色配置 = 2
-{
-IniRead, 技1		, sidtooldata2.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata2.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata2.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata2.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata2.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata2.ini, 連段設置, 技能連段功能
-}
-if 當前角色配置 = 3
-{
-IniRead, 技1		, sidtooldata3.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata3.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata3.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata3.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata3.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata3.ini, 連段設置, 技能連段功能
-}
 Return
 
 ;[自動引爆地雷設置GUI面板]--------------------------------------------------------------------------------------
@@ -1723,8 +1498,6 @@ Return
 
 儲存並讀取地雷設置:
 Gui,submit
-if 當前角色配置 = 1
-{
 iniWrite,% 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
 iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
 iniWrite,% 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
@@ -1737,67 +1510,15 @@ IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
 IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
 IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
 IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-}
-if 當前角色配置 = 2
-{
-iniWrite,% 地雷模式,	sidtooldata2.ini, 地雷設置, 地雷模式
-iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-iniWrite,% 地雷按鍵,	sidtooldata2.ini, 地雷設置, 地雷按鍵
-iniWrite,% 引爆延遲1,	sidtooldata2.ini, 地雷設置, 引爆延遲1
-iniWrite,% 煙霧地雷,	sidtooldata2.ini, 地雷設置, 煙霧地雷
-iniWrite,% 引爆延遲2,	sidtooldata2.ini, 地雷設置, 引爆延遲2
-IniRead, 地雷模式,	sidtooldata2.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata2.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata2.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata2.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata2.ini, 地雷設置, 引爆延遲2
-}
-if 當前角色配置 = 3
-{
-iniWrite,% 地雷模式,	sidtooldata3.ini, 地雷設置, 地雷模式
-iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-iniWrite,% 地雷按鍵,	sidtooldata3.ini, 地雷設置, 地雷按鍵
-iniWrite,% 引爆延遲1,	sidtooldata3.ini, 地雷設置, 引爆延遲1
-iniWrite,% 煙霧地雷,	sidtooldata3.ini, 地雷設置, 煙霧地雷
-iniWrite,% 引爆延遲2,	sidtooldata3.ini, 地雷設置, 引爆延遲2
-IniRead, 地雷模式,	sidtooldata3.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata3.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata3.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata3.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata3.ini, 地雷設置, 引爆延遲2
-}
 Return
 
 讀取地雷設置:
-if 當前角色配置 = 1
-{
 IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
 IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
 IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
 IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
 IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
 IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-}
-if 當前角色配置 = 2
-{
-IniRead, 地雷模式,	sidtooldata2.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata2.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata2.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata2.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata2.ini, 地雷設置, 引爆延遲2
-}
-if 當前角色配置 = 3
-{
-IniRead, 地雷模式,	sidtooldata3.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata3.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata3.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata3.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata3.ini, 地雷設置, 引爆延遲2
-}
 Return
 
 ;[快搜倉庫頁區(熱鍵)]---------------------------------------------------------------------------------
@@ -2791,63 +2512,21 @@ msgbox,48,提醒,您剛剛重新調整了設定，已自動關閉[Ins]循環使�
 Return
 
 儲存循環技能設置:
-if 當前角色配置 = 1
-{
 iniWrite,% 循環技能1,	sidtooldata.ini, 循環技能, 循環技能1
 iniWrite,% 循環技能2,	sidtooldata.ini, 循環技能, 循環技能2
 iniWrite,% 循環技能3,	sidtooldata.ini, 循環技能, 循環技能3
 iniWrite,% 循環技能時間1, sidtooldata.ini, 循環技能, 循環技能時間1
 iniWrite,% 循環技能時間2, sidtooldata.ini, 循環技能, 循環技能時間2
 iniWrite,% 循環技能時間3, sidtooldata.ini, 循環技能, 循環技能時間3
-}
-if 當前角色配置 = 2
-{
-iniWrite,% 循環技能1,	sidtooldata2.ini, 循環技能, 循環技能1
-iniWrite,% 循環技能2,	sidtooldata2.ini, 循環技能, 循環技能2
-iniWrite,% 循環技能3,	sidtooldata2.ini, 循環技能, 循環技能3
-iniWrite,% 循環技能時間1, sidtooldata2.ini, 循環技能, 循環技能時間1
-iniWrite,% 循環技能時間2, sidtooldata2.ini, 循環技能, 循環技能時間2
-iniWrite,% 循環技能時間3, sidtooldata2.ini, 循環技能, 循環技能時間3
-}
-if 當前角色配置 = 3
-{
-iniWrite,% 循環技能1,	sidtooldata3.ini, 循環技能, 循環技能1
-iniWrite,% 循環技能2,	sidtooldata3.ini, 循環技能, 循環技能2
-iniWrite,% 循環技能3,	sidtooldata3.ini, 循環技能, 循環技能3
-iniWrite,% 循環技能時間1, sidtooldata3.ini, 循環技能, 循環技能時間1
-iniWrite,% 循環技能時間2, sidtooldata3.ini, 循環技能, 循環技能時間2
-iniWrite,% 循環技能時間3, sidtooldata3.ini, 循環技能, 循環技能時間3
-}
 Return
 
 讀取循環技能設置:
-if 當前角色配置 = 1
-{
 iniread,循環技能1 , sidtooldata.ini, 循環技能, 循環技能1
 iniread,循環技能2 , sidtooldata.ini, 循環技能, 循環技能2
 iniread,循環技能3 , sidtooldata.ini, 循環技能, 循環技能3
 iniread,循環技能時間1 , sidtooldata.ini, 循環技能, 循環技能時間1
 iniread,循環技能時間2 , sidtooldata.ini, 循環技能, 循環技能時間2
 iniread,循環技能時間3 , sidtooldata.ini, 循環技能, 循環技能時間3
-}
-if 當前角色配置 = 2
-{
-iniread,循環技能1 , sidtooldata2.ini, 循環技能, 循環技能1
-iniread,循環技能2 , sidtooldata2.ini, 循環技能, 循環技能2
-iniread,循環技能3 , sidtooldata2.ini, 循環技能, 循環技能3
-iniread,循環技能時間1 , sidtooldata2.ini, 循環技能, 循環技能時間1
-iniread,循環技能時間2 , sidtooldata2.ini, 循環技能, 循環技能時間2
-iniread,循環技能時間3 , sidtooldata2.ini, 循環技能, 循環技能時間3
-}
-if 當前角色配置 = 3
-{
-iniread,循環技能1 , sidtooldata3.ini, 循環技能, 循環技能1
-iniread,循環技能2 , sidtooldata3.ini, 循環技能, 循環技能2
-iniread,循環技能3 , sidtooldata3.ini, 循環技能, 循環技能3
-iniread,循環技能時間1 , sidtooldata3.ini, 循環技能, 循環技能時間1
-iniread,循環技能時間2 , sidtooldata3.ini, 循環技能, 循環技能時間2
-iniread,循環技能時間3 , sidtooldata3.ini, 循環技能, 循環技能時間3
-}
 Return
 
 ;[Home快速交易(熱鍵)]-----------------------------------------------------------------------------------------------------------
@@ -4082,141 +3761,6 @@ Return
 Iniread, 命運卡兌換模式 , sidtooldata.ini, 按鍵模式切換, 命運卡兌換模式
 Return
 
-;[切換角色配置GUI面板]----------------------------------------------------------------------------------------------
-
-切換角色配置GUI面板:
-Gui,切換角色配置:new,,切換角色配置
-Gui +Label切換角色配置 -Resize  -MinimizeBox -MaximizeBox
-Gui Color, 0xC0C0C0
-Gui Font, s12 cBlue, Verdana
-Gui Add, Text, x15 y15 w130 h23 +0x200, (1)角色配置名稱:
-Gui Add, Text, x15 y45 w130 h23, (2)角色配置名稱:
-Gui Add, Text, x15 y75 w130 h23, (3)角色配置名稱:
-Gui Font, s8 cRed, Verdana
-Gui Add, Text, x18 y101 w338 h23 +0x200, 輸入自己容易辨識的名稱即可，提供給單季多角色的玩家使用。
-Gui Font
-Gui Add, Edit, v配置名稱1 x150 y14 w120 h21 -Theme, %配置名稱1%
-Gui Add, Edit, v配置名稱2 x150 y45 w120 h21 -Theme, %配置名稱2%
-Gui Add, Edit, v配置名稱3 x150 y75 w120 h21 -Theme, %配置名稱3%
-Gui Add, Button, g切換角色配置1 x280 y13 w80 h23 -Theme, 切換1
-Gui Add, Button, g切換角色配置2 x280 y43 w80 h23 -Theme, 切換2
-Gui Add, Button, g切換角色配置3 x280 y73 w80 h23 -Theme, 切換3
-Gui Add, StatusBar,, 當前角色配置為: %當前角色配置名稱% ，角色配置: %當前角色配置% 。
-Gui Show, w368 h153, 切換角色配置:
-Return
-
-切換角色配置Escape:
-切換角色配置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)`r`r儲存請直接依當前角色使用切換 1 ~ 3 。
-IfMsgBox No
-	Return
-Else
-	Gui,submit
-Return
-
-切換角色配置1:
-Gui,submit
-StopUser = 0
-Gosub,關閉循環技能
-Autodrinkbutton = 0
-Gosub,暫停讀秒循環喝水
-Gosub,停止循環偵測
-當前角色配置名稱 = %配置名稱1%
-當前角色配置 = 1
-IniWrite,% 配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-IniWrite,% 配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-IniWrite,% 配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-IniWrite,% 當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-IniWrite,% 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-Iniread,配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-Iniread,配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-Iniread, 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-gosub,座標顏色讀取
-gosub,讀取地雷設置
-gosub,讀取技能連段數據
-gosub,讀取循環技能設置
-gosub,讀取偵測喝水打勾紀錄
-gosub,讀取偵測喝水數據
-gosub,讀取藥劑觸發紀錄
-msgbox,0,提醒視窗,您已使用切換角色配置按鈕，自動關閉[Ins]各項循環與[F10]高級喝水功能。`r`r每位角色各項座標皆不相同，因此請確實檢查並重新抓取偵測點。
-Return
-
-切換角色配置2:
-Gui,submit
-StopUser = 0
-Settimer,循環技能1,off
-Settimer,循環技能3,off
-Settimer,循環技能2,off
-Autodrinkbutton = 0
-Gosub,暫停讀秒循環喝水
-Gosub,停止循環偵測
-當前角色配置名稱 = %配置名稱2%
-當前角色配置 = 2
-IniWrite,% 配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-IniWrite,% 配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-IniWrite,% 配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-IniWrite,% 當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-IniWrite,% 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-Iniread,配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-Iniread,配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-Iniread, 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-gosub,座標顏色讀取
-gosub,讀取地雷設置
-gosub,讀取技能連段數據
-gosub,讀取循環技能設置
-gosub,讀取偵測喝水打勾紀錄
-gosub,讀取偵測喝水數據
-gosub,讀取藥劑觸發紀錄
-msgbox,0,提醒視窗,您已使用切換角色配置按鈕，自動關閉[Ins]各項循環與[F10]高級喝水功能。`r`r每位角色各項座標皆不相同，因此請確實檢查並重新抓取偵測點。
-Return
-
-切換角色配置3:
-Gui,submit
-StopUser = 0
-Settimer,循環技能1,off
-Settimer,循環技能3,off
-Settimer,循環技能2,off
-Autodrinkbutton = 0
-Gosub,暫停讀秒循環喝水
-Gosub,停止循環偵測
-當前角色配置名稱 = %配置名稱3%
-當前角色配置 = 3
-IniWrite,% 配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-IniWrite,% 配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-IniWrite,% 配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-IniWrite,% 當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-IniWrite,% 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-Iniread,配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-Iniread,配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-Iniread, 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-gosub,座標顏色讀取
-gosub,讀取地雷設置
-gosub,讀取技能連段數據
-gosub,讀取循環技能設置
-gosub,讀取偵測喝水打勾紀錄
-gosub,讀取偵測喝水數據
-gosub,讀取藥劑觸發紀錄
-msgbox,0,提醒視窗,您已使用切換角色配置按鈕，自動關閉[Ins]各項循環與[F10]高級喝水功能。`r`r每位角色各項座標皆不相同，因此請確實檢查並重新抓取偵測點。
-Return
-
-讀取當前角色配置:
-Iniread,配置名稱1 , sidtooldata.ini, 角色配置, 配置名稱1
-Iniread,配置名稱2 , sidtooldata.ini, 角色配置, 配置名稱2
-Iniread,配置名稱3 , sidtooldata.ini, 角色配置, 配置名稱3
-Iniread, 當前角色配置 , sidtooldata.ini, 角色配置, 當前角色配置
-Iniread,當前角色配置名稱 , sidtooldata.ini, 角色配置, 當前角色配置名稱
-if 當前角色配置 = Error
-{
-當前角色配置 = 1
-}
-Return
-
 ;[漂亮按鈕產生代碼]----------------------------------------------------------------------------------------------
 
 CreateImageButton(HWND, Options, Margins = 0) {
@@ -4498,19 +4042,6 @@ NeutronRunLabel(neutron, labelName) {
 		gosub %labelName%
 }
 
-NeutronSwitchProfile(neutron, profileNum) {
-	global
-	if (profileNum = 1)
-		gosub, 切換角色配置1
-	else if (profileNum = 2)
-		gosub, 切換角色配置2
-	else if (profileNum = 3)
-		gosub, 切換角色配置3
-	try {
-		neutron.wnd.syncDataFromAHK()
-	}
-}
-
 NeutronSaveFlaskConfig(neutron, triggerMode, skillKey, skillFlasks, spaceFlasks, dur1, dur2, dur3, dur4, dur5) {
 	global
 	藥劑觸發模式 := triggerMode
@@ -4627,8 +4158,6 @@ NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, re
 NeutronGetSettings(neutron) {
 	global
 	json := "{"
-	. """profile"":""" . 當前角色配置 . ""","
-	. """profileName"":""" . 當前角色配置名稱 . ""","
 	. """flaskMode"":""" . 藥劑觸發模式 . ""","
 	. """mainSkill"":""" . 主要技能 . ""","
 	. """skillFlasks"":""" . 使用技能時觸發的藥劑 . ""","
@@ -4798,5 +4327,4 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF4, hkF5, hkF6, hkF7, hkF8
 	gosub, 註冊動態熱鍵
 	ToolTip("自訂快捷鍵設置已儲存並生效！")
 }
-
 
