@@ -36,6 +36,9 @@
         <div class="menu-item active" onclick="showSection('intro')">
           <span class="icon">★</span> ★工具介紹★
         </div>
+        <div class="menu-item" onclick="showSection('anchor')">
+          <span class="icon">📍</span> 定位點設置
+        </div>
         <div class="menu-item" onclick="showSection('flask')">
           <span class="icon">🧪</span> 藥劑觸發設置
         </div>
@@ -143,6 +146,96 @@
             <div class="d-flex align-items-center">
               <button class="btn btn-success btn-sm px-4 py-2 me-2" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
               <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄 恢復預設快捷鍵</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: 定位點設置 -->
+      <div id="anchor" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">📍 定位點設置</div>
+          <div class="panel-subtitle">所有畫面與背包定位點均統一透過 F7 熱鍵快速抓取與即時顯示。</div>
+        </div>
+
+        <div class="alert alert-info py-2 px-3 small mb-3" role="alert">
+          💡 <strong>操作說明：</strong> 點擊下方任意項目的 <span class="badge bg-primary">📍 抓取</span> 按鈕，本視窗將自動隱藏。請將滑鼠游標移動到遊戲畫面中的目標位置並按下 <span class="kbd-badge me-1 me-1">F7</span>，系統將自動捕捉 X、Y 座標與顏色，寫入設定檔並即時回填此面板。
+        </div>
+
+        <!-- 畫面偵測點 (Win + C / 1~9) -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">畫面與人物偵測點 (1 ~ 9)</h6>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
+                <thead>
+                  <tr class="text-secondary">
+                    <th style="width: 50px;">代號</th>
+                    <th>說明</th>
+                    <th style="width: 80px;">X 座標</th>
+                    <th style="width: 80px;">Y 座標</th>
+                    <th style="width: 140px;">顏色色碼 / 預覽</th>
+                    <th style="width: 80px;" class="text-end">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge bg-secondary">5</span></td>
+                    <td>Enter 對話框(1) 黑色域</td>
+                    <td><code id="c5_x" class="text-info">-</code></td>
+                    <td><code id="c5_y" class="text-info">-</code></td>
+                    <td><div class="d-flex align-items-center gap-2"><span id="c5_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="c5_c" class="text-warning">-</code></div></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('color', 5)">📍 抓取</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-secondary">6</span></td>
+                    <td>Enter 對話框(2) 黑色域 <span class="text-muted">(位移對話框)</span></td>
+                    <td><code id="c6_x" class="text-info">-</code></td>
+                    <td><code id="c6_y" class="text-info">-</code></td>
+                    <td><div class="d-flex align-items-center gap-2"><span id="c6_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="c6_c" class="text-warning">-</code></div></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('color', 6)">📍 抓取</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 背包與介面座標定位點 -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">背包與介面座標定位點</h6>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
+                <thead>
+                  <tr class="text-secondary">
+                    <th style="width: 50px;">代號</th>
+                    <th>說明</th>
+                    <th style="width: 80px;">X 座標</th>
+                    <th style="width: 80px;">Y 座標</th>
+                    <th style="width: 140px;">顏色色碼 / 預覽</th>
+                    <th style="width: 80px;" class="text-end">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge bg-secondary">1</span></td>
+                    <td>背包左上角第一格中心點</td>
+                    <td><code id="b1_x" class="text-info">-</code></td>
+                    <td><code id="b1_y" class="text-info">-</code></td>
+                    <td><div class="d-flex align-items-center gap-2"><span id="b1_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="b1_c" class="text-warning">-</code></div></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('bag', 1)">📍 抓取</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-secondary">2</span></td>
+                    <td>背包右下角最末格中心點</td>
+                    <td><code id="b2_x" class="text-info">-</code></td>
+                    <td><code id="b2_y" class="text-info">-</code></td>
+                    <td><div class="d-flex align-items-center gap-2"><span id="b2_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="b2_c" class="text-warning">-</code></div></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('bag', 2)">📍 抓取</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

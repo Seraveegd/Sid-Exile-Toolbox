@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -352,8 +352,6 @@ GetDriveTailSerial()
 		SetTimer, 藥劑5, off
 	return
 
-
-
 	;[藥劑觸發設置GUI面板]------------------------------------------------------------------------------------------------------
 
 	藥劑觸發設置GUI面板:
@@ -440,1101 +438,1099 @@ Else
 		Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
-
-
-;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
-HK_WinC_Label:
-MouseGetPos, thisPosX, thisPosY
-PixelGetColor, colorabc, %thisPosX%, %thisPosY%
-PosX := ["顏色1_X","顏色2_X","顏色3_X","顏色4_X","顏色5_X","顏色6_X","顏色7_X","顏色8_X","顏色9_X"]
-PosY := ["顏色1_Y","顏色2_Y","顏色3_Y","顏色4_Y","顏色5_Y","顏色6_Y","顏色7_Y","顏色8_Y","顏色9_Y"]
-CosA := ["顏色1_C","顏色2_C","顏色3_C","顏色4_C","顏色5_C","顏色6_C","顏色7_C","顏色8_C","顏色9_C"]
-InputBox, ColorID,偵測點記錄工具, 顏色編號 [ %colorabc% ] ，座標 [ %thisPosX% `, %thisPosY% ]`r`r1 = 人物上方血條偵測點 (抓取沒血的顏色)`r2 = 人物上方血條返角偵測點 (抓取沒血的顏色)`r3 = 右下魔力球偵測點 (抓取滿魔的顏色)`r4 = 左下藥劑欄上方"時間"任意黑色域`r5 = Enter對話框(1)黑色域`r6 = Enter對話框(2)黑色域 (先開啟資訊後位移的對話框)`r7 = 人物上方混傷穿透ES的血條偵測點`r8 = 人物上方混傷穿透ES的血條返角偵測點`r9 = 左下血球池的偵測點 (抓取滿血的顏色)`r`r請依指示輸入對應的座標代號... ( 1 ~ 9 ),,410,350
-	if not ErrorLevel
-	{
-		checkColorID := RegExMatch(ColorID, "[1-9]$")
-		if checkColorID = 1
+	;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
+	HK_WinC_Label:
+		MouseGetPos, thisPosX, thisPosY
+		PixelGetColor, colorabc, %thisPosX%, %thisPosY%
+		PosX := ["","","","","顏色5_X","顏色6_X"]
+		PosY := ["","","","","顏色5_Y","顏色6_Y"]
+		CosA := ["","","","","顏色5_C","顏色6_C"]
+		InputBox, ColorID,偵測點記錄工具, 顏色編號 [ %colorabc% ] ，座標 [ %thisPosX% `, %thisPosY% ]`r`r5 = Enter對話框(1)黑色域`r6 = Enter對話框(2)黑色域 (先開啟資訊後位移的對話框)`r`r請依指示輸入對應的座標代號... ( 5 ~ 6 ),,410,250
+		if not ErrorLevel
 		{
-		 iniWrite,% thisPosX, sidtooldata.ini, 顏色座標, % PosX[ColorID]
-		 iniWrite,% thisPosY, sidtooldata.ini, 顏色座標, % PosY[ColorID]
-		 iniwrite,% colorabc, sidtooldata.ini, 顏色座標, % CosA[ColorID]
+			checkColorID := RegExMatch(ColorID, "[56]$")
+			if checkColorID = 1
+			{
+				iniWrite,% thisPosX, sidtooldata.ini, 顏色座標, % PosX[ColorID]
+				iniWrite,% thisPosY, sidtooldata.ini, 顏色座標, % PosY[ColorID]
+				iniwrite,% colorabc, sidtooldata.ini, 顏色座標, % CosA[ColorID]
+			}
+			else
+			{
+				MsgBox,16,錯誤,請輸入正確的代號( 5 ~ 6 )
+			}
+			gosub,座標顏色讀取
+		}
+
+	return
+
+	座標顏色讀取:
+		loop,9
+		{
+			IniRead,顏色%A_Index%_X,sidtooldata.ini,顏色座標,顏色%A_Index%_X
+			IniRead,顏色%A_Index%_Y,sidtooldata.ini,顏色座標,顏色%A_Index%_Y
+			IniRead,顏色%A_Index%_C,sidtooldata.ini,顏色座標,顏色%A_Index%_C
+		}
+	return
+
+	;[藥劑防呆區]------------------------------------------------------------------------------------------
+
+	使用藥劑1:
+		if 藥劑持續時間1 = off
+			send {1}
+		else if 防呆藥水鎖1 = 無
+		{
+			send {1}
+			防呆藥水鎖1 = 有
+			settimer,防呆藥水1計時器,%藥劑持續時間1%
+		}
+	return
+
+	使用藥劑2:
+		if 藥劑持續時間2 = off
+			send {2}
+		else if 防呆藥水鎖2 = 無
+		{
+			send {2}
+			防呆藥水鎖2 = 有
+			settimer,防呆藥水2計時器,%藥劑持續時間2%
+		}
+	return
+
+	使用藥劑3:
+		if 藥劑持續時間3 = off
+			send {3}
+		else if 防呆藥水鎖3 = 無
+		{
+			send {3}
+			防呆藥水鎖3 = 有
+			settimer,防呆藥水3計時器,%藥劑持續時間3%
+		}
+	return
+
+	使用藥劑4:
+		if 藥劑持續時間4 = off
+			send {4}
+		else if 防呆藥水鎖4 = 無
+		{
+			send {4}
+			防呆藥水鎖4 = 有
+			settimer,防呆藥水4計時器,%藥劑持續時間4%
+		}
+	return
+
+	使用藥劑5:
+		if 藥劑持續時間5 = off
+			send {5}
+		else if 防呆藥水鎖5 = 無
+		{
+			send {5}
+			防呆藥水鎖5 = 有
+			settimer,防呆藥水5計時器,%藥劑持續時間5%
+		}
+	return
+
+	防呆藥水1計時器:
+		if 防呆藥水鎖1 = 無
+			settimer,防呆藥水1計時器,off
+		if 防呆藥水鎖1 = 有
+			防呆藥水鎖1 = 無
+	return
+
+	防呆藥水2計時器:
+		if 防呆藥水鎖2 = 無
+			settimer,防呆藥水2計時器,off
+		if 防呆藥水鎖2 = 有
+			防呆藥水鎖2 = 無
+	return
+
+	防呆藥水3計時器:
+		if 防呆藥水鎖3 = 無
+			settimer,防呆藥水3計時器,off
+		if 防呆藥水鎖3 = 有
+			防呆藥水鎖3 = 無
+	return
+
+	防呆藥水4計時器:
+		if 防呆藥水鎖4 = 無
+			settimer,防呆藥水4計時器,off
+		if 防呆藥水鎖4 = 有
+			防呆藥水鎖4 = 無
+	return
+
+	防呆藥水5計時器:
+		if 防呆藥水鎖5 = 無
+			settimer,防呆藥水5計時器,off
+		if 防呆藥水鎖5 = 有
+			防呆藥水鎖5 = 無
+	return
+
+	;[1|2|3|4|5藥劑按鍵區]---------------------------------------------------------------
+
+	~*1::
+		settimer,防呆藥水1計時器,off
+		防呆藥水鎖1 = 無
+	return
+
+	~*2::
+		settimer,防呆藥水2計時器,off
+		防呆藥水鎖2 = 無
+	return
+
+	~*3::
+		settimer,防呆藥水3計時器,off
+		防呆藥水鎖3 = 無
+	return
+
+	~*4::
+		settimer,防呆藥水4計時器,off
+		防呆藥水鎖4 = 無
+	return
+
+	~*5::
+		settimer,防呆藥水5計時器,off
+		防呆藥水鎖5 = 無
+	return
+
+	;[Q|W|E|R|T技能按鍵區]---------------------------------------------------------------
+
+	~*Q::
+		if Toolbutton = 1
+		{
+			settimer,偵測對話框1,25
+			settimer,偵測對話框2,25
+		}
+		if Toolbutton = 0
+		{
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
+			{
+				if 使用技能時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 使用技能時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 使用技能時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 使用技能時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 使用技能時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 技1 = "Q" and 技能連段功能 = "開啟")
+			{
+				gosub,技能連段
+			}
+			if 地雷模式 = 開啟
+			{
+				if 地雷按鍵 = Q
+				{
+					sleep %引爆延遲1%
+					send {d}
+					if 地雷杖模式 = 開啟
+						send {d down}
+				}
+				if 煙霧地雷 = Q
+				{
+					send {d up}
+					sleep %引爆延遲2%
+					send {d}
+				}
+			}
+		}
+	return
+
+	~*W::
+		if Toolbutton = 1
+		{
+			settimer,偵測對話框1,25
+			settimer,偵測對話框2,25
+		}
+		if Toolbutton = 0
+		{
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
+			{
+				if 使用技能時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 使用技能時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 使用技能時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 使用技能時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 使用技能時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 技1 = "W" and 技能連段功能 = "開啟")
+			{
+				gosub,技能連段
+			}
+			if 地雷模式 = 開啟
+			{
+				if 地雷按鍵 = W
+				{
+					sleep %引爆延遲1%
+					send {d}
+					if 地雷杖模式 = 開啟
+						send {d down}
+				}
+				if 煙霧地雷 = W
+				{
+					send {d up}
+					sleep %引爆延遲2%
+					send {d}
+				}
+			}
+		}
+	return
+
+	~*E::
+		if Toolbutton = 1
+		{
+			settimer,偵測對話框1,25
+			settimer,偵測對話框2,25
+		}
+		if Toolbutton = 0
+		{
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
+			{
+				if 使用技能時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 使用技能時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 使用技能時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 使用技能時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 使用技能時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 技1 = "E" and 技能連段功能 = "開啟")
+			{
+				gosub,技能連段
+			}
+			if 地雷模式 = 開啟
+			{
+				if 地雷按鍵 = E
+				{
+					sleep %引爆延遲1%
+					send {d}
+					if 地雷杖模式 = 開啟
+						send {d down}
+				}
+				if 煙霧地雷 = E
+				{
+					send {d up}
+					sleep %引爆延遲1%
+					send {d}
+				}
+			}
+		}
+	return
+
+	~*R::
+		if Toolbutton = 1
+		{
+			settimer,偵測對話框1,25
+			settimer,偵測對話框2,25
+		}
+		if Toolbutton = 0
+		{
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
+			{
+				if 使用技能時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 使用技能時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 使用技能時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 使用技能時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 使用技能時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 技1 = "R" and 技能連段功能 = "開啟")
+			{
+				gosub,技能連段
+			}
+			if 地雷模式 = 開啟
+			{
+				if 地雷按鍵 = R
+				{
+					sleep %引爆延遲1%
+					send {d}
+					if 地雷杖模式 = 開啟
+						send {d down}
+				}
+				if 煙霧地雷 = R
+				{
+					send {d up}
+					sleep %引爆延遲1%
+					send {d}
+				}
+			}
+		}
+	return
+
+	~*T::
+		if Toolbutton = 1
+		{
+			settimer,偵測對話框1,25
+			settimer,偵測對話框2,25
+		}
+		if Toolbutton = 0
+		{
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
+			{
+				if 使用技能時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 使用技能時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 使用技能時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 使用技能時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 使用技能時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 技1 = "T" and 技能連段功能 = "開啟")
+			{
+				gosub,技能連段
+			}
+			if 地雷模式 = 開啟
+			{
+				if 地雷按鍵 = T
+				{
+					sleep %引爆延遲1%
+					send {d}
+					if 地雷杖模式 = 開啟
+						send {d down}
+				}
+				if 煙霧地雷 = T
+				{
+					send {d up}
+					sleep %引爆延遲1%
+					send {d}
+				}
+			}
+		}
+	return
+
+	;[技能連段指令]-------------------------------------------------------------------------------------------------
+
+	技能連段:
+		if 技1 in Q,W,E,R,T
+		{
+			if 技2 in Q,W,E,R,T
+			{
+				sleep %技1延遲%
+				Send {%技2%}
+			}
+			if 技3 in Q,W,E,R,T
+			{
+				sleep %技2延遲%
+				Send {%技3%}
+			}
+			sleep 100
+		}
+	return
+
+	;[技能連段設置GUI面板]-------------------------------------------------------------------------------------------------
+
+	技能連段設置GUI面板:
+		Gui,技能連段設置:NEW,,技能連段設置:
+		Gui +Label技能連段設置 -Resize  -MinimizeBox -MaximizeBox
+		Gui Font, cBlack
+		Gui Color, 0xFF80C0
+		Gui Font, s10 cBlue
+		Gui Add, Text, x5 y5 w80 h25, 技能連段功能
+		Gui Add, DropDownList, v技能連段功能 x90 y2 w60 -Theme, %技能連段功能%||開啟|關閉|
+		Gui Add, Text, x5 y30 w40 h25, 當使用
+		Gui Add, DropDownList, v技1 x50 y25 w60 -Theme, %技1%||Q|W|E|R|T|
+		Gui Add, Text, x115 y30 w70 h25, 技能時延遲
+		Gui Add, Edit, v技1延遲 x186 y25 w80 h20, %技1延遲%
+		Gui Add, Text, x270 y30 w80 h25, (毫秒)後按下
+		Gui Add, DropDownList, v技2 x350 y25 w60 -Theme, %技2%||Q|W|E|R|T|Off|
+		Gui Add, Text, x414 y30 w70 h25, 技能時延遲
+		Gui Add, Edit, v技2延遲 x485 y25 w80 h20 -Theme, %技2延遲%
+		Gui Add, Text, x568 y30 w80 h25, (毫秒)後按下
+		Gui Add, DropDownList, v技3 x650 y25 w60 -Theme, %技3%||Q|W|E|R|T|Off|
+		Gui Font
+		Gui Add, Button,  g儲存並讀取技能連段數據 x5 y55 w706 h20, 儲存並關閉
+		Gui Show, w720 h82, 技能連段設置(此功能只在[F10]高級模式下運作)
+	Return
+
+	技能連段設置Escape:
+	技能連段設置Close:
+		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
+		IfMsgBox No
+			Return
+Else
+	Gui,submit
+	Return
+
+	;[技能連段GUI儲存指令]-------------------------------------------------------------------------------------------------
+
+	儲存並讀取技能連段數據:
+		Gui,submit
+		iniWrite,% 技1		, sidtooldata.ini, 連段設置, 技1
+		iniWrite,% 技2		, sidtooldata.ini, 連段設置, 技2
+		iniWrite,% 技3		, sidtooldata.ini, 連段設置, 技3
+		iniWrite,% 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
+		iniWrite,% 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
+		iniWrite,% 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
+		IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
+		IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
+		IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
+		IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
+		IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
+		IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
+	Return
+
+	讀取技能連段數據:
+		IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
+		IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
+		IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
+		IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
+		IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
+		IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
+	Return
+
+	;[自動引爆地雷設置GUI面板]--------------------------------------------------------------------------------------
+
+	自動引爆地雷設置GUI面板:
+		Gui 自動引爆地雷設置: New,,自動引爆地雷設置
+		Gui +Label自動引爆地雷設置 -Resize  -MinimizeBox -MaximizeBox
+		Gui Font, s12 cRed
+		Gui Add, Text, x15 y10 w100 h20, 自動引爆地雷
+		Gui Add, Text, x180 y10 w100 h20, 地雷杖模式
+		Gui Add, Button,g儲存並讀取地雷設置 x15 y101 w539 h23, 儲存並關閉
+		Gui Font
+		Gui Add, ComboBox, v地雷模式 x118 y9 w60 -Theme, 開啟|關閉|%地雷模式%||
+		Gui Add, ComboBox, v地雷杖模式 x264 y9 w60 -Theme, 開啟|關閉|%地雷杖模式%||
+		Gui Add, ComboBox, v地雷按鍵 x103 y39 w41 -Theme, Q|W|E|R|T|%地雷按鍵%||
+		Gui Add, ComboBox, v引爆延遲1 x264 y37 w46 -Theme, 50|100|200|300|400|500|%引爆延遲1%||
+		Gui Add, ComboBox, v煙霧地雷 x103 y69 w41 -Theme, Q|W|E|R|T|%煙霧地雷%||
+		Gui Add, ComboBox, v引爆延遲2 x264 y69 w46 -Theme, 50|100|200|300|400|500|%引爆延遲2%||
+		Gui Font, s12
+		Gui Add, Text, x15 y40 w86 h20, 當使用按鍵
+		Gui Add, Text, x147 y40 w115 h20, 地雷技能時延遲
+		Gui Add, Text, x314 y40 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
+		Gui Add, Text, x15 y70 w86 h20, 當使用按鍵
+		Gui Add, Text, x147 y70 w115 h20, 煙霧地雷時延遲
+		Gui Add, Text, x314 y70 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
+		Gui Font
+		Gui Add, StatusBar,, ▲ 工具小知識: 自動引爆地雷是使用遊戲預設按鍵[D]來執行的。
+		Gui Show, w570 h156, 自動引爆地雷設置
+	Return
+
+	自動引爆地雷設置Escape:
+	自動引爆地雷設置Close:
+		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
+		IfMsgBox No
+			Return
+Else
+	Gui,submit
+	Return
+
+	;[自動引爆地雷GUI儲存指令]--------------------------------------------------------------------------------------
+
+	儲存並讀取地雷設置:
+		Gui,submit
+		iniWrite,% 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
+		iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
+		iniWrite,% 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
+		iniWrite,% 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
+		iniWrite,% 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
+		iniWrite,% 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
+		IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
+		IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
+		IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
+		IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
+		IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
+		IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
+	Return
+
+	讀取地雷設置:
+		IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
+		IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
+		IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
+		IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
+		IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
+		IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
+	Return
+
+	;[快搜倉庫頁區(熱鍵)]---------------------------------------------------------------------------------
+
+	快捷切換倉庫頁設置:
+		gosub,倉庫頁快搜工具視窗
+	return
+
+	^LWin::
+		Gosub,返回首頁
+	return
+
+	返回首頁:
+		clipboard =
+		Send {left %返回頁數%}
+		當前倉庫頁 = 0
+	return
+
+	~^alt::
+		gosub,快搜倉庫頁
+	return
+
+	快搜倉庫頁:
+		clipboard =
+		倉庫匹配狀態 = 倉庫匹配中
+		Send, ^c
+		ClipWait, 1
+		if ErrorLevel = 1
+			return
+
+		暫存複製內容 = %Clipboard%
+
+		if 倉庫匹配狀態 = 倉庫匹配中
+			IfInString,暫存複製內容,物品種類: 可堆疊通貨	,gosub,前往可堆疊通貨
+				if 倉庫匹配狀態 = 倉庫匹配中
+					if 暫存複製內容 contains 培育器,孵育器
+						gosub,前往培育器
+		if 倉庫匹配狀態 = 倉庫匹配中
+			IfInString,暫存複製內容,物品種類: 劫盜	,gosub,前往劫盜裝
+				if 倉庫匹配狀態 = 倉庫匹配中
+					if 暫存複製內容 contains 釋界之邀,阿茲瓦特史記,區域被異界尊師控制
+						gosub,前往特殊地圖
+		if 倉庫匹配狀態 = 倉庫匹配中
+			IfInString,暫存複製內容,物品種類: 珠寶	,gosub,二次判定珠寶
+				if 倉庫匹配狀態 = 倉庫匹配中
+					IfInString,暫存複製內容,物品種類: 深淵珠寶,gosub,前往深淵珠
+						if 倉庫匹配狀態 = 倉庫匹配中
+							IfInString,暫存複製內容,裂痕戒指	,gosub,前往裂痕戒指
+								if 倉庫匹配狀態 = 倉庫匹配中
+									IfInString,暫存複製內容,(enchant)	,gosub,二次判定附魔裝
+										if 倉庫匹配狀態 = 倉庫匹配中
+											if 暫存複製內容 contains 塑者之物,尊師之物,總督軍物品,救贖者物品,狩獵者物品,聖戰軍王物品
+												gosub,二次判斷勢力裝
+		if 倉庫匹配狀態 = 倉庫匹配中
+			IfInString,暫存複製內容,未鑑定		,gosub,二次判定未鑑定物品
+				if 倉庫匹配狀態 = 倉庫匹配中
+					if 暫存複製內容 contains 戒指,之戒
+						gosub,二次判斷傳奇戒指
+		if 倉庫匹配狀態 = 倉庫匹配中
+			IfInString,暫存複製內容,稀有度: 傳奇	,gosub,前往傳奇裝
+				return
+
+	;[快搜倉庫頁區(指令)]-----------------------------------------------------------------------------------------------------------------------------
+
+	倉庫頁計算:
+		計算值 :=  abs(當前倉庫頁 - 搜索到的倉庫頁)
+
+		if (搜索到的倉庫頁 > 當前倉庫頁)
+		{
+			Send {right %計算值%}
+			return
+		}
+		if (搜索到的倉庫頁 < 當前倉庫頁)
+		{
+			Send {left %計算值%}
+			return
+		}
+	return
+
+	二次判定未鑑定物品:
+		IfInString,暫存複製內容,稀有度: 稀有	,gosub,三次判定未鑑定物品
+			return
+
+	二次判定珠寶:
+		if 暫存複製內容 contains 稀有度: 普通,稀有度: 魔法,稀有度: 稀有
+		{
+			IfInString,暫存複製內容,星團珠寶	,gosub,前往星團珠
+				if 暫存複製內容 contains 鈷藍珠寶,翠綠珠寶,赤紅珠寶
+					gosub,前往普通珠
+		}
+	return
+
+	二次判定附魔裝:
+		if 暫存複製內容 contains 物品種類: 手套,物品種類: 頭部,物品種類: 鞋子
+			gosub,前往附魔裝
+	return
+
+	三次判定未鑑定物品:
+		IfInString,暫存複製內容,物品種類: 頭部	,gosub,前往未鑑定稀有頭盔
+			IfInString,暫存複製內容,物品種類: 胸甲	,gosub,前往未鑑定稀有衣服
+				IfInString,暫存複製內容,物品種類: 腰帶	,gosub,前往未鑑定稀有腰帶
+					IfInString,暫存複製內容,物品種類: 手套	,gosub,前往未鑑定稀有手套
+						IfInString,暫存複製內容,物品種類: 鞋子	,gosub,前往未鑑定稀有鞋子
+							IfInString,暫存複製內容,物品種類: 戒指	,gosub,前往未鑑定稀有飾品
+								IfInString,暫存複製內容,物品種類: 項鍊	,gosub,前往未鑑定稀有飾品
+									if 暫存複製內容 contains 物品種類: 爪,物品種類: 匕首,物品種類: 法杖,物品種類: 單手劍,物品種類: 細劍,物品種類: 單手斧,物品種類: 單手錘,物品種類: 權杖,物品種類: 符紋匕首,物品種類: 弓,物品種類: 長杖,物品種類: 雙手劍,物品種類: 雙手斧,物品種類: 雙手錘,物品種類: 征戰長杖
+										gosub,前往未鑑定稀有武器
+	return
+
+	前往未鑑定稀有頭盔:
+		搜索到的倉庫頁 := 未鑑定稀有頭盔
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有頭盔
+	return
+
+	前往未鑑定稀有衣服:
+		搜索到的倉庫頁 := 未鑑定稀有衣服
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有衣服
+	return
+
+	前往未鑑定稀有腰帶:
+		搜索到的倉庫頁 := 未鑑定稀有腰帶
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有腰帶
+	return
+
+	前往未鑑定稀有手套:
+		搜索到的倉庫頁 := 未鑑定稀有手套
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有手套
+	return
+
+	前往未鑑定稀有鞋子:
+		搜索到的倉庫頁 := 未鑑定稀有鞋子
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有鞋子
+	return
+
+	前往未鑑定稀有飾品:
+		搜索到的倉庫頁 := 未鑑定稀有飾品
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有飾品
+	return
+
+	前往未鑑定稀有武器:
+		搜索到的倉庫頁 := 未鑑定稀有武器
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 未鑑定稀有武器
+	return
+
+	二次判斷傳奇戒指:
+		IfInString,暫存複製內容,稀有度: 傳奇	,gosub,前往傳奇戒
+			return
+
+	二次判斷勢力裝:
+		if 暫存複製內容 contains 稀有度: 稀有,稀有度: 普通,稀有度: 魔法
+			gosub,前往勢力裝頁
+	return
+
+	前往星團珠:
+		搜索到的倉庫頁 := 星團珠
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 星團珠
+	return
+
+	前往普通珠:
+		搜索到的倉庫頁 := 普通珠
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 普通珠
+	return
+
+	前往深淵珠:
+		搜索到的倉庫頁 := 深淵珠
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 深淵珠
+	return
+
+	前往培育器:
+		搜索到的倉庫頁 := 培育器
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 培育器
+	return
+
+	前往勢力裝頁:
+		搜索到的倉庫頁 := 勢力裝頁
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 勢力裝頁
+	return
+
+	前往傳奇裝:
+		搜索到的倉庫頁 := 傳奇裝
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 傳奇裝
+		快搜配對 = 需按Shift
+	return
+
+	前往附魔裝:
+		搜索到的倉庫頁 := 附魔裝
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 附魔裝
+		快搜配對 = 需按Shift
+	return
+
+	前往劫盜裝:
+		搜索到的倉庫頁 := 劫盜裝
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 劫盜裝
+	return
+
+	前往傳奇戒:
+		{
+			搜索到的倉庫頁 := 傳奇戒
+			gosub,倉庫頁計算
+			倉庫匹配狀態 = 成功
+			當前倉庫頁 := 傳奇戒
+			快搜配對 = 需按Shift
+			return
+		}
+	return
+
+	前往特殊地圖:
+		搜索到的倉庫頁 := 特殊地圖
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 特殊地圖
+		快搜配對 = 需按Shift
+	return
+
+	前往裂痕戒指:
+		搜索到的倉庫頁 := 裂痕戒指
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 裂痕戒指
+	return
+
+	前往可堆疊通貨:
+		搜索到的倉庫頁 := 0
+		gosub,倉庫頁計算
+		倉庫匹配狀態 = 成功
+		當前倉庫頁 := 0
+	return
+
+	;[快搜倉庫頁設置GUI面板]----------------------------------------------------------------------------------------------------------------
+
+	倉庫頁快搜工具視窗:
+		Gui 倉庫頁快搜工具: New,,快搜倉庫頁設置(Ctrl + Alt 自動翻頁，Ctrl + Win 返回首頁)
+		Gui +Label倉庫頁快搜工具 -Resize  -MinimizeBox -MaximizeBox
+		Gui Color, 0x00FFFF
+		Gui Add, Text, x79 y32 w46 h0 +0x200, Text
+		Gui Font
+		Gui Font, s10 Bold cRed
+		Gui Add, Text, x7 y6 w526 h23 +0x200, 通貨頁擺至首頁，代碼舉例:首頁= 0，第二頁 = 1，以此類推。
+		Gui Font
+		Gui Font, s13 Norm cRed
+		Gui, Add, Link, x390 y40 w140 h30, 影片介紹<a href="https://youtu.be/StpFz8qbB44">點我</a>
+		Gui Font
+		Gui Font, s10 Norm cBlue
+		Gui Add, Text, x4 y40 w50 h20, % " 附魔裝 :"
+		Gui Add, Text, x4 y65 w50 h20, % " 傳奇裝 :"
+		Gui Add, Text, x4 y90 w50 h20, % " 傳奇戒 :"
+		Gui Add, Text, x4 y115 w50 h20, % " 劫盜裝 :"
+		Gui Add, Text, x4 y140 w50 h20, % " 待新增 :"
+		Gui Add, Text, x4 y165 w50 h20, % " 培育器 :"
+		Gui Add, Text, x4 y190 w50 h20, % " 深淵珠 :"
+		Gui Add, Text, x4 y215 w50 h20, % " 星團珠 :"
+		Gui Add, Text, x4 y240 w50 h20, % " 普通珠 :"
+		Gui Add, Text, x100 y40 w130 h20,  % " (未鑑定)稀有頭盔 :"
+		Gui Add, Text, x100 y65 w130 h20,  % " (未鑑定)稀有衣服 :"
+		Gui Add, Text, x100 y90 w130 h20,  % " (未鑑定)稀有腰帶 :"
+		Gui Add, Text, x100 y115 w130 h20, % " (未鑑定)稀有手套 :"
+		Gui Add, Text, x100 y140 w130 h20, % " (未鑑定)稀有鞋子 :"
+		Gui Add, Text, x100 y165 w130 h20, % " (未鑑定)稀有飾品 :"
+		Gui Add, Text, x100 y190 w130 h20, % " (未鑑定)稀有武器 :"
+		Gui Add, Text, x100 y215 w130 h20, % " 勢力裝(不限等)頁 :"
+		Gui Add, Text, x100 y240 w180 h20, % " 特殊地圖(邀/尊/廟) :"
+		Gui Add, Text, x260 y40 w70 h20,  % " 裂痕戒指 :"
+		Gui Font
+		Gui Font, s10 cBlue
+		Gui Add, Text, x6 y265 w251 h25, % " [Ctrl + win] 返回首頁(輸入以上最大的頁數) :"
+		Gui Font
+		Gui Font, cRed
+		Gui Add, Edit, v附魔裝 x58 y35 w35 h20 +Number -Theme	,% 附魔裝
+		Gui Add, Edit, v傳奇裝 x58 y60 w35 h20 +Number -Theme	,% 傳奇裝
+		Gui Add, Edit, v傳奇戒 x58 y85 w35 h20 +Number -Theme	,% 傳奇戒
+		Gui Add, Edit, v劫盜裝 x58 y110 w35 h20 +Number -Theme	,% 劫盜裝
+		Gui Add, Edit, v移除2 x58 y135 w35 h20 +Number -Theme	,% 移除2
+		Gui Add, Edit, v培育器 x58 y160 w35 h20 +Number -Theme	,% 培育器
+		Gui Add, Edit, v深淵珠 x58 y185 w35 h20 +Number -Theme	,% 深淵珠
+		Gui Add, Edit, v星團珠 x58 y210 w35 h20 +Number -Theme	,% 星團珠
+		Gui Add, Edit, v普通珠 x58 y235 w35 h20 +Number -Theme	,% 普通珠
+		Gui Add, Edit, v未鑑定稀有頭盔 x220 y35 w35 h20 +Number -Theme	,% 未鑑定稀有頭盔
+		Gui Add, Edit, v未鑑定稀有衣服 x220 y60 w35 h20 +Number -Theme	,% 未鑑定稀有衣服
+		Gui Add, Edit, v未鑑定稀有腰帶 x220 y85 w35 h20 +Number -Theme	,% 未鑑定稀有腰帶
+		Gui Add, Edit, v未鑑定稀有手套 x220 y110 w35 h20 +Number -Theme	,% 未鑑定稀有手套
+		Gui Add, Edit, v未鑑定稀有鞋子 x220 y135 w35 h20 +Number -Theme	,% 未鑑定稀有鞋子
+		Gui Add, Edit, v未鑑定稀有飾品 x220 y160 w35 h20 +Number -Theme	,% 未鑑定稀有飾品
+		Gui Add, Edit, v未鑑定稀有武器 x220 y185 w35 h20 +Number -Theme	,% 未鑑定稀有武器
+		Gui Add, Edit, v勢力裝頁 x220 y210 w35 h20 +Number -Theme	,% 勢力裝頁
+		Gui Add, Edit, v特殊地圖 x220 y235 w35 h20 +Number -Theme	,% 特殊地圖
+		Gui Add, Edit, v裂痕戒指 x330 y35 w35 h20 +Number -Theme	,% 裂痕戒指
+		Gui Add, Edit, v返回頁數 x259 y261 w35 h20 +Number -Theme	,% 返回頁數
+		Gui Add, StatusBar,, 製作By Sid ，沒使用到的頁數請輸入 " 0 "，不要保存 Error 狀態避免工具異常。
+		Gui Add, Button, g儲存並讀取倉庫頁數據 x400 y261 w90 h23, 儲存並關閉
+		Gui Show, x697 y320 w500 h310
+	Return
+
+	倉庫頁快搜工具Escape:
+	倉庫頁快搜工具Close:
+		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
+		IfMsgBox No
+			Return
+Else
+	Gui,submit
+	Return
+
+	;[快搜倉庫頁GUI儲存指令]----------------------------------------------------------------------------------------------------------------
+
+	儲存並讀取倉庫頁數據:
+		Gui,submit
+		iniWrite,% 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
+		iniWrite,% 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
+		iniWrite,% 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
+		iniWrite,% 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
+		iniWrite,% 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
+		iniWrite,% 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
+		iniWrite,% 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
+		iniWrite,% 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
+		iniWrite,% 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
+		iniWrite,% 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
+		iniWrite,% 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
+		iniWrite,% 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
+		iniWrite,% 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
+		iniWrite,% 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
+		iniWrite,% 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
+		iniWrite,% 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
+		iniWrite,% 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
+		iniWrite,% 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
+		iniWrite,% 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
+		iniWrite,% 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
+		iniread, 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
+		iniread, 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
+		iniread, 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
+		iniread, 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
+		iniread, 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
+		iniread, 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
+		iniread, 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
+		iniread, 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
+		iniread, 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
+		iniread, 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
+		iniread, 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
+		iniread, 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
+		iniread, 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
+		iniread, 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
+		iniread, 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
+		iniread, 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
+		iniread, 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
+		iniread, 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
+		iniread, 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
+		iniread, 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
+	Return
+
+	讀取倉庫頁數據:
+		iniread, 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
+		iniread, 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
+		iniread, 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
+		iniread, 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
+		iniread, 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
+		iniread, 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
+		iniread, 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
+		iniread, 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
+		iniread, 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
+		iniread, 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
+		iniread, 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
+		iniread, 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
+		iniread, 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
+		iniread, 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
+		iniread, 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
+		iniread, 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
+		iniread, 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
+		iniread, 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
+		iniread, 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
+		iniread, 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
+	Return
+
+	;[查價工具視窗指令]------------------------------------------------------------------------------------------------------
+
+	引導查價安裝網址:
+		run,https://forum.gamer.com.tw/C.php?bsn=18966&snA=123938,,UseErrorLevel
+	return
+
+	查價工具視窗:
+		MouseGetPos, thisPosX, thisPosY
+		if 聲明顯示 = 0
+		{
+			MsgBox,64,每次開起工具僅顯示一次，關閉後請再次使用 Win + V 即可。,請記得安裝並預先開啟【rchin-poe-trade】工具，並點擊 Home 返回遊戲， Win + V 才可正常運作。`r`r如未安裝，您可在 ( `` ) 菜單中找到*前往查價工具的網址*的欄位`r`r申明:此查價工具並非Sid製作，也未對此功能進行任何收費。`r`r僅抱持著推廣與分享目的提供使用，請多支持原創作者。
+			聲明顯示 = 1
+			WinActivate ,Path of Exile
+			return
+		}
+		if 聲明顯示 = 1
+		{
+			ToolTip("Sid工具支援查價時 [ Esc ] 快速返回 POE 視窗")
+			Send ^C
+			WinActivate ,rchin-poe-trade
+		}
+	return
+
+	;[Space空白一鍵喝水區(熱鍵)]------------------------------------------------------------------------------------------
+
+	HK_Space_Label:
+		settimer,偵測對話框1,25
+		settimer,偵測對話框2,25
+		if Toolbutton = 0
+		{
+			ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。")
+			if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
+			{
+				PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%
+				if (dialogCheck1 = %顏色5_C%)
+				{
+					Toolbutton := 1
+					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
+					SetTimer,偵測對話框1,off
+					SetTimer,偵測對話框2,off
+					return
+				}
+			}
+			if (顏色6_X != "error" && 顏色6_Y != "error" && 顏色6_C != "error")
+			{
+				PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%
+				if (dialogCheck2 = %顏色6_C%)
+				{
+					Toolbutton := 1
+					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
+					SetTimer,偵測對話框1,off
+					SetTimer,偵測對話框2,off
+					return
+				}
+			}
+			if 一鍵喝水時觸發的藥劑 = error
+			{
+				msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! (``) => 藥劑觸發設置。
+				gosub,藥劑觸發設置GUI面板
+				return
+			}
+			else if	(Autodrinkbutton = "0" or 藥劑觸發模式 = "無")
+			{
+				send %一鍵喝水時觸發的藥劑%
+			}
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "讀秒循環喝水")
+			{
+				if 一鍵喝水時觸發的藥劑 contains 1
+				{
+					send {1}
+					SetTimer, 藥劑1, off
+					SetTimer, 藥劑1, %藥劑持續時間1%
+				}
+				if 一鍵喝水時觸發的藥劑 contains 2
+				{
+					send {2}
+					SetTimer, 藥劑2, off
+					SetTimer, 藥劑2, %藥劑持續時間2%
+				}
+				if 一鍵喝水時觸發的藥劑 contains 3
+				{
+					send {3}
+					SetTimer, 藥劑3, off
+					SetTimer, 藥劑3, %藥劑持續時間3%
+				}
+				if 一鍵喝水時觸發的藥劑 contains 4
+				{
+					send {4}
+					SetTimer, 藥劑4, off
+					SetTimer, 藥劑4, %藥劑持續時間4%
+				}
+				if 一鍵喝水時觸發的藥劑 contains 5
+				{
+					send {5}
+					SetTimer, 藥劑5, off
+					SetTimer, 藥劑5, %藥劑持續時間5%
+				}
+				return
+			}
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "純藥劑防呆")
+			{
+				if 一鍵喝水時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 一鍵喝水時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 一鍵喝水時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 一鍵喝水時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 一鍵喝水時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水")
+			{
+				防呆藥水鎖1 = 無
+				防呆藥水鎖2 = 無
+				防呆藥水鎖3 = 無
+				防呆藥水鎖4 = 無
+				防呆藥水鎖5 = 無
+				if 一鍵喝水時觸發的藥劑 contains 1
+					gosub,使用藥劑1
+				if 一鍵喝水時觸發的藥劑 contains 2
+					gosub,使用藥劑2
+				if 一鍵喝水時觸發的藥劑 contains 3
+					gosub,使用藥劑3
+				if 一鍵喝水時觸發的藥劑 contains 4
+					gosub,使用藥劑4
+				if 一鍵喝水時觸發的藥劑 contains 5
+					gosub,使用藥劑5
+			}
+
+		}
+	return
+
+	;[Space讀秒循環喝水計時器指令]-------------------------------------------------------------------------------------------------
+
+	藥劑1:
+		if Toolbutton = 0
+			send {1}
+	return
+
+	藥劑2:
+		if Toolbutton = 0
+			send {2}
+	return
+
+	藥劑3:
+		if Toolbutton = 0
+			send {3}
+	return
+
+	藥劑4:
+		if Toolbutton = 0
+			send {4}
+	return
+
+	藥劑5:
+		if Toolbutton = 0
+			send {5}
+	return
+
+	;[Enter偵測對話框區(熱鍵)]------------------------------------------------------------------------------------------
+
+	~enter::
+		if (顏色5_X = "error" or 顏色5_Y = "error" or 顏色6_X = "error" or 顏色6_Y = "error")
+		{
+			if Enter除錯提醒次數 = 0
+			{
+				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕!非常重要，不然打字會瞎雞巴亂按。`r若你第一次看到此視窗，按下確認後將跳轉教學圖片網址。`r此彈跳網頁只會顯示一次，請勿在未設置成功前關閉教學圖片。`r確定後，請依圖片，將滑鼠指定座標，再按[Win + C]，輸入代號(5)或(6)!
+				run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
+				Enter除錯提醒次數 := 1
+			}
 		}
 		else
 		{
-		MsgBox,16,錯誤,請輸入正確的代號( 1 ~ 9 )
-		}
-		gosub,座標顏色讀取
-	}
-
-		return
-
-座標顏色讀取:
- loop,9
- {
- IniRead,顏色%A_Index%_X,sidtooldata.ini,顏色座標,顏色%A_Index%_X
- IniRead,顏色%A_Index%_Y,sidtooldata.ini,顏色座標,顏色%A_Index%_Y
- IniRead,顏色%A_Index%_C,sidtooldata.ini,顏色座標,顏色%A_Index%_C
- }
-return
-
-;[藥劑防呆區]------------------------------------------------------------------------------------------
-
-使用藥劑1:
-if 藥劑持續時間1 = off
-send {1}
-else if 防呆藥水鎖1 = 無
-{
-send {1}
-防呆藥水鎖1 = 有
-settimer,防呆藥水1計時器,%藥劑持續時間1%
-}
-return
-
-使用藥劑2:
-if 藥劑持續時間2 = off
-send {2}
-else if 防呆藥水鎖2 = 無
-{
-send {2}
-防呆藥水鎖2 = 有
-settimer,防呆藥水2計時器,%藥劑持續時間2%
-}
-return
-
-使用藥劑3:
-if 藥劑持續時間3 = off
-send {3}
-else if 防呆藥水鎖3 = 無
-{
-send {3}
-防呆藥水鎖3 = 有
-settimer,防呆藥水3計時器,%藥劑持續時間3%
-}
-return
-
-使用藥劑4:
-if 藥劑持續時間4 = off
-send {4}
-else if 防呆藥水鎖4 = 無
-{
-send {4}
-防呆藥水鎖4 = 有
-settimer,防呆藥水4計時器,%藥劑持續時間4%
-}
-return
-
-使用藥劑5:
-if 藥劑持續時間5 = off
-send {5}
-else if 防呆藥水鎖5 = 無
-{
-send {5}
-防呆藥水鎖5 = 有
-settimer,防呆藥水5計時器,%藥劑持續時間5%
-}
-return
-
-防呆藥水1計時器:
-if 防呆藥水鎖1 = 無
-settimer,防呆藥水1計時器,off
-if 防呆藥水鎖1 = 有
-防呆藥水鎖1 = 無
-return
-
-防呆藥水2計時器:
-if 防呆藥水鎖2 = 無
-settimer,防呆藥水2計時器,off
-if 防呆藥水鎖2 = 有
-防呆藥水鎖2 = 無
-return
-
-防呆藥水3計時器:
-if 防呆藥水鎖3 = 無
-settimer,防呆藥水3計時器,off
-if 防呆藥水鎖3 = 有
-防呆藥水鎖3 = 無
-return
-
-防呆藥水4計時器:
-if 防呆藥水鎖4 = 無
-settimer,防呆藥水4計時器,off
-if 防呆藥水鎖4 = 有
-防呆藥水鎖4 = 無
-return
-
-防呆藥水5計時器:
-if 防呆藥水鎖5 = 無
-settimer,防呆藥水5計時器,off
-if 防呆藥水鎖5 = 有
-防呆藥水鎖5 = 無
-return
-
-;[1|2|3|4|5藥劑按鍵區]---------------------------------------------------------------
-
-~*1::
-settimer,防呆藥水1計時器,off
-防呆藥水鎖1 = 無
-return
-
-~*2::
-settimer,防呆藥水2計時器,off
-防呆藥水鎖2 = 無
-return
-
-~*3::
-settimer,防呆藥水3計時器,off
-防呆藥水鎖3 = 無
-return
-
-~*4::
-settimer,防呆藥水4計時器,off
-防呆藥水鎖4 = 無
-return
-
-~*5::
-settimer,防呆藥水5計時器,off
-防呆藥水鎖5 = 無
-return
-
-;[Q|W|E|R|T技能按鍵區]---------------------------------------------------------------
-
-~*Q::
-if Toolbutton = 1
-{
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 0
-{
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
-	{
-		if 使用技能時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 使用技能時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 使用技能時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 使用技能時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 使用技能時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 技1 = "Q" and 技能連段功能 = "開啟")
-	{
-	gosub,技能連段
-	}
-	if 地雷模式 = 開啟
-	{
-		if 地雷按鍵 = Q
-       		{
-		sleep %引爆延遲1%
-		send {d}
-		if 地雷杖模式 = 開啟
-		send {d down}
-       		}
-		if 煙霧地雷 = Q
-      		{
-		send {d up}
-		sleep %引爆延遲2%
-		send {d}
-       		}
-	}
-}
-return
-
-~*W::
-if Toolbutton = 1
-{
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 0
-{
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
-	{
-		if 使用技能時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 使用技能時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 使用技能時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 使用技能時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 使用技能時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 技1 = "W" and 技能連段功能 = "開啟")
-	{
-	gosub,技能連段
-	}
-	if 地雷模式 = 開啟
-	{
-		if 地雷按鍵 = W
-       		{
-		sleep %引爆延遲1%
-		send {d}
-		if 地雷杖模式 = 開啟
-		send {d down}
-       		}
-		if 煙霧地雷 = W
-      		{
-		send {d up}
-		sleep %引爆延遲2%
-		send {d}
-       		}
-	}
-}
-return
-
-~*E::
-if Toolbutton = 1
-{
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 0
-{
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
-	{
-		if 使用技能時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 使用技能時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 使用技能時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 使用技能時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 使用技能時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 技1 = "E" and 技能連段功能 = "開啟")
-	{
-	gosub,技能連段
-	}
-	if 地雷模式 = 開啟
-	{
-		if 地雷按鍵 = E
-       		{
-		sleep %引爆延遲1%
-		send {d}
-		if 地雷杖模式 = 開啟
-		send {d down}
-       		}
-		if 煙霧地雷 = E
-      		{
-		send {d up}
-		sleep %引爆延遲1%
-		send {d}
-       		}
-	}
-}
-return
-
-~*R::
-if Toolbutton = 1
-{
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 0
-{
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
-	{
-		if 使用技能時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 使用技能時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 使用技能時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 使用技能時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 使用技能時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 技1 = "R" and 技能連段功能 = "開啟")
-	{
-	gosub,技能連段
-	}
-	if 地雷模式 = 開啟
-	{
-		if 地雷按鍵 = R
-       		{
-		sleep %引爆延遲1%
-		send {d}
-		if 地雷杖模式 = 開啟
-		send {d down}
-       		}
-		if 煙霧地雷 = R
-      		{
-		send {d up}
-		sleep %引爆延遲1%
-		send {d}
-       		}
-	}
-}
-return
-
-~*T::
-if Toolbutton = 1
-{
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 0
-{
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
-	{
-		if 使用技能時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 使用技能時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 使用技能時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 使用技能時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 使用技能時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 技1 = "T" and 技能連段功能 = "開啟")
-	{
-	gosub,技能連段
-	}
-	if 地雷模式 = 開啟
-	{
-		if 地雷按鍵 = T
-       		{
-		sleep %引爆延遲1%
-		send {d}
-		if 地雷杖模式 = 開啟
-		send {d down}
-       		}
-		if 煙霧地雷 = T
-      		{
-		send {d up}
-		sleep %引爆延遲1%
-		send {d}
-       		}
-	}
-}
-return
-
-;[技能連段指令]-------------------------------------------------------------------------------------------------
-
-技能連段:
-if 技1 in Q,W,E,R,T
-{
-if 技2 in Q,W,E,R,T
-{
-	sleep %技1延遲%
-	Send {%技2%}
-}
-if 技3 in Q,W,E,R,T
-{
-	sleep %技2延遲%
-	Send {%技3%}
-}
-sleep 100
-}
-return
-
-;[技能連段設置GUI面板]-------------------------------------------------------------------------------------------------
-
-技能連段設置GUI面板:
-Gui,技能連段設置:NEW,,技能連段設置:
-Gui +Label技能連段設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Font, cBlack
-Gui Color, 0xFF80C0
-Gui Font, s10 cBlue
-Gui Add, Text, x5 y5 w80 h25, 技能連段功能
-Gui Add, DropDownList, v技能連段功能 x90 y2 w60 -Theme, %技能連段功能%||開啟|關閉|
-Gui Add, Text, x5 y30 w40 h25, 當使用
-Gui Add, DropDownList, v技1 x50 y25 w60 -Theme, %技1%||Q|W|E|R|T|
-Gui Add, Text, x115 y30 w70 h25, 技能時延遲
-Gui Add, Edit, v技1延遲 x186 y25 w80 h20, %技1延遲%
-Gui Add, Text, x270 y30 w80 h25, (毫秒)後按下
-Gui Add, DropDownList, v技2 x350 y25 w60 -Theme, %技2%||Q|W|E|R|T|Off|
-Gui Add, Text, x414 y30 w70 h25, 技能時延遲
-Gui Add, Edit, v技2延遲 x485 y25 w80 h20 -Theme, %技2延遲%
-Gui Add, Text, x568 y30 w80 h25, (毫秒)後按下
-Gui Add, DropDownList, v技3 x650 y25 w60 -Theme, %技3%||Q|W|E|R|T|Off|
-Gui Font
-Gui Add, Button,  g儲存並讀取技能連段數據 x5 y55 w706 h20, 儲存並關閉
-Gui Show, w720 h82, 技能連段設置(此功能只在[F10]高級模式下運作)
-Return
-
-技能連段設置Escape:
-技能連段設置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
-	Return
-Else
-	Gui,submit
-Return
-
-;[技能連段GUI儲存指令]-------------------------------------------------------------------------------------------------
-
-儲存並讀取技能連段數據:
-Gui,submit
-iniWrite,% 技1		, sidtooldata.ini, 連段設置, 技1
-iniWrite,% 技2		, sidtooldata.ini, 連段設置, 技2
-iniWrite,% 技3		, sidtooldata.ini, 連段設置, 技3
-iniWrite,% 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
-iniWrite,% 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
-iniWrite,% 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-Return
-
-讀取技能連段數據:
-IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
-IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
-IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
-IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
-IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
-IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-Return
-
-;[自動引爆地雷設置GUI面板]--------------------------------------------------------------------------------------
-
-自動引爆地雷設置GUI面板:
-Gui 自動引爆地雷設置: New,,自動引爆地雷設置
-Gui +Label自動引爆地雷設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Font, s12 cRed
-Gui Add, Text, x15 y10 w100 h20, 自動引爆地雷
-Gui Add, Text, x180 y10 w100 h20, 地雷杖模式
-Gui Add, Button,g儲存並讀取地雷設置 x15 y101 w539 h23, 儲存並關閉
-Gui Font
-Gui Add, ComboBox, v地雷模式 x118 y9 w60 -Theme, 開啟|關閉|%地雷模式%||
-Gui Add, ComboBox, v地雷杖模式 x264 y9 w60 -Theme, 開啟|關閉|%地雷杖模式%||
-Gui Add, ComboBox, v地雷按鍵 x103 y39 w41 -Theme, Q|W|E|R|T|%地雷按鍵%||
-Gui Add, ComboBox, v引爆延遲1 x264 y37 w46 -Theme, 50|100|200|300|400|500|%引爆延遲1%||
-Gui Add, ComboBox, v煙霧地雷 x103 y69 w41 -Theme, Q|W|E|R|T|%煙霧地雷%||
-Gui Add, ComboBox, v引爆延遲2 x264 y69 w46 -Theme, 50|100|200|300|400|500|%引爆延遲2%||
-Gui Font, s12
-Gui Add, Text, x15 y40 w86 h20, 當使用按鍵
-Gui Add, Text, x147 y40 w115 h20, 地雷技能時延遲
-Gui Add, Text, x314 y40 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
-Gui Add, Text, x15 y70 w86 h20, 當使用按鍵
-Gui Add, Text, x147 y70 w115 h20, 煙霧地雷時延遲
-Gui Add, Text, x314 y70 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
-Gui Font
-Gui Add, StatusBar,, ▲ 工具小知識: 自動引爆地雷是使用遊戲預設按鍵[D]來執行的。
-Gui Show, w570 h156, 自動引爆地雷設置
-Return
-
-自動引爆地雷設置Escape:
-自動引爆地雷設置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
-	Return
-Else
-	Gui,submit
-Return
-
-;[自動引爆地雷GUI儲存指令]--------------------------------------------------------------------------------------
-
-儲存並讀取地雷設置:
-Gui,submit
-iniWrite,% 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
-iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-iniWrite,% 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
-iniWrite,% 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
-iniWrite,% 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
-iniWrite,% 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-Return
-
-讀取地雷設置:
-IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
-IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
-IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
-IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
-IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-Return
-
-;[快搜倉庫頁區(熱鍵)]---------------------------------------------------------------------------------
-
-快捷切換倉庫頁設置:
-gosub,倉庫頁快搜工具視窗
-return
-
-^LWin::
-Gosub,返回首頁
-return
-
-返回首頁:
-clipboard =
-Send {left %返回頁數%}
-當前倉庫頁 = 0
-return
-
-~^alt::
-gosub,快搜倉庫頁
-return
-
-快搜倉庫頁:
-clipboard =
-倉庫匹配狀態 = 倉庫匹配中
-Send, ^c
-ClipWait, 1
-if ErrorLevel = 1
-return
-
-暫存複製內容 = %Clipboard%
-
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,物品種類: 可堆疊通貨	,gosub,前往可堆疊通貨
-if 倉庫匹配狀態 = 倉庫匹配中
-if 暫存複製內容 contains 培育器,孵育器
-gosub,前往培育器
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,物品種類: 劫盜	,gosub,前往劫盜裝
-if 倉庫匹配狀態 = 倉庫匹配中
-if 暫存複製內容 contains 釋界之邀,阿茲瓦特史記,區域被異界尊師控制
-gosub,前往特殊地圖
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,物品種類: 珠寶	,gosub,二次判定珠寶
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,物品種類: 深淵珠寶,gosub,前往深淵珠
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,裂痕戒指	,gosub,前往裂痕戒指
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,(enchant)	,gosub,二次判定附魔裝
-if 倉庫匹配狀態 = 倉庫匹配中
-if 暫存複製內容 contains 塑者之物,尊師之物,總督軍物品,救贖者物品,狩獵者物品,聖戰軍王物品
-gosub,二次判斷勢力裝
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,未鑑定		,gosub,二次判定未鑑定物品
-if 倉庫匹配狀態 = 倉庫匹配中
-if 暫存複製內容 contains 戒指,之戒
-gosub,二次判斷傳奇戒指
-if 倉庫匹配狀態 = 倉庫匹配中
-IfInString,暫存複製內容,稀有度: 傳奇	,gosub,前往傳奇裝
-return
-
-;[快搜倉庫頁區(指令)]-----------------------------------------------------------------------------------------------------------------------------
-
-倉庫頁計算:
-計算值 :=  abs(當前倉庫頁 - 搜索到的倉庫頁)
-
-if (搜索到的倉庫頁 > 當前倉庫頁)
-{
-Send {right %計算值%}
-return
-}
-if (搜索到的倉庫頁 < 當前倉庫頁)
-{
-Send {left %計算值%}
-return
-}
-return
-
-二次判定未鑑定物品:
-IfInString,暫存複製內容,稀有度: 稀有	,gosub,三次判定未鑑定物品
-return
-
-二次判定珠寶:
-if 暫存複製內容 contains 稀有度: 普通,稀有度: 魔法,稀有度: 稀有
-{
-IfInString,暫存複製內容,星團珠寶	,gosub,前往星團珠
-if 暫存複製內容 contains 鈷藍珠寶,翠綠珠寶,赤紅珠寶
-gosub,前往普通珠
-}
-return
-
-二次判定附魔裝:
-if 暫存複製內容 contains 物品種類: 手套,物品種類: 頭部,物品種類: 鞋子
-gosub,前往附魔裝
-return
-
-三次判定未鑑定物品:
-IfInString,暫存複製內容,物品種類: 頭部	,gosub,前往未鑑定稀有頭盔
-IfInString,暫存複製內容,物品種類: 胸甲	,gosub,前往未鑑定稀有衣服
-IfInString,暫存複製內容,物品種類: 腰帶	,gosub,前往未鑑定稀有腰帶
-IfInString,暫存複製內容,物品種類: 手套	,gosub,前往未鑑定稀有手套
-IfInString,暫存複製內容,物品種類: 鞋子	,gosub,前往未鑑定稀有鞋子
-IfInString,暫存複製內容,物品種類: 戒指	,gosub,前往未鑑定稀有飾品
-IfInString,暫存複製內容,物品種類: 項鍊	,gosub,前往未鑑定稀有飾品
-if 暫存複製內容 contains 物品種類: 爪,物品種類: 匕首,物品種類: 法杖,物品種類: 單手劍,物品種類: 細劍,物品種類: 單手斧,物品種類: 單手錘,物品種類: 權杖,物品種類: 符紋匕首,物品種類: 弓,物品種類: 長杖,物品種類: 雙手劍,物品種類: 雙手斧,物品種類: 雙手錘,物品種類: 征戰長杖
-gosub,前往未鑑定稀有武器
-return
-
-前往未鑑定稀有頭盔:
-搜索到的倉庫頁 := 未鑑定稀有頭盔
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有頭盔
-return
-
-前往未鑑定稀有衣服:
-搜索到的倉庫頁 := 未鑑定稀有衣服
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有衣服
-return
-
-前往未鑑定稀有腰帶:
-搜索到的倉庫頁 := 未鑑定稀有腰帶
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有腰帶
-return
-
-前往未鑑定稀有手套:
-搜索到的倉庫頁 := 未鑑定稀有手套
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有手套
-return
-
-前往未鑑定稀有鞋子:
-搜索到的倉庫頁 := 未鑑定稀有鞋子
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有鞋子
-return
-
-前往未鑑定稀有飾品:
-搜索到的倉庫頁 := 未鑑定稀有飾品
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有飾品
-return
-
-前往未鑑定稀有武器:
-搜索到的倉庫頁 := 未鑑定稀有武器
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 未鑑定稀有武器
-return
-
-二次判斷傳奇戒指:
-IfInString,暫存複製內容,稀有度: 傳奇	,gosub,前往傳奇戒
-return
-
-二次判斷勢力裝:
-if 暫存複製內容 contains 稀有度: 稀有,稀有度: 普通,稀有度: 魔法
-gosub,前往勢力裝頁
-return
-
-前往星團珠:
-搜索到的倉庫頁 := 星團珠
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 星團珠
-return
-
-前往普通珠:
-搜索到的倉庫頁 := 普通珠
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 普通珠
-return
-
-前往深淵珠:
-搜索到的倉庫頁 := 深淵珠
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 深淵珠
-return
-
-前往培育器:
-搜索到的倉庫頁 := 培育器
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 培育器
-return
-
-前往勢力裝頁:
-搜索到的倉庫頁 := 勢力裝頁
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 勢力裝頁
-return
-
-前往傳奇裝:
-搜索到的倉庫頁 := 傳奇裝
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 傳奇裝
-快搜配對 = 需按Shift
-return
-
-前往附魔裝:
-搜索到的倉庫頁 := 附魔裝
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 附魔裝
-快搜配對 = 需按Shift
-return
-
-前往劫盜裝:
-搜索到的倉庫頁 := 劫盜裝
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 劫盜裝
-return
-
-前往傳奇戒:
-{
-搜索到的倉庫頁 := 傳奇戒
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 傳奇戒
-快搜配對 = 需按Shift
-return
-}
-return
-
-前往特殊地圖:
-搜索到的倉庫頁 := 特殊地圖
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 特殊地圖
-快搜配對 = 需按Shift
-return
-
-前往裂痕戒指:
-搜索到的倉庫頁 := 裂痕戒指
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 裂痕戒指
-return
-
-前往可堆疊通貨:
-搜索到的倉庫頁 := 0
-gosub,倉庫頁計算
-倉庫匹配狀態 = 成功
-當前倉庫頁 := 0
-return
-
-;[快搜倉庫頁設置GUI面板]----------------------------------------------------------------------------------------------------------------
-
-倉庫頁快搜工具視窗:
-Gui 倉庫頁快搜工具: New,,快搜倉庫頁設置(Ctrl + Alt 自動翻頁，Ctrl + Win 返回首頁)
-Gui +Label倉庫頁快搜工具 -Resize  -MinimizeBox -MaximizeBox
-Gui Color, 0x00FFFF
-Gui Add, Text, x79 y32 w46 h0 +0x200, Text
-Gui Font
-Gui Font, s10 Bold cRed
-Gui Add, Text, x7 y6 w526 h23 +0x200, 通貨頁擺至首頁，代碼舉例:首頁= 0，第二頁 = 1，以此類推。
-Gui Font
-Gui Font, s13 Norm cRed
-Gui, Add, Link, x390 y40 w140 h30, 影片介紹<a href="https://youtu.be/StpFz8qbB44">點我</a>
-Gui Font
-Gui Font, s10 Norm cBlue
-Gui Add, Text, x4 y40 w50 h20, % " 附魔裝 :"
-Gui Add, Text, x4 y65 w50 h20, % " 傳奇裝 :"
-Gui Add, Text, x4 y90 w50 h20, % " 傳奇戒 :"
-Gui Add, Text, x4 y115 w50 h20, % " 劫盜裝 :"
-Gui Add, Text, x4 y140 w50 h20, % " 待新增 :"
-Gui Add, Text, x4 y165 w50 h20, % " 培育器 :"
-Gui Add, Text, x4 y190 w50 h20, % " 深淵珠 :"
-Gui Add, Text, x4 y215 w50 h20, % " 星團珠 :"
-Gui Add, Text, x4 y240 w50 h20, % " 普通珠 :"
-Gui Add, Text, x100 y40 w130 h20,  % " (未鑑定)稀有頭盔 :"
-Gui Add, Text, x100 y65 w130 h20,  % " (未鑑定)稀有衣服 :"
-Gui Add, Text, x100 y90 w130 h20,  % " (未鑑定)稀有腰帶 :"
-Gui Add, Text, x100 y115 w130 h20, % " (未鑑定)稀有手套 :"
-Gui Add, Text, x100 y140 w130 h20, % " (未鑑定)稀有鞋子 :"
-Gui Add, Text, x100 y165 w130 h20, % " (未鑑定)稀有飾品 :"
-Gui Add, Text, x100 y190 w130 h20, % " (未鑑定)稀有武器 :"
-Gui Add, Text, x100 y215 w130 h20, % " 勢力裝(不限等)頁 :"
-Gui Add, Text, x100 y240 w180 h20, % " 特殊地圖(邀/尊/廟) :"
-Gui Add, Text, x260 y40 w70 h20,  % " 裂痕戒指 :"
-Gui Font
-Gui Font, s10 cBlue
-Gui Add, Text, x6 y265 w251 h25, % " [Ctrl + win] 返回首頁(輸入以上最大的頁數) :"
-Gui Font
-Gui Font, cRed
-Gui Add, Edit, v附魔裝 x58 y35 w35 h20 +Number -Theme	,% 附魔裝
-Gui Add, Edit, v傳奇裝 x58 y60 w35 h20 +Number -Theme	,% 傳奇裝
-Gui Add, Edit, v傳奇戒 x58 y85 w35 h20 +Number -Theme	,% 傳奇戒
-Gui Add, Edit, v劫盜裝 x58 y110 w35 h20 +Number -Theme	,% 劫盜裝
-Gui Add, Edit, v移除2 x58 y135 w35 h20 +Number -Theme	,% 移除2
-Gui Add, Edit, v培育器 x58 y160 w35 h20 +Number -Theme	,% 培育器
-Gui Add, Edit, v深淵珠 x58 y185 w35 h20 +Number -Theme	,% 深淵珠
-Gui Add, Edit, v星團珠 x58 y210 w35 h20 +Number -Theme	,% 星團珠
-Gui Add, Edit, v普通珠 x58 y235 w35 h20 +Number -Theme	,% 普通珠
-Gui Add, Edit, v未鑑定稀有頭盔 x220 y35 w35 h20 +Number -Theme	,% 未鑑定稀有頭盔
-Gui Add, Edit, v未鑑定稀有衣服 x220 y60 w35 h20 +Number -Theme	,% 未鑑定稀有衣服
-Gui Add, Edit, v未鑑定稀有腰帶 x220 y85 w35 h20 +Number -Theme	,% 未鑑定稀有腰帶
-Gui Add, Edit, v未鑑定稀有手套 x220 y110 w35 h20 +Number -Theme	,% 未鑑定稀有手套
-Gui Add, Edit, v未鑑定稀有鞋子 x220 y135 w35 h20 +Number -Theme	,% 未鑑定稀有鞋子
-Gui Add, Edit, v未鑑定稀有飾品 x220 y160 w35 h20 +Number -Theme	,% 未鑑定稀有飾品
-Gui Add, Edit, v未鑑定稀有武器 x220 y185 w35 h20 +Number -Theme	,% 未鑑定稀有武器
-Gui Add, Edit, v勢力裝頁 x220 y210 w35 h20 +Number -Theme	,% 勢力裝頁
-Gui Add, Edit, v特殊地圖 x220 y235 w35 h20 +Number -Theme	,% 特殊地圖
-Gui Add, Edit, v裂痕戒指 x330 y35 w35 h20 +Number -Theme	,% 裂痕戒指
-Gui Add, Edit, v返回頁數 x259 y261 w35 h20 +Number -Theme	,% 返回頁數
-Gui Add, StatusBar,, 製作By Sid ，沒使用到的頁數請輸入 " 0 "，不要保存 Error 狀態避免工具異常。
-Gui Add, Button, g儲存並讀取倉庫頁數據 x400 y261 w90 h23, 儲存並關閉
-Gui Show, x697 y320 w500 h310
-Return
-
-倉庫頁快搜工具Escape:
-倉庫頁快搜工具Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
-	Return
-Else
-	Gui,submit
-Return
-
-;[快搜倉庫頁GUI儲存指令]----------------------------------------------------------------------------------------------------------------
-
-儲存並讀取倉庫頁數據:
-Gui,submit
-iniWrite,% 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
-iniWrite,% 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
-iniWrite,% 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
-iniWrite,% 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
-iniWrite,% 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
-iniWrite,% 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
-iniWrite,% 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
-iniWrite,% 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
-iniWrite,% 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
-iniWrite,% 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
-iniWrite,% 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
-iniWrite,% 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
-iniWrite,% 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
-iniWrite,% 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
-iniWrite,% 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
-iniWrite,% 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
-iniWrite,% 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
-iniWrite,% 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
-iniWrite,% 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
-iniWrite,% 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
- iniread, 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
- iniread, 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
- iniread, 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
- iniread, 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
- iniread, 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
- iniread, 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
- iniread, 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
- iniread, 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
- iniread, 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
- iniread, 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
- iniread, 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
- iniread, 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
- iniread, 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
- iniread, 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
- iniread, 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
- iniread, 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
- iniread, 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
- iniread, 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
- iniread, 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
- iniread, 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
-Return
-
-讀取倉庫頁數據:
-iniread, 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
-iniread, 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
-iniread, 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
-iniread, 劫盜裝, sidtooldata.ini, 各倉庫頁數, 劫盜裝
-iniread, 移除2, sidtooldata.ini, 各倉庫頁數, 移除2
-iniread, 培育器, sidtooldata.ini, 各倉庫頁數, 培育器
-iniread, 深淵珠, sidtooldata.ini, 各倉庫頁數, 深淵珠
-iniread, 星團珠, sidtooldata.ini, 各倉庫頁數, 星團珠
-iniread, 普通珠, sidtooldata.ini, 各倉庫頁數, 普通珠
-iniread, 勢力裝頁, sidtooldata.ini, 各倉庫頁數, 勢力裝頁
-iniread, 特殊地圖, sidtooldata.ini, 各倉庫頁數, 特殊地圖
-iniread, 裂痕戒指, sidtooldata.ini, 各倉庫頁數, 裂痕戒指
-iniread, 返回頁數, sidtooldata.ini, 各倉庫頁數, 返回頁數
-iniread, 未鑑定稀有頭盔, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有頭盔
-iniread, 未鑑定稀有衣服, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有衣服
-iniread, 未鑑定稀有腰帶, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有腰帶
-iniread, 未鑑定稀有手套, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有手套
-iniread, 未鑑定稀有鞋子, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有鞋子
-iniread, 未鑑定稀有飾品, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有飾品
-iniread, 未鑑定稀有武器, sidtooldata.ini, 各倉庫頁數, 未鑑定稀有武器
-Return
-
-;[查價工具視窗指令]------------------------------------------------------------------------------------------------------
-
-引導查價安裝網址:
-run,https://forum.gamer.com.tw/C.php?bsn=18966&snA=123938,,UseErrorLevel
-return
-
-查價工具視窗:
-MouseGetPos, thisPosX, thisPosY
-if 聲明顯示 = 0
-{
-MsgBox,64,每次開起工具僅顯示一次，關閉後請再次使用 Win + V 即可。,請記得安裝並預先開啟【rchin-poe-trade】工具，並點擊 Home 返回遊戲， Win + V 才可正常運作。`r`r如未安裝，您可在 ( `` ) 菜單中找到*前往查價工具的網址*的欄位`r`r申明:此查價工具並非Sid製作，也未對此功能進行任何收費。`r`r僅抱持著推廣與分享目的提供使用，請多支持原創作者。
-聲明顯示 = 1
-WinActivate ,Path of Exile
-return
-}
-if 聲明顯示 = 1
-{
-ToolTip("Sid工具支援查價時 [ Esc ] 快速返回 POE 視窗")
-Send ^C
-WinActivate ,rchin-poe-trade
-}
-return
-
-;[Space空白一鍵喝水區(熱鍵)]------------------------------------------------------------------------------------------
-
-HK_Space_Label:
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-if Toolbutton = 0
-{
-	ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。")
-	if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
-	{
-		PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%
-		if (dialogCheck1 = %顏色5_C%)
-		{
-			Toolbutton := 1
-			ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
-			SetTimer,偵測對話框1,off
-			SetTimer,偵測對話框2,off
-			return
-		}
-	}
-	if (顏色6_X != "error" && 顏色6_Y != "error" && 顏色6_C != "error")
-	{
-		PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%
-		if (dialogCheck2 = %顏色6_C%)
-		{
-			Toolbutton := 1
-			ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
-			SetTimer,偵測對話框1,off
-			SetTimer,偵測對話框2,off
-			return
-		}
-	}
-	if 一鍵喝水時觸發的藥劑 = error
-	{
-	msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! (``) => 藥劑觸發設置。
-	gosub,藥劑觸發設置GUI面板
-	return
-	}
-	else if	(Autodrinkbutton = "0" or 藥劑觸發模式 = "無")
-	{
-	send %一鍵喝水時觸發的藥劑%
-	}
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "讀秒循環喝水")
-	{
-		if 一鍵喝水時觸發的藥劑 contains 1
-		{
-		send {1}
-		SetTimer, 藥劑1, off
-		SetTimer, 藥劑1, %藥劑持續時間1%
-		}
- 		if 一鍵喝水時觸發的藥劑 contains 2
-		{
-		send {2}
-		SetTimer, 藥劑2, off
-		SetTimer, 藥劑2, %藥劑持續時間2%
-		}
-		if 一鍵喝水時觸發的藥劑 contains 3
-		{
-		send {3}
-		SetTimer, 藥劑3, off
-		SetTimer, 藥劑3, %藥劑持續時間3%
-		}
-		if 一鍵喝水時觸發的藥劑 contains 4
-		{
-		send {4}
-		SetTimer, 藥劑4, off
-		SetTimer, 藥劑4, %藥劑持續時間4%
-		}
-		if 一鍵喝水時觸發的藥劑 contains 5
-		{
-		send {5}
-		SetTimer, 藥劑5, off
-		SetTimer, 藥劑5, %藥劑持續時間5%
-		}
-		return
-	}
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "純藥劑防呆")
-	{
-		if 一鍵喝水時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 一鍵喝水時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 一鍵喝水時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 一鍵喝水時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 一鍵喝水時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-	if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水")
-	{
-		防呆藥水鎖1 = 無
-		防呆藥水鎖2 = 無
-		防呆藥水鎖3 = 無
-		防呆藥水鎖4 = 無
-		防呆藥水鎖5 = 無
-		if 一鍵喝水時觸發的藥劑 contains 1
-		gosub,使用藥劑1
-		if 一鍵喝水時觸發的藥劑 contains 2
-		gosub,使用藥劑2
-		if 一鍵喝水時觸發的藥劑 contains 3
-		gosub,使用藥劑3
-		if 一鍵喝水時觸發的藥劑 contains 4
-		gosub,使用藥劑4
-		if 一鍵喝水時觸發的藥劑 contains 5
-		gosub,使用藥劑5
-	}
-
-}
-return
-
-;[Space讀秒循環喝水計時器指令]-------------------------------------------------------------------------------------------------
-
-藥劑1:
-if Toolbutton = 0
-send {1}
-return
-
-藥劑2:
-if Toolbutton = 0
-send {2}
-return
-
-藥劑3:
-if Toolbutton = 0
-send {3}
-return
-
-藥劑4:
-if Toolbutton = 0
-send {4}
-return
-
-藥劑5:
-if Toolbutton = 0
-send {5}
-return
-
-;[Enter偵測對話框區(熱鍵)]------------------------------------------------------------------------------------------
-
-~enter::
-if (顏色5_X = "error" or 顏色5_Y = "error" or 顏色6_X = "error" or 顏色6_Y = "error")
-{
-   if Enter除錯提醒次數 = 0
-   {
-	msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕!非常重要，不然打字會瞎雞巴亂按。`r若你第一次看到此視窗，按下確認後將跳轉教學圖片網址。`r此彈跳網頁只會顯示一次，請勿在未設置成功前關閉教學圖片。`r確定後，請依圖片，將滑鼠指定座標，再按[Win + C]，輸入代號(5)或(6)!
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
-	Enter除錯提醒次數 := 1
-   }
-}
-else
-{
 (Toolbutton = 0 ? (Toolbutton := 1,ToolTip("已切換為文字模式")) : (Toolbutton := 0,ToolTip("已切換為遊戲模式")))
 if Toolbutton = 0
 {
@@ -1757,7 +1753,6 @@ Return
  Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 Return
 
-
 掃描開始左上2_X := % 對方背包左上_X
 掃描開始左上2_Y := % 對方背包左上_Y
 掃描開始右下2_X := % 對方背包右下_X
@@ -1918,8 +1913,6 @@ iniread,循環技能時間1 , sidtooldata.ini, 循環技能, 循環技能時間1
 iniread,循環技能時間2 , sidtooldata.ini, 循環技能, 循環技能時間2
 iniread,循環技能時間3 , sidtooldata.ini, 循環技能, 循環技能時間3
 Return
-
-
 
 ;[End快速組隊(熱鍵)]------------------------------------------------------------------------------------------------------------
 
@@ -2622,8 +2615,6 @@ global 存倉掃描顏色Array := []
 }
 return
 
-
-
 ;[F7座標定位區]------------------------------------------------------------------------------------------------------
 
 HK_WinF7_ModeLabel:
@@ -2632,15 +2623,53 @@ return
 
 HK_F7_Label:
 F7背包定位:
-MouseGetPos, thisPosX, thisPosY
-PixelGetColor, colorabc, %thisPosX%, %thisPosY%
-PosX := ["背包左上_X","背包右下_X","對方背包左上_X","對方背包右下_X","接受交易_X","命運卡交易_X","命運卡格子_X","傳送卷軸_X"]
-PosY := ["背包左上_Y","背包右下_Y","對方背包左上_Y","對方背包右下_Y","接受交易_Y","命運卡交易_Y","命運卡格子_Y","傳送卷軸_Y"]
-CosA := ["背包左上_C","背包右下_C","對方背包左上_C","對方背包右下_C","接受交易_C","命運卡交易_C","命運卡格子_C","傳送卷軸_C"]
-InputBox, affixID,F7背包定位工具, 使用[F7]前的滑鼠座標 [ %thisPosX% `, %thisPosY% ]。`n如果尚未指定，請按 ( Cancel )。`r滑鼠正確指定座標後使用 ( F7 )。`r`r1 = 背包左上角`r2 = 背包右下角`r3 = 對方背包左上`r4 = 對方背包右下`r5 = 接受交易`r6 = 命運卡兌換 (點擊交易)`r7 = 命運卡兌換 (兌換欄位)`r8 = 傳送卷軸 (背包內固定位置)`r`r命運卡相關請在未放置任何物品至兌換處時抓取`r請依指示輸入對應的座標代號...( 1 ~ 8 ),,400,380
+	if (捕捉模式 = 1)
+	{
+		MouseGetPos, capX, capY
+		PixelGetColor, capC, %capX%, %capY%
+		ToolTip("")
+		if (捕捉類型 = "color")
+		{
+			PosX := ["","","","","顏色5_X","顏色6_X"]
+			PosY := ["","","","","顏色5_Y","顏色6_Y"]
+			CosA := ["","","","","顏色5_C","顏色6_C"]
+			iniWrite,% capX, sidtooldata.ini, 顏色座標, % PosX[捕捉代號]
+			iniWrite,% capY, sidtooldata.ini, 顏色座標, % PosY[捕捉代號]
+			iniWrite,% capC, sidtooldata.ini, 顏色座標, % CosA[捕捉代號]
+			gosub,座標顏色讀取
+		}
+		else if (捕捉類型 = "bag")
+		{
+			PosX := ["背包左上_X","背包右下_X"]
+			PosY := ["背包左上_Y","背包右下_Y"]
+			CosA := ["背包左上_C","背包右下_C"]
+			iniWrite,% capX, sidtooldata.ini, 背包定位, % PosX[捕捉代號]
+			iniWrite,% capY, sidtooldata.ini, 背包定位, % PosY[捕捉代號]
+			iniWrite,% capC, sidtooldata.ini, 背包定位, % CosA[捕捉代號]
+			gosub,讀取F7背包定位內容
+			gosub,背包運算作業
+		}
+		try {
+			neutron.wnd.updateAnchorPoint(捕捉類型, 捕捉代號, capX, capY, capC)
+		} catch {
+			neutron.wnd.eval("updateAnchorPoint('" . 捕捉類型 . "'," . 捕捉代號 . "," . capX . "," . capY . ",'" . capC . "')")
+		}
+		try {
+			neutron.wnd.syncDataFromAHK()
+		}
+		neutron.Show()
+		捕捉模式 := 0
+		return
+	}
+	MouseGetPos, thisPosX, thisPosY
+	PixelGetColor, colorabc, %thisPosX%, %thisPosY%
+	PosX := ["背包左上_X","背包右下_X"]
+	PosY := ["背包左上_Y","背包右下_Y"]
+	CosA := ["背包左上_C","背包右下_C"]
+	InputBox, affixID,F7背包定位工具, 使用[F7]前的滑鼠座標 [ %thisPosX% `, %thisPosY% ]。`n如果尚未指定，請按 ( Cancel )。`r滑鼠正確指定座標後使用 ( F7 )。`r`r1 = 背包左上角`r2 = 背包右下角`r`r請依指示輸入對應的座標代號...( 1, 2 ),,400,250
 	if not ErrorLevel
 	{
-		checkAffixID := RegExMatch(affixID, "[1-8]$")
+		checkAffixID := RegExMatch(affixID, "[12]$")
 		if checkAffixID = 1
 		{
 			iniWrite,% thisPosX, sidtooldata.ini, 背包定位, % PosX[affixID]
@@ -2648,11 +2677,10 @@ InputBox, affixID,F7背包定位工具, 使用[F7]前的滑鼠座標 [ %thisPosX
 			iniwrite,% colorabc, sidtooldata.ini, 背包定位, % CosA[affixID]
 			gosub,讀取F7背包定位內容
 			gosub,背包運算作業
-			gosub,背包運算作業2
 		}
-		else if not (affixID = "1" or affixID = "2" or affixID = "3" or affixID = "4" or affixID = "5" or affixID = "6" or affixID = "7" or affixID = "8")
+		else if not (affixID = "1" or affixID = "2")
 		{
-			MsgBox,16,錯誤,請輸入正確的代號 1 ~ 8
+			MsgBox,16,錯誤,請輸入正確的代號 (1, 2)
 		}
 	}
 	return
@@ -2660,22 +2688,10 @@ InputBox, affixID,F7背包定位工具, 使用[F7]前的滑鼠座標 [ %thisPosX
 讀取F7背包定位內容:
 iniread,背包左上_X, sidtooldata.ini, 背包定位, 背包左上_X
 iniread,背包左上_Y, sidtooldata.ini, 背包定位, 背包左上_Y
+iniread,背包左上_C, sidtooldata.ini, 背包定位, 背包左上_C
 iniread,背包右下_X, sidtooldata.ini, 背包定位, 背包右下_X
 iniread,背包右下_Y, sidtooldata.ini, 背包定位, 背包右下_Y
-iniread,對方背包左上_X, sidtooldata.ini, 背包定位, 對方背包左上_X
-iniread,對方背包左上_Y, sidtooldata.ini, 背包定位, 對方背包左上_Y
-iniread,對方背包右下_X, sidtooldata.ini, 背包定位, 對方背包右下_X
-iniread,對方背包右下_Y, sidtooldata.ini, 背包定位, 對方背包右下_Y
-iniread,接受交易_X, sidtooldata.ini, 背包定位, 接受交易_X
-iniread,接受交易_Y, sidtooldata.ini, 背包定位, 接受交易_Y
-iniread,命運卡交易_X, sidtooldata.ini, 背包定位, 命運卡交易_X
-iniread,命運卡交易_Y, sidtooldata.ini, 背包定位, 命運卡交易_Y
-iniread,命運卡交易_C, sidtooldata.ini, 背包定位, 命運卡交易_C
-iniread,命運卡格子_X, sidtooldata.ini, 背包定位, 命運卡格子_X
-iniread,命運卡格子_Y, sidtooldata.ini, 背包定位, 命運卡格子_Y
-iniread,命運卡格子_C, sidtooldata.ini, 背包定位, 命運卡格子_C
-iniread,傳送卷軸_X, sidtooldata.ini, 背包定位, 傳送卷軸_X
-iniread,傳送卷軸_Y, sidtooldata.ini, 背包定位, 傳送卷軸_Y
+iniread,背包右下_C, sidtooldata.ini, 背包定位, 背包右下_C
 return
 
 背包運算作業:
@@ -2688,8 +2704,6 @@ return
 背包每格寬 := floor((掃描開始右下_X - 掃描開始左上_X) / 掃描水平數量)
 背包每格高 := floor((掃描開始右下_Y - 掃描開始左上_Y) / 掃描垂直數量)
 return
-
-
 
 ;[漂亮按鈕產生代碼]----------------------------------------------------------------------------------------------
 
@@ -3036,8 +3050,6 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！")
 }
 
-
-
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
 	global
 	附魔裝 := enchant
@@ -3064,49 +3076,74 @@ NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, re
 	ToolTip("倉庫頁面設置已儲存！")
 }
 
+StartAnchorCapture(neutron, type, id) {
+	global
+	捕捉類型 := type
+	捕捉代號 := id
+	捕捉模式 := 1
+	hkF7Val := (快捷鍵_F7 != "" && 快捷鍵_F7 != "ERROR") ? 快捷鍵_F7 : "*F7"
+	try {
+		Hotkey, %hkF7Val%, HK_F7_Label, On
+	}
+	neutron.Hide()
+	ToolTip("📍 請將滑鼠游標移至目標位置，按下 F7 完成抓取與儲存")
+}
+
 NeutronGetSettings(neutron) {
 	global
 	json := "{"
-	. """flaskMode"":""" . 藥劑觸發模式 . ""","
-	. """mainSkill"":""" . 主要技能 . ""","
-	. """skillFlasks"":""" . 使用技能時觸發的藥劑 . ""","
-	. """spaceFlasks"":""" . 一鍵喝水時觸發的藥劑 . ""","
-	. """dur1"":""" . 藥劑持續時間1 . ""","
-	. """dur2"":""" . 藥劑持續時間2 . ""","
-	. """dur3"":""" . 藥劑持續時間3 . ""","
-	. """dur4"":""" . 藥劑持續時間4 . ""","
-	. """dur5"":""" . 藥劑持續時間5 . ""","
-	. """comboStatus"":""" . 技能連段功能 . ""","
-	. """comboKey1"":""" . 技1 . ""","
-	. """comboDelay1"":""" . 技1延遲 . ""","
-	. """comboKey2"":""" . 技2 . ""","
-	. """comboDelay2"":""" . 技2延遲 . ""","
-	. """comboKey3"":""" . 技3 . ""","
-	. """loop1"":""" . 循環技能1 . ""","
-	. """loopT1"":""" . 循環技能時間1 . ""","
-	. """loop2"":""" . 循環技能2 . ""","
-	. """loopT2"":""" . 循環技能時間2 . ""","
-	. """loop3"":""" . 循環技能3 . ""","
-	. """loopT3"":""" . 循環技能時間3 . ""","
-	. """mineMode"":""" . 地雷模式 . ""","
-	. """mineStaffMode"":""" . 地雷杖模式 . ""","
-	. """mineKey"":""" . 地雷按鍵 . ""","
-	. """mineDelay1"":""" . 引爆延遲1 . ""","
-	. """smokeKey"":""" . 煙霧地雷 . ""","
-	. """mineDelay2"":""" . 引爆延遲2 . ""","
-	. """clickMode"":""" . 連點模式 . ""","
-	. """clickSpeed"":""" . 滑鼠連點速度 . ""","
-	. """hk_F1"":""" . 快捷鍵_F1 . ""","
-	. """hk_F2"":""" . 快捷鍵_F2 . ""","
-	. """hk_F3"":""" . 快捷鍵_F3 . ""","
-	. """hk_F7"":""" . 快捷鍵_F7 . ""","
-	. """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
-	. """hk_WinV"":""" . 快捷鍵_WinV . ""","
-	. """hk_WinC"":""" . 快捷鍵_WinC . ""","
-	. """hk_Space"":""" . 快捷鍵_Space . ""","
-	. """hk_Insert"":""" . 快捷鍵_Insert . ""","
-	. """hk_End"":""" . 快捷鍵_End . """"
-	. "}"
+	json .= """flaskMode"":""" . 藥劑觸發模式 . ""","
+	json .= """mainSkill"":""" . 主要技能 . ""","
+	json .= """skillFlasks"":""" . 使用技能時觸發的藥劑 . ""","
+	json .= """spaceFlasks"":""" . 一鍵喝水時觸發的藥劑 . ""","
+	json .= """dur1"":""" . 藥劑持續時間1 . ""","
+	json .= """dur2"":""" . 藥劑持續時間2 . ""","
+	json .= """dur3"":""" . 藥劑持續時間3 . ""","
+	json .= """dur4"":""" . 藥劑持續時間4 . ""","
+	json .= """dur5"":""" . 藥劑持續時間5 . ""","
+	json .= """comboStatus"":""" . 技能連段功能 . ""","
+	json .= """comboKey1"":""" . 技1 . ""","
+	json .= """comboDelay1"":""" . 技1延遲 . ""","
+	json .= """comboKey2"":""" . 技2 . ""","
+	json .= """comboDelay2"":""" . 技2延遲 . ""","
+	json .= """comboKey3"":""" . 技3 . ""","
+	json .= """loop1"":""" . 循環技能1 . ""","
+	json .= """loopT1"":""" . 循環技能時間1 . ""","
+	json .= """loop2"":""" . 循環技能2 . ""","
+	json .= """loopT2"":""" . 循環技能時間2 . ""","
+	json .= """loop3"":""" . 循環技能3 . ""","
+	json .= """loopT3"":""" . 循環技能時間3 . ""","
+	json .= """mineMode"":""" . 地雷模式 . ""","
+	json .= """mineStaffMode"":""" . 地雷杖模式 . ""","
+	json .= """mineKey"":""" . 地雷按鍵 . ""","
+	json .= """mineDelay1"":""" . 引爆延遲1 . ""","
+	json .= """smokeKey"":""" . 煙霧地雷 . ""","
+	json .= """mineDelay2"":""" . 引爆延遲2 . ""","
+	json .= """clickMode"":""" . 連點模式 . ""","
+	json .= """clickSpeed"":""" . 滑鼠連點速度 . ""","
+	json .= """hk_F1"":""" . 快捷鍵_F1 . ""","
+	json .= """hk_F2"":""" . 快捷鍵_F2 . ""","
+	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
+	json .= """hk_F7"":""" . 快捷鍵_F7 . ""","
+	json .= """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
+	json .= """hk_WinV"":""" . 快捷鍵_WinV . ""","
+	json .= """hk_WinC"":""" . 快捷鍵_WinC . ""","
+	json .= """hk_Space"":""" . 快捷鍵_Space . ""","
+	json .= """hk_Insert"":""" . 快捷鍵_Insert . ""","
+	json .= """hk_End"":""" . 快捷鍵_End . ""","
+	json .= """color5_X"":""" . 顏色5_X . ""","
+	json .= """color5_Y"":""" . 顏色5_Y . ""","
+	json .= """color5_C"":""" . 顏色5_C . ""","
+	json .= """color6_X"":""" . 顏色6_X . ""","
+	json .= """color6_Y"":""" . 顏色6_Y . ""","
+	json .= """color6_C"":""" . 顏色6_C . ""","
+	json .= """bag1_X"":""" . 背包左上_X . ""","
+	json .= """bag1_Y"":""" . 背包左上_Y . ""","
+	json .= """bag1_C"":""" . 背包左上_C . ""","
+	json .= """bag2_X"":""" . 背包右下_X . ""","
+	json .= """bag2_Y"":""" . 背包右下_Y . ""","
+	json .= """bag2_C"":""" . 背包右下_C . """"
+	json .= "}"
 	return json
 }
 

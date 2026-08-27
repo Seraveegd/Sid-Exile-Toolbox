@@ -111,6 +111,14 @@ function syncDataFromAHK() {
             }
         });
 
+        // 同步畫面偵測點 (5~6) 與背包定位點 (1, 2)
+        [5, 6].forEach(function (c) {
+            updateAnchorPoint('color', c, data['color' + c + '_X'], data['color' + c + '_Y'], data['color' + c + '_C']);
+        });
+        [1, 2].forEach(function (b) {
+            updateAnchorPoint('bag', b, data['bag' + b + '_X'], data['bag' + b + '_Y'], data['bag' + b + '_C']);
+        });
+
     } catch (err) {
         // Log error
     }
@@ -399,6 +407,38 @@ function saveWarehouseConfig() {
         document.getElementById('pageUniqueWeapon').value,
         document.getElementById('pageReturn').value
     );
+}
+
+//格式化 0xRRGGBB / 0xBBGGRR 色碼為 HTML #RRGGBB 供預覽色塊使用
+function formatHexColor(cStr) {
+    if (!cStr || cStr === 'error' || cStr === '未設定' || cStr === '-') return '#333';
+    var hex = cStr.toString().replace(/^0x/i, '');
+    while (hex.length < 6) hex = '0' + hex;
+    return '#' + hex;
+}
+
+//觸發定位點抓取 (隱藏 UI 視窗，提示使用者按 F7)
+function captureAnchorPoint(type, id) {
+    if (typeof ahk === 'undefined') return;
+    ahk.StartAnchorCapture(type, id);
+}
+
+//由 AHK 抓取完成後回呼更新 UI 表格項目
+function updateAnchorPoint(type, id, x, y, color) {
+    var prefix = (type === 'color') ? 'c' : 'b';
+    var elX = document.getElementById(prefix + id + '_x');
+    var elY = document.getElementById(prefix + id + '_y');
+    var elC = document.getElementById(prefix + id + '_c');
+    var elBox = document.getElementById(prefix + id + '_box');
+
+    var valX = (x !== undefined && x !== null && x !== 'error' && x !== '') ? x : '未設定';
+    var valY = (y !== undefined && y !== null && y !== 'error' && y !== '') ? y : '未設定';
+    var valC = (color !== undefined && color !== null && color !== 'error' && color !== '') ? color : '未設定';
+
+    if (elX) elX.textContent = valX;
+    if (elY) elY.textContent = valY;
+    if (elC) elC.textContent = valC;
+    if (elBox) elBox.style.backgroundColor = formatHexColor(valC);
 }
 
 //載入時同步資料
