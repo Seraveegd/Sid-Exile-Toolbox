@@ -2305,21 +2305,20 @@ ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
 else
 {
 Critical
-	if (背包左上_X = "error" or 背包右下_X = "error")
+	if (背包左上_X = "error" or 背包右下_X = "error" or 背包左上_X = "ERROR" or 背包右下_X = "ERROR" or 背包左上_X = "" or 背包右下_X = "" or 背包左上_X = "未設定" or 背包右下_X = "未設定" or !RegExMatch(背包左上_X, "^\d+$") or !RegExMatch(背包右下_X, "^\d+$"))
 	{
-	msgbox,16,錯誤,尚未設定背包位置，請打開背包使用F7設定。
-	run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/1127343908_2.png,,UseErrorLevel
-	return
+		msgbox,16,錯誤,尚未設定 [背包左上角第一格中心點] 與 [背包右下角最末格中心點]，請開啟設定選單(Win+Z)進行定位點抓取。
+		return
 	}
-	if 清包模式 = 按壓式
-	{
-	gosub,一鍵清包
-	}
-	if 清包模式 = 自動式
+	if (InStr(清包模式, "按壓"))
 	{
 	gosub,一鍵清包
 	}
-	if 清包模式 = 掃描式
+	if (InStr(清包模式, "自動"))
+	{
+	gosub,一鍵清包
+	}
+	if (InStr(清包模式, "掃描") && !InStr(清包模式, "翻頁"))
 	{
 		if (背包初始顏色1 = "error" and 背包初始顏色2 = "error")
 		{
@@ -2494,7 +2493,7 @@ send {ctrl down}
 loop % 掃描水平數量
 {
 PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
-	if 清包模式 = 按壓式
+	if (InStr(清包模式, "按壓"))
 	{
 		cleanF3Key := CleanKeyName(快捷鍵_F3)
 		if not(GetKeyState(cleanF3Key,"P"))
@@ -2505,7 +2504,7 @@ PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_In
 		return
 		}
 	}
-	if 清包模式 = 自動式
+	if (InStr(清包模式, "自動"))
 	{
 		if (GetKeyState("~","P"))
 		{
@@ -2519,7 +2518,7 @@ loop % 掃描垂直數量
 {
 PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
 MouseClick,, % PosX, % PosY,1,0
-	if 清包模式 = 按壓式
+	if (InStr(清包模式, "按壓"))
 	{
 		cleanF3Key := CleanKeyName(快捷鍵_F3)
 		ToolTip, % "鬆開[" . cleanF3Key . "]停止。", 0,22,3
@@ -2531,7 +2530,7 @@ MouseClick,, % PosX, % PosY,1,0
 		return
 		}
 	}
-	if 清包模式 = 自動式
+	if (InStr(清包模式, "自動"))
 	{
 		ToolTip, % "長按[~]停止。", 0,22,3
 		if (GetKeyState("~","P"))
@@ -3050,6 +3049,13 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！")
 }
 
+NeutronSaveClearBagConfig(neutron, mode) {
+	global
+	清包模式 := mode
+	IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
+	ToolTip("清包模式已儲存為: " . 清包模式)
+}
+
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
 	global
 	附魔裝 := enchant
@@ -3121,6 +3127,7 @@ NeutronGetSettings(neutron) {
 	json .= """mineDelay2"":""" . 引爆延遲2 . ""","
 	json .= """clickMode"":""" . 連點模式 . ""","
 	json .= """clickSpeed"":""" . 滑鼠連點速度 . ""","
+	json .= """clearBagMode"":""" . 清包模式 . ""","
 	json .= """hk_F1"":""" . 快捷鍵_F1 . ""","
 	json .= """hk_F2"":""" . 快捷鍵_F2 . ""","
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","

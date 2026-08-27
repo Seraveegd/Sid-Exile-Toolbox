@@ -98,11 +98,11 @@
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F2" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">清包切換 / 背包顏色定位</label>
+                <label class="form-label mb-1 small text-secondary">清包(需要設定背包左(右)上角座標顏色)</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F3" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">背包座標定位</label>
+                <label class="form-label mb-1 small text-secondary">定位點座標與顏色定位</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F7" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
@@ -119,11 +119,13 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label mb-1 small text-secondary">一鍵喝水 / 循環 / 防呆</label>
-                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Space" placeholder="點擊按下新按鍵">
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Space"
+                  placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
                 <label class="form-label mb-1 small text-secondary">自動循環技能開關</label>
-                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Insert" placeholder="點擊按下新按鍵">
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Insert"
+                  placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
                 <label class="form-label mb-1 small text-secondary">快速申請組隊</label>
@@ -132,20 +134,24 @@
               <!-- 系統固定按鍵 (保持不能自訂) -->
               <div class="col-md-4">
                 <label class="form-label mb-1 small text-muted">暫停工具 / 回復鍵盤 (系統固定)</label>
-                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F9" disabled readonly>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F9"
+                  disabled readonly>
               </div>
               <div class="col-md-4">
                 <label class="form-label mb-1 small text-muted">重新啟動工具 (系統固定)</label>
-                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F11" disabled readonly>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F11"
+                  disabled readonly>
               </div>
               <div class="col-md-4">
                 <label class="form-label mb-1 small text-muted">結束工具 (系統固定)</label>
-                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F12" disabled readonly>
+                <input type="text" class="form-control form-control-sm bg-dark text-muted border-secondary" value="F12"
+                  disabled readonly>
               </div>
             </div>
             <div class="d-flex align-items-center">
               <button class="btn btn-success btn-sm px-4 py-2 me-2" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
-              <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄 恢復預設快捷鍵</button>
+              <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄
+                恢復預設快捷鍵</button>
             </div>
           </div>
         </div>
@@ -159,13 +165,15 @@
         </div>
 
         <div class="alert alert-info py-2 px-3 small mb-3" role="alert">
-          💡 <strong>操作說明：</strong> 點擊下方任意項目的 <span class="badge bg-primary">📍 抓取</span> 按鈕，本視窗將自動隱藏。請將滑鼠游標移動到遊戲畫面中的目標位置並按下 <span class="kbd-badge me-1 me-1">F7</span>，系統將自動捕捉 X、Y 座標與顏色，寫入設定檔並即時回填此面板。
+          💡 <strong>操作說明：</strong> 點擊下方任意項目的 <span class="badge bg-primary">📍 抓取</span>
+          按鈕，本視窗將自動隱藏。請將滑鼠游標移動到遊戲畫面中的目標位置並按下 <span class="kbd-badge me-1 me-1">F7</span>，系統將自動捕捉 X、Y
+          座標與顏色，寫入設定檔並即時回填此面板。
         </div>
 
         <!-- 畫面偵測點 (Win + C / 1~9) -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">畫面與人物偵測點 (1 ~ 9)</h6>
+            <h6 class="card-title text-light mb-2">畫面與人物偵測點</h6>
             <div class="table-responsive">
               <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
                 <thead>
@@ -184,16 +192,28 @@
                     <td>Enter 對話框(1) 黑色域</td>
                     <td><code id="c5_x" class="text-info">-</code></td>
                     <td><code id="c5_y" class="text-info">-</code></td>
-                    <td><div class="d-flex align-items-center gap-2"><span id="c5_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="c5_c" class="text-warning">-</code></div></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('color', 5)">📍 抓取</button></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2"><span id="c5_box"
+                          class="border border-secondary rounded"
+                          style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
+                          id="c5_c" class="text-warning">-</code></div>
+                    </td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('color', 5)">📍 抓取</button></td>
                   </tr>
                   <tr>
                     <td><span class="badge bg-secondary">6</span></td>
                     <td>Enter 對話框(2) 黑色域 <span class="text-muted">(位移對話框)</span></td>
                     <td><code id="c6_x" class="text-info">-</code></td>
                     <td><code id="c6_y" class="text-info">-</code></td>
-                    <td><div class="d-flex align-items-center gap-2"><span id="c6_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="c6_c" class="text-warning">-</code></div></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('color', 6)">📍 抓取</button></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2"><span id="c6_box"
+                          class="border border-secondary rounded"
+                          style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
+                          id="c6_c" class="text-warning">-</code></div>
+                    </td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('color', 6)">📍 抓取</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -201,10 +221,10 @@
           </div>
         </div>
 
-        <!-- 背包與介面座標定位點 -->
+        <!-- 背包介面座標定位點 -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">背包與介面座標定位點</h6>
+            <h6 class="card-title text-light mb-2">背包介面座標定位點</h6>
             <div class="table-responsive">
               <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
                 <thead>
@@ -223,19 +243,51 @@
                     <td>背包左上角第一格中心點</td>
                     <td><code id="b1_x" class="text-info">-</code></td>
                     <td><code id="b1_y" class="text-info">-</code></td>
-                    <td><div class="d-flex align-items-center gap-2"><span id="b1_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="b1_c" class="text-warning">-</code></div></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('bag', 1)">📍 抓取</button></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2"><span id="b1_box"
+                          class="border border-secondary rounded"
+                          style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
+                          id="b1_c" class="text-warning">-</code></div>
+                    </td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('bag', 1)">📍 抓取</button></td>
                   </tr>
                   <tr>
                     <td><span class="badge bg-secondary">2</span></td>
                     <td>背包右下角最末格中心點</td>
                     <td><code id="b2_x" class="text-info">-</code></td>
                     <td><code id="b2_y" class="text-info">-</code></td>
-                    <td><div class="d-flex align-items-center gap-2"><span id="b2_box" class="border border-secondary rounded" style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code id="b2_c" class="text-warning">-</code></div></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2" onclick="captureAnchorPoint('bag', 2)">📍 抓取</button></td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2"><span id="b2_box"
+                          class="border border-secondary rounded"
+                          style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
+                          id="b2_c" class="text-warning">-</code></div>
+                    </td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('bag', 2)">📍 抓取</button></td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 清包設置 -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">清包設置</h6>
+            <div class="row g-3 align-items-center">
+              <div class="col-md-6">
+                <label for="clearBagMode" class="form-label mb-1 small text-secondary">清包模式 (預設：按壓式清包)</label>
+                <select id="clearBagMode" class="form-select form-select-sm" onchange="saveClearBagConfig()">
+                  <option value="按壓式">按壓式清包</option>
+                  <option value="自動式">自動式清包</option>
+                  <option value="掃描式">掃描式清包</option>
+                </select>
+              </div>
+              <div class="col-md-6 d-flex align-items-end">
+                <button class="btn btn-primary btn-sm px-3 py-1" onclick="saveClearBagConfig()">💾 儲存清包設置</button>
+              </div>
             </div>
           </div>
         </div>

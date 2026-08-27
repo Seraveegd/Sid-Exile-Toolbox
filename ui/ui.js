@@ -63,6 +63,7 @@ function syncDataFromAHK() {
             loopT3: 'loopT3',
             clickMode: 'clickMode',
             clickSpeed: 'clickSpeed',
+            clearBagMode: 'clearBagMode',
             mineMode: 'mineMode',
             mineStaffMode: 'mineStaffMode',
             mineKey: 'mineKey',
@@ -355,6 +356,14 @@ function saveLoopConfig() {
         document.getElementById('loopT2').value,
         document.getElementById('loop3').value,
         document.getElementById('loopT3').value
+    );
+}
+
+//儲存清包模式設定
+function saveClearBagConfig() {
+    if (typeof ahk === 'undefined') return;
+    ahk.NeutronSaveClearBagConfig(
+        document.getElementById('clearBagMode').value
     );
 }
 
