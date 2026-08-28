@@ -37,7 +37,10 @@
           <span class="icon">★</span> ★工具介紹★
         </div>
         <div class="menu-item" onclick="showSection('anchor')">
-          <span class="icon">📍</span> 定位點設置
+          <span class="icon">📍</span> 座標與顏色定位設置
+        </div>
+        <div class="menu-item" onclick="showSection('clearbag')">
+          <span class="icon">🎒</span> 清包設置
         </div>
         <div class="menu-item" onclick="showSection('flask')">
           <span class="icon">🧪</span> 藥劑觸發設置
@@ -98,11 +101,11 @@
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F2" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">清包(需要設定背包左(右)上角座標顏色)</label>
+                <label class="form-label mb-1 small text-secondary">清包(需要設定背包左(右)上角座標與顏色)</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F3" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">定位點座標與顏色定位</label>
+                <label class="form-label mb-1 small text-secondary">座標與顏色定位</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F7" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
@@ -110,15 +113,11 @@
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinZ" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">快速查價 (游標指道具)</label>
-                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinV" placeholder="點擊按下新按鍵">
-              </div>
-              <div class="col-md-6">
                 <label class="form-label mb-1 small text-secondary">座標與顏色偵測校正</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_WinC" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
-                <label class="form-label mb-1 small text-secondary">一鍵喝水 / 循環 / 防呆</label>
+                <label class="form-label mb-1 small text-secondary">一鍵喝水 / 循環 / 防呆(需要設定對話框座標與顏色)</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Space"
                   placeholder="點擊按下新按鍵">
               </div>
@@ -157,11 +156,11 @@
         </div>
       </div>
 
-      <!-- Panel 2: 定位點設置 -->
+      <!-- Panel 2: 座標與顏色定位設置 -->
       <div id="anchor" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">📍 定位點設置</div>
-          <div class="panel-subtitle">所有畫面與背包定位點均統一透過 F7 熱鍵快速抓取與即時顯示。</div>
+          <div class="panel-title mb-1">📍 座標與顏色定位設置</div>
+          <div class="panel-subtitle">所有畫面座標與顏色定位均透過 F7 熱鍵快速抓取與即時顯示。</div>
         </div>
 
         <div class="alert alert-info py-2 px-3 small mb-3" role="alert">
@@ -221,10 +220,10 @@
           </div>
         </div>
 
-        <!-- 背包介面座標定位點 -->
+        <!-- 背包介面座標與顏色定位 -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">背包介面座標定位點</h6>
+            <h6 class="card-title text-light mb-2">背包介面座標與顏色定位</h6>
             <div class="table-responsive">
               <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
                 <thead>
@@ -272,21 +271,25 @@
           </div>
         </div>
 
-        <!-- 清包設置 -->
+      </div>
+
+      <!-- Panel: 清包設置 -->
+      <div id="clearbag" class="panel">
+        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div class="panel-title mb-1">清包設置</div>
+          <div class="panel-subtitle">設定按下清包熱鍵 (預設 F3) 時的動作模式。選擇模式後系統將自動切換並儲存。</div>
+        </div>
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">清包設置</h6>
+            <h6 class="card-title text-light mb-2">清包模式選擇</h6>
             <div class="row g-3 align-items-center">
               <div class="col-md-6">
-                <label for="clearBagMode" class="form-label mb-1 small text-secondary">清包模式 (預設：按壓式清包)</label>
+                <label for="clearBagMode" class="form-label mb-1 small text-secondary">清包模式 (選擇即可自動切換並儲存)</label>
                 <select id="clearBagMode" class="form-select form-select-sm" onchange="saveClearBagConfig()">
                   <option value="按壓式">按壓式清包</option>
                   <option value="自動式">自動式清包</option>
                   <option value="掃描式">掃描式清包</option>
                 </select>
-              </div>
-              <div class="col-md-6 d-flex align-items-end">
-                <button class="btn btn-primary btn-sm px-3 py-1" onclick="saveClearBagConfig()">💾 儲存清包設置</button>
               </div>
             </div>
           </div>

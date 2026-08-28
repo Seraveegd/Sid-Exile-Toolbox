@@ -103,7 +103,7 @@ function syncDataFromAHK() {
             }
         });
 
-        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinV', 'hk_WinC', 'hk_Space', 'hk_Insert', 'hk_End'];
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinC', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && data[id]) {
@@ -131,7 +131,6 @@ var defaultHotkeys = {
     hk_F3: 'F3',
     hk_F7: '*F7',
     hk_WinZ: '`',
-    hk_WinV: '#v',
     hk_WinC: '#c',
     hk_Space: '~*space',
     hk_Insert: '*Insert',
@@ -251,7 +250,7 @@ function saveCustomHotkeys() {
     if (typeof ahk === 'undefined') return;
 
     var hkFields = [
-        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinV', 'hk_WinC',
+        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F7', 'hk_WinZ', 'hk_WinC',
         'hk_Space', 'hk_Insert', 'hk_End'
     ];
 
@@ -263,7 +262,6 @@ function saveCustomHotkeys() {
         hk_F3: '清包切換',
         hk_F7: '背包座標定位',
         hk_WinZ: '開啟菜單視窗',
-        hk_WinV: '快速查價',
         hk_WinC: '座標與顏色偵測',
         hk_Space: '一鍵喝水',
         hk_Insert: '自動循環技能',
@@ -301,7 +299,7 @@ function saveCustomHotkeys() {
 
     ahk.NeutronSaveCustomHotkeys(
         values.hk_F1, values.hk_F2, values.hk_F3, values.hk_F7,
-        values.hk_WinZ, values.hk_WinV, values.hk_WinC,
+        values.hk_WinZ, values.hk_WinC,
         values.hk_Space, values.hk_Insert, values.hk_End
     );
 }
