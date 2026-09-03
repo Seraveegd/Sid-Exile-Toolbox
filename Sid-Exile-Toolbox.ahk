@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -34,6 +34,10 @@ NeutronLoadLocal(neutronInstance, fileName) {
 	while neutronInstance.wb.readyState < 4
 		Sleep, 50
 }
+
+; === 腳本最上方（自動執行段） ===
+GroupAdd, DualWins, Path of Exile
+GroupAdd, DualWins, Path of Exile 2
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
@@ -220,7 +224,7 @@ F12::
 return
 
 延遲結束工具:
-	ExitApp
+ExitApp
 return
 
 ~*esc::
@@ -249,7 +253,7 @@ GetDriveTailSerial()
 	return "UNKNOWN"
 }
 
-#ifwinactive, Path of Exile
+#ifwinactive, ahk_group DualWins
 
 	HK_WinZ_Label:
 		gosub,呼叫菜單
