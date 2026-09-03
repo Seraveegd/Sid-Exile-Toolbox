@@ -212,8 +212,15 @@ F11::
 return
 
 F12::
-	msgbox,,提示, 工具已結束 ლ(・ω・ლ)摸摸
-exitapp
+	try {
+		neutron.wnd.showExitModal()
+	}
+	neutron.Show("w960 h680 Center")
+	SetTimer, 延遲結束工具, -3000
+return
+
+延遲結束工具:
+	ExitApp
 return
 
 ~*esc::
@@ -248,10 +255,6 @@ GetDriveTailSerial()
 		gosub,呼叫菜單
 	return
 
-	HK_WinV_Label:
-		gosub,查價工具視窗
-	return
-
 	;[提示窗口基礎設定]------------------------------------------------------------------------------------------------------
 
 	ToolTip(label)
@@ -280,7 +283,6 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[End] 快速申請組隊
 		Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
 		Gui, Add,Text,cBlue,[Insert] 自動循環技能
-		Gui, Add,Text,cBlue,[Win + V] 快速查價
 		Gui, Add,Text,cBlue,[``] 工具菜單與各項設置
 		Gui, Add,Text,cBlue,[Ctrl + Alt] 快搜倉庫自動翻頁
 		Gui, Add,Text,cBlue,[Ctrl + Win] 返回倉庫首頁
@@ -314,7 +316,6 @@ GetDriveTailSerial()
 		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (`` :藥劑觸發設置)
 		Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
 		Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
-		Gui, Add,Text,cBlue,[Win + V] = 快速查價 (滑鼠指道具使用)
 		Gui, Add,Text,cBlue,[Win + End] = 開關組隊提醒
 		Gui, Add,Link,cBlue,[Ctrl + Alt] = 自動翻頁 (快搜倉庫頁功能)。 影片介紹:<a href="https://youtu.be/StpFz8qbB44">點我</a>
 		Gui, Add,Text,cBlue,[Ctrl + Win] = 返回倉庫首頁
@@ -329,7 +330,19 @@ GetDriveTailSerial()
 	;[跳程指令區]---------------------------------------------------------------------------------------------------
 
 	起始盒子:
-		msgbox,,Sid流亡工具箱（開源版）,工具已啟動，使用 ( `` ) 顯示工具清單。`r本版本已完全開源，所有功能均可免費使用。
+		try {
+			neutron.wnd.syncDataFromAHK()
+			neutron.wnd.showStartupModal()
+		}
+		neutron.Show("w960 h680 Center")
+		SetTimer, 自動關閉起始視窗, -3000
+	return
+
+	自動關閉起始視窗:
+		try {
+			neutron.wnd.hideStartupModal()
+		}
+		neutron.Hide()
 	return
 
 	提醒停止按鍵:
@@ -3133,7 +3146,6 @@ NeutronGetSettings(neutron) {
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
 	json .= """hk_F7"":""" . 快捷鍵_F7 . ""","
 	json .= """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
-	json .= """hk_WinV"":""" . 快捷鍵_WinV . ""","
 	json .= """hk_WinC"":""" . 快捷鍵_WinC . ""","
 	json .= """hk_Space"":""" . 快捷鍵_Space . ""","
 	json .= """hk_Insert"":""" . 快捷鍵_Insert . ""","
@@ -3167,7 +3179,6 @@ Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
 Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
 Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
-Iniread, 快捷鍵_WinV, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinV, #v
 Iniread, 快捷鍵_WinC, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinC, #c
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
 Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
@@ -3176,7 +3187,7 @@ Return
 
 註冊動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
+keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -3207,7 +3218,7 @@ Return
 
 解開動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
+keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -3233,7 +3244,7 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinV, hkWinC, hkSpace, hkInsert, hkEnd) {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinC, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1 := hkF1
@@ -3241,13 +3252,12 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinV, hkWinC
 	快捷鍵_F3 := hkF3
 	快捷鍵_F7 := hkF7
 	快捷鍵_WinZ := hkWinZ
-	快捷鍵_WinV := hkWinV
 	快捷鍵_WinC := hkWinC
 	快捷鍵_Space := hkSpace
 	快捷鍵_Insert := hkInsert
 	快捷鍵_End := hkEnd
 
-	keysList := "F1,F2,F3,F7,WinZ,WinV,WinC,Space,Insert,End"
+	keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName := A_LoopField

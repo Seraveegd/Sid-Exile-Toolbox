@@ -448,6 +448,40 @@ function updateAnchorPoint(type, id, x, y, color) {
     if (elBox) elBox.style.backgroundColor = formatHexColor(valC);
 }
 
+function showStartupModal() {
+    var el = document.getElementById('startupModal');
+    if (el) {
+        el.style.display = 'block';
+        el.classList.add('show');
+        el.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    }
+}
+
+function hideStartupModal() {
+    var el = document.getElementById('startupModal');
+    if (el) {
+        el.classList.remove('show');
+        el.style.display = 'none';
+    }
+}
+
+function showExitModal() {
+    var el = document.getElementById('exitModal');
+    if (el) {
+        el.style.display = 'block';
+        el.classList.add('show');
+        el.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    }
+}
+
+function hideExitModal() {
+    var el = document.getElementById('exitModal');
+    if (el) {
+        el.classList.remove('show');
+        el.style.display = 'none';
+    }
+}
+
 //載入時同步資料
 window.onload = function () {
     initHotkeyRecorder();

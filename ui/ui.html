@@ -669,6 +669,44 @@
 
     </div>
   </div>
+
+  <!-- 起始通知彈跳視窗 (Modal Popup) -->
+  <div id="startupModal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content bg-dark text-light border-primary shadow-lg" style="border-width: 2px;">
+        <div class="modal-header border-secondary bg-primary bg-opacity-25 py-2">
+          <h5 class="modal-title text-primary fw-bold">🚀 Sid 流亡工具箱 - 啟動通知</h5>
+          <button type="button" class="btn-close btn-close-white" onclick="hideStartupModal()"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="mb-2 fs-1">🎉</div>
+          <h4 class="fw-bold mb-3 text-light">工具已成功啟動！</h4>
+          <p class="mb-2 fs-6">使用自訂快捷鍵（預設 <kbd class="bg-secondary text-white px-2 py-1 fs-6">`</kbd>）可隨時開啟 / 關閉本菜單。</p>
+          <p class="text-secondary small mb-0">本版本已完全開源，所有功能均可免費使用。</p>
+        </div>
+        <div class="modal-footer border-secondary justify-content-center py-2">
+          <button type="button" class="btn btn-primary btn-sm px-4 py-2" onclick="hideStartupModal()">我知道了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結束通知彈跳視窗 (Exit Modal Popup) -->
+  <div id="exitModal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content bg-dark text-light border-danger shadow-lg" style="border-width: 2px;">
+        <div class="modal-header border-secondary bg-danger bg-opacity-25 py-2">
+          <h5 class="modal-title text-danger fw-bold">👋 Sid 流亡工具箱 - 結束通知</h5>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="mb-2 fs-1">👋</div>
+          <h4 class="fw-bold mb-3 text-light">工具已結束</h4>
+          <p class="mb-0 fs-5 text-secondary">ლ(・ω・ლ) 摸摸，感謝使用！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
