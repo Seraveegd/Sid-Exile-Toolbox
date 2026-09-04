@@ -3,7 +3,15 @@
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
+ListLines, Off
+Process, Priority,, High
 SetKeyDelay, 0
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
+SetWinDelay, 0
+SetControlDelay, 0
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
 SetWorkingDir, %A_ScriptDir%
 
 if A_IsCompiled
@@ -523,11 +531,6 @@ GetDriveTailSerial()
 	;[Q|W|E|R|T技能按鍵區]---------------------------------------------------------------
 
 	~*Q::
-		if Toolbutton = 1
-		{
-			settimer,偵測對話框1,25
-			settimer,偵測對話框2,25
-		}
 		if Toolbutton = 0
 		{
 			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
@@ -567,11 +570,6 @@ GetDriveTailSerial()
 	return
 
 	~*W::
-		if Toolbutton = 1
-		{
-			settimer,偵測對話框1,25
-			settimer,偵測對話框2,25
-		}
 		if Toolbutton = 0
 		{
 			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
@@ -611,11 +609,6 @@ GetDriveTailSerial()
 	return
 
 	~*E::
-		if Toolbutton = 1
-		{
-			settimer,偵測對話框1,25
-			settimer,偵測對話框2,25
-		}
 		if Toolbutton = 0
 		{
 			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
@@ -655,11 +648,6 @@ GetDriveTailSerial()
 	return
 
 	~*R::
-		if Toolbutton = 1
-		{
-			settimer,偵測對話框1,25
-			settimer,偵測對話框2,25
-		}
 		if Toolbutton = 0
 		{
 			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
@@ -699,11 +687,6 @@ GetDriveTailSerial()
 	return
 
 	~*T::
-		if Toolbutton = 1
-		{
-			settimer,偵測對話框1,25
-			settimer,偵測對話框2,25
-		}
 		if Toolbutton = 0
 		{
 			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
@@ -823,7 +806,7 @@ GetDriveTailSerial()
 		clipboard =
 		倉庫匹配狀態 = 倉庫匹配中
 		Send, ^c
-		ClipWait, 1
+		ClipWait, 0.2
 		if ErrorLevel = 1
 			return
 
@@ -1132,14 +1115,12 @@ GetDriveTailSerial()
 	;[Space空白一鍵喝水區(熱鍵)]------------------------------------------------------------------------------------------
 
 	HK_Space_Label:
-		settimer,偵測對話框1,25
-		settimer,偵測對話框2,25
 		if Toolbutton = 0
 		{
 			ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。")
 			if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
 			{
-				PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%
+				PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%, Fast RGB
 				if (dialogCheck1 = %顏色5_C%)
 				{
 					Toolbutton := 1
@@ -1151,7 +1132,7 @@ GetDriveTailSerial()
 			}
 			if (顏色6_X != "error" && 顏色6_Y != "error" && 顏色6_C != "error")
 			{
-				PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%
+				PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%, Fast RGB
 				if (dialogCheck2 = %顏色6_C%)
 				{
 					Toolbutton := 1
@@ -1284,6 +1265,7 @@ GetDriveTailSerial()
 (Toolbutton = 0 ? (Toolbutton := 1,ToolTip("已切換為文字模式")) : (Toolbutton := 0,ToolTip("已切換為遊戲模式")))
 if Toolbutton = 0
 {
+偵測對話框計數 := 0
 settimer,偵測對話框1,25
 settimer,偵測對話框2,25
 }
@@ -1295,6 +1277,14 @@ if Toolbutton = 1
 return
 
 偵測對話框1:
+偵測對話框計數++
+if (偵測對話框計數 >= 20)
+{
+	settimer,偵測對話框1,off
+	settimer,偵測對話框2,off
+	偵測對話框計數 := 0
+	return
+}
 if (顏色5_X = "error" or 顏色5_Y = "error")
 {
 settimer,偵測對話框1,off
@@ -1303,7 +1293,7 @@ msgbox,16,錯誤,提醒，你是否忘記設置偵測對話框了呢?`r首次使
 }
 else
 {
-	PixelGetColor,對話框1, %顏色5_X%, %顏色5_Y%
+	PixelGetColor,對話框1, %顏色5_X%, %顏色5_Y%, Fast RGB
 	if 對話框1 = %顏色5_C%
 	{
 	Toolbutton = 1
@@ -1324,7 +1314,7 @@ msgbox,16,錯誤,提醒，你是否忘記設置偵測對話框了呢?`r首次使
 }
 else
 {
-	PixelGetColor,對話框2, %顏色6_X%, %顏色6_Y%
+	PixelGetColor,對話框2, %顏色6_X%, %顏色6_Y%, Fast RGB
 	if 對話框2 = %顏色6_C%
 	{
 	Toolbutton = 1
@@ -1387,16 +1377,11 @@ if (stateCtrl = "D" or stateShift = "D")
 	{
 		If ( clickStop = true )
 		{
-		clickStop := false
-		return
+			clickStop := false
+			return
 		}
-		Else
-		{
-		send {ctrl down}
 		Click
-		send {ctrl up}
 		sleep %滑鼠連點速度%
-		}
 	}
  }
 
@@ -1883,37 +1868,40 @@ Return
 ;[F3快速掃描背包區].............................................................................................................................
 
 讀取背包初始顏色:
-loop,60
-{
-iniread, 背包初始顏色%A_Index%, sidtooldata.ini, 快速掃描顏色, 背包初始顏色%A_Index%
-}
+	IniRead, colorSection, sidtooldata.ini, 快速掃描顏色
+	if (colorSection != "" && colorSection != "ERROR")
+	{
+		Loop, Parse, colorSection, `n, `r
+		{
+			if (RegExMatch(A_LoopField, "^背包初始顏色(\d+)=(.*)$", m))
+				背包初始顏色%m1% := m2
+		}
+	}
 return
 
 快速掃描背包顏色並儲存:
-迴圈狀態:= 0
-CoordMode, Pixel, Screen
-global 掃描顏色Array := []
-{
- 掃描顏色Array := []
- loop % 掃描水平數量
+	迴圈狀態 := 0
+	掃描顏色Array := []
+	ToolTip, 開始掃描背包顏色..., 0, 0, 1
+	loop % 掃描水平數量
 	{
-	PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
-	loop % 掃描垂直數量
+		PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
+		loop % 掃描垂直數量
 		{
-		PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
-		ToolTip, % "掃描: " PosX "/" PosY, 0,0,1
-		PixelGetColor, pcol, % PosX, % PosY, RGB
-		掃描顏色Array.Push(pcol)
-		迴圈狀態:= 迴圈狀態 +1
-		ToolTip, % "掃描狀態: " pcol " / " 迴圈狀態 " / " PosX "/" PosY , 0,22,2
-		iniWrite,% 掃描顏色Array[迴圈狀態], sidtooldata.ini, 快速掃描顏色,背包初始顏色%迴圈狀態%
-		iniread, 背包初始顏色%迴圈狀態%, sidtooldata.ini, 快速掃描顏色, 背包初始顏色%迴圈狀態%
+			PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
+			PixelGetColor, pcol, % PosX, % PosY, Fast RGB
+			掃描顏色Array.Push(pcol)
+			迴圈狀態 := 迴圈狀態 + 1
+			背包初始顏色%迴圈狀態% := pcol
 		}
+		ToolTip, % "掃描進度: " . 迴圈狀態 . " / 60", 0, 22, 2
 	}
- ToolTip,,,,2
- ToolTip,,,,1
-}
-msgbox % "掃瞄並儲存完畢，請繼續[Win + F3]切換為掃描式。"
+	ToolTip,,,,2
+	ToolTip,,,,1
+	; 掃描完成後批次寫入 INI
+	for idx, val in 掃描顏色Array
+		iniWrite, % val, sidtooldata.ini, 快速掃描顏色, 背包初始顏色%idx%
+	msgbox % "掃瞄並儲存完畢，請繼續[Win + F3]切換為掃描式。"
 return
 
 一鍵清包:
@@ -2011,7 +1999,7 @@ global 存倉掃描顏色Array := []
 		}
 		PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
 		ToolTip, % "掃描: " PosX "/" PosY "，長按[~]停止。", 0,0,1
-		PixelGetColor, pcol2, % PosX, % PosY, RGB
+		PixelGetColor, pcol2, % PosX, % PosY, Fast RGB
 		存倉掃描顏色Array.Push(pcol2)
 		迴圈狀態:= 迴圈狀態 +1
 		ToolTip, % "掃描格子數: " 迴圈狀態 " /60 ，長按[~]停止。"  , 0,22,2
