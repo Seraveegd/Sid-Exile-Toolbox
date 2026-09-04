@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -180,28 +180,54 @@ gosub,起始盒子
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
 
-Menu, 工具介紹副菜單, Add, 工具熱鍵列表, 工具熱鍵列表GUI面板
-Menu, 工具介紹副菜單, Add, 完整功能列表, 完整功能
-Menu, MyMenu, Add, ★工具介紹★(必看), :工具介紹副菜單
+Menu, MyMenu, Add, ★工具介紹★, 菜單_工具介紹
 Menu, MyMenu, Add
-Menu, MyMenu, Add, 藥劑觸發設置, 藥劑觸發設置GUI面板
-Menu, MyMenu, Add, 技能連段設置, 技能連段設置GUI面板
-Menu, MyMenu, Add, 循環技能設置, 循環技能設置GUI面板
-Menu, MyMenu, Add, 快搜倉庫設置, 倉庫頁快搜工具視窗
+Menu, MyMenu, Add, 藥劑觸發設置, 菜單_藥劑觸發
+Menu, MyMenu, Add, 技能連段設置, 菜單_技能連段
+Menu, MyMenu, Add, 循環技能設置, 菜單_循環技能
+Menu, MyMenu, Add, 快搜倉庫設置, 菜單_快搜倉庫
 Menu, MyMenu, Add
-Menu, MyMenu, Add, 滑鼠連點設置, 滑鼠連點設置GUI面板
-Menu, MyMenu, Add, 自動引爆地雷設置, 自動引爆地雷設置GUI面板
-Menu, MyMenu, Add, 前往查價工具的網址(台服/國際服), 引導查價安裝網址
-Menu, MyMenu, Add
-Menu, MyMenu, Add, 前往Sid作者的網站, 彈跳網頁
+Menu, MyMenu, Add, 滑鼠連點設置, 菜單_滑鼠連點
+Menu, MyMenu, Add, 自動引爆地雷設置, 菜單_自動地雷
+Menu, MyMenu, Add, 外部連結與網站, 菜單_外部連結
 return
 
 呼叫菜單:
+	OpenUISection("intro")
+return
+
+菜單_工具介紹:
+	OpenUISection("intro")
+return
+菜單_藥劑觸發:
+	OpenUISection("flask")
+return
+菜單_技能連段:
+	OpenUISection("combo")
+return
+菜單_循環技能:
+	OpenUISection("loop")
+return
+菜單_快搜倉庫:
+	OpenUISection("stash")
+return
+菜單_滑鼠連點:
+	OpenUISection("clicker")
+return
+菜單_自動地雷:
+	OpenUISection("mine")
+return
+菜單_外部連結:
+	OpenUISection("links")
+return
+
+OpenUISection(section) {
 	try {
 		neutron.wnd.syncDataFromAHK()
+		neutron.wnd.showSection(section)
 	}
 	neutron.Show("w960 h680 Center")
-return
+}
 
 ;[熱鍵設置]------------------------------------------------------------------------------------------------------
 
@@ -274,62 +300,7 @@ GetDriveTailSerial()
 		Return
 	}
 
-	;[完整功能GUI面板]-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-	完整功能:
-		gui,完整功能列表:new,,完整功能列表（本工具已完全開源免費）
-		Gui, Font, s10, Verdana
-		Gui, Add,Text,cBlue,[F1] 原始功能/返回角色
-		Gui, Add,Text,cBlue,[F2] 一鍵暫離/勿擾/自動回復
-		Gui, Add,Link,cBlue,[F3] 按壓式/自動式/掃描式/掃描快搜清包 = <a href="https://youtu.be/MzIH2rn72NE">示範影片</a>
-		Gui, Add,Text,cBlue,[F7] 背包相關座標定位
-		Gui, Add,Text,cBlue,[F9] 回復鍵盤功能 (暫停工具)
-		Gui, Add,Text,cBlue,[End] 快速申請組隊
-		Gui, Add,Text,cBlue,[Space] 一鍵喝水 / 循環喝水 / 藥劑防呆
-		Gui, Add,Text,cBlue,[Insert] 自動循環技能
-		Gui, Add,Text,cBlue,[``] 工具菜單與各項設置
-		Gui, Add,Text,cBlue,[Ctrl + Alt] 快搜倉庫自動翻頁
-		Gui, Add,Text,cBlue,[Ctrl + Win] 返回倉庫首頁
-		Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] 滑鼠連點
-		Gui Font
-		Gui Add, StatusBar,, 所有功能完全免費開源，歡迎分享與改進。
-		Gui, Show
-	return
-
-	;[工具熱鍵列表GUI面板]------------------------------------------------------------------------------------------------------
-
-	工具熱鍵列表GUI面板:
-		Gui,工具熱鍵列表:new,,工具熱鍵列表
-		Gui Color, 0xC0C0C0
-		Gui, Font, s10 Bold, Verdana
-		Gui, Add,Text,cBlue,【F1 ~ F12】(所有含有" / "符號，表示支援多功能切換，詳情看底部小知識。)
-		Gui, Font
-		Gui, Font, s10, Verdana
-		Gui, Add,Text,cBlue,[F1] = 原始功能 / 返回角色
-		Gui, Add,Text,cBlue,[F2] = 暫離 / 勿擾 / 自動回復
-		Gui, Add,Link,cBlue,[F3] = 按壓 / 自動/掃描/掃描快搜清包 / 背包顏色定位。 影片介紹:<a href="https://youtu.be/MzIH2rn72NE">點我</a>
-		Gui, Add,Text,cBlue,[F7] = 背包座標定位
-		Gui, Add,Text,cBlue,[F9] = 回復鍵盤功能 (暫停工具)
-		Gui, Add,Text,cBlue,[F11] = 重新啟動工具
-		Gui, Add,Text,cBlue,[F12] = 結束工具
-		Gui, Font, s10 Bold, Verdana
-		Gui, Add,Text,cBlue,【其他熱鍵】(對按鍵名稱不熟的，請自行Google。)
-		Gui, Font
-		Gui, Font, s10, Verdana
-		Gui, Add,Text,cBlue,[End] = 快速申請組隊 / 開關提醒
-		Gui, Add,Text,cBlue,[Space] = 一鍵喝水 / 循環 / 防呆 (`` :藥劑觸發設置)
-		Gui, Add,Text,cBlue,[Insert] = 自動循環技能開關
-		Gui, Add,Link,cBlue,[Win + C] = 各式偵測點座標與顏色定位。 影片介紹:<a href="https://youtu.be/dTk3BO54_8Y">點我</a>
-		Gui, Add,Text,cBlue,[Win + End] = 開關組隊提醒
-		Gui, Add,Link,cBlue,[Ctrl + Alt] = 自動翻頁 (快搜倉庫頁功能)。 影片介紹:<a href="https://youtu.be/StpFz8qbB44">點我</a>
-		Gui, Add,Text,cBlue,[Ctrl + Win] = 返回倉庫首頁
-		Gui, Add,Text,cBlue,[滾輪下壓] or [Ctrl + 左鍵] = 滑鼠連點
-		Gui, Font, underline
-		Gui, Add,Text,cBlue,開源版本，歡迎自由使用與修改。
-		Gui, Font
-		Gui Add, StatusBar,, ▲工具小知識:多功能切換的意思，例如:當使用(Win + F1)時，你會看到有兩個選項，可改變(F1)的功能，以此類推。
-		Gui, Show
-	return
 
 	;[跳程指令區]---------------------------------------------------------------------------------------------------
 
@@ -369,78 +340,18 @@ GetDriveTailSerial()
 		SetTimer, 藥劑5, off
 	return
 
-	;[藥劑觸發設置GUI面板]------------------------------------------------------------------------------------------------------
 
-	藥劑觸發設置GUI面板:
-		Gui,藥劑觸發設置:new,,藥劑觸發設置
-		Gui +Label藥劑觸發設置 -Resize  -MinimizeBox -MaximizeBox
-		Gui Color, 0xC0C0C0
-		Gui Font, s12 Bold
-		Gui Add, Text, x31 y152 w135 h23, 藥劑(1)持續時間:
-		Gui Add, Text, x31 y177 w135 h23, 藥劑(2)持續時間:
-		Gui Add, Text, x31 y202 w135 h23, 藥劑(3)持續時間:
-		Gui Add, Text, x31 y227 w135 h23, 藥劑(4)持續時間:
-		Gui Add, Text, x31 y252 w135 h23, 藥劑(5)持續時間:
-		Gui Add, Text, x30 y97 w100 h23, 當使用技能:
-		Gui Add, Text, x171 y97 w111 h23, 時，使用藥劑:
-		Gui Add, Text, x30 y8 w145 h23, 藥劑觸發模式選擇:
-		Gui Add, Text, x31 y125 w219 h23, 一鍵喝水(Space)，使用藥劑:
-		Gui Add, Button,g儲存藥劑觸發設置 x298 y204 w384 h67, 儲存並關閉
-		Gui Font
-		Gui Font, s12
-		Gui Add, ComboBox, v藥劑觸發模式 x184 y5 w143 -Theme, 無|純藥劑防呆|讀秒循環喝水|使用技能時喝水|%藥劑觸發模式%||
-		Gui Add, ComboBox, v主要技能 x126 y96 w40 -Theme, Q|W|E|R|T|%主要技能%||
-		Gui Font
-		Gui Font, s10 cBlue
-		Gui Add, Text, x30 y35 w607 h20, 純藥劑防呆 : 玩家手動喝水，工具幫助您鎖定藥劑持續時間內，不會再次誤觸。適合需高強度控水的場合。
-		Gui Add, Text, x30 y55 w604 h20, 讀秒循環喝水 : 進圖後使用[Space]空白鍵觸發循環，藥劑持續時間結束後再次使用。適合速刷走路流派。
-		Gui Add, Text, x30 y75 w440 h20, 使用技能時喝水 : 只有在使用技能時才喝水，可避免非戰鬥時多餘的喝水。
-		Gui Add, Text, x363 y96 w320 h23 +0x200, 舉例 : 輸入 12345 = 使用12345罐，輸入 135 = 使用135罐。
-		Gui Add, Text, x295 y152 w210 h23 +0x200, (1秒=1000毫秒)，不使用請輸入 off 。
-		Gui Add, Text, x295 y177 w150 h23 +0x200, 生命藥劑通常輸入 off 。
-		Gui Font
-		Gui Font, s10
-		Gui Add, Edit, v藥劑持續時間1 x171 y152 w120 h21 -Theme, %藥劑持續時間1%
-		Gui Add, Edit, v藥劑持續時間2 x171 y177 w120 h21 -Theme, %藥劑持續時間2%
-		Gui Add, Edit, v藥劑持續時間3 x171 y202 w120 h21 -Theme, %藥劑持續時間3%
-		Gui Add, Edit, v藥劑持續時間4 x171 y227 w120 h21 -Theme, %藥劑持續時間4%
-		Gui Add, Edit, v藥劑持續時間5 x171 y252 w120 h21 -Theme, %藥劑持續時間5%
-		Gui Add, Edit, v使用技能時觸發的藥劑 x281 y96 w78 h21 +Number -Theme, %使用技能時觸發的藥劑%
-		Gui Add, Edit, v一鍵喝水時觸發的藥劑 x255 y123 w120 h21 +Number -Theme, %一鍵喝水時觸發的藥劑%
-		Gui Font
-		Gui Add, StatusBar,, ▲工具小知識: 純藥劑防呆模式下支援一鍵喝水(Space)，水沒了卻還在防呆時間內?試試手動1~5吧，立即重置防呆冷卻。
-		Gui Show, w691 h301, 藥劑觸發設置
-	Return
-
-	;[藥劑觸發GUI儲存按鈕]------------------------------------------------------------------------------------------------------
-
-	藥劑觸發設置Escape:
-	藥劑觸發設置Close:
-		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-		IfMsgBox No
-			Return
-Else
-	Gui,submit
-	Return
-
-	;[藥劑觸發GUI儲存指令]------------------------------------------------------------------------------------------------------
-
-	儲存藥劑觸發設置:
-		Gui,submit
-		Gosub,儲存藥劑觸發紀錄
-		Gosub,讀取藥劑觸發紀錄
-	Return
 
 	儲存藥劑觸發紀錄:
-		IniWrite,	% 主要技能,	sidtooldata.ini, 藥劑觸發數據, 主要技能
-		IniWrite,	% 藥劑觸發模式,	sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
-		IniWrite,	% 藥劑持續時間1,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
-		IniWrite,	% 藥劑持續時間2,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
-		IniWrite,	% 藥劑持續時間3,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
-		IniWrite,	% 藥劑持續時間4,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
-		IniWrite,	% 藥劑持續時間5,	sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
-		IniWrite,	% 使用技能時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
-		IniWrite,	% 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
+		IniWrite,% 主要技能, sidtooldata.ini, 藥劑觸發數據, 主要技能
+		IniWrite,% 藥劑觸發模式, sidtooldata.ini, 藥劑觸發數據, 藥劑觸發模式
+		IniWrite,% 藥劑持續時間1, sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間1
+		IniWrite,% 藥劑持續時間2, sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間2
+		IniWrite,% 藥劑持續時間3, sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間3
+		IniWrite,% 藥劑持續時間4, sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間4
+		IniWrite,% 藥劑持續時間5, sidtooldata.ini, 藥劑觸發數據, 藥劑持續時間5
+		IniWrite,% 使用技能時觸發的藥劑, sidtooldata.ini, 藥劑觸發數據, 使用技能時觸發的藥劑
+		IniWrite,% 一鍵喝水時觸發的藥劑, sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
 	讀取藥劑觸發紀錄:
@@ -850,56 +761,14 @@ Else
 		}
 	return
 
-	;[技能連段設置GUI面板]-------------------------------------------------------------------------------------------------
-
-	技能連段設置GUI面板:
-		Gui,技能連段設置:NEW,,技能連段設置:
-		Gui +Label技能連段設置 -Resize  -MinimizeBox -MaximizeBox
-		Gui Font, cBlack
-		Gui Color, 0xFF80C0
-		Gui Font, s10 cBlue
-		Gui Add, Text, x5 y5 w80 h25, 技能連段功能
-		Gui Add, DropDownList, v技能連段功能 x90 y2 w60 -Theme, %技能連段功能%||開啟|關閉|
-		Gui Add, Text, x5 y30 w40 h25, 當使用
-		Gui Add, DropDownList, v技1 x50 y25 w60 -Theme, %技1%||Q|W|E|R|T|
-		Gui Add, Text, x115 y30 w70 h25, 技能時延遲
-		Gui Add, Edit, v技1延遲 x186 y25 w80 h20, %技1延遲%
-		Gui Add, Text, x270 y30 w80 h25, (毫秒)後按下
-		Gui Add, DropDownList, v技2 x350 y25 w60 -Theme, %技2%||Q|W|E|R|T|Off|
-		Gui Add, Text, x414 y30 w70 h25, 技能時延遲
-		Gui Add, Edit, v技2延遲 x485 y25 w80 h20 -Theme, %技2延遲%
-		Gui Add, Text, x568 y30 w80 h25, (毫秒)後按下
-		Gui Add, DropDownList, v技3 x650 y25 w60 -Theme, %技3%||Q|W|E|R|T|Off|
-		Gui Font
-		Gui Add, Button,  g儲存並讀取技能連段數據 x5 y55 w706 h20, 儲存並關閉
-		Gui Show, w720 h82, 技能連段設置(此功能只在[F10]高級模式下運作)
-	Return
-
-	技能連段設置Escape:
-	技能連段設置Close:
-		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-		IfMsgBox No
-			Return
-Else
-	Gui,submit
-	Return
-
-	;[技能連段GUI儲存指令]-------------------------------------------------------------------------------------------------
-
 	儲存並讀取技能連段數據:
-		Gui,submit
-		iniWrite,% 技1		, sidtooldata.ini, 連段設置, 技1
-		iniWrite,% 技2		, sidtooldata.ini, 連段設置, 技2
-		iniWrite,% 技3		, sidtooldata.ini, 連段設置, 技3
-		iniWrite,% 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
-		iniWrite,% 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
-		iniWrite,% 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
-		IniRead, 技1		, sidtooldata.ini, 連段設置, 技1
-		IniRead, 技2		, sidtooldata.ini, 連段設置, 技2
-		IniRead, 技3		, sidtooldata.ini, 連段設置, 技3
-		IniRead, 技1延遲	, sidtooldata.ini, 連段設置, 技1延遲
-		IniRead, 技2延遲	, sidtooldata.ini, 連段設置, 技2延遲
-		IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
+		IniWrite, % 技1, sidtooldata.ini, 連段設置, 技1
+		IniWrite, % 技2, sidtooldata.ini, 連段設置, 技2
+		IniWrite, % 技3, sidtooldata.ini, 連段設置, 技3
+		IniWrite, % 技1延遲, sidtooldata.ini, 連段設置, 技1延遲
+		IniWrite, % 技2延遲, sidtooldata.ini, 連段設置, 技2延遲
+		IniWrite, % 技能連段功能, sidtooldata.ini, 連段設置, 技能連段功能
+		gosub, 讀取技能連段數據
 	Return
 
 	讀取技能連段數據:
@@ -911,59 +780,14 @@ Else
 		IniRead, 技能連段功能	, sidtooldata.ini, 連段設置, 技能連段功能
 	Return
 
-	;[自動引爆地雷設置GUI面板]--------------------------------------------------------------------------------------
-
-	自動引爆地雷設置GUI面板:
-		Gui 自動引爆地雷設置: New,,自動引爆地雷設置
-		Gui +Label自動引爆地雷設置 -Resize  -MinimizeBox -MaximizeBox
-		Gui Font, s12 cRed
-		Gui Add, Text, x15 y10 w100 h20, 自動引爆地雷
-		Gui Add, Text, x180 y10 w100 h20, 地雷杖模式
-		Gui Add, Button,g儲存並讀取地雷設置 x15 y101 w539 h23, 儲存並關閉
-		Gui Font
-		Gui Add, ComboBox, v地雷模式 x118 y9 w60 -Theme, 開啟|關閉|%地雷模式%||
-		Gui Add, ComboBox, v地雷杖模式 x264 y9 w60 -Theme, 開啟|關閉|%地雷杖模式%||
-		Gui Add, ComboBox, v地雷按鍵 x103 y39 w41 -Theme, Q|W|E|R|T|%地雷按鍵%||
-		Gui Add, ComboBox, v引爆延遲1 x264 y37 w46 -Theme, 50|100|200|300|400|500|%引爆延遲1%||
-		Gui Add, ComboBox, v煙霧地雷 x103 y69 w41 -Theme, Q|W|E|R|T|%煙霧地雷%||
-		Gui Add, ComboBox, v引爆延遲2 x264 y69 w46 -Theme, 50|100|200|300|400|500|%引爆延遲2%||
-		Gui Font, s12
-		Gui Add, Text, x15 y40 w86 h20, 當使用按鍵
-		Gui Add, Text, x147 y40 w115 h20, 地雷技能時延遲
-		Gui Add, Text, x314 y40 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
-		Gui Add, Text, x15 y70 w86 h20, 當使用按鍵
-		Gui Add, Text, x147 y70 w115 h20, 煙霧地雷時延遲
-		Gui Add, Text, x314 y70 w243 h20, (毫秒)後自動引爆地雷(遊戲預設D)
-		Gui Font
-		Gui Add, StatusBar,, ▲ 工具小知識: 自動引爆地雷是使用遊戲預設按鍵[D]來執行的。
-		Gui Show, w570 h156, 自動引爆地雷設置
-	Return
-
-	自動引爆地雷設置Escape:
-	自動引爆地雷設置Close:
-		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-		IfMsgBox No
-			Return
-Else
-	Gui,submit
-	Return
-
-	;[自動引爆地雷GUI儲存指令]--------------------------------------------------------------------------------------
-
 	儲存並讀取地雷設置:
-		Gui,submit
-		iniWrite,% 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
-		iniWrite,% 地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-		iniWrite,% 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
-		iniWrite,% 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
-		iniWrite,% 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
-		iniWrite,% 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
-		IniRead, 地雷模式,	sidtooldata.ini, 地雷設置, 地雷模式
-		IniRead,地雷杖模式,	sidtooldata.ini, 地雷設置, 地雷杖模式
-		IniRead, 地雷按鍵,	sidtooldata.ini, 地雷設置, 地雷按鍵
-		IniRead, 引爆延遲1,	sidtooldata.ini, 地雷設置, 引爆延遲1
-		IniRead, 煙霧地雷,	sidtooldata.ini, 地雷設置, 煙霧地雷
-		IniRead, 引爆延遲2,	sidtooldata.ini, 地雷設置, 引爆延遲2
+		IniWrite, % 地雷模式, sidtooldata.ini, 地雷設置, 地雷模式
+		IniWrite, % 地雷杖模式, sidtooldata.ini, 地雷設置, 地雷杖模式
+		IniWrite, % 地雷按鍵, sidtooldata.ini, 地雷設置, 地雷按鍵
+		IniWrite, % 引爆延遲1, sidtooldata.ini, 地雷設置, 引爆延遲1
+		IniWrite, % 煙霧地雷, sidtooldata.ini, 地雷設置, 煙霧地雷
+		IniWrite, % 引爆延遲2, sidtooldata.ini, 地雷設置, 引爆延遲2
+		gosub, 讀取地雷設置
 	Return
 
 	讀取地雷設置:
@@ -978,7 +802,7 @@ Else
 	;[快搜倉庫頁區(熱鍵)]---------------------------------------------------------------------------------
 
 	快捷切換倉庫頁設置:
-		gosub,倉庫頁快搜工具視窗
+		OpenUISection("stash")
 	return
 
 	^LWin::
@@ -1231,83 +1055,9 @@ Else
 		當前倉庫頁 := 0
 	return
 
-	;[快搜倉庫頁設置GUI面板]----------------------------------------------------------------------------------------------------------------
-
-	倉庫頁快搜工具視窗:
-		Gui 倉庫頁快搜工具: New,,快搜倉庫頁設置(Ctrl + Alt 自動翻頁，Ctrl + Win 返回首頁)
-		Gui +Label倉庫頁快搜工具 -Resize  -MinimizeBox -MaximizeBox
-		Gui Color, 0x00FFFF
-		Gui Add, Text, x79 y32 w46 h0 +0x200, Text
-		Gui Font
-		Gui Font, s10 Bold cRed
-		Gui Add, Text, x7 y6 w526 h23 +0x200, 通貨頁擺至首頁，代碼舉例:首頁= 0，第二頁 = 1，以此類推。
-		Gui Font
-		Gui Font, s13 Norm cRed
-		Gui, Add, Link, x390 y40 w140 h30, 影片介紹<a href="https://youtu.be/StpFz8qbB44">點我</a>
-		Gui Font
-		Gui Font, s10 Norm cBlue
-		Gui Add, Text, x4 y40 w50 h20, % " 附魔裝 :"
-		Gui Add, Text, x4 y65 w50 h20, % " 傳奇裝 :"
-		Gui Add, Text, x4 y90 w50 h20, % " 傳奇戒 :"
-		Gui Add, Text, x4 y115 w50 h20, % " 劫盜裝 :"
-		Gui Add, Text, x4 y140 w50 h20, % " 待新增 :"
-		Gui Add, Text, x4 y165 w50 h20, % " 培育器 :"
-		Gui Add, Text, x4 y190 w50 h20, % " 深淵珠 :"
-		Gui Add, Text, x4 y215 w50 h20, % " 星團珠 :"
-		Gui Add, Text, x4 y240 w50 h20, % " 普通珠 :"
-		Gui Add, Text, x100 y40 w130 h20,  % " (未鑑定)稀有頭盔 :"
-		Gui Add, Text, x100 y65 w130 h20,  % " (未鑑定)稀有衣服 :"
-		Gui Add, Text, x100 y90 w130 h20,  % " (未鑑定)稀有腰帶 :"
-		Gui Add, Text, x100 y115 w130 h20, % " (未鑑定)稀有手套 :"
-		Gui Add, Text, x100 y140 w130 h20, % " (未鑑定)稀有鞋子 :"
-		Gui Add, Text, x100 y165 w130 h20, % " (未鑑定)稀有飾品 :"
-		Gui Add, Text, x100 y190 w130 h20, % " (未鑑定)稀有武器 :"
-		Gui Add, Text, x100 y215 w130 h20, % " 勢力裝(不限等)頁 :"
-		Gui Add, Text, x100 y240 w180 h20, % " 特殊地圖(邀/尊/廟) :"
-		Gui Add, Text, x260 y40 w70 h20,  % " 裂痕戒指 :"
-		Gui Font
-		Gui Font, s10 cBlue
-		Gui Add, Text, x6 y265 w251 h25, % " [Ctrl + win] 返回首頁(輸入以上最大的頁數) :"
-		Gui Font
-		Gui Font, cRed
-		Gui Add, Edit, v附魔裝 x58 y35 w35 h20 +Number -Theme	,% 附魔裝
-		Gui Add, Edit, v傳奇裝 x58 y60 w35 h20 +Number -Theme	,% 傳奇裝
-		Gui Add, Edit, v傳奇戒 x58 y85 w35 h20 +Number -Theme	,% 傳奇戒
-		Gui Add, Edit, v劫盜裝 x58 y110 w35 h20 +Number -Theme	,% 劫盜裝
-		Gui Add, Edit, v移除2 x58 y135 w35 h20 +Number -Theme	,% 移除2
-		Gui Add, Edit, v培育器 x58 y160 w35 h20 +Number -Theme	,% 培育器
-		Gui Add, Edit, v深淵珠 x58 y185 w35 h20 +Number -Theme	,% 深淵珠
-		Gui Add, Edit, v星團珠 x58 y210 w35 h20 +Number -Theme	,% 星團珠
-		Gui Add, Edit, v普通珠 x58 y235 w35 h20 +Number -Theme	,% 普通珠
-		Gui Add, Edit, v未鑑定稀有頭盔 x220 y35 w35 h20 +Number -Theme	,% 未鑑定稀有頭盔
-		Gui Add, Edit, v未鑑定稀有衣服 x220 y60 w35 h20 +Number -Theme	,% 未鑑定稀有衣服
-		Gui Add, Edit, v未鑑定稀有腰帶 x220 y85 w35 h20 +Number -Theme	,% 未鑑定稀有腰帶
-		Gui Add, Edit, v未鑑定稀有手套 x220 y110 w35 h20 +Number -Theme	,% 未鑑定稀有手套
-		Gui Add, Edit, v未鑑定稀有鞋子 x220 y135 w35 h20 +Number -Theme	,% 未鑑定稀有鞋子
-		Gui Add, Edit, v未鑑定稀有飾品 x220 y160 w35 h20 +Number -Theme	,% 未鑑定稀有飾品
-		Gui Add, Edit, v未鑑定稀有武器 x220 y185 w35 h20 +Number -Theme	,% 未鑑定稀有武器
-		Gui Add, Edit, v勢力裝頁 x220 y210 w35 h20 +Number -Theme	,% 勢力裝頁
-		Gui Add, Edit, v特殊地圖 x220 y235 w35 h20 +Number -Theme	,% 特殊地圖
-		Gui Add, Edit, v裂痕戒指 x330 y35 w35 h20 +Number -Theme	,% 裂痕戒指
-		Gui Add, Edit, v返回頁數 x259 y261 w35 h20 +Number -Theme	,% 返回頁數
-		Gui Add, StatusBar,, 製作By Sid ，沒使用到的頁數請輸入 " 0 "，不要保存 Error 狀態避免工具異常。
-		Gui Add, Button, g儲存並讀取倉庫頁數據 x400 y261 w90 h23, 儲存並關閉
-		Gui Show, x697 y320 w500 h310
-	Return
-
-	倉庫頁快搜工具Escape:
-	倉庫頁快搜工具Close:
-		Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-		IfMsgBox No
-			Return
-Else
-	Gui,submit
-	Return
-
-	;[快搜倉庫頁GUI儲存指令]----------------------------------------------------------------------------------------------------------------
+	;[快搜倉庫頁數據儲存指令]----------------------------------------------------------------------------------------------------------------
 
 	儲存並讀取倉庫頁數據:
-		Gui,submit
 		iniWrite,% 附魔裝, sidtooldata.ini, 各倉庫頁數, 附魔裝
 		iniWrite,% 傳奇裝, sidtooldata.ini, 各倉庫頁數, 傳奇裝
 		iniWrite,% 傳奇戒, sidtooldata.ini, 各倉庫頁數, 傳奇戒
@@ -1379,23 +1129,6 @@ Else
 		run,https://forum.gamer.com.tw/C.php?bsn=18966&snA=123938,,UseErrorLevel
 	return
 
-	查價工具視窗:
-		MouseGetPos, thisPosX, thisPosY
-		if 聲明顯示 = 0
-		{
-			MsgBox,64,每次開起工具僅顯示一次，關閉後請再次使用 Win + V 即可。,請記得安裝並預先開啟【rchin-poe-trade】工具，並點擊 Home 返回遊戲， Win + V 才可正常運作。`r`r如未安裝，您可在 ( `` ) 菜單中找到*前往查價工具的網址*的欄位`r`r申明:此查價工具並非Sid製作，也未對此功能進行任何收費。`r`r僅抱持著推廣與分享目的提供使用，請多支持原創作者。
-			聲明顯示 = 1
-			WinActivate ,Path of Exile
-			return
-		}
-		if 聲明顯示 = 1
-		{
-			ToolTip("Sid工具支援查價時 [ Esc ] 快速返回 POE 視窗")
-			Send ^C
-			WinActivate ,rchin-poe-trade
-		}
-	return
-
 	;[Space空白一鍵喝水區(熱鍵)]------------------------------------------------------------------------------------------
 
 	HK_Space_Label:
@@ -1431,7 +1164,7 @@ Else
 			if 一鍵喝水時觸發的藥劑 = error
 			{
 				msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! (``) => 藥劑觸發設置。
-				gosub,藥劑觸發設置GUI面板
+				OpenUISection("flask")
 				return
 			}
 			else if	(Autodrinkbutton = "0" or 藥劑觸發模式 = "無")
@@ -1699,66 +1432,7 @@ if 連點模式 = 滑鼠滾輪按壓
 clickStop := true
 return
 
-;[滑鼠連點設置GUI面板]------------------------------------------------------------------------------------------------------
-
-滑鼠連點設置GUI面板:
-Gui,滑鼠連點設置:new,,滑鼠連點設置
-Gui +Label滑鼠連點設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g滑鼠滾輪觸發連點 w200 hwndHBT17 ,滑鼠滾輪按壓
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT17,BT1Options)
-Gui, Add, Button,gCtrl左鍵觸發連點 w200 hwndHBT18 ,[Ctrl + 左鍵]
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT18,BT1Options)
-Gui, Add, Button,g滑鼠連點速度調整 w200 hwndHBT24 ,連點速度調整
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT24,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前滑鼠連點 = "連點模式 " 。 "
-Gui, Show
-return
-
-滑鼠連點設置Escape:
-滑鼠連點設置Close:
-Gui,submit
-Return
-
-滑鼠滾輪觸發連點:
-Gui,submit
-連點模式 = 滑鼠滾輪按壓
-IniWrite,% 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
- Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
-ToolTip("滑鼠連點為: " . 連點模式 . " 。 ")
-Return
-
-Ctrl左鍵觸發連點:
-Gui,submit
-連點模式 = [Ctrl + 左鍵]
-IniWrite,% 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
- Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
-ToolTip("滑鼠連點為: " . 連點模式 . " 。 ")
-Return
-
-滑鼠連點速度調整:
-Gui,submit
-InputBox, 滑鼠連點速度,滑鼠連點速度調整, 請輸入0 ~ 50，越小越快。,,,,,,,,%滑鼠連點速度%
-if 滑鼠連點速度 not between 0 and 50
-{
-msgbox,16,錯誤,請輸入正確的數字範圍( 0 ~ 50 )"
-gosub,滑鼠連點速度調整
-return
-}
-else
-{
-IniWrite,% 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
- Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
-}
-return
+	;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
 
 讀取滑鼠連點速度:
  Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
@@ -1788,7 +1462,7 @@ if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error
 {
   StopUser = 0
   msgbox,16,錯誤,尚未設定循環技能設置! 即將前往設置!
-  Gosub,循環技能設置GUI面板
+  OpenUISection("loop")
   return
 }
   if StopUser = 1
@@ -1871,49 +1545,9 @@ send {%循環技能2% up}
 send {%循環技能3% up}
 Return
 
-;[Ins循環技能設置GUI面板]------------------------------------------------------------------------------------------
+	;[Ins循環技能數據儲存與讀取]------------------------------------------------------------------------------------------
 
-循環技能設置GUI面板:
-Gui,循環技能設置:new,,循環技能設置
-Gui +Label循環技能設置 -Resize  -MinimizeBox -MaximizeBox
-Gui Font, s10
-Gui Add, Text, x2 y6 w236 h20 +0x200, 設定技能與幾豪秒使用一次(Off : 關閉)
-Gui Add, Text, x10 y105 w215 h20, 儲存完成後，使用 Insert 鍵開啟循環
-Gui Font
-Gui Add, ComboBox, v循環技能1 x5 y30 w90, Q|W|E|R|T|%循環技能1%||
-Gui Add, ComboBox, v循環技能2 x5 y55 w90, Q|W|E|R|T|%循環技能2%||
-Gui Add, ComboBox, v循環技能3 x5 y80 w90, Q|W|E|R|T|%循環技能3%||
-Gui Add, ComboBox, v循環技能時間1 x105 y30 w120 , Off|1000|2000|3000|4000|5000|6000|7000|8000|9000|10000|%循環技能時間1%||
-Gui Add, ComboBox, v循環技能時間2 x105 y55 w120 , Off|1000|2000|3000|4000|5000|6000|7000|8000|9000|10000|%循環技能時間2%||
-Gui Add, ComboBox, v循環技能時間3 x105 y80 w120 , Off|1000|2000|3000|4000|5000|6000|7000|8000|9000|10000|%循環技能時間3%||
-Gui Add, Button, g儲存並讀取循環技能設置 x5 y126 w218 h23, 儲存並關閉
-Gui Show, w231 h156,循環技能設置
-Return
-
-循環技能設置Escape:
-循環技能設置Close:
-Msgbox,4,提醒視窗,您尚未儲存設定，確定是否要直接關閉?(是 或 否)
-IfMsgBox No
-	Return
-Else
-	Gui,submit
-Return
-
-;[Ins循環技能GUI儲存指令]------------------------------------------------------------------------------------------------------
-
-儲存並讀取循環技能設置:
-Gui,submit
-gosub,儲存循環技能設置
-gosub,讀取循環技能設置
-if StopUser = 1
-{
-StopUser := 0
-Gosub,關閉循環技能
-msgbox,48,提醒,您剛剛重新調整了設定，已自動關閉[Ins]循環使用技能。`r請重新使用熱鍵[Ins]使其生效。
-}
-Return
-
-儲存循環技能設置:
+	儲存循環技能設置:
 iniWrite,% 循環技能1,	sidtooldata.ini, 循環技能, 循環技能1
 iniWrite,% 循環技能2,	sidtooldata.ini, 循環技能, 循環技能2
 iniWrite,% 循環技能3,	sidtooldata.ini, 循環技能, 循環技能3
@@ -1967,12 +1601,6 @@ if 快速組隊提醒 = 開啟
 }
 Return
 
-HK_WinEnd_ModeLabel:
-gosub,End快速組隊設定
-Return
-
-;[End快速組隊指令]------------------------------------------------------------------------------------------------------------
-
 獲取對方id:
 Send ^{enter}
 sleep 1
@@ -1987,48 +1615,16 @@ gosub,清除目標ID前面@
 return
 
 清除目標ID前面@:
-移除後完好的ID :=  Trim(對方ID, OmitChars := "@")
+移除後完好的ID := Trim(對方ID, OmitChars := "@")
 return
 
-;[End快速組隊設定GUI面板]-------------------------------------------------------------------------------------------------
-
-End快速組隊設定:
-Gui,End快速組隊設定:new,,End快速組隊設定
-Gui +LabelEnd快速組隊設定 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g開啟快速組隊提醒 w200 hwndHBT15 ,開啟提醒
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT15,BT1Options)
-Gui, Add, Button,g關閉快速組隊提醒 w200 hwndHBT16 ,關閉提醒
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT16,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前組隊提醒 = "快速組隊提醒 " 。 "
-Gui, Show
-return
-
-End快速組隊設定Escape:
-End快速組隊設定Close:
-Gui,submit
-Return
-
-開啟快速組隊提醒:
-Gui,submit
-快速組隊提醒 = 開啟
-IniWrite,% 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
- Iniread, 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
-ToolTip("快速組隊提醒功能 = : " . 快速組隊提醒 . " 。 ")
-Return
-
-關閉快速組隊提醒:
-Gui,submit
-快速組隊提醒 = 關閉
-IniWrite,% 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
- Iniread, 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
-ToolTip("快速組隊提醒功能 = : " . 快速組隊提醒 . " 。 ")
+HK_WinEnd_ModeLabel:
+	if (快速組隊提醒 = "開啟")
+		快速組隊提醒 := "關閉"
+	else
+		快速組隊提醒 := "開啟"
+	IniWrite, % 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
+	ToolTip("快速組隊提醒功能已變更為: " . 快速組隊提醒)
 Return
 
 讀取快速組隊提醒功能:
@@ -2060,7 +1656,12 @@ else
 return
 
 HK_WinF1_ModeLabel:
-gosub,F1熱鍵切換
+	if (F1模式 = "返角模式")
+		F1模式 := "原始鍵盤模式"
+	else
+		F1模式 := "返角模式"
+	IniWrite, % F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
+	ToolTip("F1按鍵已變更為: " . F1模式)
 return
 
 ;[F1返回角色(指令)]------------------------------------------------------------------------------------------------------
@@ -2087,46 +1688,7 @@ Critical
         Send {Enter}
 return
 
-;[F1返回角色切換GUI面板]--------------------------------------------------------------------------------------
 
-F1熱鍵切換:
-Gui,F1熱鍵切換:new,,F1熱鍵切換
-Gui +LabelF1熱鍵切換 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g回復原始鍵盤 w200 hwndHBT5 ,回復原始鍵盤
-BT1Options:= [{BC: "99D1D3|FFFFFF", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT5,BT1Options)
-Gui, Add, Button,g激活返角熱鍵 w200 hwndHBT6 ,激活返角熱鍵
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT6,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前F1按鍵為 = "F1模式 " 。 "
-Gui, Show
-return
-
-F1熱鍵切換Escape:
-F1熱鍵切換Close:
-Gui,submit
-Return
-
-回復原始鍵盤:
-Gui,submit
-F1模式 = 原始鍵盤模式
-IniWrite,% F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
- Iniread, F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
-ToolTip("F1按鍵已變更為: " . F1模式 . " 。 ")
-Return
-
-激活返角熱鍵:
-Gui,submit
-F1模式 = 返角模式
-IniWrite,% F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
- Iniread, F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
-ToolTip("F1按鍵已變更為: " . F1模式 . " 。 ")
-Return
 
 讀取F1按鍵模式:
  Iniread, F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
@@ -2213,99 +1775,28 @@ BlockInput Off
 Return
 
 HK_WinF2_ModeLabel:
-gosub,回復模式及時切換
+	if (回復模式 = "暫離")
+		回復模式 := "勿擾"
+	else if (回復模式 = "勿擾")
+		回復模式 := "自動回復"
+	else
+		回復模式 := "暫離"
+	IniWrite, % 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
+	ToolTip("F2回復模式已切換為: " . 回復模式)
 return
-
-;[F2回復模式切換GUI面板]-------------------------------------------------------------------------------------------------------------
-
-回復模式及時切換:
-Gui,回復模式及時切換:new,,F3回復模式及時切換
-Gui +Label回復模式及時切換 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g變更暫離 w200 hwndHBT7 ,暫離
-BT1Options:= [{BC: "99D1D3|FFFFFF", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT7,BT1Options)
-Gui, Add, Button,g變更勿擾 w200 hwndHBT8 ,勿擾
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT8,BT1Options)
-Gui, Add, Button,g變更自動回復 w200 hwndHBT9 ,自動回復
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT9,BT1Options)
-Gui, Add, Button,g設置回復內容 w200 hwndHBT10 ,設置回復內容
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT10,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前F2按鍵為 = "回復模式 " 。 "
-Gui, Show
-return
-
-回復模式及時切換Escape:
-回復模式及時切換Close:
-Gui,submit
-Return
-
-變更暫離:
-Gui,submit
-回復模式 = 暫離
-IniWrite,% 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
- Iniread, 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
-ToolTip("回復模式已變更為: " . 回復模式 . " 。 ")
-Return
-
-變更勿擾:
-Gui,submit
-回復模式 = 勿擾
-IniWrite,% 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
- Iniread, 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
-ToolTip("回復模式已變更為: " . 回復模式 . " 。 ")
-Return
-
-變更自動回復:
-Gui,submit
-回復模式 = 自動回復
-IniWrite,% 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
- Iniread, 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
-ToolTip("回復模式已變更為: " . 回復模式 . " 。 ")
-Return
 
 讀取回復模式:
  Iniread, 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
 Return
 
-設置回復內容:
-Gui,submit
-gosub,設定自動回復
-Return
-
 設定自動回復:
-Gui,設定自動回復內容:new,,設定自動回復內容
-Gui +Label設定自動回復內容 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x000000
-Gui Font, s12 Bold c0xFFFFFF
-Gui Add, Text, x5 y5 w100 h30 +0x200 +0x1000, ㊣自動回復:
-Gui Font
-Gui Font, s12 Bold
-Gui Add, Edit, v自動回復內容 x110 y5 w500 h30 -VScroll,  %自動回復內容%
-Gui Add, Button, g儲存自動回復內容 x615 y5 w50 h30, &儲存
-Gui Font
-Gui Add, StatusBar,, ▲ 工具小知識: 待定 ▲ HI!因為這邊空白太多所以我這就跳出來說點話。
-Gui Show
-Return
-
-設定自動回復內容Escape:
-設定自動回復內容Close:
-Gui,submit
-Return
-
-儲存自動回復內容:
-Gui,submit
-iniWrite,% 自動回復內容, sidtooldata.ini, 設定自動回復內容, 自動回復內容
-iniread, 自動回復內容, sidtooldata.ini, 設定自動回復內容, 自動回復內容
+	InputBox, 輸入內容, 設定自動回復內容, 請輸入自動回復文字內容：,,,,,,,, %自動回復內容%
+	if (!ErrorLevel && 輸入內容 != "")
+	{
+		自動回復內容 := 輸入內容
+		iniWrite,% 自動回復內容, sidtooldata.ini, 設定自動回復內容, 自動回復內容
+		ToolTip("自動回復內容已更新！")
+	}
 Return
 
 讀取自動回復內容:
@@ -2373,96 +1864,16 @@ return
 return
 
 HK_WinF3_ModeLabel:
-gosub,背包模式及時切換
-return
-
-;[F3背包模式切換GUI面板]--------------------------------------------------------------------------------------
-
-背包模式及時切換:
-Gui,背包模式及時切換:new,,F3背包模式及時切換
-Gui +Label背包模式及時切換 -Resize  -MinimizeBox -MaximizeBox +AlwaysOnTop
-Gui Color, 0x00FFFF
-Gui, font, s20, 方正兰亭黑_GBK
-Gui, Add, Button,g變更按壓式 w200 hwndHBT1 ,按壓式清包
-BT1Options:= [{BC: "99D1D3|FFFFFF", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT1,BT1Options)
-
-Gui, Add, Button,g變更自動式 w200 hwndHBT2 ,自動式清包
-BT1Options:= [{BC: "99D1D3|FFFF00", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT2,BT1Options)
-
-Gui, Add, Button,g變更掃描式 w200 hwndHBT3 ,掃描式清包
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT3,BT1Options)
-
-Gui, Add, Button,g變更掃描加翻頁式 w200 hwndHBT12 ,掃描快搜清包
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT12,BT1Options)
-
-Gui, Add, Button,g變更顏色定位 w200 hwndHBT4 ,背包顏色定位
-BT1Options:= [{BC: "FFFF00|FF0000", TC: "Black", 3D: 1, G: 0}]
-BT1Options[2] := {BC: "0000FF|FFFF00", TC: "000000", 3D: 0, G: 1}
-CreateImageButton(HBT4,BT1Options)
-Gui, font
-Gui Add, StatusBar,, % "製作By Sid 當前F3按鍵為 = "清包模式 " 。 "
-Gui, Show
-return
-
-背包模式及時切換Escape:
-背包模式及時切換Close:
-Gui,submit
-Return
-
-變更按壓式:
-Gui,submit
-清包模式 = 按壓式
-IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
- Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-ToolTip("清包模式已變更為: " . 清包模式 . " 。 ")
-Return
-
-變更自動式:
-Gui,submit
-清包模式 = 自動式
-IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
- Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-ToolTip("清包模式已變更為: " . 清包模式 . " 。 ")
-Return
-
-變更掃描式:
-Gui,submit
-清包模式 = 掃描式
-IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
- Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-ToolTip("清包模式已變更為: " . 清包模式 . " 。 ")
-Return
-
-變更掃描加翻頁式:
-Gui,submit
-if (藥劑類 = "error" or 傳奇裝 = "error" or 傳奇戒 = "error" or 守望石 = "error" or 勢力裝頁 = "error")
-{
-msgbox,16,提醒,工具讀取到您的"快搜倉庫頁設置"並不完全，請前往設置。
-}
-else
-{
-清包模式 = 掃描快搜翻頁
-IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
- Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-ToolTip("清包模式已變更為: " . 清包模式 . " 。 ")
-}
-return
-
-變更顏色定位:
-Gui,submit
-清包模式 = 變更顏色定位
-IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
- Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-ToolTip("清包模式已變更為: " . 清包模式 . " 。 ")
-msgbox,48,提醒視窗,你正切換為顏色定位模式，請在[F7]背包座標確實抓取後再使用此模式，`r開啟[I]並保持背包淨空，使用[F3]讓工具掃描顏色紀錄數據。
+	if (清包模式 = "按壓式")
+		清包模式 := "自動式"
+	else if (清包模式 = "自動式")
+		清包模式 := "掃描式"
+	else if (清包模式 = "掃描式")
+		清包模式 := "掃描快搜"
+	else
+		清包模式 := "按壓式"
+	IniWrite, % 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
+	ToolTip("F3清包模式已變更為: " . 清包模式)
 return
 
 讀取F3按鍵模式:
@@ -2720,280 +2131,6 @@ return
 背包每格寬 := floor((掃描開始右下_X - 掃描開始左上_X) / 掃描水平數量)
 背包每格高 := floor((掃描開始右下_Y - 掃描開始左上_Y) / 掃描垂直數量)
 return
-
-;[漂亮按鈕產生代碼]----------------------------------------------------------------------------------------------
-
-CreateImageButton(HWND, Options, Margins = 0) {
-; HTML colors
-Static HTML := {BLACK: "000000", GRAY: "808080", SILVER: "C0C0C0", WHITE: "FFFFFF"
-, MAROON: "800000", PURPLE: "800080", FUCHSIA: "FF00FF", RED: "FF0000"
-, GREEN: "008000", OLIVE: "808000", YELLOW: "FFFF00", LIME: "00FF00"
-, NAVY: "000080", TEAL: "008080", AQUA: "00FFFF", BLUE: "0000FF"}
-
-; Windows constants
-Static BS_CHECKBOX := 0x2 , BS_RADIOBUTTON := 0x4
-, BS_GROUPBOX := 0x7 , BS_AUTORADIOBUTTON := 0x9
-, BS_LEFT := 0x100 , BS_RIGHT := 0x200
-, BS_CENTER := 0x300 , BS_TOP := 0x400
-, BS_BOTTOM := 0x800 , BS_VCENTER := 0xC00
-, BS_BITMAP := 0x0080
-, SA_LEFT := 0x0 , SA_CENTER := 0x1
-, SA_RIGHT := 0x2 , WM_GETFONT := 0x31
-, IMAGE_BITMAP := 0x0 , BITSPIXEL := 0xC
-, RCBUTTONS := BS_CHECKBOX | BS_RADIOBUTTON | BS_AUTORADIOBUTTON
-, BCM_SETIMAGELIST := 0x1602
-, BUTTON_IMAGELIST_ALIGN_LEFT := 0
-, BUTTON_IMAGELIST_ALIGN_RIGHT := 1
-, BUTTON_IMAGELIST_ALIGN_CENTER := 4
-; Options
-Static OptionKeys := ["TC", "BC", "3D", "G"]
-; Defaults
-Static Defaults := {TC: "000000", BC: "000000", 3D: 0, G: 0}
-; -------------------------------------------------------------------------------------------------------------------
-ErrorLevel := ""
-; -------------------------------------------------------------------------------------------------------------------
-; Check the availability of Gdiplus.dll
-GDIPDll := DllCall("Kernel32.dll\LoadLibrary", "Str", "Gdiplus.dll", "Ptr")
-VarSetCapacity(SI, 24, 0)
-Numput(1, SI)
-DllCall("Gdiplus.dll\GdiplusStartup", "PtrP", GDIPToken, "Ptr", &SI, "Ptr", 0)
-If (!GDIPToken) {
-ErrorLevel := "GDIPlus could not be started!`n`nImageButton won't work!"
-Return False
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Check HWND
-If !(DllCall("User32.dll\IsWindow", "Ptr", HWND)) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Invalid parameter HWND!"
-Return False
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Check Options
-If !(IsObject(Options)) || (Options.MinIndex() = "") || (Options.MinIndex() > 1) || (Options.MaxIndex() > 6) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Invalid parameter Options!"
-Return False
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Check Margins
-Margins := SubStr(Margins, 1, 1)
-If (Margins = "") || !(Instr("01234", Margins))
-Margins := 0
-; -------------------------------------------------------------------------------------------------------------------
-; Get and check control's class and styles
-WinGetClass, BtnClass, ahk_id %HWND%
-ControlGet, BtnStyle, Style, , , ahk_id %HWND%
-If (BtnClass != "Button") || ((BtnStyle & 0xF ^ BS_GROUPBOX) = 0) || ((BtnStyle & RCBUTTONS) > 1) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "You can use ImageButton only for PushButtons!"
-Return False
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Get the button's font
-GDIPFont := 0
-DC := DllCall("User32.dll\GetDC", "Ptr", HWND, "Ptr")
-BPP := DllCall("Gdi32.dll\GetDeviceCaps", "Ptr", DC, "Int", BITSPIXEL)
-HFONT := DllCall("User32.dll\SendMessage", "Ptr", HWND, "UInt", WM_GETFONT, "Ptr", 0, "Ptr", 0, "Ptr")
-DllCall("Gdi32.dll\SelectObject", "Ptr", DC, "Ptr", HFONT)
-DllCall("Gdiplus.dll\GdipCreateFontFromDC", "Ptr", DC, "PtrP", GDIPFont)
-DllCall("User32.dll\ReleaseDC", "Ptr", HWND, "Ptr", DC)
-If !(GDIPFont) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Couldn't get button's font!"
-Return False
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Get the button's RECT
-VarSetCapacity(RECT, 16, 0)
-If !(DllCall("User32.dll\GetClientRect", "Ptr", HWND, "Ptr", &RECT)) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Couldn't get button's rectangle!"
-Return False
-}
-W := NumGet(RECT, 8, "Int") - (Margins * 2)
-H := NumGet(RECT, 12, "Int") - (Margins * 2)
-; -------------------------------------------------------------------------------------------------------------------
-; Get the button's caption
-BtnCaption := ""
-Len := DllCall("User32.dll\GetWindowTextLength", "Ptr", HWND) + 1
-If (Len > 1) { ; Button has a caption
-VarSetCapacity(BtnCaption, Len * (A_IsUnicode ? 2 : 1), 0)
-If !(DllCall("User32.dll\GetWindowText", "Ptr", HWND, "Str", BtnCaption, "Int", Len)) {
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Couldn't get button's caption!"
-Return False
-}
-VarSetCapacity(BtnCaption, -1)
-}
-; -------------------------------------------------------------------------------------------------------------------
-; Create the BitMap(s)
-BitMaps := []
-While (A_Index <= Options.MaxIndex()) {
-If !(Options.HasKey(A_Index))
-Continue
-Option := Options[A_Index]
-; Check mandatory keys
-If !(Option.HasKey("BC")) {
-GoSub, CreateImageButton_FreeBitmaps
-GoSub, CreateImageButton_GDIPShutdown
-ErrorLevel := "Missing option BC in Options[" . A_Index . "]!"
-Return False
-}
-; Check for defaults
-For Each, K In Defaults {
-If !(Option.HasKey(K)) || (Option[K] = "")
-Option[K] := Defaults[K]
-}
-; Check options
-BitMap := ""
-GC := SubStr(Option.G, 1, 1)
-If !InStr("01", GC)
-GC := Defaults.G
-3D := SubStr(Option.3D, 1, 1)
-If !InStr("01239", 3D)
-3D := Defaults.3D
-If (3D < 4) {
-BkgColor := Option.BC
-If InStr(BkgColor, "|") {
-StringSplit, BkgColor, BkgColor, |
-} Else {
-BkgColor1 := Option.3D = 0 ? BkgColor : Defaults.BC
-BkgColor2 := BkgColor
-}
-If HTML.HasKey(BkgColor1)
-BkgColor1 := HTML[BkgColor1]
-If HTML.HasKey(BkgColor2)
-BkgColor2 := HTML[BkgColor2]
-} Else {
-Image := Option.BC
-}
-TxtColor := Option.TC
-If HTML.HasKey(TxtColor)
-TxtColor := HTML[TxtColor]
-; ----------------------------------------------------------------------------------------------------------------
-; Create a GDI+ bitmap
-DllCall("Gdiplus.dll\GdipCreateBitmapFromScan0", "Int", W, "Int", H, "Int", 0
-, "UInt", 0x26200A, "Ptr", 0, "PtrP", PBITMAP)
-; Get the pointer to it's graphics
-DllCall("Gdiplus.dll\GdipGetImageGraphicsContext", "Ptr", PBITMAP, "PtrP", PGRAPHICS)
-; Set SmoothingMode to system default
-DllCall("Gdiplus.dll\GdipSetSmoothingMode", "Ptr", PGRAPHICS, "UInt", 0)
-If (3D < 4) { ; Create a BitMap
-; Create a PathGradientBrush
-VarSetCapacity(POINTS, 4 * 8, 0)
-NumPut(W - 1, POINTS, 8, "UInt"), NumPut(W - 1, POINTS, 16, "UInt")
-NumPut(H - 1, POINTS, 20, "UInt"), NumPut(H - 1, POINTS, 28, "UInt")
-DllCall("Gdiplus.dll\GdipCreatePathGradientI", "Ptr", &POINTS, "Int", 4, "Int", 0, "PtrP", PBRUSH)
-; Start and target colors
-Color1 := "0xFF" . BkgColor1
-Color2 := "0xFF" . BkgColor2
-; Set the PresetBlend
-VarSetCapacity(COLORS, 12, 0)
-NumPut(Color1, COLORS, 0, "UInt"), NumPut(Color2, COLORS, 4, "UInt")
-VarSetCapacity(RELINT, 12, 0)
-NumPut(0.00, RELINT, 0, "Float"), NumPut(1.00, RELINT, 4, "Float")
-DllCall("Gdiplus.dll\GdipSetPathGradientPresetBlend", "Ptr", PBRUSH, "Ptr", &COLORS, "Ptr", &RELINT, "Int", 2)
-; Set the FocusScales
-DH := H / 2
-XScale := (3D = 1 ? (W - DH) / W : 3D = 2 ? 1 : 0)
-YScale := (3D = 1 ? (H - DH) / H : 3D = 3 ? 1 : 0)
-DllCall("Gdiplus.dll\GdipSetPathGradientFocusScales", "Ptr", PBRUSH, "Float", XScale, "Float", YScale)
-; Set the GammaCorrection
-DllCall("Gdiplus.dll\GdipSetPathGradientGammaCorrection", "Ptr", PBRUSH, "Int", GC)
-; Fill button's rectangle
-DllCall("Gdiplus.dll\GdipFillRectangleI", "Ptr", PGRAPHICS, "Ptr", PBRUSH, "Int", 0, "Int", 0
-, "Int", W, "Int", H)
-; Free the brush
-DllCall("Gdiplus.dll\GdipDeleteBrush", "Ptr", PBRUSH)
-} Else { ; Create a bitmap from HBITMAP or file
-If (Image + 0)
-DllCall("Gdiplus.dll\GdipCreateBitmapFromHBITMAP", "Ptr", Image, "Ptr", 0, "PtrP", PBM)
-Else
-DllCall("Gdiplus.dll\GdipCreateBitmapFromFile", "WStr", Image, "PtrP", PBM)
-; Draw the bitmap
-DllCall("Gdiplus.dll\GdipDrawImageRectI", "Ptr", PGRAPHICS, "Ptr", PBM, "Int", 0, "Int", 0
-, "Int", W, "Int", H)
-; Free the bitmap
-DllCall("Gdiplus.dll\GdipDisposeImage", "Ptr", PBM)
-}
-; ----------------------------------------------------------------------------------------------------------------
-; Draw the caption
-If (BtnCaption) {
-; Create a StringFormat object
-DllCall("Gdiplus.dll\GdipCreateStringFormat", "Int", 0x5404, "UInt", 0, "PtrP", HFORMAT)
-; Text color
-DllCall("Gdiplus.dll\GdipCreateSolidFill", "UInt", "0xFF" . TxtColor, "PtrP", PBRUSH)
-; Horizontal alignment
-HALIGN := (BtnStyle & BS_CENTER) = BS_CENTER ? SA_CENTER
-: (BtnStyle & BS_CENTER) = BS_RIGHT ? SA_RIGHT
-: (BtnStyle & BS_CENTER) = BS_Left ? SA_LEFT
-: SA_CENTER
-DllCall("Gdiplus.dll\GdipSetStringFormatAlign", "Ptr", HFORMAT, "Int", HALIGN)
-; Vertical alignment
-VALIGN := (BtnStyle & BS_VCENTER) = BS_TOP ? 0
-: (BtnStyle & BS_VCENTER) = BS_BOTTOM ? 2
-: 1
-DllCall("Gdiplus.dll\GdipSetStringFormatLineAlign", "Ptr", HFORMAT, "Int", VALIGN)
-; Set render quality to system default
-DllCall("Gdiplus.dll\GdipSetTextRenderingHint", "Ptr", PGRAPHICS, "Int", 0)
-; Set the text's rectangle
-NumPut(0.0, RECT, 0, "Float")
-NumPut(0.0, RECT, 4, "Float")
-NumPut(W, RECT, 8, "Float")
-NumPut(H, RECT, 12, "Float")
-; Draw the text
-DllCall("Gdiplus.dll\GdipDrawString", "Ptr", PGRAPHICS, "WStr", BtnCaption, "Int", -1
-, "Ptr", GDIPFont, "Ptr", &RECT, "Ptr", HFORMAT, "Ptr", PBRUSH)
-}
-; Create a HBITMAP handle from the bitmap
-DllCall("Gdiplus.dll\GdipCreateHBITMAPFromBitmap", "Ptr", PBITMAP, "PtrP", HBITMAP, "UInt", 0X00FFFFFF)
-; Free resources
-DllCall("Gdiplus.dll\GdipDisposeImage", "Ptr", PBITMAP)
-DllCall("Gdiplus.dll\GdipDeleteBrush", "Ptr", PBRUSH)
-DllCall("Gdiplus.dll\GdipDeleteStringFormat", "Ptr", HFORMAT)
-DllCall("Gdiplus.dll\GdipDeleteGraphics", "Ptr", PGRAPHICS)
-BitMaps[A_Index] := HBITMAP
-}
-; Now free the font object
-DllCall("Gdiplus.dll\GdipDeleteFont", "Ptr", GDIPFont)
-; -------------------------------------------------------------------------------------------------------------------
-; Create the ImageList
-HIL := DllCall("Comctl32.dll\ImageList_Create", "UInt", W, "UInt", H, "UInt", BPP, "Int", 6, "Int", 0, "Ptr")
-Loop, % (BitMaps.MaxIndex() > 1 ? 6 : 1) {
-HBITMAP := BitMaps.HasKey(A_Index) ? BitMaps[A_Index] : BitMaps[1]
-DllCall("Comctl32.dll\ImageList_Add", "Ptr", HIL, "Ptr", HBITMAP, "Ptr", 0)
-}
-; Create a BUTTON_IMAGELIST structure
-VarSetCapacity(BIL, 20 + A_PtrSize, 0)
-NumPut(HIL, BIL, 0, "Ptr")
-Numput(BUTTON_IMAGELIST_ALIGN_CENTER, BIL, A_PtrSize + 16, "UInt")
-; Hide buttons's caption
-GuiControl, , %HWND% ; WinXP
-GuiControl, +%BS_BITMAP%, %HWND%
-; Assign the ImageList to the button
-SendMessage, BCM_SETIMAGELIST, 0, 0, , ahk_id %HWND%
-SendMessage, BCM_SETIMAGELIST, 0, &BIL, , ahk_id %HWND%
-; Free the bitmaps
-GoSub, CreateImageButton_FreeBitmaps
-; -------------------------------------------------------------------------------------------------------------------
-; All done successfully
-GoSub, CreateImageButton_GDIPShutdown
-Return True
-; -------------------------------------------------------------------------------------------------------------------
-; Free BitMaps
-CreateImageButton_FreeBitmaps:
-For I, HBITMAP In BitMaps {
-DllCall("Gdi32.dll\DeleteObject", "Ptr", HBITMAP)
-}
-Return
-; -------------------------------------------------------------------------------------------------------------------
-; Shutdown GDIPlus
-CreateImageButton_GDIPShutdown:
-DllCall("Gdiplus.dll\GdiplusShutdown", "Ptr", GDIPToken)
-DllCall("Kernel32.dll\FreeLibrary", "Ptr", GDIPDll)
-Return
-}
 
 ;[Neutron 介面溝通 bridge 函數]--------------------------------------------------------------------------------------
 

@@ -8,7 +8,7 @@
 
 <h2 id="english">English</h2>
 
-**Target game**: Path of Exile 1  
+**Target game**: Path of Exile 1 & Path of Exile 2 (POE 1 & POE 2)  
 **Language**: AutoHotkey  
 **License**: GNU AGPLv3 (open source, protects user freedom; derivatives must use the same license)
 
@@ -28,16 +28,14 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 | Inventory | One-key cleanup (hold / auto / scan / quick scan) | F3 |
 | Trade & Party | Quick party request (with reminder) | End |
 |        | Party reminder panel | Win+End |
-| Stash Search | Quick search aut-paging | Ctrl+Alt |
+| Stash Search | Quick search auto-paging | Ctrl+Alt |
 |        | Back to stash first page | Ctrl+Win |
-| Price Check | Open external price-check window | Win+V |
 | Mouse | Auto-click (wheel button / Ctrl+Left) | MButton / Ctrl+LButton |
 |        | Auto-click speed panel | Win+Z → Mouse auto-click settings |
 | System | AFK / Do-Not-Disturb / Auto-reply (3 modes) | F2 (select mode with Win+F2 first) |
 |        | Pause tool (restore keyboard) | F9 |
 |        | Reload tool / Exit tool | F11 / F12 |
 | Mode Detection | Text / game mode auto switch | Enter / Ctrl+F / paste item / hold left click |
-|        | Esc auto returns to POE window when price-checking | Esc |
 
 **Advanced Settings**:
 - **Win + Z**: Open the full feature menu for parameter adjustments
@@ -93,7 +91,7 @@ Click `Code` in the top-right → `Download ZIP`, or clone with Git:
 git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 ```
 
-After extracting, double-click `Sid-Exile-Toolbox(en).ahk` to start.
+After extracting, double-click `Sid-Exile-Toolbox.ahk` to start.
 
 ### 3. Initial Setup
 1. Press **Win + Z** to open the feature menu, then enter "Detection flask settings" and "Flask trigger settings" to adjust your preferences
@@ -160,7 +158,7 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 
 <h2 id="chinese">繁體中文</h2>
 
-**適用遊戲**：Path of Exile 1（流亡黯道 一代）  
+**適用遊戲**：Path of Exile 1 & Path of Exile 2（流亡黯道 1 代 & 2 代）  
 **開發語言**：AutoHotkey  
 **授權**：GNU AGPLv3（開源、保障使用者自由，衍生軟體需以同授權釋出）
 
@@ -182,14 +180,12 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 |          | 組隊提醒開關設定面板 | Win+End |
 | 倉庫搜尋 | 快搜倉庫自動翻頁 | Ctrl+Alt |
 |          | 返回倉庫首頁 | Ctrl+Win |
-| 查價工具 | 呼叫外部查價視窗 | Win+V |
 | 滑鼠輔助 | 滑鼠連點 (滾輪下壓/Ctrl+左鍵) | MButton / Ctrl+LButton |
 |          | 滑鼠連點速度設定面板 | Win+Z → 滑鼠連點設置 |
 | 系統控制 | 暫離/勿擾/自動回復 (三模式切換) | F2 (需先用 Win+F2 選擇模式) |
 |          | 暫停工具 (回復鍵盤) | F9 |
 |          | 重新載入工具 / 結束工具 | F11 / F12 |
 | 模式偵測 | 文字/遊戲模式自動切換 | Enter / Ctrl+F / 貼上物品 / 長按左鍵 |
-|          | 查價時 Esc 自動返回 POE 視窗 | Esc |
 
 **進階設定**：  
 - **Win + Z**：開啟完整功能菜單，可進行各項參數調整  
@@ -245,7 +241,7 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 ```
 
-解壓後雙擊 `Sid-Exile-Toolbox(zh).ahk` 即可啟動。
+解壓後雙擊 `Sid-Exile-Toolbox.ahk` 即可啟動。
 
 ### 3. 初始設定
 1. 按 **Win + Z** 打開功能選單，進入「偵測喝水設置」與「藥劑觸發設置」調整偏好
