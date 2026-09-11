@@ -374,31 +374,7 @@ GetDriveTailSerial()
 		Iniread,	 一鍵喝水時觸發的藥劑,	sidtooldata.ini, 藥劑觸發數據, 一鍵喝水時觸發的藥劑
 	Return
 
-	;[偵測點設置區 ( Win + C )]-----------------------------------------------------------------------------------
-	HK_WinC_Label:
-		MouseGetPos, thisPosX, thisPosY
-		PixelGetColor, colorabc, %thisPosX%, %thisPosY%
-		PosX := ["","","","","顏色5_X","顏色6_X"]
-		PosY := ["","","","","顏色5_Y","顏色6_Y"]
-		CosA := ["","","","","顏色5_C","顏色6_C"]
-		InputBox, ColorID,偵測點記錄工具, 顏色編號 [ %colorabc% ] ，座標 [ %thisPosX% `, %thisPosY% ]`r`r5 = Enter對話框(1)黑色域`r6 = Enter對話框(2)黑色域 (先開啟資訊後位移的對話框)`r`r請依指示輸入對應的座標代號... ( 5 ~ 6 ),,410,250
-		if not ErrorLevel
-		{
-			checkColorID := RegExMatch(ColorID, "[56]$")
-			if checkColorID = 1
-			{
-				iniWrite,% thisPosX, sidtooldata.ini, 顏色座標, % PosX[ColorID]
-				iniWrite,% thisPosY, sidtooldata.ini, 顏色座標, % PosY[ColorID]
-				iniwrite,% colorabc, sidtooldata.ini, 顏色座標, % CosA[ColorID]
-			}
-			else
-			{
-				MsgBox,16,錯誤,請輸入正確的代號( 5 ~ 6 )
-			}
-			gosub,座標顏色讀取
-		}
-
-	return
+	Return
 
 	座標顏色讀取:
 		loop,9
@@ -2074,29 +2050,6 @@ F7背包定位:
 		}
 		neutron.Show()
 		捕捉模式 := 0
-		return
-	}
-	MouseGetPos, thisPosX, thisPosY
-	PixelGetColor, colorabc, %thisPosX%, %thisPosY%
-	PosX := ["背包左上_X","背包右下_X"]
-	PosY := ["背包左上_Y","背包右下_Y"]
-	CosA := ["背包左上_C","背包右下_C"]
-	InputBox, affixID,F7背包定位工具, 使用[F7]前的滑鼠座標 [ %thisPosX% `, %thisPosY% ]。`n如果尚未指定，請按 ( Cancel )。`r滑鼠正確指定座標後使用 ( F7 )。`r`r1 = 背包左上角`r2 = 背包右下角`r`r請依指示輸入對應的座標代號...( 1, 2 ),,400,250
-	if not ErrorLevel
-	{
-		checkAffixID := RegExMatch(affixID, "[12]$")
-		if checkAffixID = 1
-		{
-			iniWrite,% thisPosX, sidtooldata.ini, 背包定位, % PosX[affixID]
-			iniWrite,% thisPosY, sidtooldata.ini, 背包定位, % PosY[affixID]
-			iniwrite,% colorabc, sidtooldata.ini, 背包定位, % CosA[affixID]
-			gosub,讀取F7背包定位內容
-			gosub,背包運算作業
-		}
-		else if not (affixID = "1" or affixID = "2")
-		{
-			MsgBox,16,錯誤,請輸入正確的代號 (1, 2)
-		}
 	}
 	return
 
@@ -2275,7 +2228,6 @@ NeutronGetSettings(neutron) {
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
 	json .= """hk_F7"":""" . 快捷鍵_F7 . ""","
 	json .= """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
-	json .= """hk_WinC"":""" . 快捷鍵_WinC . ""","
 	json .= """hk_Space"":""" . 快捷鍵_Space . ""","
 	json .= """hk_Insert"":""" . 快捷鍵_Insert . ""","
 	json .= """hk_End"":""" . 快捷鍵_End . ""","
@@ -2308,7 +2260,6 @@ Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
 Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
 Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
-Iniread, 快捷鍵_WinC, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinC, #c
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
 Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
 Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
@@ -2316,7 +2267,7 @@ Return
 
 註冊動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
+keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -2347,7 +2298,7 @@ Return
 
 解開動態熱鍵:
 Hotkey, IfWinActive, Path of Exile
-keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
+keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName := A_LoopField
@@ -2373,7 +2324,7 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinC, hkSpace, hkInsert, hkEnd) {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1 := hkF1
@@ -2381,12 +2332,11 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkWinC, hkSpac
 	快捷鍵_F3 := hkF3
 	快捷鍵_F7 := hkF7
 	快捷鍵_WinZ := hkWinZ
-	快捷鍵_WinC := hkWinC
 	快捷鍵_Space := hkSpace
 	快捷鍵_Insert := hkInsert
 	快捷鍵_End := hkEnd
 
-	keysList := "F1,F2,F3,F7,WinZ,WinC,Space,Insert,End"
+	keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName := A_LoopField

@@ -48,11 +48,10 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
   - Auto detonate mines settings
   - Links to price-check tool (TW server / international server)
   - Links to author Sid's website
-- **Win + C**: Set screen detection points (HP bar, mana orb, dialog box, etc.)
 - **Win + F1**: F1 hotkey toggle (original keyboard / logout mode)
 - **Win + F2**: F2 hotkey toggle (AFK / Do-Not-Disturb / Auto-reply)
 - **Win + F3**: F3 hotkey toggle (hold / auto / scan / quick-scan cleanup)
-- **F7**: Locate stash, trade window, and divination card exchange coordinates
+- **F7**: Capture inventory and color detection points (initiated via Win+Z UI menu)
 
 ## 📺 Tutorials
 
@@ -198,11 +197,10 @@ If you like this tool, please give it a ⭐ Star and share it with other players
   - 自動引爆地雷設置  
   - 前往查價工具的網址（台服/國際服）  
   - 前往 Sid 作者網站  
-- **Win + C**：設定畫面偵測點（血條、魔球、對話框等）  
 - **Win + F1**：F1 熱鍵切換（原始鍵盤 / 返角模式）  
 - **Win + F2**：F2 熱鍵切換（暫離 / 勿擾 / 自動回復）  
 - **Win + F3**：F3 熱鍵切換（按壓 / 自動 / 掃描 / 掃描快搜清包）  
-- **F7**：定位背包、交易欄位、命運卡兌換座標  
+- **F7**：捕捉背包與對話框顏色偵測點（由 Win+Z 菜單點擊抓取後使用）  
 
 ## 📺 教學影片與圖片
 
