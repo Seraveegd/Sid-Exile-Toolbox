@@ -46,6 +46,7 @@ NeutronLoadLocal(neutronInstance, fileName) {
 ; === 腳本最上方（自動執行段） ===
 GroupAdd, DualWins, Path of Exile
 GroupAdd, DualWins, Path of Exile 2
+GroupAdd, DualWins, % "ahk_id " . neutron.hWnd
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
 使用者類型 = 已開源
@@ -1787,7 +1788,7 @@ Critical
 	{
 	gosub,一鍵清包
 	}
-	if (InStr(清包模式, "掃描") && !InStr(清包模式, "翻頁"))
+	if (InStr(清包模式, "掃描") && !InStr(清包模式, "快搜") && !InStr(清包模式, "翻頁"))
 	{
 		if (背包初始顏色1 = "error" and 背包初始顏色2 = "error")
 		{
@@ -1798,7 +1799,7 @@ Critical
 		gosub,快速掃描並存倉
 		}
 	}
-	if 清包模式 = 掃描快搜翻頁
+	if (InStr(清包模式, "快搜") || 清包模式 = "掃描快搜翻頁")
 	{
 		if (背包初始顏色1 = "error" and 背包初始顏色2 = "error")
 		{
@@ -1835,6 +1836,9 @@ HK_WinF3_ModeLabel:
 		清包模式 := "按壓式"
 	IniWrite, % 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
 	ToolTip("F3清包模式已變更為: " . 清包模式)
+	try {
+		neutron.wnd.syncDataFromAHK()
+	}
 return
 
 讀取F3按鍵模式:
@@ -1945,7 +1949,7 @@ CoordMode, Pixel, Screen
 global 存倉掃描顏色Array := []
 {
  存倉掃描顏色Array := []
- if 清包模式 = 掃描快搜翻頁
+ if (InStr(清包模式, "快搜") || 清包模式 = "掃描快搜翻頁")
  Gosub,返回首頁
  send {ctrl down}
  loop % 掃描水平數量
@@ -1981,7 +1985,7 @@ global 存倉掃描顏色Array := []
 		ToolTip, % "掃描格子數: " 迴圈狀態 " /60 ，長按[~]停止。"  , 0,22,2
 			If not pcol2 = 背包初始顏色%迴圈狀態%
 			{
-				if 清包模式 = 掃描快搜翻頁
+				if (InStr(清包模式, "快搜") || 清包模式 = "掃描快搜翻頁")
 				{
 				Gosub,返回首頁
 				Mousemove, % PosX, % PosY,0
@@ -2266,7 +2270,7 @@ Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
 Return
 
 註冊動態熱鍵:
-Hotkey, IfWinActive, Path of Exile
+Hotkey, IfWinActive, ahk_group DualWins
 keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2297,7 +2301,7 @@ Hotkey, IfWinActive
 Return
 
 解開動態熱鍵:
-Hotkey, IfWinActive, Path of Exile
+Hotkey, IfWinActive, ahk_group DualWins
 keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2324,19 +2328,18 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkF7, hkWinZ, hkSpace, hkInsert, hkEnd) {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1 := hkF1
 	快捷鍵_F2 := hkF2
 	快捷鍵_F3 := hkF3
-	快捷鍵_F7 := hkF7
 	快捷鍵_WinZ := hkWinZ
 	快捷鍵_Space := hkSpace
 	快捷鍵_Insert := hkInsert
 	快捷鍵_End := hkEnd
 
-	keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
+	keysList := "F1,F2,F3,WinZ,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName := A_LoopField
