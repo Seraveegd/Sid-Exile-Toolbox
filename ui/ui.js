@@ -127,6 +127,10 @@ function syncDataFromAHK() {
             updateAnchorPoint('bag', b, data['bag' + b + '_X'], data['bag' + b + '_Y'], data['bag' + b + '_C']);
         });
 
+        // 同步探險討價還價定位點 (1: 確認按鈕, 2: 重骰按鈕)
+        updateAnchorPoint('haggle', 1, data['haggleConfirm_X'], data['haggleConfirm_Y'], '');
+        updateAnchorPoint('haggle', 2, data['haggleReroll_X'], data['haggleReroll_Y'], '');
+
     } catch (err) {
         // Log error
     }
@@ -435,14 +439,14 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : 'b';
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : 'h');
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');
     var elBox = document.getElementById(prefix + id + '_box');
 
-    var valX = (x !== undefined && x !== null && x !== 'error' && x !== '') ? x : '未設定';
-    var valY = (y !== undefined && y !== null && y !== 'error' && y !== '') ? y : '未設定';
+    var valX = (x !== undefined && x !== null && x !== 'error' && x !== '' && x !== '0' && x !== 0) ? x : '未設定';
+    var valY = (y !== undefined && y !== null && y !== 'error' && y !== '' && y !== '0' && y !== 0) ? y : '未設定';
     var valC = (color !== undefined && color !== null && color !== 'error' && color !== '') ? color : '未設定';
 
     if (elX) elX.textContent = valX;

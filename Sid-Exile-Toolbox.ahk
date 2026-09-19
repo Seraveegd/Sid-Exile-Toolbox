@@ -69,6 +69,7 @@ gosub,讀取循環技能設置
 gosub,讀取藥劑觸發紀錄
 gosub,讀取自訂快捷鍵
 gosub,註冊動態熱鍵
+gosub,讀取討價還價定位
 
 ;[寫入預設值]------------------------------------------------------------------------------------------------------
 
@@ -85,6 +86,16 @@ StopUser = 0
 防呆藥水鎖3 = 無
 防呆藥水鎖4 = 無
 防呆藥水鎖5 = 無
+;=探險討價還價參數=
+vMouseMoveDelaySpeedMin := 35 
+vMouseMoveDelaySpeedMax := 45 
+vClickDelaySpeed := 40
+vHagglingScrollSpeedMin := 20 
+vHagglingScrollSpeedMax := 30
+vFirstMin := 14
+vFirstMax := 16
+vLastMin := 5
+vLastMax := 8
 ;------------------------------------------------------------------------------------------------------
 if 連點模式 = ERROR
 {
@@ -111,11 +122,11 @@ if 命運卡兌換模式 = ERROR
 ;------------------------------------------------------------------------------------------------------
 Loop,3
 {
-	if (循環技能%A_Index% = "ERROR")
+	if 循環技能%A_Index% = ERROR
 	{
 		循環技能%A_Index% = T
 	}
-	if (循環技能時間%A_Index% = "ERROR")
+	if 循環技能時間%A_Index% = ERROR
 	{
 		循環技能時間%A_Index% = Off
 	}
@@ -2044,6 +2055,26 @@ F7背包定位:
 			gosub,讀取F7背包定位內容
 			gosub,背包運算作業
 		}
+		else if (捕捉類型 = "haggle")
+		{
+			if (捕捉代號 = 1)
+			{
+				確認按鈕_X := capX
+				確認按鈕_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 討價還價定位, 確認按鈕_X
+				iniWrite,% capY, sidtooldata.ini, 討價還價定位, 確認按鈕_Y
+				ToolTip("已設定討價還價【確認按鈕】座標: " . capX . ", " . capY)
+			}
+			else if (捕捉代號 = 2)
+			{
+				重骰按鈕_X := capX
+				重骰按鈕_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 討價還價定位, 重骰按鈕_X
+				iniWrite,% capY, sidtooldata.ini, 討價還價定位, 重骰按鈕_Y
+				ToolTip("已設定討價還價【重骰按鈕】座標: " . capX . ", " . capY)
+			}
+			gosub,讀取討價還價定位
+		}
 		try {
 			neutron.wnd.updateAnchorPoint(捕捉類型, 捕捉代號, capX, capY, capC)
 		} catch {
@@ -2064,6 +2095,13 @@ iniread,背包左上_C, sidtooldata.ini, 背包定位, 背包左上_C
 iniread,背包右下_X, sidtooldata.ini, 背包定位, 背包右下_X
 iniread,背包右下_Y, sidtooldata.ini, 背包定位, 背包右下_Y
 iniread,背包右下_C, sidtooldata.ini, 背包定位, 背包右下_C
+return
+
+讀取討價還價定位:
+iniread, 確認按鈕_X, sidtooldata.ini, 討價還價定位, 確認按鈕_X, 0
+iniread, 確認按鈕_Y, sidtooldata.ini, 討價還價定位, 確認按鈕_Y, 0
+iniread, 重骰按鈕_X, sidtooldata.ini, 討價還價定位, 重骰按鈕_X, 0
+iniread, 重骰按鈕_Y, sidtooldata.ini, 討價還價定位, 重骰按鈕_Y, 0
 return
 
 背包運算作業:
@@ -2246,7 +2284,11 @@ NeutronGetSettings(neutron) {
 	json .= """bag1_C"":""" . 背包左上_C . ""","
 	json .= """bag2_X"":""" . 背包右下_X . ""","
 	json .= """bag2_Y"":""" . 背包右下_Y . ""","
-	json .= """bag2_C"":""" . 背包右下_C . """"
+	json .= """bag2_C"":""" . 背包右下_C . ""","
+	json .= """haggleConfirm_X"":""" . 確認按鈕_X . ""","
+	json .= """haggleConfirm_Y"":""" . 確認按鈕_Y . ""","
+	json .= """haggleReroll_X"":""" . 重骰按鈕_X . ""","
+	json .= """haggleReroll_Y"":""" . 重骰按鈕_Y . """"
 	json .= "}"
 	return json
 }
@@ -2348,4 +2390,74 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, h
 	gosub, 註冊動態熱鍵
 	ToolTip("自訂快捷鍵設置已儲存並生效！")
 }
+
+;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
+
+$1::
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+{
+	Send, 1
+}
+else
+{
+	if (確認按鈕_X = "" || 確認按鈕_X = 0 || 確認按鈕_Y = "" || 確認按鈕_Y = 0)
+	{
+		ToolTip("尚未設定【確認按鈕】座標！請先在菜單設置中進行定位抓取。")
+		Send, 1
+		return
+	}
+	MouseClick, left
+	Random, FirstH, %vFirstMin%, %vFirstMax%
+	Loop, %FirstH%
+	{
+		Send {WheelDown 1}
+		Random, vHagglingScrollSpeed, %vHagglingScrollSpeedMin%, %vHagglingScrollSpeedMax%
+		Sleep %vHagglingScrollSpeed%
+	}
+	MouseGetPos, rCordXX, rCordYY
+	BlockInput, MouseMove
+	MouseMove, %確認按鈕_X%, %確認按鈕_Y%, 0
+	Random, vMouseMoveDelaySpeed, %vMouseMoveDelaySpeedMin%, %vMouseMoveDelaySpeedMax%
+	Sleep %vMouseMoveDelaySpeed%
+	MouseClick, left
+	Random, vMouseMoveDelaySpeed, %vMouseMoveDelaySpeedMin%, %vMouseMoveDelaySpeedMax%
+	Sleep %vMouseMoveDelaySpeed%
+	Random, LastH, %vLastMin%, %vLastMax%
+	Loop, %LastH%
+	{
+		Send {WheelDown 1}
+		Sleep %vHagglingScrollSpeed%
+	}
+	Random, vMouseMoveDelaySpeed, %vMouseMoveDelaySpeedMin%, %vMouseMoveDelaySpeedMax%
+	Sleep %vMouseMoveDelaySpeed%
+	MouseClick, left
+	Sleep %vClickDelaySpeed%
+	MouseClick, left
+	MouseMove, %rCordXX%, %rCordYY%, 0
+	BlockInput, MouseMoveOff
+}
+return
+
+$2::
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+{
+	Send, 2
+}
+else
+{
+	if (重骰按鈕_X = "" || 重骰按鈕_X = 0 || 重骰按鈕_Y = "" || 重骰按鈕_Y = 0)
+	{
+		ToolTip("尚未設定【重骰按鈕】座標！請先在菜單設置中進行定位抓取。")
+		Send, 2
+		return
+	}
+	BlockInput, MouseMove
+	MouseGetPos, rCordXX, rCordYY
+	MouseMove, %重骰按鈕_X%, %重骰按鈕_Y%, 0
+	Sleep %vClickDelaySpeed%
+	MouseClick, left
+	MouseMove, %rCordXX%, %rCordYY%, 0
+	BlockInput, MouseMoveOff
+}
+return
 
