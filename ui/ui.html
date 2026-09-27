@@ -155,34 +155,86 @@
               <span class="badge bg-warning text-dark px-2 py-1">需啟用 Caps Lock</span>
             </div>
             <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
-              ⚠️ <strong>重要提醒：</strong>本功能必須<strong>啟用 Caps Lock (大寫鎖定鍵)</strong> 才會有作用！當 Caps Lock 關閉時，按鍵 <span class="badge bg-secondary">1</span> 與 <span class="badge bg-secondary">2</span> 保持正常遊戲與文字輸入功能，不影響平時操作。
+              ⚠️ <strong>重要提醒：</strong>本功能必須<strong>啟用 Caps Lock (大寫鎖定鍵)</strong> 才會有作用！當 Caps Lock 關閉時，按鍵 <span
+                class="badge bg-primary text-white px-2 py-1">1</span> 與 <span
+                class="badge bg-primary text-white px-2 py-1">2</span> 保持正常遊戲與文字輸入功能，不影響平時操作。
             </div>
             <div class="row g-2 small">
               <div class="col-md-6">
                 <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle h-100">
                   <div class="d-flex align-items-center mb-1">
-                    <span class="badge bg-primary fs-6 me-2">1</span>
+                    <span class="badge bg-primary text-white fs-6 me-2">1</span>
                     <strong class="text-light">快速購買與討價還價</strong>
                   </div>
                   <div class="text-secondary">
-                    滑鼠懸停於欲購買的商品上按下 <span class="badge bg-secondary">1</span>，自動點選商品、隨機滾輪壓低出價、移至確認按鈕點擊並完成購買。
+                    滑鼠懸停於欲購買的商品上按下 <span
+                      class="badge bg-primary text-white px-2 py-1">1</span>，自動點選商品、隨機滾輪壓低出價、移至確認按鈕點擊並完成購買。
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle h-100">
                   <div class="d-flex align-items-center mb-1">
-                    <span class="badge bg-primary fs-6 me-2">2</span>
+                    <span class="badge bg-primary text-white fs-6 me-2">2</span>
                     <strong class="text-light">重骰商人商品</strong>
                   </div>
                   <div class="text-secondary">
-                    在商店介面按下 <span class="badge bg-secondary">2</span>，自動移至重骰按鈕點擊刷新商品清單，並立即將滑鼠游標移回原位。
+                    在商店介面按下 <span class="badge bg-primary text-white px-2 py-1">2</span>，自動移至重骰按鈕點擊刷新商品清單，並立即將滑鼠游標移回原位。
                   </div>
                 </div>
               </div>
             </div>
             <div class="mt-2 text-muted small">
-              💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')" class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【確認按鈕】與【重骰按鈕】座標。
+              💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')"
+                class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【確認按鈕】與【重骰按鈕】座標。
+            </div>
+          </div>
+        </div>
+
+        <!-- 探險關南賭博 (Gwennen Gamble) 快捷鍵與過濾字串 -->
+        <div class="card mb-3 shadow-sm border-info-subtle">
+          <div class="card-body py-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="card-title text-info mb-0">🎲 探險關南賭博 (Gwennen Gamble) 快捷鍵</h6>
+              <span class="badge bg-warning text-dark px-2 py-1">需啟用 Caps Lock</span>
+            </div>
+            <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
+              ⚠️ <strong>重要提醒：</strong>本功能必須<strong>啟用 Caps Lock (大寫鎖定鍵)</strong> 才會有作用！當 Caps Lock 關閉時，按鍵 <span
+                class="badge bg-primary text-white px-2 py-1">3</span> 保持正常遊戲技能/藥劑與打字輸入功能。
+            </div>
+            <div class="row g-2 small mb-3">
+              <div class="col-12">
+                <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle h-100">
+                  <div class="d-flex align-items-center mb-1">
+                    <span class="badge bg-primary text-white fs-6 me-2">3</span>
+                    <strong class="text-light">長按自動賭博高亮裝備與重骰</strong>
+                  </div>
+                  <div class="text-secondary">
+                    在關南賭博商店介面<strong>長按 <span
+                        class="badge bg-primary text-white px-2 py-1">3</span></strong>，腳本自動在賭博視窗內搜尋符合過濾條件的高亮物品（色碼 <code
+                      class="text-warning">0xE7B477</code>）並 Ctrl+左鍵點擊快速購買；當無高亮裝備時自動點擊重骰按鈕刷新。放開 <span
+                      class="badge bg-primary text-white px-2 py-1">3</span> 立即停止。
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 過濾文字設定與複製 -->
+            <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle">
+              <label class="form-label mb-1 text-light small fw-bold">🔍 關南賭博過濾字串（編輯後自動即時儲存）：</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control bg-dark text-info border-secondary" id="gwennenFilter"
+                  placeholder="例如：重革腰帶|皮革腰帶" style="user-select: text;" oninput="autoSaveGwennenFilter()"
+                  onchange="autoSaveGwennenFilter()">
+                <button class="btn btn-outline-info" type="button" id="btnCopyGwennenFilter"
+                  onclick="copyGwennenFilter()">📋 複製過濾文字</button>
+              </div>
+              <div class="text-muted small mt-1">
+                💡 點擊「複製過濾文字」後，在遊戲中開啟關南商店，於搜尋欄按 Ctrl+V 貼上即可高亮目標基底。
+              </div>
+            </div>
+            <div class="mt-2 text-muted small">
+              💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')"
+                class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【重骰按鈕】、【賭博視窗左上角】與【右下角】座標。
             </div>
           </div>
         </div>
@@ -304,39 +356,89 @@
         </div>
 
         <!-- 探險討價還價按鈕座標定位 -->
-        <div class="card mb-3 shadow-sm border-warning-subtle">
+        <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="card-title text-warning mb-0">🪙 探險討價還價定位 (圖貞 Haggle)</h6>
-              <span class="badge bg-secondary-subtle text-secondary small">討價還價專用</span>
-            </div>
+            <h6 class="card-title text-light mb-2">探險討價還價座標定位</h6>
             <div class="table-responsive">
               <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
                 <thead>
                   <tr class="text-secondary">
                     <th style="width: 50px;">代號</th>
                     <th>說明</th>
-                    <th style="width: 100px;">X 座標</th>
-                    <th style="width: 100px;">Y 座標</th>
+                    <th style="width: 80px;">X 座標</th>
+                    <th style="width: 80px;">Y 座標</th>
+                    <th style="width: 140px;">顏色色碼 / 預覽</th>
                     <th style="width: 80px;" class="text-end">操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="badge bg-warning text-dark">1</span></td>
-                    <td>討價還價【確認按鈕】座標點</td>
+                    <td><span class="badge bg-secondary">1</span></td>
+                    <td>討價還價【確認按鈕】中心點</td>
                     <td><code id="h1_x" class="text-info">-</code></td>
                     <td><code id="h1_y" class="text-info">-</code></td>
-                    <td class="text-end"><button class="btn btn-outline-warning btn-sm py-0 px-2"
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
                         onclick="captureAnchorPoint('haggle', 1)">📍 抓取</button></td>
                   </tr>
                   <tr>
-                    <td><span class="badge bg-warning text-dark">2</span></td>
-                    <td>討價還價【重骰按鈕】座標點</td>
+                    <td><span class="badge bg-secondary">2</span></td>
+                    <td>討價還價【重骰按鈕】中心點</td>
                     <td><code id="h2_x" class="text-info">-</code></td>
                     <td><code id="h2_y" class="text-info">-</code></td>
-                    <td class="text-end"><button class="btn btn-outline-warning btn-sm py-0 px-2"
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
                         onclick="captureAnchorPoint('haggle', 2)">📍 抓取</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 探險關南賭博按鈕與視窗座標定位 -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">探險關南賭博座標定位</h6>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
+                <thead>
+                  <tr class="text-secondary">
+                    <th style="width: 50px;">代號</th>
+                    <th>說明</th>
+                    <th style="width: 80px;">X 座標</th>
+                    <th style="width: 80px;">Y 座標</th>
+                    <th style="width: 140px;">顏色色碼 / 預覽</th>
+                    <th style="width: 80px;" class="text-end">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge bg-secondary">1</span></td>
+                    <td>關南【重骰按鈕】中心點</td>
+                    <td><code id="g1_x" class="text-info">-</code></td>
+                    <td><code id="g1_y" class="text-info">-</code></td>
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('gwennen', 1)">📍 抓取</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-secondary">2</span></td>
+                    <td>賭博視窗【左上角】座標點</td>
+                    <td><code id="g2_x" class="text-info">-</code></td>
+                    <td><code id="g2_y" class="text-info">-</code></td>
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('gwennen', 2)">📍 抓取</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-secondary">3</span></td>
+                    <td>賭博視窗【右下角】座標點</td>
+                    <td><code id="g3_x" class="text-info">-</code></td>
+                    <td><code id="g3_y" class="text-info">-</code></td>
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('gwennen', 3)">📍 抓取</button></td>
                   </tr>
                 </tbody>
               </table>

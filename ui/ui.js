@@ -131,6 +131,16 @@ function syncDataFromAHK() {
         updateAnchorPoint('haggle', 1, data['haggleConfirm_X'], data['haggleConfirm_Y'], '');
         updateAnchorPoint('haggle', 2, data['haggleReroll_X'], data['haggleReroll_Y'], '');
 
+        // 同步探險關南賭博定位點 (1: 重骰, 2: 左上, 3: 右下) 與過濾文字
+        updateAnchorPoint('gwennen', 1, data['gwennenReroll_X'], data['gwennenReroll_Y'], '');
+        updateAnchorPoint('gwennen', 2, data['gwennenLeft_X'], data['gwennenLeft_Y'], '');
+        updateAnchorPoint('gwennen', 3, data['gwennenRight_X'], data['gwennenRight_Y'], '');
+
+        var elFilter = document.getElementById('gwennenFilter');
+        if (elFilter && data['gwennenFilter'] !== undefined) {
+            elFilter.value = data['gwennenFilter'];
+        }
+
     } catch (err) {
         // Log error
     }
@@ -195,7 +205,7 @@ function getRawKeyNameFromEvent(e) {
         case 40: return 'Down';
         case 45: return 'Insert';
         case 27: return 'Escape';
-        case 9:  return 'Tab';
+        case 9: return 'Tab';
         case 192: return '`';
         case 189: return '-';
         case 187: return '=';
@@ -439,7 +449,7 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : 'h');
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : 'g'));
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');
@@ -453,6 +463,57 @@ function updateAnchorPoint(type, id, x, y, color) {
     if (elY) elY.textContent = valY;
     if (elC) elC.textContent = valC;
     if (elBox) elBox.style.backgroundColor = formatHexColor(valC);
+}
+
+// 自動儲存關南過濾文字
+function autoSaveGwennenFilter() {
+    var el = document.getElementById('gwennenFilter');
+    if (!el || typeof ahk === 'undefined') return;
+    ahk.NeutronSaveGwennenFilter(el.value);
+}
+
+// 一鍵複製關南過濾文字至剪貼簿
+function copyGwennenFilter() {
+    var input = document.getElementById('gwennenFilter');
+    if (!input) return;
+    var text = input.value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+            showCopyFeedback();
+        }).catch(function () {
+            fallbackCopy(text);
+        });
+    } else {
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    var input = document.getElementById('gwennenFilter');
+    if (!input) return;
+    input.select();
+    input.setSelectionRange(0, 99999);
+    try {
+        document.execCommand('copy');
+        showCopyFeedback();
+    } catch (err) {
+        alert('複製失敗，請手動複製');
+    }
+}
+
+function showCopyFeedback() {
+    var btn = document.getElementById('btnCopyGwennenFilter');
+    if (btn) {
+        var origText = btn.innerHTML;
+        btn.innerHTML = '✅ 已複製！';
+        btn.classList.remove('btn-outline-info');
+        btn.classList.add('btn-success');
+        setTimeout(function () {
+            btn.innerHTML = origText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-info');
+        }, 1500);
+    }
 }
 
 function showStartupModal() {

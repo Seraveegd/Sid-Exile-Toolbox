@@ -70,6 +70,7 @@ gosub,讀取藥劑觸發紀錄
 gosub,讀取自訂快捷鍵
 gosub,註冊動態熱鍵
 gosub,讀取討價還價定位
+gosub,讀取關南賭博定位
 
 ;[寫入預設值]------------------------------------------------------------------------------------------------------
 
@@ -87,15 +88,19 @@ StopUser = 0
 防呆藥水鎖4 = 無
 防呆藥水鎖5 = 無
 ;=探險討價還價參數=
-vMouseMoveDelaySpeedMin := 35 
-vMouseMoveDelaySpeedMax := 45 
+vMouseMoveDelaySpeedMin := 35
+vMouseMoveDelaySpeedMax := 45
 vClickDelaySpeed := 40
-vHagglingScrollSpeedMin := 20 
+vHagglingScrollSpeedMin := 20
 vHagglingScrollSpeedMax := 30
 vFirstMin := 14
 vFirstMax := 16
 vLastMin := 5
 vLastMax := 8
+;=探險關南賭博參數=
+gwennenPixelColor := 0xE7B477
+ReGixSearchedDelay := 200
+statusRoll := true
 ;------------------------------------------------------------------------------------------------------
 if 連點模式 = ERROR
 {
@@ -122,13 +127,13 @@ if 命運卡兌換模式 = ERROR
 ;------------------------------------------------------------------------------------------------------
 Loop,3
 {
-	if 循環技能%A_Index% = ERROR
+	if (循環技能%A_Index% = "ERROR")
 	{
-		循環技能%A_Index% = T
+		循環技能%A_Index% := "T"
 	}
-	if 循環技能時間%A_Index% = ERROR
+	if (循環技能時間%A_Index% = "ERROR")
 	{
-		循環技能時間%A_Index% = Off
+		循環技能時間%A_Index% := "Off"
 	}
 }
 ;------------------------------------------------------------------------------------------------------
@@ -320,8 +325,6 @@ GetDriveTailSerial()
 		Return
 	}
 
-
-
 	;[跳程指令區]---------------------------------------------------------------------------------------------------
 
 	起始盒子:
@@ -359,8 +362,6 @@ GetDriveTailSerial()
 		SetTimer, 藥劑4, off
 		SetTimer, 藥劑5, off
 	return
-
-
 
 	儲存藥劑觸發紀錄:
 		IniWrite,% 主要技能, sidtooldata.ini, 藥劑觸發數據, 主要技能
@@ -1405,7 +1406,7 @@ if 連點模式 = 滑鼠滾輪按壓
 clickStop := true
 return
 
-	;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
+;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
 
 讀取滑鼠連點速度:
  Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
@@ -1660,8 +1661,6 @@ Critical
 	ToolTip("0秒後自動Enter登入")
         Send {Enter}
 return
-
-
 
 讀取F1按鍵模式:
  Iniread, F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
@@ -2075,6 +2074,34 @@ F7背包定位:
 			}
 			gosub,讀取討價還價定位
 		}
+		else if (捕捉類型 = "gwennen")
+		{
+			if (捕捉代號 = 1)
+			{
+				關南重骰_X := capX
+				關南重骰_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 重骰按鈕_X
+				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 重骰按鈕_Y
+				ToolTip("已設定關南賭博【重骰按鈕】座標: " . capX . ", " . capY)
+			}
+			else if (捕捉代號 = 2)
+			{
+				關南左上_X := capX
+				關南左上_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 視窗左上_X
+				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 視窗左上_Y
+				ToolTip("已設定關南賭博【賭博視窗左上角】座標: " . capX . ", " . capY)
+			}
+			else if (捕捉代號 = 3)
+			{
+				關南右下_X := capX
+				關南右下_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 視窗右下_X
+				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 視窗右下_Y
+				ToolTip("已設定關南賭博【賭博視窗右下角】座標: " . capX . ", " . capY)
+			}
+			gosub,讀取關南賭博定位
+		}
 		try {
 			neutron.wnd.updateAnchorPoint(捕捉類型, 捕捉代號, capX, capY, capC)
 		} catch {
@@ -2102,6 +2129,20 @@ iniread, 確認按鈕_X, sidtooldata.ini, 討價還價定位, 確認按鈕_X, 0
 iniread, 確認按鈕_Y, sidtooldata.ini, 討價還價定位, 確認按鈕_Y, 0
 iniread, 重骰按鈕_X, sidtooldata.ini, 討價還價定位, 重骰按鈕_X, 0
 iniread, 重骰按鈕_Y, sidtooldata.ini, 討價還價定位, 重骰按鈕_Y, 0
+return
+
+讀取關南賭博定位:
+iniread, 關南重骰_X, sidtooldata.ini, 關南賭博定位, 重骰按鈕_X, 0
+iniread, 關南重骰_Y, sidtooldata.ini, 關南賭博定位, 重骰按鈕_Y, 0
+iniread, 關南左上_X, sidtooldata.ini, 關南賭博定位, 視窗左上_X, 0
+iniread, 關南左上_Y, sidtooldata.ini, 關南賭博定位, 視窗左上_Y, 0
+iniread, 關南右下_X, sidtooldata.ini, 關南賭博定位, 視窗右下_X, 0
+iniread, 關南右下_Y, sidtooldata.ini, 關南賭博定位, 視窗右下_Y, 0
+iniread, 關南過濾文字, sidtooldata.ini, 關南賭博定位, 過濾文字, 重革腰帶|皮革腰帶
+if (關南過濾文字 = "ERROR" || 關南過濾文字 = "")
+{
+	關南過濾文字 := "重革腰帶|皮革腰帶"
+}
 return
 
 背包運算作業:
@@ -2288,7 +2329,18 @@ NeutronGetSettings(neutron) {
 	json .= """haggleConfirm_X"":""" . 確認按鈕_X . ""","
 	json .= """haggleConfirm_Y"":""" . 確認按鈕_Y . ""","
 	json .= """haggleReroll_X"":""" . 重骰按鈕_X . ""","
-	json .= """haggleReroll_Y"":""" . 重骰按鈕_Y . """"
+	json .= """haggleReroll_Y"":""" . 重骰按鈕_Y . ""","
+	json .= """gwennenReroll_X"":""" . 關南重骰_X . ""","
+	json .= """gwennenReroll_Y"":""" . 關南重骰_Y . ""","
+	json .= """gwennenLeft_X"":""" . 關南左上_X . ""","
+	json .= """gwennenLeft_Y"":""" . 關南左上_Y . ""","
+	json .= """gwennenRight_X"":""" . 關南右下_X . ""","
+	json .= """gwennenRight_Y"":""" . 關南右下_Y . ""","
+	gwFilterEsc := StrReplace(關南過濾文字, "\", "\\")
+	gwFilterEsc := StrReplace(gwFilterEsc, """", "\""")
+	gwFilterEsc := StrReplace(gwFilterEsc, "`r", "")
+	gwFilterEsc := StrReplace(gwFilterEsc, "`n", "")
+	json .= """gwennenFilter"":""" . gwFilterEsc . """"
 	json .= "}"
 	return json
 }
@@ -2391,6 +2443,12 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, h
 	ToolTip("自訂快捷鍵設置已儲存並生效！")
 }
 
+NeutronSaveGwennenFilter(neutron, filterText) {
+	global 關南過濾文字
+	關南過濾文字 := filterText
+	iniWrite, %filterText%, sidtooldata.ini, 關南賭博定位, 過濾文字
+}
+
 ;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
 
 $1::
@@ -2459,5 +2517,71 @@ else
 	MouseMove, %rCordXX%, %rCordYY%, 0
 	BlockInput, MouseMoveOff
 }
+return
+
+;[探險關南賭博(Gwennen Gamble) 快捷鍵]----------------------------------------------------------------------------------
+
+$3::
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+{
+	Send, 3
+}
+else
+{
+	if (關南重骰_X = "" || 關南重骰_X = 0 || 關南重骰_Y = "" || 關南重骰_Y = 0 || 關南左上_X = "" || 關南左上_X = 0 || 關南左上_Y = "" || 關南左上_Y = 0 || 關南右下_X = "" || 關南右下_X = 0 || 關南右下_Y = "" || 關南右下_Y = 0)
+	{
+		ToolTip("尚未設定關南賭博座標（重骰按鈕、賭博視窗左上與右下）！請先在菜單設置中進行定位抓取。")
+		Send, 3
+		return
+	}
+	gosub, 關南開始賭博
+}
+return
+
+關南開始賭博:
+statusRoll := true
+MouseGetPos, origGwennenX, origGwennenY
+while (GetKeyState("3", "P") && statusRoll)
+{
+	lastPositionFindX := ""
+	lastPositionFindY := ""
+	while (GetKeyState("3", "P") && statusRoll)
+	{
+		PixelSearch, Px, Py, %關南左上_X%, %關南左上_Y%, %關南右下_X%, %關南右下_Y%, %gwennenPixelColor%, 3, Fast RGB
+		if (ErrorLevel)
+		{
+			break
+		}
+		else if (lastPositionFindX == Px && lastPositionFindY == Py)
+		{
+			ToolTip("偵測到物品未被收下，可能背包已滿或通貨不足，已停止賭博。")
+			statusRoll := false
+			break
+		}
+		else
+		{
+			lastPositionFindX := Px
+			lastPositionFindY := Py
+			targetX := Px + 30
+			targetY := Py + 30
+			SendInput, {Control down}
+			Sleep, 5
+			BlockInput, MouseMove
+			MouseClick, left, %targetX%, %targetY%
+			SendInput, {Control up}
+			BlockInput, MouseMoveOff
+			Sleep, 45
+		}
+	}
+
+	if (GetKeyState("3", "P") && statusRoll)
+	{
+		BlockInput, MouseMove
+		MouseClick, left, %關南重骰_X%, %關南重骰_Y%
+		BlockInput, MouseMoveOff
+		Sleep, %ReGixSearchedDelay%
+	}
+}
+MouseMove, %origGwennenX%, %origGwennenY%, 0
 return
 
