@@ -71,6 +71,7 @@ gosub,讀取自訂快捷鍵
 gosub,註冊動態熱鍵
 gosub,讀取討價還價定位
 gosub,讀取關南賭博定位
+gosub,讀取交換寶石定位
 
 ;[寫入預設值]------------------------------------------------------------------------------------------------------
 
@@ -101,6 +102,9 @@ vLastMax := 8
 gwennenPixelColor := 0xE7B477
 ReGixSearchedDelay := 200
 statusRoll := true
+;=寶石交換參數=
+vGemDelay := 60
+寶石副手切換 := 0
 ;------------------------------------------------------------------------------------------------------
 if 連點模式 = ERROR
 {
@@ -2102,6 +2106,26 @@ F7背包定位:
 			}
 			gosub,讀取關南賭博定位
 		}
+		else if (捕捉類型 = "gemSwap")
+		{
+			if (捕捉代號 = 1)
+			{
+				寶石1_X := capX
+				寶石1_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 交換寶石定位, 寶石1_X
+				iniWrite,% capY, sidtooldata.ini, 交換寶石定位, 寶石1_Y
+				ToolTip("已設定【交換寶石1】座標: " . capX . ", " . capY)
+			}
+			else if (捕捉代號 = 2)
+			{
+				寶石2_X := capX
+				寶石2_Y := capY
+				iniWrite,% capX, sidtooldata.ini, 交換寶石定位, 寶石2_X
+				iniWrite,% capY, sidtooldata.ini, 交換寶石定位, 寶石2_Y
+				ToolTip("已設定【交換寶石2】座標: " . capX . ", " . capY)
+			}
+			gosub,讀取交換寶石定位
+		}
 		try {
 			neutron.wnd.updateAnchorPoint(捕捉類型, 捕捉代號, capX, capY, capC)
 		} catch {
@@ -2143,6 +2167,14 @@ if (關南過濾文字 = "ERROR" || 關南過濾文字 = "")
 {
 	關南過濾文字 := "重革腰帶|皮革腰帶"
 }
+return
+
+讀取交換寶石定位:
+iniread, 寶石1_X, sidtooldata.ini, 交換寶石定位, 寶石1_X, 0
+iniread, 寶石1_Y, sidtooldata.ini, 交換寶石定位, 寶石1_Y, 0
+iniread, 寶石2_X, sidtooldata.ini, 交換寶石定位, 寶石2_X, 0
+iniread, 寶石2_Y, sidtooldata.ini, 交換寶石定位, 寶石2_Y, 0
+iniread, 寶石副手切換, sidtooldata.ini, 交換寶石定位, 副手切換, 0
 return
 
 背包運算作業:
@@ -2340,7 +2372,12 @@ NeutronGetSettings(neutron) {
 	gwFilterEsc := StrReplace(gwFilterEsc, """", "\""")
 	gwFilterEsc := StrReplace(gwFilterEsc, "`r", "")
 	gwFilterEsc := StrReplace(gwFilterEsc, "`n", "")
-	json .= """gwennenFilter"":""" . gwFilterEsc . """"
+	json .= """gwennenFilter"":""" . gwFilterEsc . ""","
+	json .= """gem1_X"":""" . 寶石1_X . ""","
+	json .= """gem1_Y"":""" . 寶石1_Y . ""","
+	json .= """gem2_X"":""" . 寶石2_X . ""","
+	json .= """gem2_Y"":""" . 寶石2_Y . ""","
+	json .= """gemWeaponSwap"":""" . 寶石副手切換 . """"
 	json .= "}"
 	return json
 }
@@ -2447,6 +2484,12 @@ NeutronSaveGwennenFilter(neutron, filterText) {
 	global 關南過濾文字
 	關南過濾文字 := filterText
 	iniWrite, %filterText%, sidtooldata.ini, 關南賭博定位, 過濾文字
+}
+
+NeutronSaveGemSwapConfig(neutron, weaponSwap) {
+	global 寶石副手切換
+	寶石副手切換 := weaponSwap
+	iniWrite, %weaponSwap%, sidtooldata.ini, 交換寶石定位, 副手切換
 }
 
 ;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
@@ -2584,4 +2627,74 @@ while (GetKeyState("3", "P") && statusRoll)
 }
 MouseMove, %origGwennenX%, %origGwennenY%, 0
 return
+
+;[一鍵快速交換寶石(Gem Swap) 快捷鍵]----------------------------------------------------------------------------------
+
+$4::
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+{
+	Send, 4
+}
+else
+{
+	if (寶石1_X = "" || 寶石1_X = 0 || 寶石1_Y = "" || 寶石1_Y = 0 || 寶石2_X = "" || 寶石2_X = 0 || 寶石2_Y = "" || 寶石2_Y = 0)
+	{
+		ToolTip("尚未設定交換寶石座標！請先在菜單設置中進行定位抓取。")
+		Send, 4
+		return
+	}
+	gosub, 執行寶石交換
+}
+return
+
+執行寶石交換:
+BlockInput, MouseMove
+MouseGetPos, origGemX, origGemY
+
+; 開啟背包
+Send, {i}
+Sleep, 100
+
+; 移動至【交換寶石1】插槽拔出寶石 (右鍵拔出)
+MouseMove, %寶石1_X%, %寶石1_Y%, 0
+Sleep, %vGemDelay%
+Click, Right
+Sleep, %vGemDelay%
+
+; 若有勾選切換副手，切換武器
+if (寶石副手切換 = 1 || 寶石副手切換 = "1" || 寶石副手切換 = "true")
+{
+	Send, {x}
+	Sleep, %vGemDelay%
+}
+
+; 移動至【交換寶石2】背包對調寶石 (左鍵對調)
+MouseMove, %寶石2_X%, %寶石2_Y%, 0
+Sleep, %vGemDelay%
+Click, Left
+Sleep, %vGemDelay%
+
+; 若有切換副手，切換回主手
+if (寶石副手切換 = 1 || 寶石副手切換 = "1" || 寶石副手切換 = "true")
+{
+	Send, {x}
+	Sleep, %vGemDelay%
+}
+
+; 移動回【交換寶石1】插槽鑲嵌新寶石 (左鍵鑲嵌)
+MouseMove, %寶石1_X%, %寶石1_Y%, 0
+Sleep, %vGemDelay%
+Click, Left
+Sleep, %vGemDelay%
+
+; 關閉背包
+Send, {i}
+Sleep, 50
+
+; 游標還原至原位
+MouseMove, %origGemX%, %origGemY%, 0
+BlockInput, MouseMoveOff
+ToolTip("寶石交換完成！")
+return
+
 

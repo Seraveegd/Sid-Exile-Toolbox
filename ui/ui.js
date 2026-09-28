@@ -141,6 +141,15 @@ function syncDataFromAHK() {
             elFilter.value = data['gwennenFilter'];
         }
 
+        // 同步交換寶石定位點 (1: 裝備插槽, 2: 背包寶石) 與副手切換開關
+        updateAnchorPoint('gemSwap', 1, data['gem1_X'], data['gem1_Y'], '');
+        updateAnchorPoint('gemSwap', 2, data['gem2_X'], data['gem2_Y'], '');
+
+        var elGemSwap = document.getElementById('gemWeaponSwap');
+        if (elGemSwap && data['gemWeaponSwap'] !== undefined) {
+            elGemSwap.checked = (data['gemWeaponSwap'] === '1' || data['gemWeaponSwap'] === 1 || data['gemWeaponSwap'] === true || data['gemWeaponSwap'] === 'true');
+        }
+
     } catch (err) {
         // Log error
     }
@@ -449,7 +458,7 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : 'g'));
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : ((type === 'gwennen') ? 'g' : 'gem')));
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');
@@ -514,6 +523,13 @@ function showCopyFeedback() {
             btn.classList.add('btn-outline-info');
         }, 1500);
     }
+}
+
+// 儲存寶石副手切換設定
+function saveGemSwapConfig() {
+    var el = document.getElementById('gemWeaponSwap');
+    if (!el || typeof ahk === 'undefined') return;
+    ahk.NeutronSaveGemSwapConfig(el.checked ? 1 : 0);
 }
 
 function showStartupModal() {

@@ -238,6 +238,44 @@
             </div>
           </div>
         </div>
+
+        <!-- 一鍵快速交換寶石 (Gem Swap) 快捷鍵 -->
+        <div class="card mb-3 shadow-sm border-primary-subtle">
+          <div class="card-body py-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="card-title text-info mb-0">💎 一鍵快速交換寶石 (Gem Swap) 快捷鍵</h6>
+              <span class="badge bg-warning text-dark px-2 py-1">需啟用 Caps Lock</span>
+            </div>
+            <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
+              ⚠️ <strong>重要提醒：</strong>本功能必須<strong>啟用 Caps Lock (大寫鎖定鍵)</strong> 才會有作用！當 Caps Lock 關閉時，按鍵 <span class="badge bg-primary text-white px-2 py-1">4</span> 保持正常遊戲技能/藥劑與打字輸入功能。
+            </div>
+            <div class="row g-2 small mb-2">
+              <div class="col-12">
+                <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle h-100">
+                  <div class="d-flex align-items-center mb-1">
+                    <span class="badge bg-primary text-white fs-6 me-2">4</span>
+                    <strong class="text-light">一鍵拔除並對調背包寶石</strong>
+                  </div>
+                  <div class="text-secondary">
+                    按下 <span class="badge bg-primary text-white px-2 py-1">4</span>，自動開啟物品欄，將【交換寶石1】（裝備插槽）中的寶石拔下，與【交換寶石2】（背包備用寶石）進行對調並重新鑲嵌回插槽，最後關閉物品欄並還原游標位置。
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 副手換寶石選項 -->
+            <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle">
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" id="gemWeaponSwap" onchange="saveGemSwapConfig()">
+                <label class="form-check-label text-light small fw-bold" for="gemWeaponSwap">
+                  🔄 需切換副手（Weapon Swap，於換寶石過程中自動按 X 切換與切回）
+                </label>
+              </div>
+            </div>
+            <div class="mt-2 text-muted small">
+              💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')" class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【交換寶石1】與【交換寶石2】座標。
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Panel 2: 座標與顏色定位設置 -->
@@ -439,6 +477,47 @@
                     <td><span class="text-muted">-</span></td>
                     <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
                         onclick="captureAnchorPoint('gwennen', 3)">📍 抓取</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 寶石交換座標定位 -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">💎 交換寶石座標定位</h6>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
+                <thead>
+                  <tr class="text-secondary">
+                    <th style="width: 50px;">代號</th>
+                    <th>說明</th>
+                    <th style="width: 80px;">X 座標</th>
+                    <th style="width: 80px;">Y 座標</th>
+                    <th style="width: 140px;">顏色色碼 / 預覽</th>
+                    <th style="width: 80px;" class="text-end">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge bg-secondary">1</span></td>
+                    <td>交換寶石1【插槽寶石】中心點</td>
+                    <td><code id="gem1_x" class="text-info">-</code></td>
+                    <td><code id="gem1_y" class="text-info">-</code></td>
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('gemSwap', 1)">📍 抓取</button></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-secondary">2</span></td>
+                    <td>交換寶石2【背包寶石】中心點</td>
+                    <td><code id="gem2_x" class="text-info">-</code></td>
+                    <td><code id="gem2_y" class="text-info">-</code></td>
+                    <td><span class="text-muted">-</span></td>
+                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                        onclick="captureAnchorPoint('gemSwap', 2)">📍 抓取</button></td>
                   </tr>
                 </tbody>
               </table>
