@@ -30,6 +30,9 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 |        | Party reminder panel | Win+End |
 | Stash Search | Quick search auto-paging | Ctrl+Alt |
 |        | Back to stash first page | Ctrl+Win |
+| Expedition (PoE 1 Only) | Tujen haggle quick buy & reroll | CapsLock + 1 / CapsLock + 2 |
+|        | Gwennen gamble auto buy & reroll | CapsLock + 3 (Hold) |
+| Gem Swap | One-key gem swap | CapsLock + 4 |
 | Mouse | Auto-click (wheel button / Ctrl+Left) | MButton / Ctrl+LButton |
 |        | Auto-click speed panel | Win+Z → Mouse auto-click settings |
 | System | AFK / Do-Not-Disturb / Auto-reply (3 modes) | F2 (select mode with Win+F2 first) |
@@ -179,6 +182,9 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 |          | 組隊提醒開關設定面板 | Win+End |
 | 倉庫搜尋 | 快搜倉庫自動翻頁 | Ctrl+Alt |
 |          | 返回倉庫首頁 | Ctrl+Win |
+| 探險輔助 (僅限 PoE 1) | 探險討價還價 (快速購買/重骰) | CapsLock + 1 / CapsLock + 2 |
+|          | 探險關南賭博 (自動購買/重骰) | CapsLock + 3 (長按) |
+| 寶石管理 | 一鍵快速交換寶石 | CapsLock + 4 |
 | 滑鼠輔助 | 滑鼠連點 (滾輪下壓/Ctrl+左鍵) | MButton / Ctrl+LButton |
 |          | 滑鼠連點速度設定面板 | Win+Z → 滑鼠連點設置 |
 | 系統控制 | 暫離/勿擾/自動回復 (三模式切換) | F2 (需先用 Win+F2 選擇模式) |

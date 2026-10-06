@@ -2492,10 +2492,15 @@ NeutronSaveGemSwapConfig(neutron, weaponSwap) {
 	iniWrite, %weaponSwap%, sidtooldata.ini, 交換寶石定位, 副手切換
 }
 
+IsPoE1Active()
+{
+	return WinActive("Path of Exile") && !WinActive("Path of Exile 2")
+}
+
 ;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
 
 $1::
-if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
 {
 	Send, 1
 }
@@ -2540,7 +2545,7 @@ else
 return
 
 $2::
-if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
 {
 	Send, 2
 }
@@ -2565,7 +2570,7 @@ return
 ;[探險關南賭博(Gwennen Gamble) 快捷鍵]----------------------------------------------------------------------------------
 
 $3::
-if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
+if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
 {
 	Send, 3
 }
@@ -2586,10 +2591,14 @@ statusRoll := true
 MouseGetPos, origGwennenX, origGwennenY
 while (GetKeyState("3", "P") && statusRoll)
 {
+	if (!IsPoE1Active())
+		break
 	lastPositionFindX := ""
 	lastPositionFindY := ""
 	while (GetKeyState("3", "P") && statusRoll)
 	{
+		if (!IsPoE1Active())
+			break
 		PixelSearch, Px, Py, %關南左上_X%, %關南左上_Y%, %關南右下_X%, %關南右下_Y%, %gwennenPixelColor%, 3, Fast RGB
 		if (ErrorLevel)
 		{
@@ -2619,6 +2628,8 @@ while (GetKeyState("3", "P") && statusRoll)
 
 	if (GetKeyState("3", "P") && statusRoll)
 	{
+		if (!IsPoE1Active())
+			break
 		BlockInput, MouseMove
 		MouseClick, left, %關南重骰_X%, %關南重骰_Y%
 		BlockInput, MouseMoveOff
