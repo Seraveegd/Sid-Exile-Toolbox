@@ -55,6 +55,7 @@ gosub,讀取F7背包定位內容
 gosub,背包運算作業
 gosub,讀取F1按鍵模式
 gosub,讀取F3按鍵模式
+gosub,讀取清包保留格
 gosub,讀取倉庫頁數據
 gosub,讀取背包初始顏色
 gosub,讀取回復模式
@@ -70,7 +71,6 @@ gosub,讀取藥劑觸發紀錄
 gosub,讀取自訂快捷鍵
 gosub,註冊動態熱鍵
 gosub,讀取討價還價定位
-gosub,讀取關南賭博定位
 gosub,讀取交換寶石定位
 
 ;[寫入預設值]------------------------------------------------------------------------------------------------------
@@ -98,10 +98,6 @@ vFirstMin := 14
 vFirstMax := 16
 vLastMin := 5
 vLastMax := 8
-;=探險關南賭博參數=
-gwennenPixelColor := 0xE7B477
-ReGixSearchedDelay := 200
-statusRoll := true
 ;=寶石交換參數=
 vGemDelay := 60
 寶石副手切換 := 0
@@ -129,16 +125,29 @@ if 命運卡兌換模式 = ERROR
 	命運卡兌換模式 = 單次兌換模式
 }
 ;------------------------------------------------------------------------------------------------------
-Loop,3
+if 循環技能1 = ERROR
 {
-	if (循環技能%A_Index% = "ERROR")
-	{
-		循環技能%A_Index% := "T"
-	}
-	if (循環技能時間%A_Index% = "ERROR")
-	{
-		循環技能時間%A_Index% := "Off"
-	}
+	循環技能1 = T
+}
+if 循環技能2 = ERROR
+{
+	循環技能2 = T
+}
+if 循環技能3 = ERROR
+{
+	循環技能3 = T
+}
+if 循環技能時間1 = ERROR
+{
+	循環技能時間1 = Off
+}
+if 循環技能時間2 = ERROR
+{
+	循環技能時間2 = Off
+}
+if 循環技能時間3 = ERROR
+{
+	循環技能時間3 = Off
 }
 ;------------------------------------------------------------------------------------------------------
 if 藥劑觸發模式 = ERROR
@@ -1859,6 +1868,29 @@ return
  Iniread, 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
 Return
 
+讀取清包保留格:
+	IniRead, 清包保留格, sidtooldata.ini, 清包設置, 清包保留格, %A_Space%
+	if (清包保留格 = "ERROR")
+		清包保留格 := ""
+	清包保留格 := Trim(清包保留格)
+	global 清包保留Array := {}
+	Loop, 60
+		清包保留Array[A_Index] := 0
+	if (清包保留格 != "")
+	{
+		Loop, Parse, 清包保留格, `,
+		{
+			idx := Trim(A_LoopField)
+			if (idx >= 1 && idx <= 60)
+				清包保留Array[idx] := 1
+		}
+	}
+return
+
+儲存清包保留格:
+	IniWrite, % 清包保留格, sidtooldata.ini, 清包設置, 清包保留格
+return
+
 ;[F3快速掃描背包區].............................................................................................................................
 
 讀取背包初始顏色:
@@ -1902,7 +1934,8 @@ return
 send {ctrl down}
 loop % 掃描水平數量
 {
-PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
+colIdx := A_Index
+PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((colIdx-1)*2))
 	if (InStr(清包模式, "按壓"))
 	{
 		cleanF3Key := CleanKeyName(快捷鍵_F3)
@@ -1926,7 +1959,11 @@ PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_In
 	}
 loop % 掃描垂直數量
 {
-PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
+rowIdx := A_Index
+slotIdx := (colIdx - 1) * 掃描垂直數量 + rowIdx
+if (清包保留Array[slotIdx])
+	continue
+PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((rowIdx-1)*2))
 MouseClick,, % PosX, % PosY,1,0
 	if (InStr(清包模式, "按壓"))
 	{
@@ -1997,6 +2034,8 @@ global 存倉掃描顏色Array := []
 		存倉掃描顏色Array.Push(pcol2)
 		迴圈狀態:= 迴圈狀態 +1
 		ToolTip, % "掃描格子數: " 迴圈狀態 " /60 ，長按[~]停止。"  , 0,22,2
+			if (清包保留Array[迴圈狀態])
+				continue
 			If not pcol2 = 背包初始顏色%迴圈狀態%
 			{
 				if (InStr(清包模式, "快搜") || 清包模式 = "掃描快搜翻頁")
@@ -2078,34 +2117,6 @@ F7背包定位:
 			}
 			gosub,讀取討價還價定位
 		}
-		else if (捕捉類型 = "gwennen")
-		{
-			if (捕捉代號 = 1)
-			{
-				關南重骰_X := capX
-				關南重骰_Y := capY
-				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 重骰按鈕_X
-				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 重骰按鈕_Y
-				ToolTip("已設定關南賭博【重骰按鈕】座標: " . capX . ", " . capY)
-			}
-			else if (捕捉代號 = 2)
-			{
-				關南左上_X := capX
-				關南左上_Y := capY
-				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 視窗左上_X
-				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 視窗左上_Y
-				ToolTip("已設定關南賭博【賭博視窗左上角】座標: " . capX . ", " . capY)
-			}
-			else if (捕捉代號 = 3)
-			{
-				關南右下_X := capX
-				關南右下_Y := capY
-				iniWrite,% capX, sidtooldata.ini, 關南賭博定位, 視窗右下_X
-				iniWrite,% capY, sidtooldata.ini, 關南賭博定位, 視窗右下_Y
-				ToolTip("已設定關南賭博【賭博視窗右下角】座標: " . capX . ", " . capY)
-			}
-			gosub,讀取關南賭博定位
-		}
 		else if (捕捉類型 = "gemSwap")
 		{
 			if (捕捉代號 = 1)
@@ -2153,20 +2164,6 @@ iniread, 確認按鈕_X, sidtooldata.ini, 討價還價定位, 確認按鈕_X, 0
 iniread, 確認按鈕_Y, sidtooldata.ini, 討價還價定位, 確認按鈕_Y, 0
 iniread, 重骰按鈕_X, sidtooldata.ini, 討價還價定位, 重骰按鈕_X, 0
 iniread, 重骰按鈕_Y, sidtooldata.ini, 討價還價定位, 重骰按鈕_Y, 0
-return
-
-讀取關南賭博定位:
-iniread, 關南重骰_X, sidtooldata.ini, 關南賭博定位, 重骰按鈕_X, 0
-iniread, 關南重骰_Y, sidtooldata.ini, 關南賭博定位, 重骰按鈕_Y, 0
-iniread, 關南左上_X, sidtooldata.ini, 關南賭博定位, 視窗左上_X, 0
-iniread, 關南左上_Y, sidtooldata.ini, 關南賭博定位, 視窗左上_Y, 0
-iniread, 關南右下_X, sidtooldata.ini, 關南賭博定位, 視窗右下_X, 0
-iniread, 關南右下_Y, sidtooldata.ini, 關南賭博定位, 視窗右下_Y, 0
-iniread, 關南過濾文字, sidtooldata.ini, 關南賭博定位, 過濾文字, 重革腰帶|皮革腰帶
-if (關南過濾文字 = "ERROR" || 關南過濾文字 = "")
-{
-	關南過濾文字 := "重革腰帶|皮革腰帶"
-}
 return
 
 讀取交換寶石定位:
@@ -2259,11 +2256,17 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！")
 }
 
-NeutronSaveClearBagConfig(neutron, mode) {
+NeutronSaveClearBagConfig(neutron, mode, ignoredSlots:="__NOT_PASSED__") {
 	global
 	清包模式 := mode
 	IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
-	ToolTip("清包模式已儲存為: " . 清包模式)
+	if (ignoredSlots != "__NOT_PASSED__")
+	{
+		清包保留格 := ignoredSlots
+		gosub, 儲存清包保留格
+		gosub, 讀取清包保留格
+	}
+	ToolTip("清包設置已儲存！")
 }
 
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
@@ -2338,6 +2341,7 @@ NeutronGetSettings(neutron) {
 	json .= """clickMode"":""" . 連點模式 . ""","
 	json .= """clickSpeed"":""" . 滑鼠連點速度 . ""","
 	json .= """clearBagMode"":""" . 清包模式 . ""","
+	json .= """clearBagIgnoreSlots"":""" . 清包保留格 . ""","
 	json .= """hk_F1"":""" . 快捷鍵_F1 . ""","
 	json .= """hk_F2"":""" . 快捷鍵_F2 . ""","
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
@@ -2362,17 +2366,6 @@ NeutronGetSettings(neutron) {
 	json .= """haggleConfirm_Y"":""" . 確認按鈕_Y . ""","
 	json .= """haggleReroll_X"":""" . 重骰按鈕_X . ""","
 	json .= """haggleReroll_Y"":""" . 重骰按鈕_Y . ""","
-	json .= """gwennenReroll_X"":""" . 關南重骰_X . ""","
-	json .= """gwennenReroll_Y"":""" . 關南重骰_Y . ""","
-	json .= """gwennenLeft_X"":""" . 關南左上_X . ""","
-	json .= """gwennenLeft_Y"":""" . 關南左上_Y . ""","
-	json .= """gwennenRight_X"":""" . 關南右下_X . ""","
-	json .= """gwennenRight_Y"":""" . 關南右下_Y . ""","
-	gwFilterEsc := StrReplace(關南過濾文字, "\", "\\")
-	gwFilterEsc := StrReplace(gwFilterEsc, """", "\""")
-	gwFilterEsc := StrReplace(gwFilterEsc, "`r", "")
-	gwFilterEsc := StrReplace(gwFilterEsc, "`n", "")
-	json .= """gwennenFilter"":""" . gwFilterEsc . ""","
 	json .= """gem1_X"":""" . 寶石1_X . ""","
 	json .= """gem1_Y"":""" . 寶石1_Y . ""","
 	json .= """gem2_X"":""" . 寶石2_X . ""","
@@ -2480,12 +2473,6 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, h
 	ToolTip("自訂快捷鍵設置已儲存並生效！")
 }
 
-NeutronSaveGwennenFilter(neutron, filterText) {
-	global 關南過濾文字
-	關南過濾文字 := filterText
-	iniWrite, %filterText%, sidtooldata.ini, 關南賭博定位, 過濾文字
-}
-
 NeutronSaveGemSwapConfig(neutron, weaponSwap) {
 	global 寶石副手切換
 	寶石副手切換 := weaponSwap
@@ -2565,78 +2552,6 @@ else
 	MouseMove, %rCordXX%, %rCordYY%, 0
 	BlockInput, MouseMoveOff
 }
-return
-
-;[探險關南賭博(Gwennen Gamble) 快捷鍵]----------------------------------------------------------------------------------
-
-$3::
-if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
-{
-	Send, 3
-}
-else
-{
-	if (關南重骰_X = "" || 關南重骰_X = 0 || 關南重骰_Y = "" || 關南重骰_Y = 0 || 關南左上_X = "" || 關南左上_X = 0 || 關南左上_Y = "" || 關南左上_Y = 0 || 關南右下_X = "" || 關南右下_X = 0 || 關南右下_Y = "" || 關南右下_Y = 0)
-	{
-		ToolTip("尚未設定關南賭博座標（重骰按鈕、賭博視窗左上與右下）！請先在菜單設置中進行定位抓取。")
-		Send, 3
-		return
-	}
-	gosub, 關南開始賭博
-}
-return
-
-關南開始賭博:
-statusRoll := true
-MouseGetPos, origGwennenX, origGwennenY
-while (GetKeyState("3", "P") && statusRoll)
-{
-	if (!IsPoE1Active())
-		break
-	lastPositionFindX := ""
-	lastPositionFindY := ""
-	while (GetKeyState("3", "P") && statusRoll)
-	{
-		if (!IsPoE1Active())
-			break
-		PixelSearch, Px, Py, %關南左上_X%, %關南左上_Y%, %關南右下_X%, %關南右下_Y%, %gwennenPixelColor%, 3, Fast RGB
-		if (ErrorLevel)
-		{
-			break
-		}
-		else if (lastPositionFindX == Px && lastPositionFindY == Py)
-		{
-			ToolTip("偵測到物品未被收下，可能背包已滿或通貨不足，已停止賭博。")
-			statusRoll := false
-			break
-		}
-		else
-		{
-			lastPositionFindX := Px
-			lastPositionFindY := Py
-			targetX := Px + 30
-			targetY := Py + 30
-			SendInput, {Control down}
-			Sleep, 5
-			BlockInput, MouseMove
-			MouseClick, left, %targetX%, %targetY%
-			SendInput, {Control up}
-			BlockInput, MouseMoveOff
-			Sleep, 45
-		}
-	}
-
-	if (GetKeyState("3", "P") && statusRoll)
-	{
-		if (!IsPoE1Active())
-			break
-		BlockInput, MouseMove
-		MouseClick, left, %關南重骰_X%, %關南重骰_Y%
-		BlockInput, MouseMoveOff
-		Sleep, %ReGixSearchedDelay%
-	}
-}
-MouseMove, %origGwennenX%, %origGwennenY%, 0
 return
 
 ;[一鍵快速交換寶石(Gem Swap) 快捷鍵]----------------------------------------------------------------------------------

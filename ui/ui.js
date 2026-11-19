@@ -110,6 +110,10 @@ function syncDataFromAHK() {
             }
         });
 
+        if (data.clearBagIgnoreSlots !== undefined) {
+            loadClearBagIgnoreSlots(data.clearBagIgnoreSlots);
+        }
+
         var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_WinZ', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
@@ -130,16 +134,6 @@ function syncDataFromAHK() {
         // 同步探險討價還價定位點 (1: 確認按鈕, 2: 重骰按鈕)
         updateAnchorPoint('haggle', 1, data['haggleConfirm_X'], data['haggleConfirm_Y'], '');
         updateAnchorPoint('haggle', 2, data['haggleReroll_X'], data['haggleReroll_Y'], '');
-
-        // 同步探險關南賭博定位點 (1: 重骰, 2: 左上, 3: 右下) 與過濾文字
-        updateAnchorPoint('gwennen', 1, data['gwennenReroll_X'], data['gwennenReroll_Y'], '');
-        updateAnchorPoint('gwennen', 2, data['gwennenLeft_X'], data['gwennenLeft_Y'], '');
-        updateAnchorPoint('gwennen', 3, data['gwennenRight_X'], data['gwennenRight_Y'], '');
-
-        var elFilter = document.getElementById('gwennenFilter');
-        if (elFilter && data['gwennenFilter'] !== undefined) {
-            elFilter.value = data['gwennenFilter'];
-        }
 
         // 同步交換寶石定位點 (1: 裝備插槽, 2: 背包寶石) 與副手切換開關
         updateAnchorPoint('gemSwap', 1, data['gem1_X'], data['gem1_Y'], '');
@@ -383,12 +377,98 @@ function saveLoopConfig() {
     );
 }
 
-//儲存清包模式設定
+//儲存清包模式與保留格子設定
 function saveClearBagConfig() {
     if (typeof ahk === 'undefined') return;
-    ahk.NeutronSaveClearBagConfig(
-        document.getElementById('clearBagMode').value
-    );
+    var modeEl = document.getElementById('clearBagMode');
+    var mode = modeEl ? modeEl.value : '';
+    var ignoreSlots = getClearBagIgnoreSlots();
+    ahk.NeutronSaveClearBagConfig(mode, ignoreSlots);
+}
+
+// 點擊格子切換勾選
+function toggleBagSlot(slot, event) {
+    var cb = document.getElementById('bag_slot_' + slot);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    onBagSlotChange(slot, event);
+}
+
+// 格子狀態變更
+function onBagSlotChange(slot, event) {
+    if (event) {
+        if (event.stopPropagation) event.stopPropagation();
+        else event.cancelBubble = true;
+    }
+    var cb = document.getElementById('bag_slot_' + slot);
+    var isChecked = cb ? cb.checked : false;
+    setSlotCheckedUI(slot, isChecked);
+}
+
+function setSlotCheckedUI(slot, isChecked) {
+    var cb = document.getElementById('bag_slot_' + slot);
+    var box = document.getElementById('bag_slot_box_' + slot);
+    if (cb) cb.checked = isChecked;
+    if (box) {
+        var cls = box.className || '';
+        if (isChecked) {
+            if (cls.indexOf('checked') === -1) {
+                box.className = (cls + ' checked').trim();
+            }
+        } else {
+            box.className = cls.replace(/\bchecked\b/g, '').replace(/\s+/g, ' ').trim();
+        }
+    }
+}
+
+// 取得勾選(保留)的格子字串，以逗號分隔
+function getClearBagIgnoreSlots() {
+    var ignored = [];
+    for (var i = 1; i <= 60; i++) {
+        var el = document.getElementById('bag_slot_' + i);
+        if (el && el.checked) {
+            ignored.push(i);
+        }
+    }
+    return ignored.join(',');
+}
+
+// 載入勾選狀態
+function loadClearBagIgnoreSlots(str) {
+    var set = {};
+    if (str) {
+        var parts = String(str).split(',');
+        for (var i = 0; i < parts.length; i++) {
+            var num = parseInt(parts[i].trim(), 10);
+            if (!isNaN(num) && num >= 1 && num <= 60) {
+                set[num] = true;
+            }
+        }
+    }
+    for (var s = 1; s <= 60; s++) {
+        setSlotCheckedUI(s, !!set[s]);
+    }
+}
+
+// 預設快速選擇
+function clearBagSelectPreset(preset) {
+    for (var s = 1; s <= 60; s++) {
+        var el = document.getElementById('bag_slot_' + s);
+        var shouldCheck = false;
+        var col = Math.floor((s - 1) / 5) + 1; // 1 to 12
+        if (preset === 'all') {
+            shouldCheck = true;
+        } else if (preset === 'clear') {
+            shouldCheck = false;
+        } else if (preset === 'right1') {
+            shouldCheck = (col === 12);
+        } else if (preset === 'right2') {
+            shouldCheck = (col >= 11);
+        } else if (preset === 'invert') {
+            shouldCheck = el ? !el.checked : false;
+        }
+        setSlotCheckedUI(s, shouldCheck);
+    }
 }
 
 //儲存滑鼠連點設定
@@ -458,7 +538,7 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : ((type === 'gwennen') ? 'g' : 'gem')));
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : 'gem'));
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');
@@ -472,57 +552,6 @@ function updateAnchorPoint(type, id, x, y, color) {
     if (elY) elY.textContent = valY;
     if (elC) elC.textContent = valC;
     if (elBox) elBox.style.backgroundColor = formatHexColor(valC);
-}
-
-// 自動儲存關南過濾文字
-function autoSaveGwennenFilter() {
-    var el = document.getElementById('gwennenFilter');
-    if (!el || typeof ahk === 'undefined') return;
-    ahk.NeutronSaveGwennenFilter(el.value);
-}
-
-// 一鍵複製關南過濾文字至剪貼簿
-function copyGwennenFilter() {
-    var input = document.getElementById('gwennenFilter');
-    if (!input) return;
-    var text = input.value;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () {
-            showCopyFeedback();
-        }).catch(function () {
-            fallbackCopy(text);
-        });
-    } else {
-        fallbackCopy(text);
-    }
-}
-
-function fallbackCopy(text) {
-    var input = document.getElementById('gwennenFilter');
-    if (!input) return;
-    input.select();
-    input.setSelectionRange(0, 99999);
-    try {
-        document.execCommand('copy');
-        showCopyFeedback();
-    } catch (err) {
-        alert('複製失敗，請手動複製');
-    }
-}
-
-function showCopyFeedback() {
-    var btn = document.getElementById('btnCopyGwennenFilter');
-    if (btn) {
-        var origText = btn.innerHTML;
-        btn.innerHTML = '✅ 已複製！';
-        btn.classList.remove('btn-outline-info');
-        btn.classList.add('btn-success');
-        setTimeout(function () {
-            btn.innerHTML = origText;
-            btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-info');
-        }, 1500);
-    }
 }
 
 // 儲存寶石副手切換設定
@@ -564,6 +593,10 @@ function hideExitModal() {
         el.classList.remove('show');
         el.style.display = 'none';
     }
+}
+
+function renderBagGrid() {
+    // 靜態 HTML <table> 已存在，保留此函式確保相容性
 }
 
 //載入時同步資料

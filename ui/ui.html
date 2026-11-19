@@ -194,57 +194,6 @@
           </div>
         </div>
 
-        <!-- 探險關南賭博 (Gwennen Gamble) 快捷鍵與過濾字串 -->
-        <div class="card mb-3 shadow-sm border-info-subtle">
-          <div class="card-body py-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="card-title text-info mb-0">🎲 探險關南賭博 (Gwennen Gamble) 快捷鍵</h6>
-              <div class="d-flex align-items-center gap-1">
-                <span class="badge bg-danger text-white px-2 py-1">僅限 Path of Exile 1</span>
-                <span class="badge bg-warning text-dark px-2 py-1">需啟用 Caps Lock</span>
-              </div>
-            </div>
-            <div class="alert alert-warning py-2 px-3 small mb-3" role="alert">
-              ⚠️ <strong>重要提醒：</strong>本功能<strong>僅在 Path of Exile (流亡黯道 1 代) 視窗中作用</strong>（在 Path of Exile 2 或其他程式中不觸發），且必須<strong>啟用 Caps Lock (大寫鎖定鍵)</strong> 才會有作用！當 Caps Lock 關閉或處於其他視窗時，按鍵 <span
-                class="badge bg-primary text-white px-2 py-1">3</span> 保持正常遊戲技能/藥劑與打字輸入功能。
-            </div>
-            <div class="row g-2 small mb-3">
-              <div class="col-12">
-                <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle h-100">
-                  <div class="d-flex align-items-center mb-1">
-                    <span class="badge bg-primary text-white fs-6 me-2">3</span>
-                    <strong class="text-light">長按自動賭博高亮裝備與重骰</strong>
-                  </div>
-                  <div class="text-secondary">
-                    在關南賭博商店介面<strong>長按 <span
-                        class="badge bg-primary text-white px-2 py-1">3</span></strong>，腳本自動在賭博視窗內搜尋符合過濾條件的高亮物品（色碼 <code
-                      class="text-warning">0xE7B477</code>）並 Ctrl+左鍵點擊快速購買；當無高亮裝備時自動點擊重骰按鈕刷新。放開 <span
-                      class="badge bg-primary text-white px-2 py-1">3</span> 立即停止。
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- 過濾文字設定與複製 -->
-            <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle">
-              <label class="form-label mb-1 text-light small fw-bold">🔍 關南賭博過濾字串（編輯後自動即時儲存）：</label>
-              <div class="input-group input-group-sm">
-                <input type="text" class="form-control bg-dark text-info border-secondary" id="gwennenFilter"
-                  placeholder="例如：重革腰帶|皮革腰帶" style="user-select: text;" oninput="autoSaveGwennenFilter()"
-                  onchange="autoSaveGwennenFilter()">
-                <button class="btn btn-outline-info" type="button" id="btnCopyGwennenFilter"
-                  onclick="copyGwennenFilter()">📋 複製過濾文字</button>
-              </div>
-              <div class="text-muted small mt-1">
-                💡 點擊「複製過濾文字」後，在遊戲中開啟關南商店，於搜尋欄按 Ctrl+V 貼上即可高亮目標基底。
-              </div>
-            </div>
-            <div class="mt-2 text-muted small">
-              💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')"
-                class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【重骰按鈕】、【賭博視窗左上角】與【右下角】座標。
-            </div>
-          </div>
-        </div>
-
         <!-- 一鍵快速交換寶石 (Gem Swap) 快捷鍵 -->
         <div class="card mb-3 shadow-sm border-primary-subtle">
           <div class="card-body py-3">
@@ -443,59 +392,6 @@
           </div>
         </div>
 
-        <!-- 探險關南賭博按鈕與視窗座標定位 -->
-        <div class="card mb-3 shadow-sm">
-          <div class="card-body py-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="card-title text-light mb-0">探險關南賭博座標定位</h6>
-              <span class="badge bg-danger text-white px-2 py-1">僅限 Path of Exile 1</span>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-dark table-hover table-sm align-middle mb-0 text-nowrap small">
-                <thead>
-                  <tr class="text-secondary">
-                    <th style="width: 50px;">代號</th>
-                    <th>說明</th>
-                    <th style="width: 80px;">X 座標</th>
-                    <th style="width: 80px;">Y 座標</th>
-                    <th style="width: 140px;">顏色色碼 / 預覽</th>
-                    <th style="width: 80px;" class="text-end">操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="badge bg-secondary">1</span></td>
-                    <td>關南【重骰按鈕】中心點</td>
-                    <td><code id="g1_x" class="text-info">-</code></td>
-                    <td><code id="g1_y" class="text-info">-</code></td>
-                    <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
-                        onclick="captureAnchorPoint('gwennen', 1)">📍 抓取</button></td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge bg-secondary">2</span></td>
-                    <td>賭博視窗【左上角】座標點</td>
-                    <td><code id="g2_x" class="text-info">-</code></td>
-                    <td><code id="g2_y" class="text-info">-</code></td>
-                    <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
-                        onclick="captureAnchorPoint('gwennen', 2)">📍 抓取</button></td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge bg-secondary">3</span></td>
-                    <td>賭博視窗【右下角】座標點</td>
-                    <td><code id="g3_x" class="text-info">-</code></td>
-                    <td><code id="g3_y" class="text-info">-</code></td>
-                    <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
-                        onclick="captureAnchorPoint('gwennen', 3)">📍 抓取</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
         <!-- 寶石交換座標定位 -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
@@ -558,6 +454,100 @@
                   <option value="掃描快搜">掃描快搜清包</option>
                 </select>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+              <h6 class="card-title text-light mb-0">背包保留格子設置 (12 × 5 共 60 格)</h6>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearBagSelectPreset('clear')">全部清空</button>
+                <button type="button" class="btn btn-outline-warning btn-sm" onclick="clearBagSelectPreset('all')">全選(都不清)</button>
+                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right1')">保留最右 1 行</button>
+                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right2')">保留最右 2 行</button>
+                <button type="button" class="btn btn-outline-light btn-sm" onclick="clearBagSelectPreset('invert')">反向選取</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveClearBagConfig()">儲存設定</button>
+              </div>
+            </div>
+            <div class="text-secondary small mb-3">
+              說明：下方矩陣對應遊戲背包 12 欄 × 5 列（左上角為第 1 格，右下角為第 60 格）。
+              <span class="text-warning fw-bold">勾選 = 保留（不清）</span>，未勾選 = 清包（丟倉）。選擇與勾選完畢後請點擊「儲存設定」。
+            </div>
+            <div class="bag-grid-wrapper" id="bagGrid">
+              <table class="bag-grid-table"><tbody>
+                <tr>
+                  <td class="bag-slot" id="bag_slot_box_1" onclick="toggleBagSlot(1, event)"><span class="bag-slot-num">1</span><input type="checkbox" id="bag_slot_1" onchange="onBagSlotChange(1, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_6" onclick="toggleBagSlot(6, event)"><span class="bag-slot-num">6</span><input type="checkbox" id="bag_slot_6" onchange="onBagSlotChange(6, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_11" onclick="toggleBagSlot(11, event)"><span class="bag-slot-num">11</span><input type="checkbox" id="bag_slot_11" onchange="onBagSlotChange(11, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_16" onclick="toggleBagSlot(16, event)"><span class="bag-slot-num">16</span><input type="checkbox" id="bag_slot_16" onchange="onBagSlotChange(16, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_21" onclick="toggleBagSlot(21, event)"><span class="bag-slot-num">21</span><input type="checkbox" id="bag_slot_21" onchange="onBagSlotChange(21, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_26" onclick="toggleBagSlot(26, event)"><span class="bag-slot-num">26</span><input type="checkbox" id="bag_slot_26" onchange="onBagSlotChange(26, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_31" onclick="toggleBagSlot(31, event)"><span class="bag-slot-num">31</span><input type="checkbox" id="bag_slot_31" onchange="onBagSlotChange(31, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_36" onclick="toggleBagSlot(36, event)"><span class="bag-slot-num">36</span><input type="checkbox" id="bag_slot_36" onchange="onBagSlotChange(36, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_41" onclick="toggleBagSlot(41, event)"><span class="bag-slot-num">41</span><input type="checkbox" id="bag_slot_41" onchange="onBagSlotChange(41, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_46" onclick="toggleBagSlot(46, event)"><span class="bag-slot-num">46</span><input type="checkbox" id="bag_slot_46" onchange="onBagSlotChange(46, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_51" onclick="toggleBagSlot(51, event)"><span class="bag-slot-num">51</span><input type="checkbox" id="bag_slot_51" onchange="onBagSlotChange(51, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_56" onclick="toggleBagSlot(56, event)"><span class="bag-slot-num">56</span><input type="checkbox" id="bag_slot_56" onchange="onBagSlotChange(56, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                </tr>
+                <tr>
+                  <td class="bag-slot" id="bag_slot_box_2" onclick="toggleBagSlot(2, event)"><span class="bag-slot-num">2</span><input type="checkbox" id="bag_slot_2" onchange="onBagSlotChange(2, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_7" onclick="toggleBagSlot(7, event)"><span class="bag-slot-num">7</span><input type="checkbox" id="bag_slot_7" onchange="onBagSlotChange(7, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_12" onclick="toggleBagSlot(12, event)"><span class="bag-slot-num">12</span><input type="checkbox" id="bag_slot_12" onchange="onBagSlotChange(12, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_17" onclick="toggleBagSlot(17, event)"><span class="bag-slot-num">17</span><input type="checkbox" id="bag_slot_17" onchange="onBagSlotChange(17, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_22" onclick="toggleBagSlot(22, event)"><span class="bag-slot-num">22</span><input type="checkbox" id="bag_slot_22" onchange="onBagSlotChange(22, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_27" onclick="toggleBagSlot(27, event)"><span class="bag-slot-num">27</span><input type="checkbox" id="bag_slot_27" onchange="onBagSlotChange(27, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_32" onclick="toggleBagSlot(32, event)"><span class="bag-slot-num">32</span><input type="checkbox" id="bag_slot_32" onchange="onBagSlotChange(32, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_37" onclick="toggleBagSlot(37, event)"><span class="bag-slot-num">37</span><input type="checkbox" id="bag_slot_37" onchange="onBagSlotChange(37, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_42" onclick="toggleBagSlot(42, event)"><span class="bag-slot-num">42</span><input type="checkbox" id="bag_slot_42" onchange="onBagSlotChange(42, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_47" onclick="toggleBagSlot(47, event)"><span class="bag-slot-num">47</span><input type="checkbox" id="bag_slot_47" onchange="onBagSlotChange(47, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_52" onclick="toggleBagSlot(52, event)"><span class="bag-slot-num">52</span><input type="checkbox" id="bag_slot_52" onchange="onBagSlotChange(52, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_57" onclick="toggleBagSlot(57, event)"><span class="bag-slot-num">57</span><input type="checkbox" id="bag_slot_57" onchange="onBagSlotChange(57, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                </tr>
+                <tr>
+                  <td class="bag-slot" id="bag_slot_box_3" onclick="toggleBagSlot(3, event)"><span class="bag-slot-num">3</span><input type="checkbox" id="bag_slot_3" onchange="onBagSlotChange(3, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_8" onclick="toggleBagSlot(8, event)"><span class="bag-slot-num">8</span><input type="checkbox" id="bag_slot_8" onchange="onBagSlotChange(8, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_13" onclick="toggleBagSlot(13, event)"><span class="bag-slot-num">13</span><input type="checkbox" id="bag_slot_13" onchange="onBagSlotChange(13, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_18" onclick="toggleBagSlot(18, event)"><span class="bag-slot-num">18</span><input type="checkbox" id="bag_slot_18" onchange="onBagSlotChange(18, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_23" onclick="toggleBagSlot(23, event)"><span class="bag-slot-num">23</span><input type="checkbox" id="bag_slot_23" onchange="onBagSlotChange(23, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_28" onclick="toggleBagSlot(28, event)"><span class="bag-slot-num">28</span><input type="checkbox" id="bag_slot_28" onchange="onBagSlotChange(28, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_33" onclick="toggleBagSlot(33, event)"><span class="bag-slot-num">33</span><input type="checkbox" id="bag_slot_33" onchange="onBagSlotChange(33, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_38" onclick="toggleBagSlot(38, event)"><span class="bag-slot-num">38</span><input type="checkbox" id="bag_slot_38" onchange="onBagSlotChange(38, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_43" onclick="toggleBagSlot(43, event)"><span class="bag-slot-num">43</span><input type="checkbox" id="bag_slot_43" onchange="onBagSlotChange(43, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_48" onclick="toggleBagSlot(48, event)"><span class="bag-slot-num">48</span><input type="checkbox" id="bag_slot_48" onchange="onBagSlotChange(48, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_53" onclick="toggleBagSlot(53, event)"><span class="bag-slot-num">53</span><input type="checkbox" id="bag_slot_53" onchange="onBagSlotChange(53, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_58" onclick="toggleBagSlot(58, event)"><span class="bag-slot-num">58</span><input type="checkbox" id="bag_slot_58" onchange="onBagSlotChange(58, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                </tr>
+                <tr>
+                  <td class="bag-slot" id="bag_slot_box_4" onclick="toggleBagSlot(4, event)"><span class="bag-slot-num">4</span><input type="checkbox" id="bag_slot_4" onchange="onBagSlotChange(4, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_9" onclick="toggleBagSlot(9, event)"><span class="bag-slot-num">9</span><input type="checkbox" id="bag_slot_9" onchange="onBagSlotChange(9, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_14" onclick="toggleBagSlot(14, event)"><span class="bag-slot-num">14</span><input type="checkbox" id="bag_slot_14" onchange="onBagSlotChange(14, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_19" onclick="toggleBagSlot(19, event)"><span class="bag-slot-num">19</span><input type="checkbox" id="bag_slot_19" onchange="onBagSlotChange(19, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_24" onclick="toggleBagSlot(24, event)"><span class="bag-slot-num">24</span><input type="checkbox" id="bag_slot_24" onchange="onBagSlotChange(24, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_29" onclick="toggleBagSlot(29, event)"><span class="bag-slot-num">29</span><input type="checkbox" id="bag_slot_29" onchange="onBagSlotChange(29, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_34" onclick="toggleBagSlot(34, event)"><span class="bag-slot-num">34</span><input type="checkbox" id="bag_slot_34" onchange="onBagSlotChange(34, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_39" onclick="toggleBagSlot(39, event)"><span class="bag-slot-num">39</span><input type="checkbox" id="bag_slot_39" onchange="onBagSlotChange(39, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_44" onclick="toggleBagSlot(44, event)"><span class="bag-slot-num">44</span><input type="checkbox" id="bag_slot_44" onchange="onBagSlotChange(44, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_49" onclick="toggleBagSlot(49, event)"><span class="bag-slot-num">49</span><input type="checkbox" id="bag_slot_49" onchange="onBagSlotChange(49, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_54" onclick="toggleBagSlot(54, event)"><span class="bag-slot-num">54</span><input type="checkbox" id="bag_slot_54" onchange="onBagSlotChange(54, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_59" onclick="toggleBagSlot(59, event)"><span class="bag-slot-num">59</span><input type="checkbox" id="bag_slot_59" onchange="onBagSlotChange(59, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                </tr>
+                <tr>
+                  <td class="bag-slot" id="bag_slot_box_5" onclick="toggleBagSlot(5, event)"><span class="bag-slot-num">5</span><input type="checkbox" id="bag_slot_5" onchange="onBagSlotChange(5, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_10" onclick="toggleBagSlot(10, event)"><span class="bag-slot-num">10</span><input type="checkbox" id="bag_slot_10" onchange="onBagSlotChange(10, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_15" onclick="toggleBagSlot(15, event)"><span class="bag-slot-num">15</span><input type="checkbox" id="bag_slot_15" onchange="onBagSlotChange(15, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_20" onclick="toggleBagSlot(20, event)"><span class="bag-slot-num">20</span><input type="checkbox" id="bag_slot_20" onchange="onBagSlotChange(20, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_25" onclick="toggleBagSlot(25, event)"><span class="bag-slot-num">25</span><input type="checkbox" id="bag_slot_25" onchange="onBagSlotChange(25, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_30" onclick="toggleBagSlot(30, event)"><span class="bag-slot-num">30</span><input type="checkbox" id="bag_slot_30" onchange="onBagSlotChange(30, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_35" onclick="toggleBagSlot(35, event)"><span class="bag-slot-num">35</span><input type="checkbox" id="bag_slot_35" onchange="onBagSlotChange(35, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_40" onclick="toggleBagSlot(40, event)"><span class="bag-slot-num">40</span><input type="checkbox" id="bag_slot_40" onchange="onBagSlotChange(40, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_45" onclick="toggleBagSlot(45, event)"><span class="bag-slot-num">45</span><input type="checkbox" id="bag_slot_45" onchange="onBagSlotChange(45, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_50" onclick="toggleBagSlot(50, event)"><span class="bag-slot-num">50</span><input type="checkbox" id="bag_slot_50" onchange="onBagSlotChange(50, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_55" onclick="toggleBagSlot(55, event)"><span class="bag-slot-num">55</span><input type="checkbox" id="bag_slot_55" onchange="onBagSlotChange(55, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                  <td class="bag-slot" id="bag_slot_box_60" onclick="toggleBagSlot(60, event)"><span class="bag-slot-num">60</span><input type="checkbox" id="bag_slot_60" onchange="onBagSlotChange(60, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
+                </tr>
+              </tbody></table>
             </div>
           </div>
         </div>
