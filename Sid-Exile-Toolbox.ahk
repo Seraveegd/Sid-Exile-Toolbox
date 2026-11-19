@@ -1911,10 +1911,12 @@ return
 	ToolTip, 開始掃描背包顏色..., 0, 0, 1
 	loop % 掃描水平數量
 	{
-		PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
+		colIdx := A_Index
+		PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 		loop % 掃描垂直數量
 		{
-			PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
+			rowIdx := A_Index
+			PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 			PixelGetColor, pcol, % PosX, % PosY, Fast RGB
 			掃描顏色Array.Push(pcol)
 			迴圈狀態 := 迴圈狀態 + 1
@@ -1935,7 +1937,7 @@ send {ctrl down}
 loop % 掃描水平數量
 {
 colIdx := A_Index
-PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((colIdx-1)*2))
+PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	if (InStr(清包模式, "按壓"))
 	{
 		cleanF3Key := CleanKeyName(快捷鍵_F3)
@@ -1963,7 +1965,7 @@ rowIdx := A_Index
 slotIdx := (colIdx - 1) * 掃描垂直數量 + rowIdx
 if (清包保留Array[slotIdx])
 	continue
-PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((rowIdx-1)*2))
+PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 MouseClick,, % PosX, % PosY,1,0
 	if (InStr(清包模式, "按壓"))
 	{
@@ -2015,9 +2017,11 @@ global 存倉掃描顏色Array := []
 	Break
 	Return
 	}
-	PosX := (掃描開始左上_X+(背包每格寬/2)) + ((背包每格寬/2)*((A_Index-1)*2))
+	colIdx := A_Index
+	PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	loop % 掃描垂直數量
 		{
+		rowIdx := A_Index
 		if (GetKeyState("~","P"))
 		{
 		send {ctrl up}
@@ -2028,7 +2032,7 @@ global 存倉掃描顏色Array := []
 		Break
 		Return
 		}
-		PosY := (掃描開始左上_Y+(背包每格高/2)) + ((背包每格高/2)*((A_Index-1)*2))
+		PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 		ToolTip, % "掃描: " PosX "/" PosY "，長按[~]停止。", 0,0,1
 		PixelGetColor, pcol2, % PosX, % PosY, Fast RGB
 		存倉掃描顏色Array.Push(pcol2)
@@ -2175,14 +2179,16 @@ iniread, 寶石副手切換, sidtooldata.ini, 交換寶石定位, 副手切換, 
 return
 
 背包運算作業:
-掃描開始左上_X := % 背包左上_X
-掃描開始左上_Y := % 背包左上_Y
-掃描開始右下_X := % 背包右下_X
-掃描開始右下_Y := % 背包右下_Y
+掃描開始左上_X := 背包左上_X
+掃描開始左上_Y := 背包左上_Y
+掃描開始右下_X := 背包右下_X
+掃描開始右下_Y := 背包右下_Y
 掃描水平數量 := 12
 掃描垂直數量 := 5
-背包每格寬 := floor((掃描開始右下_X - 掃描開始左上_X) / 掃描水平數量)
-背包每格高 := floor((掃描開始右下_Y - 掃描開始左上_Y) / 掃描垂直數量)
+背包步長_X := (掃描水平數量 > 1) ? (掃描開始右下_X - 掃描開始左上_X) / (掃描水平數量 - 1) : 0
+背包步長_Y := (掃描垂直數量 > 1) ? (掃描開始右下_Y - 掃描開始左上_Y) / (掃描垂直數量 - 1) : 0
+背包每格寬 := 背包步長_X
+背包每格高 := 背包步長_Y
 return
 
 ;[Neutron 介面溝通 bridge 函數]--------------------------------------------------------------------------------------
