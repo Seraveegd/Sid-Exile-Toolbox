@@ -535,7 +535,7 @@ GetDriveTailSerial()
 	~*Q::
 		if Toolbutton = 0
 		{
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
+			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
 			{
 				if 使用技能時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -548,7 +548,7 @@ GetDriveTailSerial()
 				if 使用技能時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 技1 = "Q" and 技能連段功能 = "開啟")
+			if (技能連段功能 = "開啟" and 技1 = "Q")
 			{
 				gosub,技能連段
 			}
@@ -574,7 +574,7 @@ GetDriveTailSerial()
 	~*W::
 		if Toolbutton = 0
 		{
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
+			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
 			{
 				if 使用技能時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -587,7 +587,7 @@ GetDriveTailSerial()
 				if 使用技能時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 技1 = "W" and 技能連段功能 = "開啟")
+			if (技能連段功能 = "開啟" and 技1 = "W")
 			{
 				gosub,技能連段
 			}
@@ -613,7 +613,7 @@ GetDriveTailSerial()
 	~*E::
 		if Toolbutton = 0
 		{
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
+			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
 			{
 				if 使用技能時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -626,7 +626,7 @@ GetDriveTailSerial()
 				if 使用技能時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 技1 = "E" and 技能連段功能 = "開啟")
+			if (技能連段功能 = "開啟" and 技1 = "E")
 			{
 				gosub,技能連段
 			}
@@ -652,7 +652,7 @@ GetDriveTailSerial()
 	~*R::
 		if Toolbutton = 0
 		{
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
+			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
 			{
 				if 使用技能時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -665,7 +665,7 @@ GetDriveTailSerial()
 				if 使用技能時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 技1 = "R" and 技能連段功能 = "開啟")
+			if (技能連段功能 = "開啟" and 技1 = "R")
 			{
 				gosub,技能連段
 			}
@@ -691,7 +691,7 @@ GetDriveTailSerial()
 	~*T::
 		if Toolbutton = 0
 		{
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
+			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
 			{
 				if 使用技能時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -704,7 +704,7 @@ GetDriveTailSerial()
 				if 使用技能時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 技1 = "T" and 技能連段功能 = "開啟")
+			if (技能連段功能 = "開啟" and 技1 = "T")
 			{
 				gosub,技能連段
 			}
@@ -730,20 +730,32 @@ GetDriveTailSerial()
 	;[技能連段指令]-------------------------------------------------------------------------------------------------
 
 	技能連段:
-		if 技1 in Q,W,E,R,T
+		if (isComboRunning)
+			return
+		isComboRunning := true
+
+		k1 := Format("{:U}", Trim(技1))
+		k2 := Format("{:U}", Trim(技2))
+		k3 := Format("{:U}", Trim(技3))
+		d1 := (技1延遲 > 0) ? 技1延遲 : 100
+		d2 := (技2延遲 > 0) ? 技2延遲 : 100
+
+		if k1 in Q,W,E,R,T
 		{
-			if 技2 in Q,W,E,R,T
+			if k2 in Q,W,E,R,T
 			{
-				sleep %技1延遲%
-				Send {%技2%}
+				sleep %d1%
+				Send {%k2%}
 			}
-			if 技3 in Q,W,E,R,T
+			if k3 in Q,W,E,R,T
 			{
-				sleep %技2延遲%
-				Send {%技3%}
+				sleep %d2%
+				Send {%k3%}
 			}
-			sleep 100
+			sleep 50
 		}
+
+		isComboRunning := false
 	return
 
 	儲存並讀取技能連段數據:
@@ -1119,42 +1131,25 @@ GetDriveTailSerial()
 	HK_Space_Label:
 		if Toolbutton = 0
 		{
+			dialogState := IsPoEDialogActive(20)
+			if (dialogState > 0)
+			{
+				Toolbutton := 1
+				ToolTip("偵測到對話框(" . dialogState . ")，暫停 Space 喝水，切換為文字模式")
+				return
+			}
 			ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。 ")
-			if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
-			{
-				PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%, Fast RGB
-				if (dialogCheck1 = %顏色5_C%)
-				{
-					Toolbutton:= 1
-					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
-					SetTimer,偵測對話框1,off
-					SetTimer,偵測對話框2,off
-					return
-				}
-			}
-			if (顏色6_X != "error" && 顏色6_Y != "error" && 顏色6_C != "error")
-			{
-				PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%, Fast RGB
-				if (dialogCheck2 = %顏色6_C%)
-				{
-					Toolbutton:= 1
-					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
-					SetTimer,偵測對話框1,off
-					SetTimer,偵測對話框2,off
-					return
-				}
-			}
 			if 一鍵喝水時觸發的藥劑 = error
 			{
 				msgbox,16,錯誤,尚未設定(Space)一鍵喝水所需藥劑! (``) => 藥劑觸發設置。
 				OpenUISection("flask")
 				return
 			}
-			else if	(Autodrinkbutton = "0" or 藥劑觸發模式 = "無")
+			else if (藥劑觸發模式 = "無")
 			{
 				send %一鍵喝水時觸發的藥劑%
 			}
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "讀秒循環喝水")
+			if (藥劑觸發模式 = "讀秒循環喝水")
 			{
 				if 一鍵喝水時觸發的藥劑 contains 1
 				{
@@ -1188,7 +1183,7 @@ GetDriveTailSerial()
 				}
 				return
 			}
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "純藥劑防呆")
+			if (藥劑觸發模式 = "純藥劑防呆")
 			{
 				if 一鍵喝水時觸發的藥劑 contains 1
 					gosub,使用藥劑1
@@ -1201,7 +1196,7 @@ GetDriveTailSerial()
 				if 一鍵喝水時觸發的藥劑 contains 5
 					gosub,使用藥劑5
 			}
-			if (Autodrinkbutton = "1" and 藥劑觸發模式 = "使用技能時喝水")
+			if (藥劑觸發模式 = "使用技能時喝水")
 			{
 				防呆藥水鎖1 = 無
 				防呆藥水鎖2 = 無
@@ -1253,80 +1248,40 @@ GetDriveTailSerial()
 	;[Enter偵測對話框區(熱鍵)]------------------------------------------------------------------------------------------
 
 	~enter::
-		if (顏色5_X = "error" or 顏色5_Y = "error" or 顏色6_X = "error" or 顏色6_Y = "error")
+		if (顏色5_X = "error" or 顏色5_Y = "error" or 顏色6_X = "error" or 顏色6_Y = "error" or 顏色5_X = "" or 顏色5_Y = "" or 顏色6_X = "" or 顏色6_Y = "")
 		{
 			if Enter除錯提醒次數 = 0
 			{
-				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕!非常重要，不然打字會瞎雞巴亂按。`r若你第一次看到此視窗，按下確認後將跳轉教學圖片網址。`r此彈跳網頁只會顯示一次，請勿在未設置成功前關閉教學圖片。`r確定後，請依圖片，將滑鼠指定座標，再按[Win + C]，輸入代號(5)或(6)!
+				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕！非常重要，不然打字會誤觸喝水與技能熱鍵。`r若您第一次使用，請按下確認查看教學圖片。`r確定後，請開啟設定面板 (Win+Z 或 ~鍵)，至「座標定位」點選「抓取」，依指示按 F7 設定對話框(1)與(2)！
 				run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
 				Enter除錯提醒次數:= 1
 			}
+			return
+		}
+
+		; 短暫延遲等待遊戲 UI 渲染完成 (約 90ms)
+		Sleep, 90
+
+		dialogState := IsPoEDialogActive(20)
+		if (dialogState > 0)
+		{
+			Toolbutton := 1
+			ToolTip("偵測到對話框(" . dialogState . ")，已切換為文字模式")
+			gosub,暫停讀秒循環喝水_Label
 		}
 		else
 		{
-(Toolbutton = 0 ? (Toolbutton:= 1,ToolTip("已切換為文字模式")) : (Toolbutton:= 0,ToolTip("已切換為遊戲模式")))
-if Toolbutton = 0
-{
-偵測對話框計數:= 0
-settimer,偵測對話框1,25
-settimer,偵測對話框2,25
-}
-if Toolbutton = 1
-		{
-		gosub,暫停讀秒循環喝水_Label
+			Toolbutton := 0
+			ToolTip("對話框已關閉，已切換為遊戲模式")
 		}
-}
-return
-
-偵測對話框1:
-偵測對話框計數++
-if (偵測對話框計數 >= 20)
-{
-	settimer,偵測對話框1,off
-	settimer,偵測對話框2,off
-	偵測對話框計數:= 0
 	return
-}
-if (顏色5_X = "error" or 顏色5_Y = "error")
-{
-settimer,偵測對話框1,off
-settimer,偵測對話框2,off
-msgbox,16,錯誤,提醒，你是否忘記設置偵測對話框了呢?`r首次使用enter可彈跳教學圖片。`r抓取對話框非常重要，不然打字會瞎雞巴亂按熱鍵。
-}
-else
-{
-	PixelGetColor,對話框1, %顏色5_X%, %顏色5_Y%, Fast RGB
-	if 對話框1 = %顏色5_C%
-	{
-	Toolbutton = 1
-	ToolTip("偵測到對話框1，變更為文字模式")
-	gosub,暫停讀秒循環喝水_Label
-	settimer,偵測對話框1,off
-	settimer,偵測對話框2,off
-	}
-}
-return
 
-偵測對話框2:
-if (顏色6_X = "error" or 顏色6_Y = "error")
-{
-settimer,偵測對話框1,off
-settimer,偵測對話框2,off
-msgbox,16,錯誤,提醒，你是否忘記設置偵測對話框了呢?`r首次使用enter可彈跳教學圖片。`r抓取對話框非常重要，不然打字會瞎雞巴亂按熱鍵。
-}
-else
-{
-	PixelGetColor,對話框2, %顏色6_X%, %顏色6_Y%, Fast RGB
-	if 對話框2 = %顏色6_C%
-	{
-	Toolbutton = 1
-	ToolTip("偵測到對話框2，變更為文字模式")
-	gosub,暫停讀秒循環喝水_Label
-	settimer,偵測對話框1,off
-	settimer,偵測對話框2,off
-	}
-}
-return
+	偵測對話框1:
+	return
+
+	偵測對話框2:
+	return
+
 
 ;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
 
@@ -2078,7 +2033,7 @@ F7背包定位:
 	if (捕捉模式 = 1)
 	{
 		MouseGetPos, capX, capY
-		PixelGetColor, capC, %capX%, %capY%
+		PixelGetColor, capC, %capX%, %capY%, RGB
 		ToolTip("")
 		if (捕捉類型 = "color")
 		{
@@ -2488,6 +2443,39 @@ NeutronSaveGemSwapConfig(neutron, weaponSwap) {
 IsPoE1Active()
 {
 	return WinActive("Path of Exile") && !WinActive("Path of Exile 2")
+}
+
+CheckDialogColorMatch(targetX, targetY, savedColor, tolerance := 20)
+{
+	if (targetX = "" || targetX = "error" || targetX = "ERROR" || targetY = "" || targetY = "error" || targetY = "ERROR" || savedColor = "" || savedColor = "error" || savedColor = "ERROR")
+		return false
+
+	PixelGetColor, curColor, %targetX%, %targetY%, Fast RGB
+	
+	; 解析 RGB 各分量 (0xRRGGBB)
+	rCur := (curColor >> 16) & 0xFF
+	gCur := (curColor >> 8) & 0xFF
+	bCur := curColor & 0xFF
+
+	rSaved := (savedColor >> 16) & 0xFF
+	gSaved := (savedColor >> 8) & 0xFF
+	bSaved := savedColor & 0xFF
+
+	; 各色版容差比對
+	if (Abs(rCur - rSaved) <= tolerance && Abs(gCur - gSaved) <= tolerance && Abs(bCur - bSaved) <= tolerance)
+		return true
+
+	return false
+}
+
+IsPoEDialogActive(tolerance := 20)
+{
+	global 顏色5_X, 顏色5_Y, 顏色5_C, 顏色6_X, 顏色6_Y, 顏色6_C
+	if CheckDialogColorMatch(顏色5_X, 顏色5_Y, 顏色5_C, tolerance)
+		return 1
+	if CheckDialogColorMatch(顏色6_X, 顏色6_Y, 顏色6_C, tolerance)
+		return 2
+	return 0
 }
 
 ;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
