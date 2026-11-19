@@ -1,0 +1,6 @@
+{
+    "files.encoding": "utf8bom",
+    "files.associations": {
+        "*.ahk": "ahk"
+    }
+}

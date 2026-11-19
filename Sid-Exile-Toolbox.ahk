@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -26,19 +26,19 @@ if A_IsCompiled
 
 #Include Neutron.ahk
 
-global neutron := new NeutronWindow()
+global neutron:= new NeutronWindow()
 
 ; 為解決編譯後若檔案路徑包含中文導致 res:// 協定無法載入網頁的問題，
 ; 改為直接載入由 FileInstall 解壓縮至本地目錄的 ui\ui.html
 NeutronLoadLocal(neutron, "ui\ui.html")
 
 NeutronLoadLocal(neutronInstance, fileName) {
-	url := A_ScriptDir "/" fileName
+	url:= A_ScriptDir "/" fileName
 	neutronInstance.wb.Navigate(url)
 	while neutronInstance.wb.readyState < 3
 		Sleep, 50
-	neutronInstance.wnd.neutron := neutronInstance
-	neutronInstance.wnd.ahk := new neutronInstance.Dispatch(neutronInstance)
+	neutronInstance.wnd.neutron:= neutronInstance
+	neutronInstance.wnd.ahk:= new neutronInstance.Dispatch(neutronInstance)
 	while neutronInstance.wb.readyState < 4
 		Sleep, 50
 }
@@ -60,7 +60,7 @@ gosub,讀取倉庫頁數據
 gosub,讀取背包初始顏色
 gosub,讀取回復模式
 gosub,讀取自動回復內容
-gosub,讀取快速組隊提醒功能
+gosub,讀取快速組隊提醒功能_Label
 gosub,讀取連點模式
 gosub,讀取滑鼠連點速度
 gosub,座標顏色讀取
@@ -89,18 +89,18 @@ StopUser = 0
 防呆藥水鎖4 = 無
 防呆藥水鎖5 = 無
 ;=探險討價還價參數=
-vMouseMoveDelaySpeedMin := 35
-vMouseMoveDelaySpeedMax := 45
-vClickDelaySpeed := 40
-vHagglingScrollSpeedMin := 20
-vHagglingScrollSpeedMax := 30
-vFirstMin := 14
-vFirstMax := 16
-vLastMin := 5
-vLastMax := 8
+vMouseMoveDelaySpeedMin:= 35
+vMouseMoveDelaySpeedMax:= 45
+vClickDelaySpeed:= 40
+vHagglingScrollSpeedMin:= 20
+vHagglingScrollSpeedMax:= 30
+vFirstMin:= 14
+vFirstMax:= 16
+vLastMin:= 5
+vLastMax:= 8
 ;=寶石交換參數=
-vGemDelay := 60
-寶石副手切換 := 0
+vGemDelay:= 60
+寶石副手切換:= 0
 ;------------------------------------------------------------------------------------------------------
 if 連點模式 = ERROR
 {
@@ -218,44 +218,44 @@ gosub,起始盒子
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
 
-Menu, MyMenu, Add, ★工具介紹★, 菜單_工具介紹
+Menu, MyMenu, Add, ★工具介紹★, Menu_Intro
 Menu, MyMenu, Add
-Menu, MyMenu, Add, 藥劑觸發設置, 菜單_藥劑觸發
-Menu, MyMenu, Add, 技能連段設置, 菜單_技能連段
-Menu, MyMenu, Add, 循環技能設置, 菜單_循環技能
-Menu, MyMenu, Add, 快搜倉庫設置, 菜單_快搜倉庫
+Menu, MyMenu, Add, 藥劑觸發設置, Menu_Flask
+Menu, MyMenu, Add, 技能連段設置, Menu_Combo
+Menu, MyMenu, Add, 循環技能設置, Menu_Loop
+Menu, MyMenu, Add, 快搜倉庫設置, Menu_Stash
 Menu, MyMenu, Add
-Menu, MyMenu, Add, 滑鼠連點設置, 菜單_滑鼠連點
-Menu, MyMenu, Add, 自動引爆地雷設置, 菜單_自動地雷
-Menu, MyMenu, Add, 外部連結與網站, 菜單_外部連結
+Menu, MyMenu, Add, 滑鼠連點設置, Menu_Clicker
+Menu, MyMenu, Add, 自動引爆地雷設置, Menu_Mine
+Menu, MyMenu, Add, 外部連結與網站, Menu_Links
 return
 
 呼叫菜單:
 	OpenUISection("intro")
 return
 
-菜單_工具介紹:
+Menu_Intro:
 	OpenUISection("intro")
 return
-菜單_藥劑觸發:
+Menu_Flask:
 	OpenUISection("flask")
 return
-菜單_技能連段:
+Menu_Combo:
 	OpenUISection("combo")
 return
-菜單_循環技能:
+Menu_Loop:
 	OpenUISection("loop")
 return
-菜單_快搜倉庫:
+Menu_Stash:
 	OpenUISection("stash")
 return
-菜單_滑鼠連點:
+Menu_Clicker:
 	OpenUISection("clicker")
 return
-菜單_自動地雷:
+Menu_Mine:
 	OpenUISection("mine")
 return
-菜單_外部連結:
+Menu_Links:
 	OpenUISection("links")
 return
 
@@ -271,7 +271,7 @@ OpenUISection(section) {
 
 F9::
 	Suspend
-	ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作。")
+	ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作 ")
 	Pause,,1
 return
 
@@ -294,8 +294,8 @@ return
 ~*esc::
 	IfWinActive,rchin-poe-trade
 		WinActivate ,Path of Exile
-	openI := 0
-	Toolbutton := 0
+	openI:= 0
+	Toolbutton:= 0
 	ifwinactive, Path of Exile
 		ToolTip("(ESC)，關閉面板，返回遊戲模式")
 return
@@ -304,10 +304,10 @@ GetDriveTailSerial()
 {
 	for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
 	{
-		serial := objItem.SerialNumber
+		serial:= objItem.SerialNumber
 		if (serial != "" && !InStr(serial, "00000000"))
 		{
-			clean := RegExReplace(serial, "[^a-zA-Z0-9]")
+			clean:= RegExReplace(serial, "[^a-zA-Z0-9]")
 			if (StrLen(clean) >= 12)
 				return SubStr(clean, -11)
 			else
@@ -368,7 +368,7 @@ GetDriveTailSerial()
 		run,https://sid-1996.github.io/sid-automation-lab/index.html,,UseErrorLevel
 	return
 
-	暫停讀秒循環喝水:
+	暫停讀秒循環喝水_Label:
 		SetTimer, 藥劑1, off
 		SetTimer, 藥劑2, off
 		SetTimer, 藥劑3, off
@@ -847,7 +847,7 @@ GetDriveTailSerial()
 	;[快搜倉庫頁區(指令)]-----------------------------------------------------------------------------------------------------------------------------
 
 	倉庫頁計算:
-		計算值 :=  abs(當前倉庫頁 - 搜索到的倉庫頁)
+		計算值:=  abs(當前倉庫頁 - 搜索到的倉庫頁)
 
 		if (搜索到的倉庫頁 > 當前倉庫頁)
 		{
@@ -892,52 +892,52 @@ GetDriveTailSerial()
 	return
 
 	前往未鑑定稀有頭盔:
-		搜索到的倉庫頁 := 未鑑定稀有頭盔
+		搜索到的倉庫頁:= 未鑑定稀有頭盔
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有頭盔
+		當前倉庫頁:= 未鑑定稀有頭盔
 	return
 
 	前往未鑑定稀有衣服:
-		搜索到的倉庫頁 := 未鑑定稀有衣服
+		搜索到的倉庫頁:= 未鑑定稀有衣服
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有衣服
+		當前倉庫頁:= 未鑑定稀有衣服
 	return
 
 	前往未鑑定稀有腰帶:
-		搜索到的倉庫頁 := 未鑑定稀有腰帶
+		搜索到的倉庫頁:= 未鑑定稀有腰帶
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有腰帶
+		當前倉庫頁:= 未鑑定稀有腰帶
 	return
 
 	前往未鑑定稀有手套:
-		搜索到的倉庫頁 := 未鑑定稀有手套
+		搜索到的倉庫頁:= 未鑑定稀有手套
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有手套
+		當前倉庫頁:= 未鑑定稀有手套
 	return
 
 	前往未鑑定稀有鞋子:
-		搜索到的倉庫頁 := 未鑑定稀有鞋子
+		搜索到的倉庫頁:= 未鑑定稀有鞋子
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有鞋子
+		當前倉庫頁:= 未鑑定稀有鞋子
 	return
 
 	前往未鑑定稀有飾品:
-		搜索到的倉庫頁 := 未鑑定稀有飾品
+		搜索到的倉庫頁:= 未鑑定稀有飾品
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有飾品
+		當前倉庫頁:= 未鑑定稀有飾品
 	return
 
 	前往未鑑定稀有武器:
-		搜索到的倉庫頁 := 未鑑定稀有武器
+		搜索到的倉庫頁:= 未鑑定稀有武器
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 未鑑定稀有武器
+		當前倉庫頁:= 未鑑定稀有武器
 	return
 
 	二次判斷傳奇戒指:
@@ -950,94 +950,94 @@ GetDriveTailSerial()
 	return
 
 	前往星團珠:
-		搜索到的倉庫頁 := 星團珠
+		搜索到的倉庫頁:= 星團珠
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 星團珠
+		當前倉庫頁:= 星團珠
 	return
 
 	前往普通珠:
-		搜索到的倉庫頁 := 普通珠
+		搜索到的倉庫頁:= 普通珠
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 普通珠
+		當前倉庫頁:= 普通珠
 	return
 
 	前往深淵珠:
-		搜索到的倉庫頁 := 深淵珠
+		搜索到的倉庫頁:= 深淵珠
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 深淵珠
+		當前倉庫頁:= 深淵珠
 	return
 
 	前往培育器:
-		搜索到的倉庫頁 := 培育器
+		搜索到的倉庫頁:= 培育器
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 培育器
+		當前倉庫頁:= 培育器
 	return
 
 	前往勢力裝頁:
-		搜索到的倉庫頁 := 勢力裝頁
+		搜索到的倉庫頁:= 勢力裝頁
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 勢力裝頁
+		當前倉庫頁:= 勢力裝頁
 	return
 
 	前往傳奇裝:
-		搜索到的倉庫頁 := 傳奇裝
+		搜索到的倉庫頁:= 傳奇裝
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 傳奇裝
+		當前倉庫頁:= 傳奇裝
 		快搜配對 = 需按Shift
 	return
 
 	前往附魔裝:
-		搜索到的倉庫頁 := 附魔裝
+		搜索到的倉庫頁:= 附魔裝
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 附魔裝
+		當前倉庫頁:= 附魔裝
 		快搜配對 = 需按Shift
 	return
 
 	前往劫盜裝:
-		搜索到的倉庫頁 := 劫盜裝
+		搜索到的倉庫頁:= 劫盜裝
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 劫盜裝
+		當前倉庫頁:= 劫盜裝
 	return
 
 	前往傳奇戒:
 		{
-			搜索到的倉庫頁 := 傳奇戒
+			搜索到的倉庫頁:= 傳奇戒
 			gosub,倉庫頁計算
 			倉庫匹配狀態 = 成功
-			當前倉庫頁 := 傳奇戒
+			當前倉庫頁:= 傳奇戒
 			快搜配對 = 需按Shift
 			return
 		}
 	return
 
 	前往特殊地圖:
-		搜索到的倉庫頁 := 特殊地圖
+		搜索到的倉庫頁:= 特殊地圖
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 特殊地圖
+		當前倉庫頁:= 特殊地圖
 		快搜配對 = 需按Shift
 	return
 
 	前往裂痕戒指:
-		搜索到的倉庫頁 := 裂痕戒指
+		搜索到的倉庫頁:= 裂痕戒指
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 裂痕戒指
+		當前倉庫頁:= 裂痕戒指
 	return
 
 	前往可堆疊通貨:
-		搜索到的倉庫頁 := 0
+		搜索到的倉庫頁:= 0
 		gosub,倉庫頁計算
 		倉庫匹配狀態 = 成功
-		當前倉庫頁 := 0
+		當前倉庫頁:= 0
 	return
 
 	;[快搜倉庫頁數據儲存指令]----------------------------------------------------------------------------------------------------------------
@@ -1119,13 +1119,13 @@ GetDriveTailSerial()
 	HK_Space_Label:
 		if Toolbutton = 0
 		{
-			ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。")
+			ToolTip("觸發一鍵喝水，打字誤觸建議您使用[F9]暫停工具。 ")
 			if (顏色5_X != "error" && 顏色5_Y != "error" && 顏色5_C != "error")
 			{
 				PixelGetColor, dialogCheck1, %顏色5_X%, %顏色5_Y%, Fast RGB
 				if (dialogCheck1 = %顏色5_C%)
 				{
-					Toolbutton := 1
+					Toolbutton:= 1
 					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
 					SetTimer,偵測對話框1,off
 					SetTimer,偵測對話框2,off
@@ -1137,7 +1137,7 @@ GetDriveTailSerial()
 				PixelGetColor, dialogCheck2, %顏色6_X%, %顏色6_Y%, Fast RGB
 				if (dialogCheck2 = %顏色6_C%)
 				{
-					Toolbutton := 1
+					Toolbutton:= 1
 					ToolTip("偵測到對話框，暫停 Space 喝水，切換為文字模式")
 					SetTimer,偵測對話框1,off
 					SetTimer,偵測對話框2,off
@@ -1259,21 +1259,21 @@ GetDriveTailSerial()
 			{
 				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕!非常重要，不然打字會瞎雞巴亂按。`r若你第一次看到此視窗，按下確認後將跳轉教學圖片網址。`r此彈跳網頁只會顯示一次，請勿在未設置成功前關閉教學圖片。`r確定後，請依圖片，將滑鼠指定座標，再按[Win + C]，輸入代號(5)或(6)!
 				run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
-				Enter除錯提醒次數 := 1
+				Enter除錯提醒次數:= 1
 			}
 		}
 		else
 		{
-(Toolbutton = 0 ? (Toolbutton := 1,ToolTip("已切換為文字模式")) : (Toolbutton := 0,ToolTip("已切換為遊戲模式")))
+(Toolbutton = 0 ? (Toolbutton:= 1,ToolTip("已切換為文字模式")) : (Toolbutton:= 0,ToolTip("已切換為遊戲模式")))
 if Toolbutton = 0
 {
-偵測對話框計數 := 0
+偵測對話框計數:= 0
 settimer,偵測對話框1,25
 settimer,偵測對話框2,25
 }
 if Toolbutton = 1
 		{
-		gosub,暫停讀秒循環喝水
+		gosub,暫停讀秒循環喝水_Label
 		}
 }
 return
@@ -1284,7 +1284,7 @@ if (偵測對話框計數 >= 20)
 {
 	settimer,偵測對話框1,off
 	settimer,偵測對話框2,off
-	偵測對話框計數 := 0
+	偵測對話框計數:= 0
 	return
 }
 if (顏色5_X = "error" or 顏色5_Y = "error")
@@ -1300,7 +1300,7 @@ else
 	{
 	Toolbutton = 1
 	ToolTip("偵測到對話框1，變更為文字模式")
-	gosub,暫停讀秒循環喝水
+	gosub,暫停讀秒循環喝水_Label
 	settimer,偵測對話框1,off
 	settimer,偵測對話框2,off
 	}
@@ -1321,7 +1321,7 @@ else
 	{
 	Toolbutton = 1
 	ToolTip("偵測到對話框2，變更為文字模式")
-	gosub,暫停讀秒循環喝水
+	gosub,暫停讀秒循環喝水_Label
 	settimer,偵測對話框1,off
 	settimer,偵測對話框2,off
 	}
@@ -1332,7 +1332,7 @@ return
 
 ~*<^F::
 if Toolbutton = 0
-Toolbutton := 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
+Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
 return
 
 ;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
@@ -1340,13 +1340,13 @@ return
 ~*LButton::
 If 開始時間
     return
-開始時間 := A_TickCount
+開始時間:= A_TickCount
 Hotkey, LButton up, 左鍵彈起標籤, On
 return
 
 左鍵彈起標籤:
 Hotkey, LButton up, 左鍵彈起標籤, Off
-時間長度 := A_TickCount - 開始時間
+時間長度:= A_TickCount - 開始時間
 if (時間長度 < 100)
 {
 
@@ -1354,14 +1354,14 @@ if (時間長度 < 100)
 else if (時間長度 >= 100)
 {
 	if Toolbutton = 1
-	Toolbutton := 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
+	Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
 }
-開始時間 := ""
+開始時間:= ""
 return
 
 ~<!<^LButton::
 if Toolbutton = 0
-Toolbutton := 1,ToolTip("偵測到物品貼上,已切換為文字模式")
+Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
 return
 
 ;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
@@ -1379,7 +1379,7 @@ if (stateCtrl = "D" or stateShift = "D")
 	{
 		If ( clickStop = true )
 		{
-			clickStop := false
+			clickStop:= false
 			return
 		}
 		Click
@@ -1392,7 +1392,7 @@ return
 
 ~*^LButton UP::
 if 連點模式 = [Ctrl + 左鍵]
-clickStop := true
+clickStop:= true
 return
 
 ~*MButton::
@@ -1402,7 +1402,7 @@ if 連點模式 = 滑鼠滾輪按壓
 	{
 	If ( clickStop = true )
 		{
-		clickStop := false
+		clickStop:= false
 		return
 		}
 		Else
@@ -1416,7 +1416,7 @@ return
 
 ~*MButton Up::
 if 連點模式 = 滑鼠滾輪按壓
-clickStop := true
+clickStop:= true
 return
 
 ;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
@@ -1431,20 +1431,20 @@ Return
  Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 Return
 
-掃描開始左上2_X := % 對方背包左上_X
-掃描開始左上2_Y := % 對方背包左上_Y
-掃描開始右下2_X := % 對方背包右下_X
-掃描開始右下2_Y := % 對方背包右下_Y
-掃描水平數量2 := 12
-掃描垂直數量2 := 5
-背包每格寬2 := floor((掃描開始右下2_X - 掃描開始左上2_X) / 掃描水平數量2)
-背包每格高2 := floor((掃描開始右下2_Y - 掃描開始左上2_Y) / 掃描垂直數量2)
+掃描開始左上2_X:= % 對方背包左上_X
+掃描開始左上2_Y:= % 對方背包左上_Y
+掃描開始右下2_X:= % 對方背包右下_X
+掃描開始右下2_Y:= % 對方背包右下_Y
+掃描水平數量2:= 12
+掃描垂直數量2:= 5
+背包每格寬2:= floor((掃描開始右下2_X - 掃描開始左上2_X) / 掃描水平數量2)
+背包每格高2:= floor((掃描開始右下2_Y - 掃描開始左上2_Y) / 掃描垂直數量2)
 return
 
 ;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
 HK_Insert_Label:
-(StopUser = 0 ? (StopUser := 1,ToolTip("循環技能已開啟")) : (StopUser := 0,ToolTip("循環技能已關閉")))
+(StopUser = 0 ? (StopUser:= 1,ToolTip("循環技能已開啟")) : (StopUser:= 0,ToolTip("循環技能已關閉")))
 if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error" or 循環技能時間1 = "error" or 循環技能時間2 = "error" or 循環技能時間3 = "error")
 {
   StopUser = 0
@@ -1467,7 +1467,7 @@ if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error
   }
   if StopUser = 0
   {
-  Gosub,關閉循環技能
+  Gosub,關閉循環技能_Label
   return
   }
 return
@@ -1523,7 +1523,7 @@ send {BS}
 }
 Return
 
-關閉循環技能:
+關閉循環技能_Label:
 Settimer,循環技能1,off
 Settimer,循環技能2,off
 Settimer,循環技能3,off
@@ -1602,19 +1602,19 @@ gosub,清除目標ID前面@
 return
 
 清除目標ID前面@:
-移除後完好的ID := Trim(對方ID, OmitChars := "@")
+移除後完好的ID:= Trim(對方ID, OmitChars:= "@")
 return
 
 HK_WinEnd_ModeLabel:
 	if (快速組隊提醒 = "開啟")
-		快速組隊提醒 := "關閉"
+		快速組隊提醒:= "關閉"
 	else
-		快速組隊提醒 := "開啟"
+		快速組隊提醒:= "開啟"
 	IniWrite, % 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
 	ToolTip("快速組隊提醒功能已變更為: " . 快速組隊提醒)
 Return
 
-讀取快速組隊提醒功能:
+讀取快速組隊提醒功能_Label:
  Iniread, 快速組隊提醒, sidtooldata.ini, 按鍵模式切換, 快速組隊提醒
 Return
 
@@ -1636,7 +1636,7 @@ else
 	gosub,返角
 	if F1模式 = 原始鍵盤模式
 	{
-	cleanF1Key := CleanKeyName(快捷鍵_F1)
+	cleanF1Key:= CleanKeyName(快捷鍵_F1)
 	send {%cleanF1Key%}
 	}
 }
@@ -1644,9 +1644,9 @@ return
 
 HK_WinF1_ModeLabel:
 	if (F1模式 = "返角模式")
-		F1模式 := "原始鍵盤模式"
+		F1模式:= "原始鍵盤模式"
 	else
-		F1模式 := "返角模式"
+		F1模式:= "返角模式"
 	IniWrite, % F1模式, sidtooldata.ini, 按鍵模式切換, F1模式
 	ToolTip("F1按鍵已變更為: " . F1模式)
 return
@@ -1655,7 +1655,7 @@ return
 
 返角:
 Critical
-	gosub,暫停讀秒循環喝水
+	gosub,暫停讀秒循環喝水_Label
 	BlockInput On
         Send {Enter}
         Sleep 100
@@ -1702,8 +1702,8 @@ else
 	  if StopUser = 1
 	  {
 	  StopUser = 0
-	  Gosub,關閉循環技能
-	  ToolTip("已關閉[Ins]技能循環，進入暫離狀態。")
+	  Gosub,關閉循環技能_Label
+	  ToolTip("已關閉[Ins]技能循環，進入暫離狀態。 ")
 	  Gosub,暫離
 	  }
 	}
@@ -1761,11 +1761,11 @@ Return
 
 HK_WinF2_ModeLabel:
 	if (回復模式 = "暫離")
-		回復模式 := "勿擾"
+		回復模式:= "勿擾"
 	else if (回復模式 = "勿擾")
-		回復模式 := "自動回復"
+		回復模式:= "自動回復"
 	else
-		回復模式 := "暫離"
+		回復模式:= "暫離"
 	IniWrite, % 回復模式, sidtooldata.ini, 按鍵模式切換, 回復模式
 	ToolTip("F2回復模式已切換為: " . 回復模式)
 return
@@ -1778,9 +1778,9 @@ Return
 	InputBox, 輸入內容, 設定自動回復內容, 請輸入自動回復文字內容：,,,,,,,, %自動回復內容%
 	if (!ErrorLevel && 輸入內容 != "")
 	{
-		自動回復內容 := 輸入內容
+		自動回復內容:= 輸入內容
 		iniWrite,% 自動回復內容, sidtooldata.ini, 設定自動回復內容, 自動回復內容
-		ToolTip("自動回復內容已更新！")
+		ToolTip("自動回復內容已更新！ ")
 	}
 Return
 
@@ -1850,13 +1850,13 @@ return
 
 HK_WinF3_ModeLabel:
 	if (清包模式 = "按壓式")
-		清包模式 := "自動式"
+		清包模式:= "自動式"
 	else if (清包模式 = "自動式")
-		清包模式 := "掃描式"
+		清包模式:= "掃描式"
 	else if (清包模式 = "掃描式")
-		清包模式 := "掃描快搜"
+		清包模式:= "掃描快搜"
 	else
-		清包模式 := "按壓式"
+		清包模式:= "按壓式"
 	IniWrite, % 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
 	ToolTip("F3清包模式已變更為: " . 清包模式)
 	try {
@@ -1871,16 +1871,16 @@ Return
 讀取清包保留格:
 	IniRead, 清包保留格, sidtooldata.ini, 清包設置, 清包保留格, %A_Space%
 	if (清包保留格 = "ERROR")
-		清包保留格 := ""
-	清包保留格 := Trim(清包保留格)
-	global 清包保留Array := {}
+		清包保留格:= ""
+	清包保留格:= Trim(清包保留格)
+	global 清包保留Array:= {}
 	Loop, 60
 		清包保留Array[A_Index] := 0
 	if (清包保留格 != "")
 	{
 		Loop, Parse, 清包保留格, `,
 		{
-			idx := Trim(A_LoopField)
+			idx:= Trim(A_LoopField)
 			if (idx >= 1 && idx <= 60)
 				清包保留Array[idx] := 1
 		}
@@ -1906,20 +1906,20 @@ return
 return
 
 快速掃描背包顏色並儲存:
-	迴圈狀態 := 0
-	掃描顏色Array := []
+	迴圈狀態:= 0
+	掃描顏色Array:= []
 	ToolTip, 開始掃描背包顏色..., 0, 0, 1
 	loop % 掃描水平數量
 	{
-		colIdx := A_Index
-		PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
+		colIdx:= A_Index
+		PosX:= Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 		loop % 掃描垂直數量
 		{
-			rowIdx := A_Index
-			PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
+			rowIdx:= A_Index
+			PosY:= Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 			PixelGetColor, pcol, % PosX, % PosY, Fast RGB
 			掃描顏色Array.Push(pcol)
-			迴圈狀態 := 迴圈狀態 + 1
+			迴圈狀態:= 迴圈狀態 + 1
 			背包初始顏色%迴圈狀態% := pcol
 		}
 		ToolTip, % "掃描進度: " . 迴圈狀態 . " / 60", 0, 22, 2
@@ -1936,11 +1936,11 @@ return
 send {ctrl down}
 loop % 掃描水平數量
 {
-colIdx := A_Index
-PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
+colIdx:= A_Index
+PosX:= Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	if (InStr(清包模式, "按壓"))
 	{
-		cleanF3Key := CleanKeyName(快捷鍵_F3)
+		cleanF3Key:= CleanKeyName(快捷鍵_F3)
 		if not(GetKeyState(cleanF3Key,"P"))
 		{
 		send {ctrl up}
@@ -1961,15 +1961,15 @@ PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	}
 loop % 掃描垂直數量
 {
-rowIdx := A_Index
-slotIdx := (colIdx - 1) * 掃描垂直數量 + rowIdx
+rowIdx:= A_Index
+slotIdx:= (colIdx - 1) * 掃描垂直數量 + rowIdx
 if (清包保留Array[slotIdx])
 	continue
-PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
+PosY:= Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 MouseClick,, % PosX, % PosY,1,0
 	if (InStr(清包模式, "按壓"))
 	{
-		cleanF3Key := CleanKeyName(快捷鍵_F3)
+		cleanF3Key:= CleanKeyName(快捷鍵_F3)
 		ToolTip, % "鬆開[" . cleanF3Key . "]停止。", 0,22,3
 		if not(GetKeyState(cleanF3Key,"P"))
 		{
@@ -1999,9 +1999,9 @@ return
 快速掃描並存倉:
 迴圈狀態:= 0
 CoordMode, Pixel, Screen
-global 存倉掃描顏色Array := []
+global 存倉掃描顏色Array:= []
 {
- 存倉掃描顏色Array := []
+ 存倉掃描顏色Array:= []
  if (InStr(清包模式, "快搜") || 清包模式 = "掃描快搜翻頁")
  Gosub,返回首頁
  send {ctrl down}
@@ -2017,11 +2017,11 @@ global 存倉掃描顏色Array := []
 	Break
 	Return
 	}
-	colIdx := A_Index
-	PosX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
+	colIdx:= A_Index
+	PosX:= Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	loop % 掃描垂直數量
 		{
-		rowIdx := A_Index
+		rowIdx:= A_Index
 		if (GetKeyState("~","P"))
 		{
 		send {ctrl up}
@@ -2032,7 +2032,7 @@ global 存倉掃描顏色Array := []
 		Break
 		Return
 		}
-		PosY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
+		PosY:= Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 		ToolTip, % "掃描: " PosX "/" PosY "，長按[~]停止。", 0,0,1
 		PixelGetColor, pcol2, % PosX, % PosY, Fast RGB
 		存倉掃描顏色Array.Push(pcol2)
@@ -2062,7 +2062,7 @@ global 存倉掃描顏色Array := []
  ToolTip,,,,3
  ToolTip,,,,2
  ToolTip,,,,1
- ToolTip("背包已淨空或停止。")
+ ToolTip("背包已淨空或停止。 ")
  send {ctrl up}
 }
 return
@@ -2082,9 +2082,9 @@ F7背包定位:
 		ToolTip("")
 		if (捕捉類型 = "color")
 		{
-			PosX := ["","","","","顏色5_X","顏色6_X"]
-			PosY := ["","","","","顏色5_Y","顏色6_Y"]
-			CosA := ["","","","","顏色5_C","顏色6_C"]
+			PosX:= ["","","","","顏色5_X","顏色6_X"]
+			PosY:= ["","","","","顏色5_Y","顏色6_Y"]
+			CosA:= ["","","","","顏色5_C","顏色6_C"]
 			iniWrite,% capX, sidtooldata.ini, 顏色座標, % PosX[捕捉代號]
 			iniWrite,% capY, sidtooldata.ini, 顏色座標, % PosY[捕捉代號]
 			iniWrite,% capC, sidtooldata.ini, 顏色座標, % CosA[捕捉代號]
@@ -2092,9 +2092,9 @@ F7背包定位:
 		}
 		else if (捕捉類型 = "bag")
 		{
-			PosX := ["背包左上_X","背包右下_X"]
-			PosY := ["背包左上_Y","背包右下_Y"]
-			CosA := ["背包左上_C","背包右下_C"]
+			PosX:= ["背包左上_X","背包右下_X"]
+			PosY:= ["背包左上_Y","背包右下_Y"]
+			CosA:= ["背包左上_C","背包右下_C"]
 			iniWrite,% capX, sidtooldata.ini, 背包定位, % PosX[捕捉代號]
 			iniWrite,% capY, sidtooldata.ini, 背包定位, % PosY[捕捉代號]
 			iniWrite,% capC, sidtooldata.ini, 背包定位, % CosA[捕捉代號]
@@ -2105,16 +2105,16 @@ F7背包定位:
 		{
 			if (捕捉代號 = 1)
 			{
-				確認按鈕_X := capX
-				確認按鈕_Y := capY
+				確認按鈕_X:= capX
+				確認按鈕_Y:= capY
 				iniWrite,% capX, sidtooldata.ini, 討價還價定位, 確認按鈕_X
 				iniWrite,% capY, sidtooldata.ini, 討價還價定位, 確認按鈕_Y
 				ToolTip("已設定討價還價【確認按鈕】座標: " . capX . ", " . capY)
 			}
 			else if (捕捉代號 = 2)
 			{
-				重骰按鈕_X := capX
-				重骰按鈕_Y := capY
+				重骰按鈕_X:= capX
+				重骰按鈕_Y:= capY
 				iniWrite,% capX, sidtooldata.ini, 討價還價定位, 重骰按鈕_X
 				iniWrite,% capY, sidtooldata.ini, 討價還價定位, 重骰按鈕_Y
 				ToolTip("已設定討價還價【重骰按鈕】座標: " . capX . ", " . capY)
@@ -2125,16 +2125,16 @@ F7背包定位:
 		{
 			if (捕捉代號 = 1)
 			{
-				寶石1_X := capX
-				寶石1_Y := capY
+				寶石1_X:= capX
+				寶石1_Y:= capY
 				iniWrite,% capX, sidtooldata.ini, 交換寶石定位, 寶石1_X
 				iniWrite,% capY, sidtooldata.ini, 交換寶石定位, 寶石1_Y
 				ToolTip("已設定【交換寶石1】座標: " . capX . ", " . capY)
 			}
 			else if (捕捉代號 = 2)
 			{
-				寶石2_X := capX
-				寶石2_Y := capY
+				寶石2_X:= capX
+				寶石2_Y:= capY
 				iniWrite,% capX, sidtooldata.ini, 交換寶石定位, 寶石2_X
 				iniWrite,% capY, sidtooldata.ini, 交換寶石定位, 寶石2_Y
 				ToolTip("已設定【交換寶石2】座標: " . capX . ", " . capY)
@@ -2150,7 +2150,7 @@ F7背包定位:
 			neutron.wnd.syncDataFromAHK()
 		}
 		neutron.Show()
-		捕捉模式 := 0
+		捕捉模式:= 0
 	}
 	return
 
@@ -2179,16 +2179,16 @@ iniread, 寶石副手切換, sidtooldata.ini, 交換寶石定位, 副手切換, 
 return
 
 背包運算作業:
-掃描開始左上_X := 背包左上_X
-掃描開始左上_Y := 背包左上_Y
-掃描開始右下_X := 背包右下_X
-掃描開始右下_Y := 背包右下_Y
-掃描水平數量 := 12
-掃描垂直數量 := 5
-背包步長_X := (掃描水平數量 > 1) ? (掃描開始右下_X - 掃描開始左上_X) / (掃描水平數量 - 1) : 0
-背包步長_Y := (掃描垂直數量 > 1) ? (掃描開始右下_Y - 掃描開始左上_Y) / (掃描垂直數量 - 1) : 0
-背包每格寬 := 背包步長_X
-背包每格高 := 背包步長_Y
+掃描開始左上_X:= 背包左上_X
+掃描開始左上_Y:= 背包左上_Y
+掃描開始右下_X:= 背包右下_X
+掃描開始右下_Y:= 背包右下_Y
+掃描水平數量:= 12
+掃描垂直數量:= 5
+背包步長_X:= (掃描水平數量 > 1) ? (掃描開始右下_X - 掃描開始左上_X) / (掃描水平數量 - 1) : 0
+背包步長_Y:= (掃描垂直數量 > 1) ? (掃描開始右下_Y - 掃描開始左上_Y) / (掃描垂直數量 - 1) : 0
+背包每格寬:= 背包步長_X
+背包每格高:= 背包步長_Y
 return
 
 ;[Neutron 介面溝通 bridge 函數]--------------------------------------------------------------------------------------
@@ -2200,113 +2200,113 @@ NeutronRunLabel(neutron, labelName) {
 
 NeutronSaveFlaskConfig(neutron, triggerMode, skillKey, skillFlasks, spaceFlasks, dur1, dur2, dur3, dur4, dur5) {
 	global
-	藥劑觸發模式 := triggerMode
-	主要技能 := skillKey
-	使用技能時觸發的藥劑 := skillFlasks
-	一鍵喝水時觸發的藥劑 := spaceFlasks
-	藥劑持續時間1 := dur1
-	藥劑持續時間2 := dur2
-	藥劑持續時間3 := dur3
-	藥劑持續時間4 := dur4
-	藥劑持續時間5 := dur5
+	藥劑觸發模式:= triggerMode
+	主要技能:= skillKey
+	使用技能時觸發的藥劑:= skillFlasks
+	一鍵喝水時觸發的藥劑:= spaceFlasks
+	藥劑持續時間1:= dur1
+	藥劑持續時間2:= dur2
+	藥劑持續時間3:= dur3
+	藥劑持續時間4:= dur4
+	藥劑持續時間5:= dur5
 	gosub, 儲存藥劑觸發紀錄
 	gosub, 讀取藥劑觸發紀錄
-	ToolTip("藥劑觸發設置已儲存！")
+	ToolTip("藥劑觸發設置已儲存！ ")
 }
 
 NeutronSaveSkillComboConfig(neutron, status, key1, delay1, key2, delay2, key3) {
 	global
-	技能連段功能 := status
-	技1 := key1
-	技1延遲 := delay1
-	技2 := key2
-	技2延遲 := delay2
-	技3 := key3
+	技能連段功能:= status
+	技1:= key1
+	技1延遲:= delay1
+	技2:= key2
+	技2延遲:= delay2
+	技3:= key3
 	gosub, 儲存並讀取技能連段數據
-	ToolTip("技能連段設置已儲存！")
+	ToolTip("技能連段設置已儲存！ ")
 }
 
 NeutronSaveLoopSkillConfig(neutron, s1, t1, s2, t2, s3, t3) {
 	global
-	循環技能1 := s1
-	循環技能時間1 := t1
-	循環技能2 := s2
-	循環技能時間2 := t2
-	循環技能3 := s3
-	循環技能時間3 := t3
+	循環技能1:= s1
+	循環技能時間1:= t1
+	循環技能2:= s2
+	循環技能時間2:= t2
+	循環技能3:= s3
+	循環技能時間3:= t3
 	gosub, 儲存循環技能設置
 	gosub, 讀取循環技能設置
-	ToolTip("循環技能設置已儲存！")
+	ToolTip("循環技能設置已儲存！ ")
 }
 
 NeutronSaveMineConfig(neutron, mode, staffMode, key, delay1, smokeKey, delay2) {
 	global
-	地雷模式 := mode
-	地雷杖模式 := staffMode
-	地雷按鍵 := key
-	引爆延遲1 := delay1
-	煙霧地雷 := smokeKey
-	引爆延遲2 := delay2
+	地雷模式:= mode
+	地雷杖模式:= staffMode
+	地雷按鍵:= key
+	引爆延遲1:= delay1
+	煙霧地雷:= smokeKey
+	引爆延遲2:= delay2
 	gosub, 儲存並讀取地雷設置
-	ToolTip("自動引爆地雷設置已儲存！")
+	ToolTip("自動引爆地雷設置已儲存！ ")
 }
 
 NeutronSaveClickerConfig(neutron, mode, speed) {
 	global
-	連點模式 := mode
-	滑鼠連點速度 := speed
+	連點模式:= mode
+	滑鼠連點速度:= speed
 	IniWrite,% 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 	IniWrite,% 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
 	gosub, 讀取連點模式
 	gosub, 讀取滑鼠連點速度
-	ToolTip("滑鼠連點設置已儲存！")
+	ToolTip("滑鼠連點設置已儲存！ ")
 }
 
 NeutronSaveClearBagConfig(neutron, mode, ignoredSlots:="__NOT_PASSED__") {
 	global
-	清包模式 := mode
+	清包模式:= mode
 	IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
 	if (ignoredSlots != "__NOT_PASSED__")
 	{
-		清包保留格 := ignoredSlots
+		清包保留格:= ignoredSlots
 		gosub, 儲存清包保留格
 		gosub, 讀取清包保留格
 	}
-	ToolTip("清包設置已儲存！")
+	ToolTip("清包設置已儲存！ ")
 }
 
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
 	global
-	附魔裝 := enchant
-	傳奇裝 := legendary
-	傳奇戒 := legendaryRing
-	劫盜裝 := thief
-	移除2 := remove2
-	培育器 := incubator
-	深淵珠 := abyssJewel
-	星團珠 := clusterJewel
-	普通珠 := normalJewel
-	勢力裝頁 := faction
-	特殊地圖 := specialMap
-	裂痕戒指 := riftRing
-	未鑑定稀有頭盔 := uniqueHelmet
-	未鑑定稀有衣服 := uniqueArmour
-	未鑑定稀有腰帶 := uniqueBelt
-	未鑑定稀有手套 := uniqueGloves
-	未鑑定稀有鞋子 := uniqueBoots
-	未鑑定稀有飾品 := uniqueAccessory
-	未鑑定稀有武器 := uniqueWeapon
-	返回頁數 := returnPage
+	附魔裝:= enchant
+	傳奇裝:= legendary
+	傳奇戒:= legendaryRing
+	劫盜裝:= thief
+	移除2:= remove2
+	培育器:= incubator
+	深淵珠:= abyssJewel
+	星團珠:= clusterJewel
+	普通珠:= normalJewel
+	勢力裝頁:= faction
+	特殊地圖:= specialMap
+	裂痕戒指:= riftRing
+	未鑑定稀有頭盔:= uniqueHelmet
+	未鑑定稀有衣服:= uniqueArmour
+	未鑑定稀有腰帶:= uniqueBelt
+	未鑑定稀有手套:= uniqueGloves
+	未鑑定稀有鞋子:= uniqueBoots
+	未鑑定稀有飾品:= uniqueAccessory
+	未鑑定稀有武器:= uniqueWeapon
+	返回頁數:= returnPage
 	gosub, 儲存並讀取倉庫頁數據
-	ToolTip("倉庫頁面設置已儲存！")
+	ToolTip("倉庫頁面設置已儲存！ ")
 }
 
 StartAnchorCapture(neutron, type, id) {
 	global
-	捕捉類型 := type
-	捕捉代號 := id
-	捕捉模式 := 1
-	hkF7Val := (快捷鍵_F7 != "" && 快捷鍵_F7 != "ERROR") ? 快捷鍵_F7 : "*F7"
+	捕捉類型:= type
+	捕捉代號:= id
+	捕捉模式:= 1
+	hkF7Val:= (快捷鍵_F7 != "" && 快捷鍵_F7 != "ERROR") ? 快捷鍵_F7: "*F7"
 	try {
 		Hotkey, %hkF7Val%, HK_F7_Label, On
 	}
@@ -2316,7 +2316,7 @@ StartAnchorCapture(neutron, type, id) {
 
 NeutronGetSettings(neutron) {
 	global
-	json := "{"
+	json:= "{"
 	json .= """flaskMode"":""" . 藥劑觸發模式 . ""","
 	json .= """mainSkill"":""" . 主要技能 . ""","
 	json .= """skillFlasks"":""" . 使用技能時觸發的藥劑 . ""","
@@ -2384,7 +2384,7 @@ NeutronGetSettings(neutron) {
 ;[自訂快捷鍵相關函數與邏輯]----------------------------------------------------------------------------------
 
 CleanKeyName(hk) {
-	clean := RegExReplace(hk, "i)^[~*$^!+#]+", "")
+	clean:= RegExReplace(hk, "i)^[~*$^!+#]+", "")
 	return clean
 }
 
@@ -2401,12 +2401,12 @@ Return
 
 註冊動態熱鍵:
 Hotkey, IfWinActive, ahk_group DualWins
-keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
+keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
-    kName := A_LoopField
-    hkVal := 快捷鍵_%kName%
-    lbl := "HK_" . kName . "_Label"
+    kName:= A_LoopField
+    hkVal:= 快捷鍵_%kName%
+    lbl:= "HK_" . kName . "_Label"
     if (hkVal != "" && hkVal != "ERROR")
     {
         try {
@@ -2416,11 +2416,11 @@ Loop, parse, keysList, % ","
 
     if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F7" || kName = "End")
     {
-        cleanK := CleanKeyName(hkVal)
+        cleanK:= CleanKeyName(hkVal)
         if (cleanK != "")
         {
-            winHk := "#" . cleanK
-            winLbl := "HK_Win" . kName . "_ModeLabel"
+            winHk:= "#" . cleanK
+            winLbl:= "HK_Win" . kName . "_ModeLabel"
             try {
                 Hotkey, %winHk%, %winLbl%, On
             }
@@ -2432,11 +2432,11 @@ Return
 
 解開動態熱鍵:
 Hotkey, IfWinActive, ahk_group DualWins
-keysList := "F1,F2,F3,F7,WinZ,Space,Insert,End"
+keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
-    kName := A_LoopField
-    hkVal := 快捷鍵_%kName%
+    kName:= A_LoopField
+    hkVal:= 快捷鍵_%kName%
     if (hkVal != "" && hkVal != "ERROR")
     {
         try {
@@ -2445,10 +2445,10 @@ Loop, parse, keysList, % ","
     }
     if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F7" || kName = "End")
     {
-        cleanK := CleanKeyName(hkVal)
+        cleanK:= CleanKeyName(hkVal)
         if (cleanK != "")
         {
-            winHk := "#" . cleanK
+            winHk:= "#" . cleanK
             try {
                 Hotkey, %winHk%, Off
             }
@@ -2461,27 +2461,27 @@ Return
 NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
-	快捷鍵_F1 := hkF1
-	快捷鍵_F2 := hkF2
-	快捷鍵_F3 := hkF3
-	快捷鍵_WinZ := hkWinZ
-	快捷鍵_Space := hkSpace
-	快捷鍵_Insert := hkInsert
-	快捷鍵_End := hkEnd
+	快捷鍵_F1:= hkF1
+	快捷鍵_F2:= hkF2
+	快捷鍵_F3:= hkF3
+	快捷鍵_WinZ:= hkWinZ
+	快捷鍵_Space:= hkSpace
+	快捷鍵_Insert:= hkInsert
+	快捷鍵_End:= hkEnd
 
-	keysList := "F1,F2,F3,WinZ,Space,Insert,End"
+	keysList:= "F1,F2,F3,WinZ,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
-		kName := A_LoopField
+		kName:= A_LoopField
 		IniWrite, % 快捷鍵_%kName%, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_%kName%
 	}
 	gosub, 註冊動態熱鍵
-	ToolTip("自訂快捷鍵設置已儲存並生效！")
+	ToolTip("自訂快捷鍵設置已儲存並生效！ ")
 }
 
 NeutronSaveGemSwapConfig(neutron, weaponSwap) {
 	global 寶石副手切換
-	寶石副手切換 := weaponSwap
+	寶石副手切換:= weaponSwap
 	iniWrite, %weaponSwap%, sidtooldata.ini, 交換寶石定位, 副手切換
 }
 
@@ -2501,7 +2501,7 @@ else
 {
 	if (確認按鈕_X = "" || 確認按鈕_X = 0 || 確認按鈕_Y = "" || 確認按鈕_Y = 0)
 	{
-		ToolTip("尚未設定【確認按鈕】座標！請先在菜單設置中進行定位抓取。")
+		ToolTip("尚未設定【確認按鈕】座標！請先在菜單設置中進行定位抓取。 ")
 		Send, 1
 		return
 	}
@@ -2546,7 +2546,7 @@ else
 {
 	if (重骰按鈕_X = "" || 重骰按鈕_X = 0 || 重骰按鈕_Y = "" || 重骰按鈕_Y = 0)
 	{
-		ToolTip("尚未設定【重骰按鈕】座標！請先在菜單設置中進行定位抓取。")
+		ToolTip("尚未設定【重骰按鈕】座標！請先在菜單設置中進行定位抓取。 ")
 		Send, 2
 		return
 	}
@@ -2571,7 +2571,7 @@ else
 {
 	if (寶石1_X = "" || 寶石1_X = 0 || 寶石1_Y = "" || 寶石1_Y = 0 || 寶石2_X = "" || 寶石2_X = 0 || 寶石2_Y = "" || 寶石2_Y = 0)
 	{
-		ToolTip("尚未設定交換寶石座標！請先在菜單設置中進行定位抓取。")
+		ToolTip("尚未設定交換寶石座標！請先在菜單設置中進行定位抓取。 ")
 		Send, 4
 		return
 	}
@@ -2626,7 +2626,6 @@ Sleep, 50
 ; 游標還原至原位
 MouseMove, %origGemX%, %origGemY%, 0
 BlockInput, MouseMoveOff
-ToolTip("寶石交換完成！")
+ToolTip("寶石交換完成！ ")
 return
-
 
