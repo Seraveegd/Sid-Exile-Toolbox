@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW" data-bs-theme="dark">
 
 <head>
@@ -139,10 +139,12 @@
                   disabled readonly>
               </div>
             </div>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-success btn-sm px-4 py-2 me-2" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
-              <button class="btn btn-outline-secondary btn-sm px-3 py-2" onclick="resetDefaultHotkeys()">🔄
-                恢復預設快捷鍵</button>
+            <div class="panel-actions mt-3 pt-3">
+              <div class="text-secondary small">💡 提示：點選欄位後直接按下新按鍵，修改完成請點擊儲存生效</div>
+              <div class="d-flex flex-wrap gap-3">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="resetDefaultHotkeys()">🔄 恢復預設快捷鍵</button>
+                <button type="button" class="btn btn-success btn-sm px-4" onclick="saveCustomHotkeys()">💾 儲存自訂快捷鍵</button>
+              </div>
             </div>
           </div>
         </div>
@@ -259,7 +261,7 @@
                     <th style="width: 80px;">X 座標</th>
                     <th style="width: 80px;">Y 座標</th>
                     <th style="width: 140px;">顏色色碼 / 預覽</th>
-                    <th style="width: 80px;" class="text-end">操作</th>
+                    <th style="width: 125px;" class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -274,7 +276,7 @@
                           style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
                           id="c5_c" class="text-warning">-</code></div>
                     </td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('color', 5)">📍 抓取</button></td>
                   </tr>
                   <tr>
@@ -288,7 +290,7 @@
                           style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
                           id="c6_c" class="text-warning">-</code></div>
                     </td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('color', 6)">📍 抓取</button></td>
                   </tr>
                 </tbody>
@@ -310,7 +312,7 @@
                     <th style="width: 80px;">X 座標</th>
                     <th style="width: 80px;">Y 座標</th>
                     <th style="width: 140px;">顏色色碼 / 預覽</th>
-                    <th style="width: 80px;" class="text-end">操作</th>
+                    <th style="width: 125px;" class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -325,7 +327,7 @@
                           style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
                           id="b1_c" class="text-warning">-</code></div>
                     </td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('bag', 1)">📍 抓取</button></td>
                   </tr>
                   <tr>
@@ -339,7 +341,7 @@
                           style="width: 16px; height: 16px; display: inline-block; background-color: #333;"></span><code
                           id="b2_c" class="text-warning">-</code></div>
                     </td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('bag', 2)">📍 抓取</button></td>
                   </tr>
                 </tbody>
@@ -364,7 +366,7 @@
                     <th style="width: 80px;">X 座標</th>
                     <th style="width: 80px;">Y 座標</th>
                     <th style="width: 140px;">顏色色碼 / 預覽</th>
-                    <th style="width: 80px;" class="text-end">操作</th>
+                    <th style="width: 125px;" class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -374,7 +376,7 @@
                     <td><code id="h1_x" class="text-info">-</code></td>
                     <td><code id="h1_y" class="text-info">-</code></td>
                     <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('haggle', 1)">📍 抓取</button></td>
                   </tr>
                   <tr>
@@ -383,7 +385,7 @@
                     <td><code id="h2_x" class="text-info">-</code></td>
                     <td><code id="h2_y" class="text-info">-</code></td>
                     <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('haggle', 2)">📍 抓取</button></td>
                   </tr>
                 </tbody>
@@ -405,7 +407,7 @@
                     <th style="width: 80px;">X 座標</th>
                     <th style="width: 80px;">Y 座標</th>
                     <th style="width: 140px;">顏色色碼 / 預覽</th>
-                    <th style="width: 80px;" class="text-end">操作</th>
+                    <th style="width: 125px;" class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -415,7 +417,7 @@
                     <td><code id="gem1_x" class="text-info">-</code></td>
                     <td><code id="gem1_y" class="text-info">-</code></td>
                     <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('gemSwap', 1)">📍 抓取</button></td>
                   </tr>
                   <tr>
@@ -424,7 +426,7 @@
                     <td><code id="gem2_x" class="text-info">-</code></td>
                     <td><code id="gem2_y" class="text-info">-</code></td>
                     <td><span class="text-muted">-</span></td>
-                    <td class="text-end"><button class="btn btn-outline-primary btn-sm py-0 px-2"
+                    <td class="text-center"><button type="button" class="btn btn-capture"
                         onclick="captureAnchorPoint('gemSwap', 2)">📍 抓取</button></td>
                   </tr>
                 </tbody>
@@ -460,22 +462,28 @@
 
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+            <div class="d-flex justify-content-between align-items-center mb-3">
               <h6 class="card-title text-light mb-0">背包保留格子設置 (12 × 5 共 60 格)</h6>
-              <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-secondary-subtle text-light border border-secondary-subtle px-2 py-1">60 格矩陣</span>
+            </div>
+
+            <!-- 快捷選取工具列 -->
+            <div class="preset-toolbar">
+              <span class="preset-toolbar-label">⚡ 快速選取：</span>
+              <div class="preset-buttons">
                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearBagSelectPreset('clear')">全部清空</button>
-                <button type="button" class="btn btn-outline-warning btn-sm" onclick="clearBagSelectPreset('all')">全選(都不清)</button>
-                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right1')">保留最右 1 行</button>
-                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right2')">保留最右 2 行</button>
+                <button type="button" class="btn btn-outline-warning btn-sm" onclick="clearBagSelectPreset('all')">全選 (都不清)</button>
                 <button type="button" class="btn btn-outline-light btn-sm" onclick="clearBagSelectPreset('invert')">反向選取</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="saveClearBagConfig()">儲存設定</button>
+                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right1')">保留最右 1 欄</button>
+                <button type="button" class="btn btn-outline-info btn-sm" onclick="clearBagSelectPreset('right2')">保留最右 2 欄</button>
               </div>
             </div>
-            <div class="text-secondary small mb-3">
-              說明：下方矩陣對應遊戲背包 12 欄 × 5 列（左上角為第 1 格，右下角為第 60 格）。
-              <span class="text-warning fw-bold">勾選 = 保留（不清）</span>，未勾選 = 清包（丟倉）。選擇與勾選完畢後請點擊「儲存設定」。
+
+            <div class="alert alert-dark border border-secondary-subtle py-2 px-3 small mb-3">
+              💡 <strong>操作說明：</strong>下方對應遊戲背包 12 欄 × 5 列（左上第 1 格，右下第 60 格）。
+              <span class="text-warning fw-bold">勾選 = 保留（丟倉時不清）</span>，未勾選 = 清包存倉。選擇完畢後請點擊下方儲存。
             </div>
-            <div class="bag-grid-wrapper" id="bagGrid">
+            <div class="bag-grid-wrapper mb-2" id="bagGrid">
               <table class="bag-grid-table"><tbody>
                 <tr>
                   <td class="bag-slot" id="bag_slot_box_1" onclick="toggleBagSlot(1, event)"><span class="bag-slot-num">1</span><input type="checkbox" id="bag_slot_1" onchange="onBagSlotChange(1, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
@@ -548,6 +556,12 @@
                   <td class="bag-slot" id="bag_slot_box_60" onclick="toggleBagSlot(60, event)"><span class="bag-slot-num">60</span><input type="checkbox" id="bag_slot_60" onchange="onBagSlotChange(60, event)" onclick="if(event.stopPropagation){event.stopPropagation();}else{event.cancelBubble=true;}"></td>
                 </tr>
               </tbody></table>
+            </div>
+
+            <!-- 清包設定儲存按鈕 -->
+            <div class="panel-actions mt-3 pt-3">
+              <div class="text-secondary small">💡 提示：點擊個別格子或使用上方快捷按鈕調整後，請點擊右側儲存按鈕</div>
+              <button type="button" class="btn btn-primary btn-sm px-4 py-2" onclick="saveClearBagConfig()">💾 儲存清包設定</button>
             </div>
           </div>
         </div>
@@ -630,7 +644,10 @@
           </div>
         </div>
 
-        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveFlaskConfig()">💾 儲存藥劑設置</button>
+        <div class="panel-actions">
+          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
+          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveFlaskConfig()">💾 儲存藥劑設置</button>
+        </div>
       </div>
 
 
@@ -682,7 +699,10 @@
           </div>
         </div>
 
-        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveComboConfig()">💾 儲存連段設置</button>
+        <div class="panel-actions">
+          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
+          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveComboConfig()">💾 儲存連段設置</button>
+        </div>
       </div>
 
       <!-- Panel 6: 循環技能設置 -->
@@ -717,7 +737,10 @@
           </div>
         </div>
 
-        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveLoopConfig()">💾 儲存循環技能設置</button>
+        <div class="panel-actions">
+          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
+          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveLoopConfig()">💾 儲存循環技能設置</button>
+        </div>
       </div>
 
       <!-- Panel 7: 快搜倉庫設置 -->
@@ -827,7 +850,10 @@
               </div>
             </div>
 
-            <button class="btn btn-success btn-sm px-4 py-2" onclick="saveWarehouseConfig()">💾 儲存倉庫頁面設置</button>
+            <div class="panel-actions mt-3 pt-3 border-top border-secondary-subtle">
+              <span class="text-secondary small">💡 修改倉庫頁數後請點擊儲存，設定將即時生效</span>
+              <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveWarehouseConfig()">💾 儲存倉庫頁面設置</button>
+            </div>
           </div>
         </div>
       </div>
@@ -856,7 +882,10 @@
           </div>
         </div>
 
-        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveClickerConfig()">💾 儲存連點設置</button>
+        <div class="panel-actions">
+          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
+          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveClickerConfig()">💾 儲存連點設置</button>
+        </div>
       </div>
 
       <!-- Panel 9: 自動引爆地雷 -->
@@ -901,24 +930,46 @@
           </div>
         </div>
 
-        <button class="btn btn-success btn-sm px-4 py-2" onclick="saveMineConfig()">💾 儲存地雷設置</button>
+        <div class="panel-actions">
+          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
+          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveMineConfig()">💾 儲存地雷設置</button>
+        </div>
       </div>
 
       <!-- Panel 10: 外部連結 -->
       <div id="links" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
           <div class="panel-title mb-1">外部連結與資源</div>
-          <div class="panel-subtitle">連線至線上查價工具或作者網站。</div>
+          <div class="panel-subtitle">連線至線上查價工具或作者官方站點。</div>
         </div>
 
-        <div class="card shadow-sm">
-          <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">網站導覽</h6>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('引導查價安裝網址')">前往查價工具網址
-                (台服/國際服)</button>
-              <button class="btn btn-outline-light btn-sm px-4 py-2" onclick="ahk.NeutronRunLabel('彈跳網頁')">前往 Sid
-                作者官方網站</button>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card shadow-sm h-100 border-secondary-subtle">
+              <div class="card-body p-3 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="fs-4">🏷️</span>
+                    <h6 class="card-title text-light mb-0">查價工具</h6>
+                  </div>
+                  <p class="text-secondary small mb-3">線上查價工具安裝引導，支援台服與國際服價格查詢。</p>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm w-100 py-2" onclick="ahk.NeutronRunLabel('引導查價安裝網址')">🚀 前往查價工具網址</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card shadow-sm h-100 border-secondary-subtle">
+              <div class="card-body p-3 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="fs-4">🌐</span>
+                    <h6 class="card-title text-light mb-0">Sid 作者官方網站</h6>
+                  </div>
+                  <p class="text-secondary small mb-3">瀏覽作者發布站，獲取最新版本更新與使用指南。</p>
+                </div>
+                <button type="button" class="btn btn-outline-light btn-sm w-100 py-2" onclick="ahk.NeutronRunLabel('彈跳網頁')">🔗 前往官方發布網站</button>
+              </div>
             </div>
           </div>
         </div>
