@@ -44,8 +44,9 @@ NeutronLoadLocal(neutronInstance, fileName) {
 }
 
 ; === 腳本最上方（自動執行段） ===
-GroupAdd, DualWins, Path of Exile
-GroupAdd, DualWins, Path of Exile 2
+GroupAdd, PoEGames, Path of Exile
+GroupAdd, PoEGames, Path of Exile 2
+GroupAdd, DualWins, ahk_group PoEGames
 GroupAdd, DualWins, % "ahk_id " . neutron.hWnd
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
@@ -308,9 +309,7 @@ return
 		ToolTip("(ESC)，關閉面板，返回遊戲模式")
 return
 
-
-
-#ifwinactive, ahk_group DualWins
+#ifwinactive, ahk_group PoEGames
 
 	HK_WinZ_Label:
 		gosub,呼叫菜單
@@ -349,8 +348,6 @@ return
 		}
 		neutron.Hide()
 	return
-
-
 
 	;---------------------------------------------------------
 
@@ -459,38 +456,28 @@ return
 	return
 
 	防呆藥水1計時器:
-		if 防呆藥水鎖1 = 無
-			settimer,防呆藥水1計時器,off
-		if 防呆藥水鎖1 = 有
-			防呆藥水鎖1 = 無
+		settimer,防呆藥水1計時器,off
+		防呆藥水鎖1 = 無
 	return
 
 	防呆藥水2計時器:
-		if 防呆藥水鎖2 = 無
-			settimer,防呆藥水2計時器,off
-		if 防呆藥水鎖2 = 有
-			防呆藥水鎖2 = 無
+		settimer,防呆藥水2計時器,off
+		防呆藥水鎖2 = 無
 	return
 
 	防呆藥水3計時器:
-		if 防呆藥水鎖3 = 無
-			settimer,防呆藥水3計時器,off
-		if 防呆藥水鎖3 = 有
-			防呆藥水鎖3 = 無
+		settimer,防呆藥水3計時器,off
+		防呆藥水鎖3 = 無
 	return
 
 	防呆藥水4計時器:
-		if 防呆藥水鎖4 = 無
-			settimer,防呆藥水4計時器,off
-		if 防呆藥水鎖4 = 有
-			防呆藥水鎖4 = 無
+		settimer,防呆藥水4計時器,off
+		防呆藥水鎖4 = 無
 	return
 
 	防呆藥水5計時器:
-		if 防呆藥水鎖5 = 無
-			settimer,防呆藥水5計時器,off
-		if 防呆藥水鎖5 = 有
-			防呆藥水鎖5 = 無
+		settimer,防呆藥水5計時器,off
+		防呆藥水鎖5 = 無
 	return
 
 	;[1|2|3|4|5藥劑按鍵區]---------------------------------------------------------------
@@ -797,7 +784,6 @@ return
 	return
 
 	返回首頁:
-		clipboard =
 		Send {left %返回頁數%}
 		當前倉庫頁 = 0
 	return
@@ -882,15 +868,20 @@ return
 	return
 
 	三次判定未鑑定物品:
-		IfInString,暫存複製內容,物品種類: 頭部	,gosub,前往未鑑定稀有頭盔
-			IfInString,暫存複製內容,物品種類: 胸甲	,gosub,前往未鑑定稀有衣服
-				IfInString,暫存複製內容,物品種類: 腰帶	,gosub,前往未鑑定稀有腰帶
-					IfInString,暫存複製內容,物品種類: 手套	,gosub,前往未鑑定稀有手套
-						IfInString,暫存複製內容,物品種類: 鞋子	,gosub,前往未鑑定稀有鞋子
-							IfInString,暫存複製內容,物品種類: 戒指	,gosub,前往未鑑定稀有飾品
-								IfInString,暫存複製內容,物品種類: 項鍊	,gosub,前往未鑑定稀有飾品
-									if 暫存複製內容 contains 物品種類: 爪,物品種類: 匕首,物品種類: 法杖,物品種類: 單手劍,物品種類: 細劍,物品種類: 單手斧,物品種類: 單手錘,物品種類: 權杖,物品種類: 符紋匕首,物品種類: 弓,物品種類: 長杖,物品種類: 雙手劍,物品種類: 雙手斧,物品種類: 雙手錘,物品種類: 征戰長杖
-										gosub,前往未鑑定稀有武器
+		if InStr(暫存複製內容, "物品種類: 頭部")
+			gosub, 前往未鑑定稀有頭盔
+		else if InStr(暫存複製內容, "物品種類: 胸甲")
+			gosub, 前往未鑑定稀有衣服
+		else if InStr(暫存複製內容, "物品種類: 腰帶")
+			gosub, 前往未鑑定稀有腰帶
+		else if InStr(暫存複製內容, "物品種類: 手套")
+			gosub, 前往未鑑定稀有手套
+		else if InStr(暫存複製內容, "物品種類: 鞋子")
+			gosub, 前往未鑑定稀有鞋子
+		else if InStr(暫存複製內容, "物品種類: 戒指") || InStr(暫存複製內容, "物品種類: 項鍊")
+			gosub, 前往未鑑定稀有飾品
+		else if 暫存複製內容 contains 物品種類: 爪,物品種類: 匕首,物品種類: 法杖,物品種類: 單手劍,物品種類: 細劍,物品種類: 單手斧,物品種類: 單手錘,物品種類: 權杖,物品種類: 符紋匕首,物品種類: 弓,物品種類: 長杖,物品種類: 雙手劍,物品種類: 雙手斧,物品種類: 雙手錘,物品種類: 征戰長杖
+			gosub, 前往未鑑定稀有武器
 	return
 
 	前往未鑑定稀有頭盔:
@@ -1272,115 +1263,122 @@ return
 	偵測對話框2:
 	return
 
+	;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
 
-;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
+	~*<^F::
+		if Toolbutton = 0
+			Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
+	return
 
-~*<^F::
-if Toolbutton = 0
-Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
-return
+	;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
 
-;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
+	~*LButton::
+		If 開始時間
+			return
+		開始時間:= A_TickCount
+		Hotkey, LButton up, 左鍵彈起標籤, On
+	return
 
-~*LButton::
-If 開始時間
-    return
-開始時間:= A_TickCount
-Hotkey, LButton up, 左鍵彈起標籤, On
-return
+	左鍵彈起標籤:
+		Hotkey, LButton up, 左鍵彈起標籤, Off
+		時間長度:= A_TickCount - 開始時間
+		if (時間長度 < 100)
+		{
 
-左鍵彈起標籤:
-Hotkey, LButton up, 左鍵彈起標籤, Off
-時間長度:= A_TickCount - 開始時間
-if (時間長度 < 100)
-{
+		}
+		else if (時間長度 >= 100)
+		{
+			if Toolbutton = 1
+			{
+				; 若對話框依然開啟（例如在對話框內拖曳選取文字），則維持文字模式，不切換回遊戲模式
+				if (IsPoEDialogActive(20) > 0)
+				{
+					開始時間:= ""
+					return
+				}
+				Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
+			}
+		}
+		開始時間:= ""
+	return
 
-}
-else if (時間長度 >= 100)
-{
-	if Toolbutton = 1
-	Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
-}
-開始時間:= ""
-return
+	~<!<^LButton::
+		if Toolbutton = 0
+			Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
+	return
 
-~<!<^LButton::
-if Toolbutton = 0
-Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
-return
+	;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
 
-;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
+	~*^LButton::
+		if 連點模式 = [Ctrl + 左鍵]
+		{
 
-~*^LButton::
-if 連點模式 = [Ctrl + 左鍵]
-{
+			Sleep 100
+			GetKeyState, stateShift, Shift
+			GetKeyState, stateCtrl , Ctrl
+			if (stateCtrl = "D" or stateShift = "D")
+			{
+				clickStop:= false
+				Loop
+				{
+					If ( clickStop = true )
+					{
+						clickStop:= false
+						return
+					}
+					Click
+					sleep %滑鼠連點速度%
+				}
+			}
 
-Sleep 100
-GetKeyState, stateShift, Shift
-GetKeyState, stateCtrl , Ctrl
-if (stateCtrl = "D" or stateShift = "D")
- {
-	clickStop:= false
-	Loop
-	{
-		If ( clickStop = true )
+		}
+	return
+
+	~*^LButton UP::
+		if 連點模式 = [Ctrl + 左鍵]
+			clickStop:= true
+	return
+
+	~*MButton::
+		if 連點模式 = 滑鼠滾輪按壓
 		{
 			clickStop:= false
-			return
+			Loop
+			{
+				If ( clickStop = true )
+				{
+					clickStop:= false
+					return
+				}
+				Else
+				{
+					Click
+					sleep %滑鼠連點速度%
+				}
+			}
 		}
-		Click
-		sleep %滑鼠連點速度%
-	}
- }
+	return
 
-}
-return
+	~*MButton Up::
+		if 連點模式 = 滑鼠滾輪按壓
+			clickStop:= true
+	return
 
-~*^LButton UP::
-if 連點模式 = [Ctrl + 左鍵]
-clickStop:= true
-return
+	;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
 
-~*MButton::
-if 連點模式 = 滑鼠滾輪按壓
-{
-	clickStop:= false
-	Loop
-	{
-	If ( clickStop = true )
-		{
-		clickStop:= false
-		return
-		}
-		Else
-		{
-		 Click
-		 sleep %滑鼠連點速度%
-		}
-	}
-}
-return
+	讀取滑鼠連點速度:
+		Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
+		if 滑鼠連點速度 = error
+			滑鼠連點速度 = 25
+	Return
 
-~*MButton Up::
-if 連點模式 = 滑鼠滾輪按壓
-clickStop:= true
-return
+	讀取連點模式:
+		Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
+	Return
 
-;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
+	;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
-讀取滑鼠連點速度:
- Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
- if 滑鼠連點速度 = error
- 滑鼠連點速度 = 25
-Return
-
-讀取連點模式:
- Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
-Return
-
-;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
-
-HK_Insert_Label:
+	HK_Insert_Label:
 (StopUser = 0 ? (StopUser:= 1,ToolTip("循環技能已開啟")) : (StopUser:= 0,ToolTip("循環技能已關閉")))
 if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error" or 循環技能時間1 = "error" or 循環技能時間2 = "error" or 循環技能時間3 = "error")
 {
@@ -1495,54 +1493,69 @@ Return
 ;[End快速組隊(熱鍵)]------------------------------------------------------------------------------------------------------------
 
 HK_End_Label:
-if (快速組隊提醒 = "關閉")
-{
 	Gosub,獲取對方id
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
-	Clipboard = /invite %移除後完好的ID%
-	send {enter}
-	Send ^{V}
-	sleep 1
-	Send {enter}
-}
-if 快速組隊提醒 = 開啟
-{
-   Gosub,獲取對方id
-   msgbox,4,提醒,即將組隊的玩家是" %移除後完好的ID% " 確定嗎?`r按鍵[ Enter ] 立即組隊，按鍵[ N ]取消。`r不需提醒可使用[Win + End]關閉。
-   IfMsgBox Yes
+	if (移除後完好的ID = "")
+		return
+
+	if 快速組隊提醒 = 關閉
 	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
-	Clipboard = /invite %移除後完好的ID%
-	send {enter}
-	Send ^{V}
-	sleep 1
-	Send {enter}
+		WinActivate ,Path of Exile
+		WinWaitActive ,Path of Exile, , 1
+		BlockInput On
+		send {enter}
+		sleep 50
+		SendInput {Text}/invite %移除後完好的ID%
+		sleep 25
+		Send {enter}
+		BlockInput Off
 	}
-   else
+	if 快速組隊提醒 = 開啟
 	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
+		Gosub,獲取對方id
+		msgbox,4,提醒,即將組隊的玩家是" %移除後完好的ID% " 確定嗎?`r按鍵[ Enter ] 立即組隊，按鍵[ N ]取消。`r不需提醒可使用[Win + End]關閉。
+		IfMsgBox Yes
+		{
+			WinActivate ,Path of Exile
+			WinWaitActive ,Path of Exile, , 1
+			BlockInput On
+			send {enter}
+			sleep 50
+			SendInput {Text}/invite %移除後完好的ID%
+			sleep 25
+			Send {enter}
+			BlockInput Off
+		}
+		else
+		{
+			WinActivate ,Path of Exile
+			WinWait ,Path of Exile
+		}
 	}
-}
 Return
 
 獲取對方id:
-Send ^{enter}
-sleep 1
-Send ^{A}
-sleep 1
-Send ^{C}
-sleep 1
-Send {enter}
-暫存對方ID = %Clipboard%
-對方ID = %暫存對方ID%
-gosub,清除目標ID前面@
+	移除後完好的ID:= ""
+	ClipSaved := ClipboardAll
+	Clipboard := ""
+	Send ^{enter}
+	sleep 30
+	Send ^{a}
+	sleep 30
+	Send ^{c}
+	ClipWait, 0.3
+	Send {enter}
+	暫存對方ID:= Clipboard
+	Clipboard := ClipSaved
+	ClipSaved := ""
+	gosub,清除目標ID前面@
 return
 
 清除目標ID前面@:
-移除後完好的ID:= Trim(對方ID, OmitChars:= "@")
+	; 使用正則式擷取玩家名稱（以空格、冒號或換行截斷，避免帶入私訊文字內容）
+	if RegExMatch(暫存對方ID, "^@?([^\s:：]+)", m)
+		移除後完好的ID := m1
+	else
+		移除後完好的ID := Trim(暫存對方ID, " @`r`n`t")
 return
 
 HK_WinEnd_ModeLabel:
@@ -1594,25 +1607,22 @@ return
 ;[F1返回角色(指令)]------------------------------------------------------------------------------------------------------
 
 返角:
-Critical
 	gosub,暫停讀秒循環喝水_Label
 	BlockInput On
-        Send {Enter}
-        Sleep 100
-        Send {NumpadDiv}
-        Send {Shift down}
-	Send exit
-        Send {Shift up}
-        Send {Enter}
+	Send {Enter}
+	Sleep 50
+	SendInput {Text}/exit
+	Sleep 25
+	Send {Enter}
 	BlockInput Off
-	ToolTip("3秒後自動Enter登入")
+	ToolTip("3秒後自動Enter登入 (按任意鍵可取消)")
 	Sleep 1000
 	ToolTip("2秒後自動Enter登入")
 	Sleep 1000
 	ToolTip("1秒後自動Enter登入")
 	Sleep 1000
 	ToolTip("0秒後自動Enter登入")
-        Send {Enter}
+	Send {Enter}
 return
 
 讀取F1按鍵模式:
@@ -1669,9 +1679,8 @@ return
 暫離:
 BlockInput On
 send {enter}
-sleep 25
-Clipboard = /afk
-Send ^{V}
+sleep 50
+SendInput {Text}/afk
 sleep 25
 send {enter}
 BlockInput Off
@@ -1680,9 +1689,8 @@ return
 勿擾:
 BlockInput On
 send {enter}
-sleep 25
-Clipboard = /dnd
-Send ^{V}
+sleep 50
+SendInput {Text}/dnd
 sleep 25
 send {enter}
 BlockInput Off
@@ -1691,9 +1699,8 @@ Return
 自動回復:
 BlockInput On
 send {enter}
-sleep 25
-Clipboard = /autoreply %自動回復內容%
-Send ^{V}
+sleep 50
+SendInput {Text}/autoreply %自動回復內容%
 sleep 25
 send {enter}
 BlockInput Off
@@ -2339,7 +2346,6 @@ Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
 Return
 
 註冊動態熱鍵:
-Hotkey, IfWinActive, ahk_group DualWins
 keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2348,8 +2354,30 @@ Loop, parse, keysList, % ","
     lbl:= "HK_" . kName . "_Label"
     if (hkVal != "" && hkVal != "ERROR")
     {
+								; 呼叫菜單 (WinZ) 需在遊戲與工具箱 UI 視窗 (DualWins) 均可觸發
+								; 其餘所有遊戲操作熱鍵限定僅在遊戲視窗 (PoEGames) 生效
+        if (kName = "WinZ")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
+
+        cleanK:= CleanKeyName(hkVal)
+        if (cleanK = "Space" || cleanK = "space")
+        {
+												; Space 鍵強制作為穿透熱鍵 (~*$)，保證在對話框或未攔截時輸入空格不受阻
+            finalHk:= "~*$" . cleanK
+        }
+        else
+        {
+												; 帶有修飾符的自訂熱鍵補上 $ 防止 Send 自觸發
+            if InStr(hkVal, "$")
+                finalHk:= hkVal
+            else
+                finalHk:= "$" . hkVal
+        }
+
         try {
-            Hotkey, %hkVal%, %lbl%, On
+            Hotkey, %finalHk%, %lbl%, On
         }
     }
 
@@ -2360,6 +2388,7 @@ Loop, parse, keysList, % ","
         {
             winHk:= "#" . cleanK
             winLbl:= "HK_Win" . kName . "_ModeLabel"
+            Hotkey, IfWinActive, ahk_group PoEGames
             try {
                 Hotkey, %winHk%, %winLbl%, On
             }
@@ -2370,7 +2399,6 @@ Hotkey, IfWinActive
 Return
 
 解開動態熱鍵:
-Hotkey, IfWinActive, ahk_group DualWins
 keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2378,8 +2406,21 @@ Loop, parse, keysList, % ","
     hkVal:= 快捷鍵_%kName%
     if (hkVal != "" && hkVal != "ERROR")
     {
+        if (kName = "WinZ")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
+
+        cleanK:= CleanKeyName(hkVal)
+        if (cleanK = "Space" || cleanK = "space")
+            finalHk:= "~*$" . cleanK
+        else if InStr(hkVal, "$")
+            finalHk:= hkVal
+        else
+            finalHk:= "$" . hkVal
+
         try {
-            Hotkey, %hkVal%, Off
+            Hotkey, %finalHk%, Off
         }
     }
     if (kName = "F1" || kName = "F2" || kName = "F3" || kName = "F7" || kName = "End")
@@ -2388,6 +2429,7 @@ Loop, parse, keysList, % ","
         if (cleanK != "")
         {
             winHk:= "#" . cleanK
+            Hotkey, IfWinActive, ahk_group PoEGames
             try {
                 Hotkey, %winHk%, Off
             }
@@ -2404,7 +2446,13 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, h
 	快捷鍵_F2:= hkF2
 	快捷鍵_F3:= hkF3
 	快捷鍵_WinZ:= hkWinZ
-	快捷鍵_Space:= hkSpace
+
+	cleanSpace:= CleanKeyName(hkSpace)
+	if (cleanSpace = "Space" || cleanSpace = "space")
+		快捷鍵_Space:= "~*space"
+	else
+		快捷鍵_Space:= hkSpace
+
 	快捷鍵_Insert:= hkInsert
 	快捷鍵_End:= hkEnd
 
@@ -2435,7 +2483,7 @@ CheckDialogColorMatch(targetX, targetY, savedColor, tolerance := 20)
 		return false
 
 	PixelGetColor, curColor, %targetX%, %targetY%, Fast RGB
-	
+
 	; 解析 RGB 各分量 (0xRRGGBB)
 	rCur := (curColor >> 16) & 0xFF
 	gCur := (curColor >> 8) & 0xFF
