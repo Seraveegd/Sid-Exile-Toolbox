@@ -204,6 +204,14 @@ if 地雷杖模式 = ERROR
 {
 	地雷杖模式 = 關閉
 }
+if 地雷按鍵 = ERROR
+{
+	地雷按鍵 = Q
+}
+if 煙霧地雷 = ERROR
+{
+	煙霧地雷 = W
+}
 if 引爆延遲1 = ERROR
 {
 	引爆延遲1 = 300
@@ -300,22 +308,7 @@ return
 		ToolTip("(ESC)，關閉面板，返回遊戲模式")
 return
 
-GetDriveTailSerial()
-{
-	for objItem in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_PhysicalMedia")
-	{
-		serial:= objItem.SerialNumber
-		if (serial != "" && !InStr(serial, "00000000"))
-		{
-			clean:= RegExReplace(serial, "[^a-zA-Z0-9]")
-			if (StrLen(clean) >= 12)
-				return SubStr(clean, -11)
-			else
-				return clean
-		}
-	}
-	return "UNKNOWN"
-}
+
 
 #ifwinactive, ahk_group DualWins
 
@@ -329,7 +322,8 @@ GetDriveTailSerial()
 	{
 		ToolTip, %label%, 0, 40
 		SetTimer, RemoveToolTip, 3000
-		WinActivate ,Path of Exile
+		if WinActive("ahk_group DualWins")
+			WinActivate
 		return
 
 		RemoveToolTip:
@@ -356,11 +350,7 @@ GetDriveTailSerial()
 		neutron.Hide()
 	return
 
-	提醒停止按鍵:
-		ToolTip("提醒:長按[ ~ ]停止運作")
-		if(GetKeyState("~","P"))
-			settimer,提醒停止按鍵,off
-	return
+
 
 	;---------------------------------------------------------
 
@@ -642,7 +632,7 @@ GetDriveTailSerial()
 				if 煙霧地雷 = E
 				{
 					send {d up}
-					sleep %引爆延遲1%
+					sleep %引爆延遲2%
 					send {d}
 				}
 			}
@@ -681,7 +671,7 @@ GetDriveTailSerial()
 				if 煙霧地雷 = R
 				{
 					send {d up}
-					sleep %引爆延遲1%
+					sleep %引爆延遲2%
 					send {d}
 				}
 			}
@@ -720,7 +710,7 @@ GetDriveTailSerial()
 				if 煙霧地雷 = T
 				{
 					send {d up}
-					sleep %引爆延遲1%
+					sleep %引爆延遲2%
 					send {d}
 				}
 			}
@@ -1330,6 +1320,7 @@ GetKeyState, stateShift, Shift
 GetKeyState, stateCtrl , Ctrl
 if (stateCtrl = "D" or stateShift = "D")
  {
+	clickStop:= false
 	Loop
 	{
 		If ( clickStop = true )
@@ -1353,6 +1344,7 @@ return
 ~*MButton::
 if 連點模式 = 滑鼠滾輪按壓
 {
+	clickStop:= false
 	Loop
 	{
 	If ( clickStop = true )
@@ -1385,16 +1377,6 @@ Return
 讀取連點模式:
  Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
 Return
-
-掃描開始左上2_X:= % 對方背包左上_X
-掃描開始左上2_Y:= % 對方背包左上_Y
-掃描開始右下2_X:= % 對方背包右下_X
-掃描開始右下2_Y:= % 對方背包右下_Y
-掃描水平數量2:= 12
-掃描垂直數量2:= 5
-背包每格寬2:= floor((掃描開始右下2_X - 掃描開始左上2_X) / 掃描水平數量2)
-背包每格高2:= floor((掃描開始右下2_Y - 掃描開始左上2_Y) / 掃描垂直數量2)
-return
 
 ;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
@@ -1432,14 +1414,15 @@ IfWinActive,Path of Exile
 {
 if Toolbutton = 0
  {
-if 循環技能時間1 = OFF
+if (循環技能時間1 = "OFF" || 循環技能時間1 = "Off")
 {
  Return
 }
-if not(GetKeyState("Ctrl","P"))
-if not(GetKeyState("Shift","P"))
+if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
+{
 send %循環技能1%
 send {BS}
+}
  }
 }
 Return
@@ -1449,14 +1432,15 @@ IfWinActive,Path of Exile
 {
 if Toolbutton = 0
  {
-if 循環技能時間2 = OFF
+if (循環技能時間2 = "OFF" || 循環技能時間2 = "Off")
 {
  Return
 }
-if not(GetKeyState("Ctrl","P"))
-if not(GetKeyState("Shift","P"))
+if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
+{
 send %循環技能2%
 send {BS}
+}
  }
 }
 Return
@@ -1466,14 +1450,15 @@ IfWinActive,Path of Exile
 {
 if Toolbutton = 0
  {
-if 循環技能時間3 = OFF
+if (循環技能時間3 = "OFF" || 循環技能時間3 = "Off")
 {
  Return
 }
-if not(GetKeyState("Ctrl","P"))
-if not(GetKeyState("Shift","P"))
+if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
+{
 send %循環技能3%
 send {BS}
+}
  }
 }
 Return
@@ -1636,7 +1621,7 @@ Return
 
 ;[F2回復模式(熱鍵)]------------------------------------------------------------------------------------------------------
 
-F2::
+HK_F2_Label:
 if Toolbutton = 1
 {
 ToolTip("您現在是文字模式，請嘗試點擊一小段路 或 Enter")
@@ -1784,7 +1769,7 @@ Critical
 		msgbox,16,提醒,請先更改為背包顏色定位模式，並打開背包保持60格無任何物品，按下[F3]定位背包顏色。
 		return
 		}
-		if (藥劑類 = "error" or 傳奇裝 = "error" or 傳奇戒 = "error" or 守望石 = "error" or 勢力裝頁 = "error")
+		if (傳奇裝 = "error" or 傳奇戒 = "error" or 勢力裝頁 = "error")
 		{
 		msgbox,16,提醒,工具讀取到您的"快搜倉庫頁設置"並不完全，請前往設置。
 		return
@@ -1888,6 +1873,7 @@ return
 return
 
 一鍵清包:
+cleanF3Key:= CleanKeyName(快捷鍵_F3)
 send {ctrl down}
 loop % 掃描水平數量
 {
@@ -1895,11 +1881,10 @@ colIdx:= A_Index
 PosX:= Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	if (InStr(清包模式, "按壓"))
 	{
-		cleanF3Key:= CleanKeyName(快捷鍵_F3)
 		if not(GetKeyState(cleanF3Key,"P"))
 		{
 		send {ctrl up}
-		send {F3 up}
+		send {%cleanF3Key% up}
 		ToolTip,,,,3
 		return
 		}
@@ -1908,7 +1893,7 @@ PosX:= Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 	{
 		if (GetKeyState("~","P"))
 		{
-		send {F3 up}
+		send {%cleanF3Key% up}
 		send {ctrl up}
 		ToolTip,,,,3
 		return
@@ -1924,12 +1909,11 @@ PosY:= Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
 MouseClick,, % PosX, % PosY,1,0
 	if (InStr(清包模式, "按壓"))
 	{
-		cleanF3Key:= CleanKeyName(快捷鍵_F3)
 		ToolTip, % "鬆開[" . cleanF3Key . "]停止。", 0,22,3
 		if not(GetKeyState(cleanF3Key,"P"))
 		{
 		send {ctrl up}
-		send {F3 up}
+		send {%cleanF3Key% up}
 		ToolTip,,,,3
 		return
 		}
@@ -1939,7 +1923,7 @@ MouseClick,, % PosX, % PosY,1,0
 		ToolTip, % "長按[~]停止。", 0,22,3
 		if (GetKeyState("~","P"))
 		{
-		send {F3 up}
+		send {%cleanF3Key% up}
 		send {ctrl up}
 		ToolTip,,,,3
 		return
@@ -2483,6 +2467,8 @@ IsPoEDialogActive(tolerance := 20)
 $1::
 if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
 {
+	settimer,防呆藥水1計時器,off
+	防呆藥水鎖1 = 無
 	Send, 1
 }
 else
@@ -2490,6 +2476,8 @@ else
 	if (確認按鈕_X = "" || 確認按鈕_X = 0 || 確認按鈕_Y = "" || 確認按鈕_Y = 0)
 	{
 		ToolTip("尚未設定【確認按鈕】座標！請先在菜單設置中進行定位抓取。 ")
+		settimer,防呆藥水1計時器,off
+		防呆藥水鎖1 = 無
 		Send, 1
 		return
 	}
@@ -2528,6 +2516,8 @@ return
 $2::
 if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd) || !IsPoE1Active())
 {
+	settimer,防呆藥水2計時器,off
+	防呆藥水鎖2 = 無
 	Send, 2
 }
 else
@@ -2535,6 +2525,8 @@ else
 	if (重骰按鈕_X = "" || 重骰按鈕_X = 0 || 重骰按鈕_Y = "" || 重骰按鈕_Y = 0)
 	{
 		ToolTip("尚未設定【重骰按鈕】座標！請先在菜單設置中進行定位抓取。 ")
+		settimer,防呆藥水2計時器,off
+		防呆藥水鎖2 = 無
 		Send, 2
 		return
 	}
@@ -2553,6 +2545,8 @@ return
 $4::
 if (!GetKeyState("capslock","T") || Toolbutton = 1 || WinActive("ahk_id " . neutron.hWnd))
 {
+	settimer,防呆藥水4計時器,off
+	防呆藥水鎖4 = 無
 	Send, 4
 }
 else
@@ -2560,6 +2554,8 @@ else
 	if (寶石1_X = "" || 寶石1_X = 0 || 寶石1_Y = "" || 寶石1_Y = 0 || 寶石2_X = "" || 寶石2_X = 0 || 寶石2_Y = "" || 寶石2_Y = 0)
 	{
 		ToolTip("尚未設定交換寶石座標！請先在菜單設置中進行定位抓取。 ")
+		settimer,防呆藥水4計時器,off
+		防呆藥水鎖4 = 無
 		Send, 4
 		return
 	}
