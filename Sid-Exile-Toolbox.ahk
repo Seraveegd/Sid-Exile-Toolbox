@@ -286,6 +286,11 @@ OpenUISection(section) {
 	return
 
 	~*esc::
+		if (autoCraftActive)
+		{
+			autoCraftStopRequested := true
+			ToolTip("🛑 偵測到 Esc，正在停止自動洗詞...")
+		}
 		if (捕捉模式 = 1)
 		{
 			捕捉模式:= 0
@@ -294,7 +299,7 @@ OpenUISection(section) {
 		}
 		openI:= 0
 		Toolbutton:= 0
-		if WinActive("ahk_group PoEGames")
+		if (!autoCraftActive && WinActive("ahk_group PoEGames"))
 			ToolTip("(ESC)，關閉面板，返回遊戲模式")
 	return
 
@@ -3050,6 +3055,12 @@ return
 			slotX := Round(掃描開始左上_X + (colIdx - 1) * 背包步長_X)
 			Loop, 5
 			{
+				if (IsAutoCraftStopped())
+				{
+					ToolTip("🛑 已手動或切換視窗停止自動洗詞。")
+					stoppedEarly := true
+					break
+				}
 				rowIdx := A_Index
 				slotIdx := (colIdx - 1) * 5 + rowIdx
 				if (清包保留Array[slotIdx])
@@ -3315,6 +3326,12 @@ MatchCraftRules(modText, whitelistStr, blacklistStr, matchLogic)
 	}
 }
 
+IsAutoCraftStopped()
+{
+	global autoCraftStopRequested
+	return (autoCraftStopRequested || GetKeyState("Esc", "P") || GetKeyState("Esc") || !IsPoE1Active())
+}
+
 CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 {
 	global autoCraftStopRequested
@@ -3333,13 +3350,18 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 
 	Loop
 	{
-		if (autoCraftStopRequested || GetKeyState("Esc", "P") || !IsPoE1Active())
+		if (IsAutoCraftStopped())
 		{
 			ToolTip("🛑 已手動或切換視窗停止自動洗詞。")
 			return "STOP"
 		}
 
 		itemText := CopyPoEItemAt(tgtX, tgtY)
+		if (IsAutoCraftStopped())
+		{
+			ToolTip("🛑 已手動或切換視窗停止自動洗詞。")
+			return "STOP"
+		}
 		if (itemText = "")
 		{
 			if (mapOnly && tries = 0)
