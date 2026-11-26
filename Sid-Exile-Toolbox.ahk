@@ -265,6 +265,12 @@ return
 ~*esc::
 	IfWinActive,rchin-poe-trade
 		WinActivate ,Path of Exile
+	if (捕捉模式 = 1)
+	{
+		捕捉模式:= 0
+		SetTimer, UpdateCaptureOverlay, Off
+		HideCaptureOverlay()
+	}
 	openI:= 0
 	Toolbutton:= 0
 	ifwinactive, Path of Exile
@@ -1964,6 +1970,8 @@ return
 HK_F7_Label:
 	if (捕捉模式 = 1)
 	{
+		SetTimer, UpdateCaptureOverlay, Off
+		HideCaptureOverlay()
 		MouseGetPos, capX, capY
 		PixelGetColor, capC, %capX%, %capY%, RGB
 		ToolTip("")
@@ -2073,6 +2081,13 @@ HK_F7_Label:
 		}
 		try {
 			neutron.wnd.syncDataFromAHK()
+		}
+		if (捕捉類型 = "color" && (捕捉代號 = 5 || 捕捉代號 = 6))
+		{
+			; 短暫於最終採樣座標顯示亮青色鎖定框，讓使用者確認實際檢測區塊落點
+			ShowCaptureOverlay(capX, capY, "00E5FF")
+			Sleep, 1000
+			HideCaptureOverlay()
 		}
 		neutron.Show()
 		捕捉模式:= 0
@@ -2236,7 +2251,15 @@ StartAnchorCapture(neutron, type, id) {
 		Hotkey, %hkF7Val%, HK_F7_Label, On
 	}
 	neutron.Hide()
-	ToolTip("📍 請將滑鼠游標移至目標位置，按下 F7 完成抓取與儲存")
+	if (type = "color" && (id = 5 || id = 6))
+	{
+		SetTimer, UpdateCaptureOverlay, 30
+		ToolTip("📍 請將滑鼠框對準對話框黑幕（綠框=安全、紅框=貼邊），按 F7 完成抓取")
+	}
+	else
+	{
+		ToolTip("📍 請將滑鼠游標移至目標位置，按下 F7 完成抓取與儲存")
+	}
 }
 
 NeutronGetSettings(neutron) {
@@ -2529,6 +2552,60 @@ IsPoEDialogActive(tolerance := 20)
 		return 2
 	return 0
 }
+
+ShowCaptureOverlay(cx, cy, borderColor := "00FF88")
+{
+	static lastColor := "", overlayHwnd := 0
+	w := 68
+	h := 18
+	b := 2
+	x := cx - (w // 2)
+	y := cy - (h // 2)
+
+	if (!overlayHwnd || !WinExist("ahk_id " . overlayHwnd) || lastColor != borderColor)
+	{
+		Gui, CaptureOverlay:Destroy
+		Gui, CaptureOverlay:+AlwaysOnTop -Caption +ToolWindow +E0x20 +E0x08000000 -DPIScale +HwndoverlayHwnd
+		Gui, CaptureOverlay:Color, FF00FF
+		Gui, CaptureOverlay:Margin, 0, 0
+		Gui, CaptureOverlay:Add, Progress, % "x0 y0 w" . w . " h" . b . " Background" . borderColor, 0
+		Gui, CaptureOverlay:Add, Progress, % "x0 y" . (h - b) . " w" . w . " h" . b . " Background" . borderColor, 0
+		Gui, CaptureOverlay:Add, Progress, % "x0 y0 w" . b . " h" . h . " Background" . borderColor, 0
+		Gui, CaptureOverlay:Add, Progress, % "x" . (w - b) . " y0 w" . b . " h" . h . " Background" . borderColor, 0
+		Gui, CaptureOverlay:Show, % "x" . x . " y" . y . " w" . w . " h" . h . " NoActivate"
+		WinSet, TransColor, FF00FF, ahk_id %overlayHwnd%
+		lastColor := borderColor
+	}
+	else
+	{
+		Gui, CaptureOverlay:Show, % "x" . x . " y" . y . " w" . w . " h" . h . " NoActivate"
+	}
+}
+
+HideCaptureOverlay()
+{
+	Gui, CaptureOverlay:Hide
+}
+
+UpdateCaptureOverlay:
+	if (捕捉模式 != 1 || 捕捉類型 != "color" || (捕捉代號 != 5 && 捕捉代號 != 6))
+	{
+		SetTimer, UpdateCaptureOverlay, Off
+		HideCaptureOverlay()
+		return
+	}
+	MouseGetPos, ovX, ovY
+	PixelGetColor, ovCenterC, %ovX%, %ovY%, Fast RGB
+	ovSafe := false
+	if (ovX - 24 >= 0)
+	{
+		PixelGetColor, ovLeftC, % (ovX - 24), %ovY%, Fast RGB
+		PixelGetColor, ovRightC, % (ovX + 24), %ovY%, Fast RGB
+		if (IsColorWithinTolerance(ovLeftC, ovCenterC, 20) && IsColorWithinTolerance(ovRightC, ovCenterC, 20))
+			ovSafe := true
+	}
+	ShowCaptureOverlay(ovX, ovY, ovSafe ? "00FF88" : "FF4444")
+return
 
 ;[探險討價還價(圖貞 Haggle) 快捷鍵]--------------------------------------------------------------------------------------
 
