@@ -858,7 +858,7 @@
       <div id="clicker" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
           <div class="panel-title mb-1">滑鼠連點設置</div>
-          <div class="panel-subtitle">自動連續點擊滑鼠左鍵。</div>
+          <div class="panel-subtitle">自動連續點擊滑鼠左鍵（左鍵組合模式需長按超過 0.2 秒啟動，避免單點誤觸）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -868,7 +868,9 @@
               <label for="clickMode" class="form-label">連點觸發模式</label>
               <select id="clickMode" class="form-select">
                 <option value="滑鼠滾輪按壓">滑鼠滾輪按壓</option>
-                <option value="[Ctrl + 左鍵]">[Ctrl + 左鍵]</option>
+                <option value="[Ctrl + 左鍵]">[Ctrl + 左鍵] (存倉連點)</option>
+                <option value="[Shift + 左鍵]">[Shift + 左鍵] (做裝連點)</option>
+                <option value="[Ctrl / Shift + 左鍵]">[Ctrl / Shift + 左鍵] (存倉+做裝雙用)</option>
               </select>
             </div>
             <div class="mb-1">

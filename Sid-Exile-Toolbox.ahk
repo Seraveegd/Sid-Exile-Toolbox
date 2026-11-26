@@ -1283,56 +1283,50 @@ OpenUISection(section) {
 	;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
 
 	~*^LButton::
-		if 連點模式 = [Ctrl + 左鍵]
+		if (連點模式 = "[Ctrl + 左鍵]" || 連點模式 = "[Ctrl / Shift + 左鍵]")
 		{
-
-			Sleep 100
-			GetKeyState, stateShift, Shift
-			GetKeyState, stateCtrl , Ctrl
-			if (stateCtrl = "D" or stateShift = "D")
-			{
-				Loop
-				{
-					If (clickStop = true || !WinActive("ahk_group PoEGames"))
-					{
-						clickStop:= false
-						return
-					}
-					Click
-					sleep %滑鼠連點速度%
-				}
-			}
-
+			if (!autoClickRunning)
+				SetTimer, AutoClickStart, -200
 		}
 	return
 
-	~*^LButton UP::
-		if 連點模式 = [Ctrl + 左鍵]
-			clickStop:= true
+	~*+LButton::
+		if (連點模式 = "[Shift + 左鍵]" || 連點模式 = "[Ctrl / Shift + 左鍵]")
+		{
+			if (!autoClickRunning)
+				SetTimer, AutoClickStart, -200
+		}
+	return
+
+	AutoClickStart:
+		if (autoClickRunning || !WinActive("ahk_group PoEGames") || !GetKeyState("LButton", "P"))
+			return
+		if !IsAutoClickModifierHeld(連點模式)
+			return
+
+		autoClickRunning := true
+		Loop
+		{
+			if (!WinActive("ahk_group PoEGames") || !GetKeyState("LButton", "P") || !IsAutoClickModifierHeld(連點模式))
+				break
+			clickKeys := (GetKeyState("Ctrl", "P") ? "^" : "") . (GetKeyState("Shift", "P") ? "+" : "")
+			SendInput, %clickKeys%{Click}
+			Sleep, % 滑鼠連點速度
+		}
+		autoClickRunning := false
 	return
 
 	~*MButton::
-		if 連點模式 = 滑鼠滾輪按壓
+		if (連點模式 = "滑鼠滾輪按壓")
 		{
 			Loop
 			{
-				If (clickStop = true || !WinActive("ahk_group PoEGames"))
-				{
-					clickStop:= false
-					return
-				}
-				Else
-				{
-					Click
-					sleep %滑鼠連點速度%
-				}
+				if (!WinActive("ahk_group PoEGames") || !GetKeyState("MButton", "P"))
+					break
+				Click
+				Sleep, % 滑鼠連點速度
 			}
 		}
-	return
-
-	~*MButton Up::
-		if 連點模式 = 滑鼠滾輪按壓
-			clickStop:= true
 	return
 
 	;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
@@ -2452,6 +2446,19 @@ NeutronSaveGemSwapConfig(neutron, weaponSwap) {
 IsPoE1Active()
 {
 	return WinActive("Path of Exile") && !WinActive("Path of Exile 2")
+}
+
+IsAutoClickModifierHeld(mode)
+{
+	ctrlHeld := GetKeyState("Ctrl", "P")
+	shiftHeld := GetKeyState("Shift", "P")
+	if (mode = "[Ctrl + 左鍵]")
+		return ctrlHeld
+	if (mode = "[Shift + 左鍵]")
+		return shiftHeld
+	if (mode = "[Ctrl / Shift + 左鍵]")
+		return (ctrlHeld || shiftHeld)
+	return false
 }
 
 IsColorWithinTolerance(c1, c2, tolerance := 20)
