@@ -634,6 +634,17 @@ function onCraftPresetSelect() {
     if (elLogic && p.logic) elLogic.value = p.logic;
 }
 
+function refreshCraftPresets(presetsJson, selectedName) {
+    try {
+        var list = (typeof presetsJson === 'string') ? JSON.parse(presetsJson) : presetsJson;
+        renderCraftPresets(list);
+        var sel = document.getElementById('craftPresetSelect');
+        if (sel && selectedName && craftPresetsCache[selectedName]) {
+            sel.value = selectedName;
+        }
+    } catch (e) {}
+}
+
 function saveCraftPreset() {
     if (typeof ahk === 'undefined') return;
     var nameInput = document.getElementById('craftPresetName');
@@ -648,8 +659,6 @@ function saveCraftPreset() {
         document.getElementById('craftBlacklist').value,
         document.getElementById('craftMatchLogic').value
     );
-    var sel = document.getElementById('craftPresetSelect');
-    if (sel) sel.value = name;
 }
 
 function deleteCraftPreset() {

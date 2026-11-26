@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
@@ -2525,15 +2525,26 @@ NeutronSaveCraftPreset(neutron, presetName, whitelist, blacklist, matchLogic) {
 	cleanName := Trim(StrReplace(StrReplace(StrReplace(presetName, "=", "_"), "`r", ""), "`n", ""))
 	if (cleanName = "")
 		return
-	wlEnc := StrReplace(StrReplace(whitelist, "`r", ""), "`n", "§NL§")
-	blEnc := StrReplace(StrReplace(blacklist, "`r", ""), "`n", "§NL§")
+	cleanWL := StrReplace(whitelist, "`r", "")
+	cleanBL := StrReplace(blacklist, "`r", "")
+	wlEnc := StrReplace(cleanWL, "`n", "§NL§")
+	blEnc := StrReplace(cleanBL, "`n", "§NL§")
 	val := matchLogic . "§PSEP§" . wlEnc . "§PSEP§" . blEnc
 	IniWrite, % val, sidtooldata.ini, 自動洗詞群組, % cleanName
-	gosub, 讀取洗詞設置
+
+	; 同步更新目前使用中的白/黑名單與匹配方式，確保立即生效
+	洗詞匹配邏輯 := matchLogic
+	洗詞白名單 := cleanWL
+	洗詞黑名單 := cleanBL
+	IniWrite, % 洗詞匹配邏輯, sidtooldata.ini, 自動洗詞設置, 洗詞匹配邏輯
+	IniWrite, % wlEnc, sidtooldata.ini, 自動洗詞設置, 洗詞白名單
+	IniWrite, % blEnc, sidtooldata.ini, 自動洗詞設置, 洗詞黑名單
+
+	gosub, 讀取洗詞群組
 	try {
-		neutron.wnd.syncDataFromAHK()
+		neutron.wnd.refreshCraftPresets(BuildCraftPresetsJson(), cleanName)
 	}
-	ToolTip("已儲存洗詞群組：【" . cleanName . "】")
+	ToolTip("已儲存/更新洗詞群組：【" . cleanName . "】")
 }
 
 NeutronDeleteCraftPreset(neutron, presetName) {
@@ -2542,9 +2553,9 @@ NeutronDeleteCraftPreset(neutron, presetName) {
 	if (cleanName = "")
 		return
 	IniDelete, sidtooldata.ini, 自動洗詞群組, % cleanName
-	gosub, 讀取洗詞設置
+	gosub, 讀取洗詞群組
 	try {
-		neutron.wnd.syncDataFromAHK()
+		neutron.wnd.refreshCraftPresets(BuildCraftPresetsJson(), "")
 	}
 	ToolTip("已刪除洗詞群組：【" . cleanName . "】")
 }
@@ -2924,6 +2935,10 @@ EscapeJsonStr(s) {
 		%cKey%_Y := (tmpY = "ERROR" || tmpY = "") ? 0 : tmpY
 	}
 
+	gosub, 讀取洗詞群組
+return
+
+讀取洗詞群組:
 	洗詞群組List := []
 	IniRead, presetSection, sidtooldata.ini, 自動洗詞群組
 	if (presetSection != "" && presetSection != "ERROR")
@@ -2989,14 +3004,9 @@ return
 	}
 	if (洗詞模式 = "改造石模式" || 洗詞模式 = "改造+增幅模式")
 	{
-		if (洗詞改造_X <= 0 || 洗詞蛻變_X <= 0 || 洗詞重鑄_X <= 0)
+		if (洗詞改造_X <= 0 || 洗詞蛻變_X <= 0 || 洗詞重鑄_X <= 0 || 洗詞增幅_X <= 0)
 		{
-			ToolTip("⚠️ 改造石模式需設定【改造石】、【蛻變石】與【重鑄石】座標！ ")
-			return
-		}
-		if (洗詞模式 = "改造+增幅模式" && 洗詞增幅_X <= 0)
-		{
-			ToolTip("⚠️ 改造+增幅模式需額外設定【增幅石】座標！ ")
+			ToolTip("⚠️ 改造石模式需設定【改造石】、【增幅石】、【蛻變石】與【重鑄石】座標！ ")
 			return
 		}
 	}
@@ -3081,7 +3091,7 @@ CopyPoEItemAt(tgtX, tgtY)
 	MouseMove, %tgtX%, %tgtY%, 0
 	Sleep, 30
 	Clipboard := ""
-	Send, ^c
+	Send, ^!c
 	ClipWait, 0.25
 	if (ErrorLevel)
 		return ""
@@ -3103,7 +3113,7 @@ UseCurrencyOnTarget(currX, currY, tgtX, tgtY, delayMs)
 
 ParsePoEItemInfo(itemText)
 {
-	info := {rarity: "", isCorrupted: false, isMap: false, modText: "", modLineCount: 0}
+	info := {rarity: "", isCorrupted: false, isMap: false, modText: "", modLineCount: 0, modCount: 0}
 	if InStr(itemText, "稀有度: 普通") || InStr(itemText, "Rarity: Normal")
 		info.rarity := "Normal"
 	else if InStr(itemText, "稀有度: 魔法") || InStr(itemText, "Rarity: Magic")
@@ -3118,7 +3128,7 @@ ParsePoEItemInfo(itemText)
 	if InStr(itemText, "物品種類: 地圖") || InStr(itemText, "Item Class: Maps")
 		info.isMap := true
 
-	; 擷取「物品等級 / Item Level」之後的純詞綴段落，排除名稱與基本資訊干擾
+	; 擷取「物品等級 / Item Level」之後的純詞綴段落，排除名稱、基本資訊與 { ... } 進階詞綴標記行
 	normalized := StrReplace(itemText, "`r", "")
 	blocks := StrSplit(normalized, "--------")
 	ilvlIdx := 0
@@ -3133,6 +3143,7 @@ ParsePoEItemInfo(itemText)
 	startIdx := (ilvlIdx > 0) ? (ilvlIdx + 1) : 2
 	modBuf := ""
 	lastExplicitCount := 0
+	advModCount := 0
 	Loop, % blocks.Length()
 	{
 		if (A_Index < startIdx)
@@ -3142,20 +3153,29 @@ ParsePoEItemInfo(itemText)
 			continue
 		if InStr(blk, "Note:") || InStr(blk, "分裂之物") || InStr(blk, "Synthesised")
 			continue
-		modBuf .= (modBuf != "" ? "`n" : "") . blk
-		if !InStr(blk, "(implicit)")
+		isImplicitBlk := InStr(blk, "(implicit)")
+		explicitLinesInBlk := 0
+		Loop, Parse, blk, `n
 		{
-			cnt := 0
-			Loop, Parse, blk, `n
+			ln := Trim(A_LoopField)
+			if (ln = "")
+				continue
+			if (SubStr(ln, 1, 1) = "{")
 			{
-				if (Trim(A_LoopField) != "")
-					cnt++
+				if (!isImplicitBlk && RegExMatch(ln, "i)^\{(Prefix|Suffix|前綴|後綴)"))
+					advModCount++
+				continue
 			}
-			lastExplicitCount := cnt
+			modBuf .= (modBuf != "" ? "`n" : "") . ln
+			if (!isImplicitBlk)
+				explicitLinesInBlk++
 		}
+		if (!isImplicitBlk && explicitLinesInBlk > 0)
+			lastExplicitCount := explicitLinesInBlk
 	}
 	info.modText := modBuf
 	info.modLineCount := lastExplicitCount
+	info.modCount := (advModCount > 0) ? advModCount : lastExplicitCount
 	return info
 }
 
@@ -3294,6 +3314,8 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 	tries := 0
 	unchangedCount := 0
 	prevText := ""
+	lastAction := ""
+	augAttemptedOnCurrent := false
 
 	Loop
 	{
@@ -3331,11 +3353,19 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 
 		if (tries > 0 && itemText = prevText)
 		{
-			unchangedCount++
-			if (unchangedCount >= 2)
+			; 若上一動作為增幅石且文字未變，表示該裝備為複合詞綴其實已滿 2 詞，改標記為已增幅不誤判為斷水
+			if (lastAction = "AUG" && !augAttemptedOnCurrent)
 			{
-				ToolTip("⚠️ 物品詞綴連續未變化（通貨可能已用盡），已安全停止。")
-				return "STOP"
+				augAttemptedOnCurrent := true
+			}
+			else if (lastAction != "AUG")
+			{
+				unchangedCount++
+				if (unchangedCount >= 2)
+				{
+					ToolTip("⚠️ 物品詞綴連續未變化（通貨可能已用盡），已安全停止。")
+					return "STOP"
+				}
 			}
 		}
 		else
@@ -3355,31 +3385,73 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 			if (info.rarity = "Rare")
 			{
 				UseCurrencyOnTarget(洗詞重鑄_X, 洗詞重鑄_Y, tgtX, tgtY, delayMs)
+				lastAction := "SCOUR"
+				augAttemptedOnCurrent := false
 				tries++
 				continue
 			}
 			if (info.rarity = "Normal")
 			{
 				UseCurrencyOnTarget(洗詞蛻變_X, 洗詞蛻變_Y, tgtX, tgtY, delayMs)
+				lastAction := "TRANS"
+				augAttemptedOnCurrent := false
 				tries++
 				continue
 			}
 			ruleRes := MatchCraftRules(info.modText, 洗詞白名單, 洗詞黑名單, 洗詞匹配邏輯)
-			if (ruleRes = "MATCH")
+			if (ruleRes = "BLACKLIST")
 			{
-				if (useVaal)
-					UseCurrencyOnTarget(洗詞瓦爾_X, 洗詞瓦爾_Y, tgtX, tgtY, delayMs)
-				return "SUCCESS"
-			}
-			if (ruleRes = "NOMATCH" && 洗詞模式 = "改造+增幅模式" && info.modLineCount = 1)
-			{
-				UseCurrencyOnTarget(洗詞增幅_X, 洗詞增幅_Y, tgtX, tgtY, delayMs)
+				UseCurrencyOnTarget(洗詞改造_X, 洗詞改造_Y, tgtX, tgtY, delayMs)
+				lastAction := "ALT"
+				augAttemptedOnCurrent := false
 				tries++
 				continue
 			}
-			UseCurrencyOnTarget(洗詞改造_X, 洗詞改造_Y, tgtX, tgtY, delayMs)
-			tries++
-			continue
+
+			if (洗詞模式 = "改造石模式")
+			{
+				if (ruleRes = "MATCH")
+				{
+					if (info.modCount < 2 && !augAttemptedOnCurrent)
+					{
+						UseCurrencyOnTarget(洗詞增幅_X, 洗詞增幅_Y, tgtX, tgtY, delayMs)
+						lastAction := "AUG"
+						augAttemptedOnCurrent := true
+						tries++
+						continue
+					}
+					if (useVaal)
+						UseCurrencyOnTarget(洗詞瓦爾_X, 洗詞瓦爾_Y, tgtX, tgtY, delayMs)
+					return "SUCCESS"
+				}
+				UseCurrencyOnTarget(洗詞改造_X, 洗詞改造_Y, tgtX, tgtY, delayMs)
+				lastAction := "ALT"
+				augAttemptedOnCurrent := false
+				tries++
+				continue
+			}
+			else
+			{
+				if (info.modCount < 2 && !augAttemptedOnCurrent)
+				{
+					UseCurrencyOnTarget(洗詞增幅_X, 洗詞增幅_Y, tgtX, tgtY, delayMs)
+					lastAction := "AUG"
+					augAttemptedOnCurrent := true
+					tries++
+					continue
+				}
+				if (ruleRes = "MATCH")
+				{
+					if (useVaal)
+						UseCurrencyOnTarget(洗詞瓦爾_X, 洗詞瓦爾_Y, tgtX, tgtY, delayMs)
+					return "SUCCESS"
+				}
+				UseCurrencyOnTarget(洗詞改造_X, 洗詞改造_Y, tgtX, tgtY, delayMs)
+				lastAction := "ALT"
+				augAttemptedOnCurrent := false
+				tries++
+				continue
+			}
 		}
 		else if (洗詞模式 = "點金+重鑄模式")
 		{
