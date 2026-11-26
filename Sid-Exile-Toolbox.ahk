@@ -12,6 +12,7 @@ SetWinDelay, 0
 SetControlDelay, 0
 CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
+SetTitleMatchMode, 3
 SetWorkingDir, %A_ScriptDir%
 
 if A_IsCompiled
@@ -44,8 +45,9 @@ NeutronLoadLocal(neutronInstance, fileName) {
 }
 
 ; === 腳本最上方（自動執行段） ===
-GroupAdd, DualWins, Path of Exile
-GroupAdd, DualWins, Path of Exile 2
+GroupAdd, PoEGames, Path of Exile
+GroupAdd, PoEGames, Path of Exile 2
+GroupAdd, DualWins, ahk_group PoEGames
 GroupAdd, DualWins, % "ahk_id " . neutron.hWnd
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
@@ -240,48 +242,48 @@ OpenUISection(section) {
 
 ;[熱鍵設置]------------------------------------------------------------------------------------------------------
 
-F9::
-	Suspend
-	ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作 ")
-	Pause,,1
-return
-
-F11::
-	reload
-return
-
-F12::
-	try {
-		neutron.wnd.showExitModal()
-	}
-	neutron.Show("w960 h680 Center")
-	SetTimer, 延遲結束工具, -3000
-return
-
-延遲結束工具:
-ExitApp
-return
-
-~*esc::
-	IfWinActive,rchin-poe-trade
-		WinActivate ,Path of Exile
-	if (捕捉模式 = 1)
-	{
-		捕捉模式:= 0
-		SetTimer, UpdateCaptureOverlay, Off
-		HideCaptureOverlay()
-	}
-	openI:= 0
-	Toolbutton:= 0
-	ifwinactive, Path of Exile
-		ToolTip("(ESC)，關閉面板，返回遊戲模式")
-return
-
 #ifwinactive, ahk_group DualWins
+
+	F9::
+		Suspend
+		ToolTip("工具暫停中，回復原始鍵盤功能，[F9]恢復運作 ")
+		Pause,,1
+	return
+
+	F11::
+		reload
+	return
+
+	F12::
+		try {
+			neutron.wnd.showExitModal()
+		}
+		neutron.Show("w960 h680 Center")
+		SetTimer, 延遲結束工具, -3000
+	return
+
+	延遲結束工具:
+	ExitApp
+	return
+
+	~*esc::
+		if (捕捉模式 = 1)
+		{
+			捕捉模式:= 0
+			SetTimer, UpdateCaptureOverlay, Off
+			HideCaptureOverlay()
+		}
+		openI:= 0
+		Toolbutton:= 0
+		if WinActive("ahk_group PoEGames")
+			ToolTip("(ESC)，關閉面板，返回遊戲模式")
+	return
 
 	HK_WinZ_Label:
 		gosub,呼叫菜單
 	return
+
+#ifwinactive, ahk_group PoEGames
 
 	;[提示窗口基礎設定]------------------------------------------------------------------------------------------------------
 
@@ -1173,27 +1175,27 @@ return
 	;[Space讀秒循環喝水計時器指令]-------------------------------------------------------------------------------------------------
 
 	藥劑1:
-		if Toolbutton = 0
+		if (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
 			send {1}
 	return
 
 	藥劑2:
-		if Toolbutton = 0
+		if (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
 			send {2}
 	return
 
 	藥劑3:
-		if Toolbutton = 0
+		if (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
 			send {3}
 	return
 
 	藥劑4:
-		if Toolbutton = 0
+		if (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
 			send {4}
 	return
 
 	藥劑5:
-		if Toolbutton = 0
+		if (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
 			send {5}
 	return
 
@@ -1279,7 +1281,7 @@ return
 			{
 				Loop
 				{
-					If ( clickStop = true )
+					If (clickStop = true || !WinActive("ahk_group PoEGames"))
 					{
 						clickStop:= false
 						return
@@ -1302,7 +1304,7 @@ return
 		{
 			Loop
 			{
-				If ( clickStop = true )
+				If (clickStop = true || !WinActive("ahk_group PoEGames"))
 				{
 					clickStop:= false
 					return
@@ -1365,7 +1367,7 @@ if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error
 return
 
 循環技能1:
-IfWinActive,Path of Exile
+if WinActive("ahk_group PoEGames")
 {
 if Toolbutton = 0
  {
@@ -1383,7 +1385,7 @@ send {BS}
 Return
 
 循環技能2:
-IfWinActive,Path of Exile
+if WinActive("ahk_group PoEGames")
 {
 if Toolbutton = 0
  {
@@ -1401,7 +1403,7 @@ send {BS}
 Return
 
 循環技能3:
-IfWinActive,Path of Exile
+if WinActive("ahk_group PoEGames")
 {
 if Toolbutton = 0
  {
@@ -1453,8 +1455,8 @@ HK_End_Label:
 if (快速組隊提醒 = "關閉")
 {
 	Gosub,獲取對方id
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
+	WinActivate, ahk_group PoEGames
+	WinWaitActive, ahk_group PoEGames, , 1
 	Clipboard = /invite %移除後完好的ID%
 	send {enter}
 	Send ^{V}
@@ -1467,8 +1469,8 @@ if 快速組隊提醒 = 開啟
    msgbox,4,提醒,即將組隊的玩家是" %移除後完好的ID% " 確定嗎?`r按鍵[ Enter ] 立即組隊，按鍵[ N ]取消。`r不需提醒可使用[Win + End]關閉。
    IfMsgBox Yes
 	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
+	WinActivate, ahk_group PoEGames
+	WinWaitActive, ahk_group PoEGames, , 1
 	Clipboard = /invite %移除後完好的ID%
 	send {enter}
 	Send ^{V}
@@ -1477,8 +1479,8 @@ if 快速組隊提醒 = 開啟
 	}
    else
 	{
-	WinActivate ,Path of Exile
-	WinWait ,Path of Exile
+	WinActivate, ahk_group PoEGames
+	WinWaitActive, ahk_group PoEGames, , 1
 	}
 }
 Return
@@ -1567,7 +1569,8 @@ Critical
 	ToolTip("1秒後自動Enter登入")
 	Sleep 1000
 	ToolTip("0秒後自動Enter登入")
-        Send {Enter}
+	if WinActive("ahk_group PoEGames")
+		Send {Enter}
 return
 
 讀取F1按鍵模式:
@@ -2247,9 +2250,11 @@ StartAnchorCapture(neutron, type, id) {
 	捕捉代號:= id
 	捕捉模式:= 1
 	hkF7Val:= (快捷鍵_F7 != "" && 快捷鍵_F7 != "ERROR") ? 快捷鍵_F7: "*F7"
+	Hotkey, IfWinActive, ahk_group PoEGames
 	try {
 		Hotkey, %hkF7Val%, HK_F7_Label, On
 	}
+	Hotkey, IfWinActive
 	neutron.Hide()
 	if (type = "color" && (id = 5 || id = 6))
 	{
@@ -2348,7 +2353,6 @@ Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
 Return
 
 註冊動態熱鍵:
-Hotkey, IfWinActive, ahk_group DualWins
 keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2357,6 +2361,10 @@ Loop, parse, keysList, % ","
     lbl:= "HK_" . kName . "_Label"
     if (hkVal != "" && hkVal != "ERROR")
     {
+        if (kName = "WinZ")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, %lbl%, On
         }
@@ -2369,6 +2377,7 @@ Loop, parse, keysList, % ","
         {
             winHk:= "#" . cleanK
             winLbl:= "HK_Win" . kName . "_ModeLabel"
+            Hotkey, IfWinActive, ahk_group PoEGames
             try {
                 Hotkey, %winHk%, %winLbl%, On
             }
@@ -2379,7 +2388,6 @@ Hotkey, IfWinActive
 Return
 
 解開動態熱鍵:
-Hotkey, IfWinActive, ahk_group DualWins
 keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
@@ -2387,6 +2395,10 @@ Loop, parse, keysList, % ","
     hkVal:= 快捷鍵_%kName%
     if (hkVal != "" && hkVal != "ERROR")
     {
+        if (kName = "WinZ")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, Off
         }
@@ -2397,6 +2409,7 @@ Loop, parse, keysList, % ","
         if (cleanK != "")
         {
             winHk:= "#" . cleanK
+            Hotkey, IfWinActive, ahk_group PoEGames
             try {
                 Hotkey, %winHk%, Off
             }
