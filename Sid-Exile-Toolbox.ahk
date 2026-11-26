@@ -308,8 +308,6 @@ return
 		ToolTip("(ESC)，關閉面板，返回遊戲模式")
 return
 
-
-
 #ifwinactive, ahk_group DualWins
 
 	HK_WinZ_Label:
@@ -349,8 +347,6 @@ return
 		}
 		neutron.Hide()
 	return
-
-
 
 	;---------------------------------------------------------
 
@@ -393,6 +389,7 @@ return
 	Return
 
 	座標顏色讀取:
+		DialogValidOffsets := {1: "", 2: ""}
 		loop,9
 		{
 			IniRead,顏色%A_Index%_X,sidtooldata.ini,顏色座標,顏色%A_Index%_X
@@ -1255,6 +1252,12 @@ return
 		dialogState := IsPoEDialogActive(20)
 		if (dialogState > 0)
 		{
+			; 首次以 Enter 開啟對話框時進行框內有效採樣點校準快取
+			if (dialogState = 1 && !IsObject(DialogValidOffsets[1]))
+				CalibrateDialogOffsets(1, 顏色5_X, 顏色5_Y, 顏色5_C, 20)
+			else if (dialogState = 2 && !IsObject(DialogValidOffsets[2]))
+				CalibrateDialogOffsets(2, 顏色6_X, 顏色6_Y, 顏色6_C, 20)
+
 			Toolbutton := 1
 			ToolTip("偵測到對話框(" . dialogState . ")，已切換為文字模式")
 			gosub,暫停讀秒循環喝水_Label
@@ -1272,115 +1275,112 @@ return
 	偵測對話框2:
 	return
 
+	;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
 
-;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
+	~*<^F::
+		if Toolbutton = 0
+			Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
+	return
 
-~*<^F::
-if Toolbutton = 0
-Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
-return
+	;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
 
-;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
-
-~*LButton::
-If 開始時間
-    return
-開始時間:= A_TickCount
-Hotkey, LButton up, 左鍵彈起標籤, On
-return
-
-左鍵彈起標籤:
-Hotkey, LButton up, 左鍵彈起標籤, Off
-時間長度:= A_TickCount - 開始時間
-if (時間長度 < 100)
-{
-
-}
-else if (時間長度 >= 100)
-{
-	if Toolbutton = 1
-	Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
-}
-開始時間:= ""
-return
-
-~<!<^LButton::
-if Toolbutton = 0
-Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
-return
-
-;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
-
-~*^LButton::
-if 連點模式 = [Ctrl + 左鍵]
-{
-
-Sleep 100
-GetKeyState, stateShift, Shift
-GetKeyState, stateCtrl , Ctrl
-if (stateCtrl = "D" or stateShift = "D")
- {
-	clickStop:= false
-	Loop
-	{
-		If ( clickStop = true )
-		{
-			clickStop:= false
+	~*LButton::
+		If 開始時間
 			return
-		}
-		Click
-		sleep %滑鼠連點速度%
-	}
- }
+		開始時間:= A_TickCount
+		Hotkey, LButton up, 左鍵彈起標籤, On
+	return
 
-}
-return
-
-~*^LButton UP::
-if 連點模式 = [Ctrl + 左鍵]
-clickStop:= true
-return
-
-~*MButton::
-if 連點模式 = 滑鼠滾輪按壓
-{
-	clickStop:= false
-	Loop
-	{
-	If ( clickStop = true )
+	左鍵彈起標籤:
+		Hotkey, LButton up, 左鍵彈起標籤, Off
+		時間長度:= A_TickCount - 開始時間
+		if (時間長度 < 100)
 		{
-		clickStop:= false
-		return
+
 		}
-		Else
+		else if (時間長度 >= 100)
 		{
-		 Click
-		 sleep %滑鼠連點速度%
+			if Toolbutton = 1
+				Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
 		}
-	}
-}
-return
+		開始時間:= ""
+	return
 
-~*MButton Up::
-if 連點模式 = 滑鼠滾輪按壓
-clickStop:= true
-return
+	~<!<^LButton::
+		if Toolbutton = 0
+			Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
+	return
 
-;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
+	;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
 
-讀取滑鼠連點速度:
- Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
- if 滑鼠連點速度 = error
- 滑鼠連點速度 = 25
-Return
+	~*^LButton::
+		if 連點模式 = [Ctrl + 左鍵]
+		{
 
-讀取連點模式:
- Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
-Return
+			Sleep 100
+			GetKeyState, stateShift, Shift
+			GetKeyState, stateCtrl , Ctrl
+			if (stateCtrl = "D" or stateShift = "D")
+			{
+				Loop
+				{
+					If ( clickStop = true )
+					{
+						clickStop:= false
+						return
+					}
+					Click
+					sleep %滑鼠連點速度%
+				}
+			}
 
-;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
+		}
+	return
 
-HK_Insert_Label:
+	~*^LButton UP::
+		if 連點模式 = [Ctrl + 左鍵]
+			clickStop:= true
+	return
+
+	~*MButton::
+		if 連點模式 = 滑鼠滾輪按壓
+		{
+			Loop
+			{
+				If ( clickStop = true )
+				{
+					clickStop:= false
+					return
+				}
+				Else
+				{
+					Click
+					sleep %滑鼠連點速度%
+				}
+			}
+		}
+	return
+
+	~*MButton Up::
+		if 連點模式 = 滑鼠滾輪按壓
+			clickStop:= true
+	return
+
+	;[滑鼠連點設置數據讀取]------------------------------------------------------------------------------------------------------
+
+	讀取滑鼠連點速度:
+		Iniread, 滑鼠連點速度, sidtooldata.ini, 按鍵模式切換, 滑鼠連點速度
+		if 滑鼠連點速度 = error
+			滑鼠連點速度 = 25
+	Return
+
+	讀取連點模式:
+		Iniread, 連點模式, sidtooldata.ini, 按鍵模式切換, 連點模式
+	Return
+
+	;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
+
+	HK_Insert_Label:
 (StopUser = 0 ? (StopUser:= 1,ToolTip("循環技能已開啟")) : (StopUser:= 0,ToolTip("循環技能已關閉")))
 if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error" or 循環技能時間1 = "error" or 循環技能時間2 = "error" or 循環技能時間3 = "error")
 {
@@ -2021,6 +2021,44 @@ F7背包定位:
 		ToolTip("")
 		if (捕捉類型 = "color")
 		{
+			if (捕捉代號 = 5 || 捕捉代號 = 6)
+			{
+				; F7 抓點當下探測左右同色安全寬度，確保基準點未貼邊或點到雜訊
+				leftSpan := 0
+				Loop, 20
+				{
+					testX := capX - (A_Index * 6)
+					if (testX < 0)
+						break
+					PixelGetColor, testC, %testX%, %capY%, Fast RGB
+					if !IsColorWithinTolerance(testC, capC, 20)
+						break
+					leftSpan += 6
+				}
+				rightSpan := 0
+				Loop, 20
+				{
+					testX := capX + (A_Index * 6)
+					PixelGetColor, testC, %testX%, %capY%, Fast RGB
+					if !IsColorWithinTolerance(testC, capC, 20)
+						break
+					rightSpan += 6
+				}
+				totalSpan := leftSpan + rightSpan
+				if (totalSpan < 24)
+				{
+					ToolTip("⚠️ 偵測到的背景同色寬度過窄 (" . totalSpan . "px)，可能點到邊框或雜訊，建議重抓輸入框內側！")
+				}
+				else
+				{
+					; 若基準點過度貼近單側邊緣，自動向內側安全區微調
+					if (leftSpan < 18 && rightSpan >= 36)
+						capX += 24
+					else if (rightSpan < 18 && leftSpan >= 36)
+						capX -= 24
+					ToolTip("已設定對話框(" . (捕捉代號 - 4) . ")偵測點，安全寬度約 " . totalSpan . "px")
+				}
+			}
 			PosX:= ["","","","","顏色5_X","顏色6_X"]
 			PosY:= ["","","","","顏色5_Y","顏色6_Y"]
 			CosA:= ["","","","","顏色5_C","顏色6_C"]
@@ -2429,25 +2467,107 @@ IsPoE1Active()
 	return WinActive("Path of Exile") && !WinActive("Path of Exile 2")
 }
 
-CheckDialogColorMatch(targetX, targetY, savedColor, tolerance := 20)
+IsColorWithinTolerance(c1, c2, tolerance := 20)
 {
+	r1 := (c1 >> 16) & 0xFF
+	g1 := (c1 >> 8) & 0xFF
+	b1 := c1 & 0xFF
+
+	r2 := (c2 >> 16) & 0xFF
+	g2 := (c2 >> 8) & 0xFF
+	b2 := c2 & 0xFF
+
+	return (Abs(r1 - r2) <= tolerance && Abs(g1 - g2) <= tolerance && Abs(b1 - b2) <= tolerance)
+}
+
+CalibrateDialogOffsets(slot, targetX, targetY, savedColor, tolerance := 20)
+{
+	global DialogValidOffsets
+	if !IsObject(DialogValidOffsets)
+		DialogValidOffsets := {1: "", 2: ""}
+	candidates := [-30, -24, -18, -12, -6, 0, 6, 12, 18, 24, 30]
+	validList := []
+	for _, off in candidates
+	{
+		checkX := targetX + off
+		if (checkX < 0)
+			continue
+		PixelGetColor, curColor, %checkX%, %targetY%, Fast RGB
+		if IsColorWithinTolerance(curColor, savedColor, tolerance)
+			validList.Push(off)
+	}
+	if (validList.Length() >= 3)
+		DialogValidOffsets[slot] := validList
+}
+
+CheckDialogColorMatch(targetX, targetY, savedColor, tolerance := 20, slot := 0)
+{
+	global DialogValidOffsets
 	if (targetX = "" || targetX = "error" || targetX = "ERROR" || targetY = "" || targetY = "error" || targetY = "ERROR" || savedColor = "" || savedColor = "error" || savedColor = "ERROR")
 		return false
 
-	PixelGetColor, curColor, %targetX%, %targetY%, Fast RGB
-	
-	; 解析 RGB 各分量 (0xRRGGBB)
-	rCur := (curColor >> 16) & 0xFF
-	gCur := (curColor >> 8) & 0xFF
-	bCur := curColor & 0xFF
+	; 1. 若已有 Enter 校準後的框內有效採樣點快取，僅採樣框內點（100% 不超框）
+	if (slot > 0 && IsObject(DialogValidOffsets) && IsObject(DialogValidOffsets[slot]) && DialogValidOffsets[slot].Length() >= 3)
+	{
+		validOffsets := DialogValidOffsets[slot]
+		total := validOffsets.Length()
+		reqHits := (total >= 3) ? 3 : total
+		hits := 0
+		for idx, off in validOffsets
+		{
+			checkX := targetX + off
+			PixelGetColor, curColor, %checkX%, %targetY%, Fast RGB
+			if IsColorWithinTolerance(curColor, savedColor, tolerance)
+			{
+				hits++
+				if (hits >= reqHits)
+					return true
+			}
+			; 若剩餘點數已不足以達成門檻，提早結束
+			if (hits + (total - idx) < reqHits)
+				return false
+		}
+		return false
+	}
 
-	rSaved := (savedColor >> 16) & 0xFF
-	gSaved := (savedColor >> 8) & 0xFF
-	bSaved := savedColor & 0xFF
+	; 2. 尚未校準前的保底機制：雙向分段共識（左側組 + 中心 / 右側組 + 中心）
+	PixelGetColor, centerColor, %targetX%, %targetY%, Fast RGB
+	centerHit := IsColorWithinTolerance(centerColor, savedColor, tolerance) ? 1 : 0
 
-	; 各色版容差比對
-	if (Abs(rCur - rSaved) <= tolerance && Abs(gCur - gSaved) <= tolerance && Abs(bCur - bSaved) <= tolerance)
-		return true
+	leftOffsets := [-6, -12, -18, -24]
+	leftHits := centerHit
+	for idx, off in leftOffsets
+	{
+		checkX := targetX + off
+		if (checkX >= 0)
+		{
+			PixelGetColor, curColor, %checkX%, %targetY%, Fast RGB
+			if IsColorWithinTolerance(curColor, savedColor, tolerance)
+			{
+				leftHits++
+				if (leftHits >= 3)
+					return true
+			}
+		}
+		if (leftHits + (4 - idx) < 3)
+			break
+	}
+
+	rightOffsets := [6, 12, 18, 24]
+	rightHits := centerHit
+	for idx, off in rightOffsets
+	{
+		checkX := targetX + off
+		PixelGetColor, curColor, %checkX%, %targetY%, Fast RGB
+		if IsColorWithinTolerance(curColor, savedColor, tolerance)
+		{
+			rightHits++
+			if (rightHits >= 3)
+				return true
+		}
+		if (rightHits + (4 - idx) < 3)
+			break
+	}
 
 	return false
 }
@@ -2455,9 +2575,9 @@ CheckDialogColorMatch(targetX, targetY, savedColor, tolerance := 20)
 IsPoEDialogActive(tolerance := 20)
 {
 	global 顏色5_X, 顏色5_Y, 顏色5_C, 顏色6_X, 顏色6_Y, 顏色6_C
-	if CheckDialogColorMatch(顏色5_X, 顏色5_Y, 顏色5_C, tolerance)
+	if CheckDialogColorMatch(顏色5_X, 顏色5_Y, 顏色5_C, tolerance, 1)
 		return 1
-	if CheckDialogColorMatch(顏色6_X, 顏色6_Y, 顏色6_C, tolerance)
+	if CheckDialogColorMatch(顏色6_X, 顏色6_Y, 顏色6_C, tolerance, 2)
 		return 2
 	return 0
 }
