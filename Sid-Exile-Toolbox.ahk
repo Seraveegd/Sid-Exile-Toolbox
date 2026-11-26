@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
@@ -49,7 +49,6 @@ GroupAdd, DualWins, Path of Exile 2
 GroupAdd, DualWins, % "ahk_id " . neutron.hWnd
 
 ;[讀取記錄區]------------------------------------------------------------------------------------------------------
-使用者類型 = 已開源
 
 gosub,讀取F7背包定位內容
 gosub,背包運算作業
@@ -223,48 +222,12 @@ if 引爆延遲2 = ERROR
 ;------------------------------------------------------------------------------------------------------
 
 gosub,起始盒子
+return
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
 
-Menu, MyMenu, Add, ★工具介紹★, Menu_Intro
-Menu, MyMenu, Add
-Menu, MyMenu, Add, 藥劑觸發設置, Menu_Flask
-Menu, MyMenu, Add, 技能連段設置, Menu_Combo
-Menu, MyMenu, Add, 循環技能設置, Menu_Loop
-Menu, MyMenu, Add, 快搜倉庫設置, Menu_Stash
-Menu, MyMenu, Add
-Menu, MyMenu, Add, 滑鼠連點設置, Menu_Clicker
-Menu, MyMenu, Add, 自動引爆地雷設置, Menu_Mine
-Menu, MyMenu, Add, 外部連結與網站, Menu_Links
-return
-
 呼叫菜單:
 	OpenUISection("intro")
-return
-
-Menu_Intro:
-	OpenUISection("intro")
-return
-Menu_Flask:
-	OpenUISection("flask")
-return
-Menu_Combo:
-	OpenUISection("combo")
-return
-Menu_Loop:
-	OpenUISection("loop")
-return
-Menu_Stash:
-	OpenUISection("stash")
-return
-Menu_Clicker:
-	OpenUISection("clicker")
-return
-Menu_Mine:
-	OpenUISection("mine")
-return
-Menu_Links:
-	OpenUISection("links")
 return
 
 OpenUISection(section) {
@@ -785,10 +748,6 @@ return
 
 	;[快搜倉庫頁區(熱鍵)]---------------------------------------------------------------------------------
 
-	快捷切換倉庫頁設置:
-		OpenUISection("stash")
-	return
-
 	^LWin::
 		Gosub,返回首頁
 	return
@@ -1269,12 +1228,6 @@ return
 		}
 	return
 
-	偵測對話框1:
-	return
-
-	偵測對話框2:
-	return
-
 	;[Ctrl + F 強調物品區(熱鍵)]--------------------------------------------------------------------------------------------
 
 	~*<^F::
@@ -1294,11 +1247,7 @@ return
 	左鍵彈起標籤:
 		Hotkey, LButton up, 左鍵彈起標籤, Off
 		時間長度:= A_TickCount - 開始時間
-		if (時間長度 < 100)
-		{
-
-		}
-		else if (時間長度 >= 100)
+		if (時間長度 >= 100)
 		{
 			if Toolbutton = 1
 				Toolbutton:= 0,ToolTip("偵測左鍵有長時間的按壓彈起,因此切換為遊戲模式")
@@ -2013,7 +1962,6 @@ Msgbox,16,提醒,本工具的 [Win + F7] 沒有多功能切換哦~ ^0^
 return
 
 HK_F7_Label:
-F7背包定位:
 	if (捕捉模式 = 1)
 	{
 		MouseGetPos, capX, capY

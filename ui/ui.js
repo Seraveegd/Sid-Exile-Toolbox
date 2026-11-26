@@ -587,18 +587,6 @@ function showExitModal() {
     }
 }
 
-function hideExitModal() {
-    var el = document.getElementById('exitModal');
-    if (el) {
-        el.classList.remove('show');
-        el.style.display = 'none';
-    }
-}
-
-function renderBagGrid() {
-    // 靜態 HTML <table> 已存在，保留此函式確保相容性
-}
-
 //載入時同步資料
 window.onload = function () {
     initHotkeyRecorder();
