@@ -396,59 +396,49 @@ OpenUISection(section) {
 
 	;[藥劑防呆區]------------------------------------------------------------------------------------------
 
-	使用藥劑1:
-		if 藥劑持續時間1 = off
-			send {1}
-		else if 防呆藥水鎖1 = 無
+	IsGameInputAllowed()
+	{
+		global Toolbutton
+		return (Toolbutton = 0 && WinActive("ahk_group PoEGames"))
+	}
+
+	UseFlaskSlot(slotIdx)
+	{
+		global 藥劑持續時間1, 藥劑持續時間2, 藥劑持續時間3, 藥劑持續時間4, 藥劑持續時間5
+		global 防呆藥水鎖1, 防呆藥水鎖2, 防呆藥水鎖3, 防呆藥水鎖4, 防呆藥水鎖5
+		if (!IsGameInputAllowed())
+			return
+		dur := 藥劑持續時間%slotIdx%
+		if (dur = "off")
 		{
-			send {1}
-			防呆藥水鎖1 = 有
-			settimer,防呆藥水1計時器,%藥劑持續時間1%
+			Send, {%slotIdx%}
 		}
+		else if (防呆藥水鎖%slotIdx% = "無")
+		{
+			Send, {%slotIdx%}
+			防呆藥水鎖%slotIdx% := "有"
+			SetTimer, 防呆藥水%slotIdx%計時器, %dur%
+		}
+	}
+
+	使用藥劑1:
+		UseFlaskSlot(1)
 	return
 
 	使用藥劑2:
-		if 藥劑持續時間2 = off
-			send {2}
-		else if 防呆藥水鎖2 = 無
-		{
-			send {2}
-			防呆藥水鎖2 = 有
-			settimer,防呆藥水2計時器,%藥劑持續時間2%
-		}
+		UseFlaskSlot(2)
 	return
 
 	使用藥劑3:
-		if 藥劑持續時間3 = off
-			send {3}
-		else if 防呆藥水鎖3 = 無
-		{
-			send {3}
-			防呆藥水鎖3 = 有
-			settimer,防呆藥水3計時器,%藥劑持續時間3%
-		}
+		UseFlaskSlot(3)
 	return
 
 	使用藥劑4:
-		if 藥劑持續時間4 = off
-			send {4}
-		else if 防呆藥水鎖4 = 無
-		{
-			send {4}
-			防呆藥水鎖4 = 有
-			settimer,防呆藥水4計時器,%藥劑持續時間4%
-		}
+		UseFlaskSlot(4)
 	return
 
 	使用藥劑5:
-		if 藥劑持續時間5 = off
-			send {5}
-		else if 防呆藥水鎖5 = 無
-		{
-			send {5}
-			防呆藥水鎖5 = 有
-			settimer,防呆藥水5計時器,%藥劑持續時間5%
-		}
+		UseFlaskSlot(5)
 	return
 
 	防呆藥水1計時器:
@@ -515,205 +505,73 @@ OpenUISection(section) {
 
 	;[Q|W|E|R|T技能按鍵區]---------------------------------------------------------------
 
-	~*Q::
-		if Toolbutton = 0
+	HandleSkillKey(keyName)
+	{
+		global 藥劑觸發模式, 主要技能, 使用技能時觸發的藥劑
+		global 技能連段功能, 技1
+		global 地雷模式, 地雷按鍵, 引爆延遲1, 地雷杖模式, 煙霧地雷, 引爆延遲2
+		if (!IsGameInputAllowed())
+			return
+		if (藥劑觸發模式 = "使用技能時喝水" && 主要技能 = keyName)
 		{
-			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "Q")
+			Loop, 5
 			{
-				if 使用技能時觸發的藥劑 contains 1
-					gosub,使用藥劑1
-				if 使用技能時觸發的藥劑 contains 2
-					gosub,使用藥劑2
-				if 使用技能時觸發的藥劑 contains 3
-					gosub,使用藥劑3
-				if 使用技能時觸發的藥劑 contains 4
-					gosub,使用藥劑4
-				if 使用技能時觸發的藥劑 contains 5
-					gosub,使用藥劑5
-			}
-			if (技能連段功能 = "開啟" and 技1 = "Q")
-			{
-				gosub,技能連段
-			}
-			if 地雷模式 = 開啟
-			{
-				if 地雷按鍵 = Q
-				{
-					sleep %引爆延遲1%
-					send {d}
-					if 地雷杖模式 = 開啟
-						send {d down}
-				}
-				if 煙霧地雷 = Q
-				{
-					send {d up}
-					sleep %引爆延遲2%
-					send {d}
-				}
+				if (!IsGameInputAllowed())
+					return
+				if InStr(使用技能時觸發的藥劑, A_Index)
+					UseFlaskSlot(A_Index)
 			}
 		}
+		if (技能連段功能 = "開啟" && 技1 = keyName)
+			gosub, 技能連段
+		if (地雷模式 = "開啟")
+		{
+			if (地雷按鍵 = keyName)
+			{
+				Sleep, %引爆延遲1%
+				if (!IsGameInputAllowed())
+					return
+				Send, {d}
+				if (地雷杖模式 = "開啟")
+					Send, {d down}
+			}
+			if (煙霧地雷 = keyName)
+			{
+				if (!IsGameInputAllowed())
+					return
+				Send, {d up}
+				Sleep, %引爆延遲2%
+				if (!IsGameInputAllowed())
+					return
+				Send, {d}
+			}
+		}
+	}
+
+	~*Q::
+		HandleSkillKey("Q")
 	return
 
 	~*W::
-		if Toolbutton = 0
-		{
-			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "W")
-			{
-				if 使用技能時觸發的藥劑 contains 1
-					gosub,使用藥劑1
-				if 使用技能時觸發的藥劑 contains 2
-					gosub,使用藥劑2
-				if 使用技能時觸發的藥劑 contains 3
-					gosub,使用藥劑3
-				if 使用技能時觸發的藥劑 contains 4
-					gosub,使用藥劑4
-				if 使用技能時觸發的藥劑 contains 5
-					gosub,使用藥劑5
-			}
-			if (技能連段功能 = "開啟" and 技1 = "W")
-			{
-				gosub,技能連段
-			}
-			if 地雷模式 = 開啟
-			{
-				if 地雷按鍵 = W
-				{
-					sleep %引爆延遲1%
-					send {d}
-					if 地雷杖模式 = 開啟
-						send {d down}
-				}
-				if 煙霧地雷 = W
-				{
-					send {d up}
-					sleep %引爆延遲2%
-					send {d}
-				}
-			}
-		}
+		HandleSkillKey("W")
 	return
 
 	~*E::
-		if Toolbutton = 0
-		{
-			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "E")
-			{
-				if 使用技能時觸發的藥劑 contains 1
-					gosub,使用藥劑1
-				if 使用技能時觸發的藥劑 contains 2
-					gosub,使用藥劑2
-				if 使用技能時觸發的藥劑 contains 3
-					gosub,使用藥劑3
-				if 使用技能時觸發的藥劑 contains 4
-					gosub,使用藥劑4
-				if 使用技能時觸發的藥劑 contains 5
-					gosub,使用藥劑5
-			}
-			if (技能連段功能 = "開啟" and 技1 = "E")
-			{
-				gosub,技能連段
-			}
-			if 地雷模式 = 開啟
-			{
-				if 地雷按鍵 = E
-				{
-					sleep %引爆延遲1%
-					send {d}
-					if 地雷杖模式 = 開啟
-						send {d down}
-				}
-				if 煙霧地雷 = E
-				{
-					send {d up}
-					sleep %引爆延遲2%
-					send {d}
-				}
-			}
-		}
+		HandleSkillKey("E")
 	return
 
 	~*R::
-		if Toolbutton = 0
-		{
-			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "R")
-			{
-				if 使用技能時觸發的藥劑 contains 1
-					gosub,使用藥劑1
-				if 使用技能時觸發的藥劑 contains 2
-					gosub,使用藥劑2
-				if 使用技能時觸發的藥劑 contains 3
-					gosub,使用藥劑3
-				if 使用技能時觸發的藥劑 contains 4
-					gosub,使用藥劑4
-				if 使用技能時觸發的藥劑 contains 5
-					gosub,使用藥劑5
-			}
-			if (技能連段功能 = "開啟" and 技1 = "R")
-			{
-				gosub,技能連段
-			}
-			if 地雷模式 = 開啟
-			{
-				if 地雷按鍵 = R
-				{
-					sleep %引爆延遲1%
-					send {d}
-					if 地雷杖模式 = 開啟
-						send {d down}
-				}
-				if 煙霧地雷 = R
-				{
-					send {d up}
-					sleep %引爆延遲2%
-					send {d}
-				}
-			}
-		}
+		HandleSkillKey("R")
 	return
 
 	~*T::
-		if Toolbutton = 0
-		{
-			if (藥劑觸發模式 = "使用技能時喝水" and 主要技能 = "T")
-			{
-				if 使用技能時觸發的藥劑 contains 1
-					gosub,使用藥劑1
-				if 使用技能時觸發的藥劑 contains 2
-					gosub,使用藥劑2
-				if 使用技能時觸發的藥劑 contains 3
-					gosub,使用藥劑3
-				if 使用技能時觸發的藥劑 contains 4
-					gosub,使用藥劑4
-				if 使用技能時觸發的藥劑 contains 5
-					gosub,使用藥劑5
-			}
-			if (技能連段功能 = "開啟" and 技1 = "T")
-			{
-				gosub,技能連段
-			}
-			if 地雷模式 = 開啟
-			{
-				if 地雷按鍵 = T
-				{
-					sleep %引爆延遲1%
-					send {d}
-					if 地雷杖模式 = 開啟
-						send {d down}
-				}
-				if 煙霧地雷 = T
-				{
-					send {d up}
-					sleep %引爆延遲2%
-					send {d}
-				}
-			}
-		}
+		HandleSkillKey("T")
 	return
 
 	;[技能連段指令]-------------------------------------------------------------------------------------------------
 
 	技能連段:
-		if (isComboRunning)
+		if (isComboRunning || !IsGameInputAllowed())
 			return
 		isComboRunning := true
 
@@ -728,11 +586,21 @@ OpenUISection(section) {
 			if k2 in Q,W,E,R,T
 			{
 				sleep %d1%
+				if (!IsGameInputAllowed())
+				{
+					isComboRunning := false
+					return
+				}
 				Send {%k2%}
 			}
 			if k3 in Q,W,E,R,T
 			{
 				sleep %d2%
+				if (!IsGameInputAllowed())
+				{
+					isComboRunning := false
+					return
+				}
 				Send {%k3%}
 			}
 			sleep 50
@@ -1265,7 +1133,10 @@ OpenUISection(section) {
 
 	~*<^F::
 		if Toolbutton = 0
+		{
 			Toolbutton:= 1,ToolTip("偵測到使用Ctrl + F ,已切換為文字模式")
+			gosub,暫停讀秒循環喝水_Label
+		}
 	return
 
 	;[滑鼠區(熱鍵)]---------------------------------------------------------------------------------------------------------
@@ -1290,7 +1161,10 @@ OpenUISection(section) {
 
 	~<!<^LButton::
 		if Toolbutton = 0
+		{
 			Toolbutton:= 1,ToolTip("偵測到物品貼上,已切換為文字模式")
+			gosub,暫停讀秒循環喝水_Label
+		}
 	return
 
 	;[滑鼠連點區(熱鍵)]------------------------------------------------------------------------------------------------------
@@ -1338,6 +1212,11 @@ OpenUISection(section) {
 	;[Ins循環技能區(熱鍵)]------------------------------------------------------------------------------------------
 
 	HK_Insert_Label:
+	if (Toolbutton = 1)
+	{
+		ToolTip("您現在是文字模式，已忽略循環技能切換")
+		return
+	}
 (StopUser = 0 ? (StopUser:= 1,ToolTip("循環技能已開啟")) : (StopUser:= 0,ToolTip("循環技能已關閉")))
 if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error" or 循環技能時間1 = "error" or 循環技能時間2 = "error" or 循環技能時間3 = "error")
 {
@@ -1367,10 +1246,8 @@ if (循環技能1 = "error" or 循環技能2 = "error" or 循環技能3 = "error
 return
 
 循環技能1:
-if WinActive("ahk_group PoEGames")
+if (IsGameInputAllowed())
 {
-if Toolbutton = 0
- {
 if (循環技能時間1 = "OFF" || 循環技能時間1 = "Off")
 {
  Return
@@ -1380,15 +1257,12 @@ if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
 send %循環技能1%
 send {BS}
 }
- }
 }
 Return
 
 循環技能2:
-if WinActive("ahk_group PoEGames")
+if (IsGameInputAllowed())
 {
-if Toolbutton = 0
- {
 if (循環技能時間2 = "OFF" || 循環技能時間2 = "Off")
 {
  Return
@@ -1398,15 +1272,12 @@ if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
 send %循環技能2%
 send {BS}
 }
- }
 }
 Return
 
 循環技能3:
-if WinActive("ahk_group PoEGames")
+if (IsGameInputAllowed())
 {
-if Toolbutton = 0
- {
 if (循環技能時間3 = "OFF" || 循環技能時間3 = "Off")
 {
  Return
@@ -1416,7 +1287,6 @@ if (!GetKeyState("Ctrl","P") && !GetKeyState("Shift","P"))
 send %循環技能3%
 send {BS}
 }
- }
 }
 Return
 
