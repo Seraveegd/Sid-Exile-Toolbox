@@ -689,6 +689,77 @@ header {
     cursor: pointer;
     margin: 0 auto;
     display: block;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
+}
+
+/* ==================== 全域 Checkbox 與開關放大強化 ==================== */
+.form-check {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    min-height: 32px;
+    gap: 10px;
+}
+
+.form-check .form-check-input {
+    float: none;
+    margin-left: 0;
+    margin-top: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 2px solid #7d8999;
+    background-color: #21252e;
+}
+
+.form-check-input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+}
+
+.form-check-input[type="checkbox"]:checked {
+    background-color: #0d6efd;
+    border-color: #3d8bfd;
+}
+
+.form-switch .form-check-input {
+    width: 50px;
+    height: 26px;
+    border-radius: 26px;
+}
+
+.form-check-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #e9ecef;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+/* ==================== 自動洗詞頁面文字放大 ==================== */
+#craft .card-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#craft .table th,
+#craft .table td {
+    font-size: 18px;
+    padding: 12px 14px;
+}
+
+#craft .form-label {
+    font-size: 19px;
+}
+
+#craft .form-control,
+#craft .form-select {
+    font-size: 18px;
+    padding: 12px 14px;
+}
+
+#craft textarea.form-control {
+    font-size: 17px;
+    line-height: 1.5;
 }

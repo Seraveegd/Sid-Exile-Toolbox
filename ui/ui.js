@@ -122,7 +122,7 @@ function syncDataFromAHK() {
             loadClearBagIgnoreSlots(data.clearBagIgnoreSlots);
         }
 
-        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F6', 'hk_Space', 'hk_Insert', 'hk_End'];
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F6', 'hk_OpenUI', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && data[id]) {
@@ -152,6 +152,11 @@ function syncDataFromAHK() {
             updateAnchorPoint('craft', cr, data['craft' + cr + '_X'], data['craft' + cr + '_Y'], '');
         });
 
+        // 同步自動洗詞群組清單
+        if (data.craftPresets !== undefined) {
+            renderCraftPresets(data.craftPresets);
+        }
+
         var elGemSwap = document.getElementById('gemWeaponSwap');
         if (elGemSwap && data['gemWeaponSwap'] !== undefined) {
             elGemSwap.checked = (data['gemWeaponSwap'] === '1' || data['gemWeaponSwap'] === 1 || data['gemWeaponSwap'] === true || data['gemWeaponSwap'] === 'true');
@@ -167,6 +172,7 @@ var defaultHotkeys = {
     hk_F2: 'F2',
     hk_F3: 'F3',
     hk_F6: 'F6',
+    hk_OpenUI: '`',
     hk_Space: '~*space',
     hk_Insert: '*Insert',
     hk_End: 'End'
@@ -285,7 +291,7 @@ function saveCustomHotkeys() {
     if (typeof ahk === 'undefined') return;
 
     var hkFields = [
-        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F6',
+        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F6', 'hk_OpenUI',
         'hk_Space', 'hk_Insert', 'hk_End'
     ];
 
@@ -296,6 +302,7 @@ function saveCustomHotkeys() {
         hk_F2: '暫離 / 勿擾',
         hk_F3: '清包切換',
         hk_F6: '自動洗詞',
+        hk_OpenUI: '開啟程式設定視窗',
         hk_Space: '一鍵喝水',
         hk_Insert: '自動循環技能',
         hk_End: '快速申請組隊'
@@ -332,7 +339,7 @@ function saveCustomHotkeys() {
 
     ahk.NeutronSaveCustomHotkeys(
         values.hk_F1, values.hk_F2, values.hk_F3,
-        values.hk_Space, values.hk_Insert, values.hk_End, values.hk_F6
+        values.hk_Space, values.hk_Insert, values.hk_End, values.hk_F6, values.hk_OpenUI
     );
 }
 
@@ -586,6 +593,76 @@ function saveCraftConfig() {
         document.getElementById('craftWhitelist').value,
         document.getElementById('craftBlacklist').value
     );
+}
+
+var craftPresetsCache = {};
+
+function renderCraftPresets(presets) {
+    var sel = document.getElementById('craftPresetSelect');
+    if (!sel) return;
+    var prevVal = sel.value;
+    craftPresetsCache = {};
+    sel.innerHTML = '<option value="">-- 請選擇詞綴群組 --</option>';
+    if (Array.isArray(presets)) {
+        presets.forEach(function (p) {
+            if (!p || !p.name) return;
+            craftPresetsCache[p.name] = p;
+            var opt = document.createElement('option');
+            opt.value = p.name;
+            opt.textContent = p.name;
+            sel.appendChild(opt);
+        });
+    }
+    if (prevVal && craftPresetsCache[prevVal]) {
+        sel.value = prevVal;
+    }
+}
+
+function onCraftPresetSelect() {
+    var sel = document.getElementById('craftPresetSelect');
+    var nameInput = document.getElementById('craftPresetName');
+    if (!sel) return;
+    var name = sel.value;
+    if (!name || !craftPresetsCache[name]) return;
+    var p = craftPresetsCache[name];
+    if (nameInput) nameInput.value = name;
+    var elWL = document.getElementById('craftWhitelist');
+    var elBL = document.getElementById('craftBlacklist');
+    var elLogic = document.getElementById('craftMatchLogic');
+    if (elWL) elWL.value = p.wl || '';
+    if (elBL) elBL.value = p.bl || '';
+    if (elLogic && p.logic) elLogic.value = p.logic;
+}
+
+function saveCraftPreset() {
+    if (typeof ahk === 'undefined') return;
+    var nameInput = document.getElementById('craftPresetName');
+    var name = nameInput ? nameInput.value.trim() : '';
+    if (!name) {
+        alert('請先輸入群組名稱！');
+        return;
+    }
+    ahk.NeutronSaveCraftPreset(
+        name,
+        document.getElementById('craftWhitelist').value,
+        document.getElementById('craftBlacklist').value,
+        document.getElementById('craftMatchLogic').value
+    );
+    var sel = document.getElementById('craftPresetSelect');
+    if (sel) sel.value = name;
+}
+
+function deleteCraftPreset() {
+    if (typeof ahk === 'undefined') return;
+    var sel = document.getElementById('craftPresetSelect');
+    var nameInput = document.getElementById('craftPresetName');
+    var name = (sel && sel.value) ? sel.value : (nameInput ? nameInput.value.trim() : '');
+    if (!name) {
+        alert('請先選擇或輸入要刪除的群組名稱！');
+        return;
+    }
+    ahk.NeutronDeleteCraftPreset(name);
+    if (nameInput && nameInput.value.trim() === name) nameInput.value = '';
 }
 
 function showStartupModal() {

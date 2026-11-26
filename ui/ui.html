@@ -108,6 +108,10 @@
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_F3" placeholder="點擊按下新按鍵">
               </div>
               <div class="col-md-6">
+                <label class="form-label mb-1 small text-secondary">開啟程式設定視窗</label>
+                <input type="text" class="form-control form-control-sm hotkey-input" id="hk_OpenUI" placeholder="點擊按下新按鍵">
+              </div>
+              <div class="col-md-6">
                 <label class="form-label mb-1 small text-secondary">一鍵喝水 / 循環 / 防呆(需要設定對話框座標與顏色)</label>
                 <input type="text" class="form-control form-control-sm hotkey-input" id="hk_Space"
                   placeholder="點擊按下新按鍵">
@@ -952,7 +956,7 @@
           <div class="card-body py-3">
             <h6 class="card-title text-light mb-2">1. 通貨頁與目標座標定位 (點擊抓取後按 F7)</h6>
             <div class="table-responsive">
-              <table class="table table-dark table-sm table-bordered align-middle mb-0" style="font-size: 13px;">
+              <table class="table table-dark table-sm table-bordered align-middle mb-0">
                 <thead>
                   <tr>
                     <th>定位項目</th>
@@ -1061,14 +1065,33 @@
               <label class="form-check-label text-warning" for="craftUseVaal">⚠️ 達標後自動使用瓦爾寶珠（不可逆腐化，請務必確認已設定瓦爾寶珠座標）</label>
             </div>
 
+            <div class="preset-toolbar mb-3">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                  <label for="craftPresetSelect" class="form-label mb-1">📂 快速選取已存群組</label>
+                  <select id="craftPresetSelect" class="form-select" onchange="onCraftPresetSelect()">
+                    <option value="">-- 請選擇詞綴群組 --</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="craftPresetName" class="form-label mb-1">🏷️ 群組名稱</label>
+                  <input type="text" id="craftPresetName" class="form-control" placeholder="例如：T1攻速 / 防反傷洗圖">
+                </div>
+                <div class="col-md-4 d-flex flex-wrap">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="saveCraftPreset()">💾 儲存群組</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteCraftPreset()">🗑️ 刪除</button>
+                </div>
+              </div>
+            </div>
+
             <div class="row g-2">
               <div class="col-md-6">
-                <label for="craftWhitelist" class="form-label text-success">✅ 目標詞綴（白名單，每行一項；洗圖可留空）</label>
-                <textarea id="craftWhitelist" class="form-control" rows="4" placeholder="例如：&#10;全部法術技能寶石等級 +1&#10;攻擊速度提高"></textarea>
+                <label for="craftWhitelist" class="form-label text-success">✅ 目標詞綴（白名單，支援行尾數字篩選如 (>10)）</label>
+                <textarea id="craftWhitelist" class="form-control" rows="4" placeholder="例如：&#10;攻擊速度提高 (>10)&#10;最大生命 (>=90)&#10;全部法術技能寶石等級 +1"></textarea>
               </div>
               <div class="col-md-6">
-                <label for="craftBlacklist" class="form-label text-danger">🚫 過濾詞綴（黑名單，每行一項；命中強制重洗）</label>
-                <textarea id="craftBlacklist" class="form-control" rows="4" placeholder="例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取"></textarea>
+                <label for="craftBlacklist" class="form-label text-danger">🚫 過濾詞綴（黑名單，支援 (>N) / (<N)；命中重洗）</label>
+                <textarea id="craftBlacklist" class="form-control" rows="4" placeholder="例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取&#10;物品數量 (<70)"></textarea>
               </div>
             </div>
           </div>

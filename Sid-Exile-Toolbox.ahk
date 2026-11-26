@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
@@ -294,6 +294,10 @@ OpenUISection(section) {
 		Toolbutton:= 0
 		if WinActive("ahk_group PoEGames")
 			ToolTip("(ESC)，關閉面板，返回遊戲模式")
+	return
+
+	HK_OpenUI_Label:
+		gosub,呼叫菜單
 	return
 
 #ifwinactive, ahk_group PoEGames
@@ -2351,6 +2355,7 @@ NeutronGetSettings(neutron) {
 	json .= """gem2_Y"":""" . 寶石2_Y . ""","
 	json .= """gemWeaponSwap"":""" . 寶石副手切換 . ""","
 	json .= """hk_F6"":""" . 快捷鍵_F6 . ""","
+	json .= """hk_OpenUI"":""" . 快捷鍵_OpenUI . ""","
 	json .= """craftScope"":""" . EscapeJsonStr(洗詞範圍) . ""","
 	json .= """craftMode"":""" . EscapeJsonStr(洗詞模式) . ""","
 	json .= """craftMatchLogic"":""" . EscapeJsonStr(洗詞匹配邏輯) . ""","
@@ -2374,7 +2379,8 @@ NeutronGetSettings(neutron) {
 	json .= """craft7_X"":""" . 洗詞點金_X . ""","
 	json .= """craft7_Y"":""" . 洗詞點金_Y . ""","
 	json .= """craft8_X"":""" . 洗詞瓦爾_X . ""","
-	json .= """craft8_Y"":""" . 洗詞瓦爾_Y . """"
+	json .= """craft8_Y"":""" . 洗詞瓦爾_Y . ""","
+	json .= """craftPresets"":" . BuildCraftPresetsJson()
 	json .= "}"
 	return json
 }
@@ -2392,13 +2398,19 @@ Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
 Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
 Iniread, 快捷鍵_F6, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F6, F6
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
+Iniread, 快捷鍵_OpenUI, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_OpenUI, ERROR
+if (快捷鍵_OpenUI = "ERROR" || 快捷鍵_OpenUI = "")
+{
+	Iniread, legacyOpenUI, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
+	快捷鍵_OpenUI := (legacyOpenUI != "ERROR" && legacyOpenUI != "") ? legacyOpenUI : "``"
+}
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
 Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
 Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
 Return
 
 註冊動態熱鍵:
-keysList:= "F1,F2,F3,F6,F7,Space,Insert,End"
+keysList:= "F1,F2,F3,F6,F7,OpenUI,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName:= A_LoopField
@@ -2406,7 +2418,10 @@ Loop, parse, keysList, % ","
     lbl:= "HK_" . kName . "_Label"
     if (hkVal != "" && hkVal != "ERROR")
     {
-        Hotkey, IfWinActive, ahk_group PoEGames
+        if (kName = "OpenUI")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, %lbl%, On
         }
@@ -2430,14 +2445,17 @@ Hotkey, IfWinActive
 Return
 
 解開動態熱鍵:
-keysList:= "F1,F2,F3,F6,F7,Space,Insert,End"
+keysList:= "F1,F2,F3,F6,F7,OpenUI,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName:= A_LoopField
     hkVal:= 快捷鍵_%kName%
     if (hkVal != "" && hkVal != "ERROR")
     {
-        Hotkey, IfWinActive, ahk_group PoEGames
+        if (kName = "OpenUI")
+            Hotkey, IfWinActive, ahk_group DualWins
+        else
+            Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, Off
         }
@@ -2458,18 +2476,19 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkSpace, hkInsert, hkEnd, hkF6 := "F6") {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkSpace, hkInsert, hkEnd, hkF6 := "F6", hkOpenUI := "``") {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1:= hkF1
 	快捷鍵_F2:= hkF2
 	快捷鍵_F3:= hkF3
 	快捷鍵_F6:= hkF6
+	快捷鍵_OpenUI:= hkOpenUI
 	快捷鍵_Space:= hkSpace
 	快捷鍵_Insert:= hkInsert
 	快捷鍵_End:= hkEnd
 
-	keysList:= "F1,F2,F3,F6,Space,Insert,End"
+	keysList:= "F1,F2,F3,F6,OpenUI,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName:= A_LoopField
@@ -2499,6 +2518,35 @@ NeutronSaveCraftConfig(neutron, scope, mode, matchLogic, useVaal, maxTries, dela
 	IniWrite, % StrReplace(洗詞白名單, "`n", "§NL§"), sidtooldata.ini, 自動洗詞設置, 洗詞白名單
 	IniWrite, % StrReplace(洗詞黑名單, "`n", "§NL§"), sidtooldata.ini, 自動洗詞設置, 洗詞黑名單
 	ToolTip("自動洗詞設置已儲存！ ")
+}
+
+NeutronSaveCraftPreset(neutron, presetName, whitelist, blacklist, matchLogic) {
+	global
+	cleanName := Trim(StrReplace(StrReplace(StrReplace(presetName, "=", "_"), "`r", ""), "`n", ""))
+	if (cleanName = "")
+		return
+	wlEnc := StrReplace(StrReplace(whitelist, "`r", ""), "`n", "§NL§")
+	blEnc := StrReplace(StrReplace(blacklist, "`r", ""), "`n", "§NL§")
+	val := matchLogic . "§PSEP§" . wlEnc . "§PSEP§" . blEnc
+	IniWrite, % val, sidtooldata.ini, 自動洗詞群組, % cleanName
+	gosub, 讀取洗詞設置
+	try {
+		neutron.wnd.syncDataFromAHK()
+	}
+	ToolTip("已儲存洗詞群組：【" . cleanName . "】")
+}
+
+NeutronDeleteCraftPreset(neutron, presetName) {
+	global
+	cleanName := Trim(StrReplace(StrReplace(StrReplace(presetName, "=", "_"), "`r", ""), "`n", ""))
+	if (cleanName = "")
+		return
+	IniDelete, sidtooldata.ini, 自動洗詞群組, % cleanName
+	gosub, 讀取洗詞設置
+	try {
+		neutron.wnd.syncDataFromAHK()
+	}
+	ToolTip("已刪除洗詞群組：【" . cleanName . "】")
 }
 
 NeutronSaveGemSwapConfig(neutron, weaponSwap) {
@@ -2875,7 +2923,42 @@ EscapeJsonStr(s) {
 		%cKey%_X := (tmpX = "ERROR" || tmpX = "") ? 0 : tmpX
 		%cKey%_Y := (tmpY = "ERROR" || tmpY = "") ? 0 : tmpY
 	}
+
+	洗詞群組List := []
+	IniRead, presetSection, sidtooldata.ini, 自動洗詞群組
+	if (presetSection != "" && presetSection != "ERROR")
+	{
+		Loop, Parse, presetSection, `n, `r
+		{
+			eqPos := InStr(A_LoopField, "=")
+			if (eqPos <= 1)
+				continue
+			pName := Trim(SubStr(A_LoopField, 1, eqPos - 1))
+			pRaw := SubStr(A_LoopField, eqPos + 1)
+			parts := StrSplit(pRaw, "§PSEP§")
+			pLogic := (parts.Length() >= 1 && parts[1] != "") ? parts[1] : "OR"
+			pWL := (parts.Length() >= 2) ? StrReplace(parts[2], "§NL§", "`n") : ""
+			pBL := (parts.Length() >= 3) ? StrReplace(parts[3], "§NL§", "`n") : ""
+			洗詞群組List.Push({name: pName, logic: pLogic, wl: pWL, bl: pBL})
+		}
+	}
 return
+
+BuildCraftPresetsJson() {
+	global 洗詞群組List
+	out := "["
+	if IsObject(洗詞群組List)
+	{
+		for idx, p in 洗詞群組List
+		{
+			if (idx > 1)
+				out .= ","
+			out .= "{""name"":""" . EscapeJsonStr(p.name) . """,""logic"":""" . EscapeJsonStr(p.logic) . """,""wl"":""" . EscapeJsonStr(p.wl) . """,""bl"":""" . EscapeJsonStr(p.bl) . """}"
+		}
+	}
+	out .= "]"
+	return out
+}
 
 HK_F6_Label:
 	if (autoCraftActive)
@@ -3076,9 +3159,25 @@ ParsePoEItemInfo(itemText)
 	return info
 }
 
-CraftKeywordMatch(text, pattern)
+EvalNumericCondition(val, op, threshold)
 {
-	pat := Trim(pattern)
+	v := val + 0.0
+	t := threshold + 0.0
+	if (op = ">")
+		return (v > t)
+	if (op = ">=")
+		return (v >= t)
+	if (op = "<")
+		return (v < t)
+	if (op = "<=")
+		return (v <= t)
+	if (op = "=" || op = "==")
+		return (v = t)
+	return false
+}
+
+CraftLineMatchesBase(text, pat)
+{
 	if (pat = "")
 		return false
 	if (SubStr(pat, 1, 3) = "re:")
@@ -3099,6 +3198,46 @@ CraftKeywordMatch(text, pattern)
 		}
 	}
 	return false
+}
+
+CraftKeywordMatch(text, pattern)
+{
+	pat := Trim(pattern)
+	if (pat = "")
+		return false
+
+	; 檢查行尾是否帶有括號數字比較條件，如：攻擊速度提高 (>10) 或 最大生命 (>=90)
+	if RegExMatch(pat, "\s*(?:\(|（)\s*(>=|<=|==|>|<|=)\s*(-?\d+(?:\.\d+)?)\s*(?:\)|）)\s*$", m)
+	{
+		condPos := RegExMatch(pat, "\s*(?:\(|（)\s*(>=|<=|==|>|<|=)\s*(-?\d+(?:\.\d+)?)\s*(?:\)|）)\s*$")
+		basePat := Trim(SubStr(pat, 1, condPos - 1))
+		op := m1
+		threshold := m2
+		if (basePat = "")
+			return false
+
+		Loop, Parse, text, `n, `r
+		{
+			line := Trim(A_LoopField)
+			if (line = "" || !CraftLineMatchesBase(line, basePat))
+				continue
+
+			lineClean := InStr(line, basePat) ? StrReplace(line, basePat, " ") : line
+			if !RegExMatch(lineClean, "-?\d+(?:\.\d+)?")
+				lineClean := line
+
+			pos := 1
+			while (pos := RegExMatch(lineClean, "(-?\d+(?:\.\d+)?)", nm, pos))
+			{
+				if EvalNumericCondition(nm1, op, threshold)
+					return true
+				pos += StrLen(nm1)
+			}
+		}
+		return false
+	}
+
+	return CraftLineMatchesBase(text, pat)
 }
 
 MatchCraftRules(modText, whitelistStr, blacklistStr, matchLogic)
