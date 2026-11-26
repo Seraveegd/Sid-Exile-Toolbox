@@ -64,6 +64,7 @@ function syncDataFromAHK() {
             clickMode: 'clickMode',
             clickSpeed: 'clickSpeed',
             clearBagMode: 'clearBagMode',
+            clearBagRefillPortal: 'clearBagRefillPortal',
             mineMode: 'mineMode',
             mineStaffMode: 'mineStaffMode',
             mineKey: 'mineKey',
@@ -151,6 +152,9 @@ function syncDataFromAHK() {
         [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (cr) {
             updateAnchorPoint('craft', cr, data['craft' + cr + '_X'], data['craft' + cr + '_Y'], '');
         });
+
+        // 同步傳送卷軸定位點
+        updateAnchorPoint('portalScroll', 1, data['portalScroll_X'], data['portalScroll_Y'], '');
 
         // 同步自動洗詞群組清單
         if (data.craftPresets !== undefined) {
@@ -399,12 +403,14 @@ function saveLoopConfig() {
 }
 
 //儲存清包模式與保留格子設定
-function saveClearBagConfig() {
+function saveClearBagConfig(silent) {
     if (typeof ahk === 'undefined') return;
     var modeEl = document.getElementById('clearBagMode');
     var mode = modeEl ? modeEl.value : '';
     var ignoreSlots = getClearBagIgnoreSlots();
-    ahk.NeutronSaveClearBagConfig(mode, ignoreSlots);
+    var refillEl = document.getElementById('clearBagRefillPortal');
+    var refillPortal = (refillEl && refillEl.checked) ? 1 : 0;
+    ahk.NeutronSaveClearBagConfig(mode, ignoreSlots, refillPortal, silent ? 1 : 0);
 }
 
 // 點擊格子切換勾選
@@ -424,6 +430,7 @@ function onBagSlotChange(slot, event) {
     var cb = document.getElementById('bag_slot_' + slot);
     var isChecked = cb ? cb.checked : false;
     setSlotCheckedUI(slot, isChecked);
+    saveClearBagConfig(true);
 }
 
 function setSlotCheckedUI(slot, isChecked) {
@@ -490,6 +497,7 @@ function clearBagSelectPreset(preset) {
         }
         setSlotCheckedUI(s, shouldCheck);
     }
+    saveClearBagConfig(true);
 }
 
 //儲存滑鼠連點設定
@@ -559,7 +567,7 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : ((type === 'craft') ? 'craft' : 'gem')));
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : ((type === 'craft') ? 'craft' : ((type === 'portalScroll') ? 'portalScroll' : 'gem'))));
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');

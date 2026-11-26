@@ -452,8 +452,8 @@
       <!-- Panel: 清包設置 -->
       <div id="clearbag" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">清包設置</div>
-          <div class="panel-subtitle">設定按下清包熱鍵 (預設 F3) 時的動作模式。選擇模式後系統將自動切換並儲存。</div>
+          <div class="panel-title mb-1">清包設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">設定按下清包熱鍵 (預設 F3) 時的動作模式與保留格子，所有變更均即時自動儲存。</div>
         </div>
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
@@ -461,13 +461,33 @@
             <div class="row g-3 align-items-center">
               <div class="col-md-6">
                 <label for="clearBagMode" class="form-label mb-1 small text-secondary">清包模式 (選擇即可自動切換並儲存)</label>
-                <select id="clearBagMode" class="form-select form-select-sm" onchange="saveClearBagConfig()">
+                <select id="clearBagMode" class="form-select form-select-sm" onchange="saveClearBagConfig(true)">
                   <option value="按壓式">按壓式清包</option>
                   <option value="自動式">自動式清包</option>
                   <option value="掃描式">掃描式清包</option>
                   <option value="掃描快搜">掃描快搜清包</option>
                 </select>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-2">補充傳送卷軸設置</h6>
+            <label class="custom-check-row mb-2" for="clearBagRefillPortal">
+              <input type="checkbox" id="clearBagRefillPortal" onchange="saveClearBagConfig(true)">
+              <span>清倉前自動補充傳送卷軸（請先手動切換至通貨頁，按 F3 後將先 Ctrl+點擊 傳送卷軸再進行清倉）</span>
+            </label>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 p-2 rounded border border-secondary-subtle bg-dark bg-opacity-25">
+              <div class="small">
+                <span class="text-light fw-bold">📜 傳送卷軸座標：</span>
+                <span class="text-secondary">X: <code id="portalScroll1_x" class="text-info">未設定</code> / Y: <code id="portalScroll1_y" class="text-info">未設定</code></span>
+              </div>
+              <button type="button" class="btn btn-outline-warning btn-sm" onclick="captureAnchorPoint('portalScroll', 1)">🎯 抓取座標</button>
+            </div>
+            <div class="text-secondary small mt-2">
+              💡 提示：請在下方 60 格矩陣中<strong class="text-warning">勾選保留</strong>放置傳送卷軸的格子，避免剛拿進背包的卷軸在清倉時又被丟回倉庫。
             </div>
           </div>
         </div>
@@ -498,7 +518,7 @@
 
             <div class="alert alert-dark border border-secondary-subtle py-2 px-3 small mb-3">
               💡 <strong>操作說明：</strong>下方對應遊戲背包 12 欄 × 5 列（左上第 1 格，右下第 60 格）。
-              <span class="text-warning fw-bold">勾選 = 保留（丟倉時不清）</span>，未勾選 = 清包存倉。選擇完畢後請點擊下方儲存。
+              <span class="text-warning fw-bold">勾選 = 保留（丟倉時不清）</span>，未勾選 = 清包存倉。所有變更皆會即時自動儲存。
             </div>
             <div class="bag-grid-wrapper mb-2" id="bagGrid">
               <table class="bag-grid-table">
@@ -815,13 +835,6 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
-
-            <!-- 清包設定儲存按鈕 -->
-            <div class="panel-actions mt-3 pt-3">
-              <div class="text-secondary small">💡 提示：點擊個別格子或使用上方快捷按鈕調整後，請點擊右側儲存按鈕</div>
-              <button type="button" class="btn btn-primary btn-sm px-4 py-2" onclick="saveClearBagConfig()">💾
-                儲存清包設定</button>
             </div>
           </div>
         </div>

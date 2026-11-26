@@ -58,6 +58,7 @@ gosub,背包運算作業
 gosub,讀取F1按鍵模式
 gosub,讀取F3按鍵模式
 gosub,讀取清包保留格
+gosub,讀取補充傳送卷軸設置
 gosub,讀取倉庫頁數據
 gosub,讀取背包初始顏色
 gosub,讀取回復模式
@@ -1700,6 +1701,11 @@ Critical
 		msgbox,16,錯誤,尚未設定 [背包左上角第一格中心點] 與 [背包右下角最末格中心點]，請點擊右下角系統匣圖示開啟設定選單進行定位點抓取。
 		return
 	}
+	if (清包模式 != "變更顏色定位" && (補充傳送卷軸 = 1 || 補充傳送卷軸 = "1" || 補充傳送卷軸 = "true"))
+	{
+		if (!RefillPortalScroll())
+			return
+	}
 	if (InStr(清包模式, "按壓"))
 	{
 	gosub,一鍵清包
@@ -1787,6 +1793,31 @@ return
 儲存清包保留格:
 	IniWrite, % 清包保留格, sidtooldata.ini, 清包設置, 清包保留格
 return
+
+讀取補充傳送卷軸設置:
+	IniRead, 補充傳送卷軸, sidtooldata.ini, 清包設置, 補充傳送卷軸, 0
+	IniRead, 傳送卷軸_X, sidtooldata.ini, 清包設置, 傳送卷軸_X, 0
+	IniRead, 傳送卷軸_Y, sidtooldata.ini, 清包設置, 傳送卷軸_Y, 0
+return
+
+RefillPortalScroll()
+{
+	global 傳送卷軸_X, 傳送卷軸_Y
+	if (傳送卷軸_X <= 0 || 傳送卷軸_Y <= 0)
+	{
+		ToolTip("⚠️ 已啟用補充傳送卷軸，請先於「清包設置」抓取傳送卷軸座標！")
+		return false
+	}
+	MouseMove, %傳送卷軸_X%, %傳送卷軸_Y%, 0
+	Sleep, 40
+	Send, {Ctrl down}
+	Sleep, 30
+	Click
+	Sleep, 60
+	Send, {Ctrl up}
+	Sleep, 50
+	return true
+}
 
 ;[F3快速掃描背包區].............................................................................................................................
 
@@ -2090,6 +2121,15 @@ HK_F7_Label:
 			}
 			gosub, 讀取洗詞設置
 		}
+		else if (捕捉類型 = "portalScroll")
+		{
+			傳送卷軸_X := capX
+			傳送卷軸_Y := capY
+			iniWrite, % capX, sidtooldata.ini, 清包設置, 傳送卷軸_X
+			iniWrite, % capY, sidtooldata.ini, 清包設置, 傳送卷軸_Y
+			ToolTip("已設定【傳送卷軸】座標: " . capX . ", " . capY)
+			gosub, 讀取補充傳送卷軸設置
+		}
 		try {
 			neutron.wnd.updateAnchorPoint(捕捉類型, 捕捉代號, capX, capY, capC)
 		} catch {
@@ -2218,7 +2258,7 @@ NeutronSaveClickerConfig(neutron, mode, speed) {
 	ToolTip("滑鼠連點設置已儲存！ ")
 }
 
-NeutronSaveClearBagConfig(neutron, mode, ignoredSlots:="__NOT_PASSED__") {
+NeutronSaveClearBagConfig(neutron, mode, ignoredSlots:="__NOT_PASSED__", refillPortal:="__NOT_PASSED__", silent:=0) {
 	global
 	清包模式:= mode
 	IniWrite,% 清包模式, sidtooldata.ini, 按鍵模式切換, 清包模式
@@ -2228,7 +2268,14 @@ NeutronSaveClearBagConfig(neutron, mode, ignoredSlots:="__NOT_PASSED__") {
 		gosub, 儲存清包保留格
 		gosub, 讀取清包保留格
 	}
-	ToolTip("清包設置已儲存！ ")
+	if (refillPortal != "__NOT_PASSED__")
+	{
+		補充傳送卷軸 := (refillPortal = 1 || refillPortal = "1" || refillPortal = "true" || refillPortal = "+checked") ? 1 : 0
+		IniWrite, % 補充傳送卷軸, sidtooldata.ini, 清包設置, 補充傳送卷軸
+		gosub, 讀取補充傳送卷軸設置
+	}
+	if (!silent)
+		ToolTip("清包設置已儲存！ ")
 }
 
 NeutronSaveWarehouseConfig(neutron, enchant, legendary, legendaryRing, thief, remove2, incubator, abyssJewel, clusterJewel, normalJewel, faction, specialMap, riftRing, uniqueHelmet, uniqueArmour, uniqueBelt, uniqueGloves, uniqueBoots, uniqueAccessory, uniqueWeapon, returnPage) {
@@ -2314,6 +2361,9 @@ NeutronGetSettings(neutron) {
 	json .= """clickSpeed"":""" . 滑鼠連點速度 . ""","
 	json .= """clearBagMode"":""" . 清包模式 . ""","
 	json .= """clearBagIgnoreSlots"":""" . 清包保留格 . ""","
+	json .= """clearBagRefillPortal"":""" . 補充傳送卷軸 . ""","
+	json .= """portalScroll_X"":""" . 傳送卷軸_X . ""","
+	json .= """portalScroll_Y"":""" . 傳送卷軸_Y . ""","
 	json .= """hk_F1"":""" . 快捷鍵_F1 . ""","
 	json .= """hk_F2"":""" . 快捷鍵_F2 . ""","
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
