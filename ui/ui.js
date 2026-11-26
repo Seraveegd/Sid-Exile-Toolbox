@@ -90,7 +90,15 @@ function syncDataFromAHK() {
             pageUniqueBoots: 'pageUniqueBoots',
             pageUniqueAccessory: 'pageUniqueAccessory',
             pageUniqueWeapon: 'pageUniqueWeapon',
-            pageReturn: 'pageReturn'
+            pageReturn: 'pageReturn',
+            craftScope: 'craftScope',
+            craftMode: 'craftMode',
+            craftMatchLogic: 'craftMatchLogic',
+            craftUseVaal: 'craftUseVaal',
+            craftMaxTries: 'craftMaxTries',
+            craftDelay: 'craftDelay',
+            craftWhitelist: 'craftWhitelist',
+            craftBlacklist: 'craftBlacklist'
         };
 
         Object.keys(fieldMap).forEach(function (key) {
@@ -114,7 +122,7 @@ function syncDataFromAHK() {
             loadClearBagIgnoreSlots(data.clearBagIgnoreSlots);
         }
 
-        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_Space', 'hk_Insert', 'hk_End'];
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_F6', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && data[id]) {
@@ -139,6 +147,11 @@ function syncDataFromAHK() {
         updateAnchorPoint('gemSwap', 1, data['gem1_X'], data['gem1_Y'], '');
         updateAnchorPoint('gemSwap', 2, data['gem2_X'], data['gem2_Y'], '');
 
+        // 同步自動洗詞定位點 (1~8)
+        [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (cr) {
+            updateAnchorPoint('craft', cr, data['craft' + cr + '_X'], data['craft' + cr + '_Y'], '');
+        });
+
         var elGemSwap = document.getElementById('gemWeaponSwap');
         if (elGemSwap && data['gemWeaponSwap'] !== undefined) {
             elGemSwap.checked = (data['gemWeaponSwap'] === '1' || data['gemWeaponSwap'] === 1 || data['gemWeaponSwap'] === true || data['gemWeaponSwap'] === 'true');
@@ -153,6 +166,7 @@ var defaultHotkeys = {
     hk_F1: '*F1',
     hk_F2: 'F2',
     hk_F3: 'F3',
+    hk_F6: 'F6',
     hk_Space: '~*space',
     hk_Insert: '*Insert',
     hk_End: 'End'
@@ -271,7 +285,7 @@ function saveCustomHotkeys() {
     if (typeof ahk === 'undefined') return;
 
     var hkFields = [
-        'hk_F1', 'hk_F2', 'hk_F3',
+        'hk_F1', 'hk_F2', 'hk_F3', 'hk_F6',
         'hk_Space', 'hk_Insert', 'hk_End'
     ];
 
@@ -281,6 +295,7 @@ function saveCustomHotkeys() {
         hk_F1: '返回角色',
         hk_F2: '暫離 / 勿擾',
         hk_F3: '清包切換',
+        hk_F6: '自動洗詞',
         hk_Space: '一鍵喝水',
         hk_Insert: '自動循環技能',
         hk_End: '快速申請組隊'
@@ -317,7 +332,7 @@ function saveCustomHotkeys() {
 
     ahk.NeutronSaveCustomHotkeys(
         values.hk_F1, values.hk_F2, values.hk_F3,
-        values.hk_Space, values.hk_Insert, values.hk_End
+        values.hk_Space, values.hk_Insert, values.hk_End, values.hk_F6
     );
 }
 
@@ -535,7 +550,7 @@ function captureAnchorPoint(type, id) {
 
 //由 AHK 抓取完成後回呼更新 UI 表格項目
 function updateAnchorPoint(type, id, x, y, color) {
-    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : 'gem'));
+    var prefix = (type === 'color') ? 'c' : ((type === 'bag') ? 'b' : ((type === 'haggle') ? 'h' : ((type === 'craft') ? 'craft' : 'gem')));
     var elX = document.getElementById(prefix + id + '_x');
     var elY = document.getElementById(prefix + id + '_y');
     var elC = document.getElementById(prefix + id + '_c');
@@ -556,6 +571,21 @@ function saveGemSwapConfig() {
     var el = document.getElementById('gemWeaponSwap');
     if (!el || typeof ahk === 'undefined') return;
     ahk.NeutronSaveGemSwapConfig(el.checked ? 1 : 0);
+}
+
+// 儲存自動洗詞設置
+function saveCraftConfig() {
+    if (typeof ahk === 'undefined') return;
+    ahk.NeutronSaveCraftConfig(
+        document.getElementById('craftScope').value,
+        document.getElementById('craftMode').value,
+        document.getElementById('craftMatchLogic').value,
+        document.getElementById('craftUseVaal').checked ? 1 : 0,
+        document.getElementById('craftMaxTries').value,
+        document.getElementById('craftDelay').value,
+        document.getElementById('craftWhitelist').value,
+        document.getElementById('craftBlacklist').value
+    );
 }
 
 function showStartupModal() {
