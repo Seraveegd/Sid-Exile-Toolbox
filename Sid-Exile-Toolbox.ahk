@@ -1,5 +1,7 @@
-﻿#NoEnv
+#NoEnv
 #SingleInstance force
+#InstallKeybdHook
+#InstallMouseHook
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
 ListLines, Off
@@ -1289,36 +1291,17 @@ OpenUISection(section) {
 
 	~*^LButton::
 		if (連點模式 = "[Ctrl + 左鍵]" || 連點模式 = "[Ctrl / Shift + 左鍵]")
-		{
-			if (!autoClickRunning)
-				SetTimer, AutoClickStart, -200
-		}
+			RunAutoClickLoop()
 	return
 
 	~*+LButton::
 		if (連點模式 = "[Shift + 左鍵]" || 連點模式 = "[Ctrl / Shift + 左鍵]")
-		{
-			if (!autoClickRunning)
-				SetTimer, AutoClickStart, -200
-		}
+			RunAutoClickLoop()
 	return
 
-	AutoClickStart:
-		if (autoClickRunning || !WinActive("ahk_group PoEGames") || !GetKeyState("LButton", "P"))
-			return
-		if !IsAutoClickModifierHeld(連點模式)
-			return
-
-		autoClickRunning := true
-		Loop
-		{
-			if (!WinActive("ahk_group PoEGames") || !GetKeyState("LButton", "P") || !IsAutoClickModifierHeld(連點模式))
-				break
-			clickKeys := (GetKeyState("Ctrl", "P") ? "^" : "") . (GetKeyState("Shift", "P") ? "+" : "")
-			SendInput, %clickKeys%{Click}
-			Sleep, % 滑鼠連點速度
-		}
-		autoClickRunning := false
+	~*^LButton Up::
+	~*+LButton Up::
+		clickStop := true
 	return
 
 	~*MButton::
@@ -1326,7 +1309,7 @@ OpenUISection(section) {
 		{
 			Loop
 			{
-				if (!WinActive("ahk_group PoEGames") || !GetKeyState("MButton", "P"))
+				if (!WinActive("ahk_group PoEGames") || !(GetKeyState("MButton") || GetKeyState("MButton", "P")))
 					break
 				Click
 				Sleep, % 滑鼠連點速度
@@ -2572,10 +2555,32 @@ IsPoE1Active()
 	return WinActive("Path of Exile") && !WinActive("Path of Exile 2")
 }
 
+RunAutoClickLoop()
+{
+	global clickStop, 連點模式, 滑鼠連點速度
+	clickStop := false
+	Sleep, 100
+	if (clickStop || !WinActive("ahk_group PoEGames") || !IsAutoClickModifierHeld(連點模式))
+	{
+		clickStop := false
+		return
+	}
+	Loop
+	{
+		if (clickStop || !WinActive("ahk_group PoEGames") || !IsAutoClickModifierHeld(連點模式))
+		{
+			clickStop := false
+			return
+		}
+		Click
+		Sleep, % 滑鼠連點速度
+	}
+}
+
 IsAutoClickModifierHeld(mode)
 {
-	ctrlHeld := GetKeyState("Ctrl", "P")
-	shiftHeld := GetKeyState("Shift", "P")
+	ctrlHeld := GetKeyState("Ctrl") || GetKeyState("Ctrl", "P")
+	shiftHeld := GetKeyState("Shift") || GetKeyState("Shift", "P")
 	if (mode = "[Ctrl + 左鍵]")
 		return ctrlHeld
 	if (mode = "[Shift + 左鍵]")
