@@ -157,6 +157,8 @@ function syncDataFromAHK() {
             renderCraftPresets(data.craftPresets);
         }
 
+        updateCraftUIHints();
+
         var elGemSwap = document.getElementById('gemWeaponSwap');
         if (elGemSwap && data['gemWeaponSwap'] !== undefined) {
             elGemSwap.checked = (data['gemWeaponSwap'] === '1' || data['gemWeaponSwap'] === 1 || data['gemWeaponSwap'] === true || data['gemWeaponSwap'] === 'true');
@@ -581,7 +583,9 @@ function saveGemSwapConfig() {
 }
 
 // 儲存自動洗詞設置
-function saveCraftConfig() {
+var craftSaveTimer = null;
+
+function saveCraftConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveCraftConfig(
         document.getElementById('craftScope').value,
@@ -591,8 +595,64 @@ function saveCraftConfig() {
         document.getElementById('craftMaxTries').value,
         document.getElementById('craftDelay').value,
         document.getElementById('craftWhitelist').value,
-        document.getElementById('craftBlacklist').value
+        document.getElementById('craftBlacklist').value,
+        silent ? 1 : 0
     );
+}
+
+function updateCraftUIHints() {
+    var elScope = document.getElementById('craftScope');
+    var elMode = document.getElementById('craftMode');
+    var elVaal = document.getElementById('craftUseVaal');
+    var elBatchHint = document.getElementById('craftBatchHint');
+    if (!elScope || !elMode) return;
+
+    var scope = elScope.value;
+    var mode = elMode.value;
+    var useVaal = elVaal ? elVaal.checked : false;
+
+    if (elBatchHint) {
+        elBatchHint.style.display = (scope === '批次洗背包地圖') ? 'block' : 'none';
+    }
+
+    var reqMap = {};
+    if (scope === '單一目標格') reqMap[1] = '★ 必填';
+    if (mode === '改造石模式' || mode === '改造+增幅模式') {
+        reqMap[2] = '★ 必填';
+        reqMap[3] = '★ 必填';
+        reqMap[4] = '★ 必填';
+        reqMap[5] = '★ 必填';
+    } else if (mode === '點金+重鑄模式') {
+        reqMap[5] = '★ 必填';
+        reqMap[7] = '★ 必填';
+    } else if (mode === '混沌石模式') {
+        reqMap[6] = '★ 必填';
+    }
+    if (useVaal) reqMap[8] = '★ 必填';
+
+    for (var i = 1; i <= 8; i++) {
+        var row = document.getElementById('craftRow' + i);
+        var badge = document.getElementById('craftReq' + i);
+        if (row) {
+            if (reqMap[i]) row.className = 'craft-row-required';
+            else row.className = '';
+        }
+        if (badge) {
+            badge.textContent = reqMap[i] || '';
+        }
+    }
+}
+
+function onCraftOptionChange() {
+    updateCraftUIHints();
+    saveCraftConfig(true);
+}
+
+function onCraftTextChange() {
+    if (craftSaveTimer) clearTimeout(craftSaveTimer);
+    craftSaveTimer = setTimeout(function () {
+        saveCraftConfig(true);
+    }, 300);
 }
 
 var craftPresetsCache = {};
@@ -632,6 +692,7 @@ function onCraftPresetSelect() {
     if (elWL) elWL.value = p.wl || '';
     if (elBL) elBL.value = p.bl || '';
     if (elLogic && p.logic) elLogic.value = p.logic;
+    saveCraftConfig(true);
 }
 
 function refreshCraftPresets(presetsJson, selectedName) {

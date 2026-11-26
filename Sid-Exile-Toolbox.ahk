@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
@@ -240,7 +240,7 @@ Tray_Reload:
 return
 
 Tray_Exit:
-	ExitApp
+ExitApp
 return
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
@@ -2498,7 +2498,7 @@ NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkSpace, hkInsert, hkEnd, hk
 	ToolTip("自訂快捷鍵設置已儲存並生效！ ")
 }
 
-NeutronSaveCraftConfig(neutron, scope, mode, matchLogic, useVaal, maxTries, delayMs, whitelist, blacklist) {
+NeutronSaveCraftConfig(neutron, scope, mode, matchLogic, useVaal, maxTries, delayMs, whitelist, blacklist, silent := 0) {
 	global
 	洗詞範圍:= scope
 	洗詞模式:= mode
@@ -2517,7 +2517,8 @@ NeutronSaveCraftConfig(neutron, scope, mode, matchLogic, useVaal, maxTries, dela
 	IniWrite, % 洗詞延遲, sidtooldata.ini, 自動洗詞設置, 洗詞延遲
 	IniWrite, % StrReplace(洗詞白名單, "`n", "§NL§"), sidtooldata.ini, 自動洗詞設置, 洗詞白名單
 	IniWrite, % StrReplace(洗詞黑名單, "`n", "§NL§"), sidtooldata.ini, 自動洗詞設置, 洗詞黑名單
-	ToolTip("自動洗詞設置已儲存！ ")
+	if (!silent)
+		ToolTip("自動洗詞設置已儲存！ ")
 }
 
 NeutronSaveCraftPreset(neutron, presetName, whitelist, blacklist, matchLogic) {
@@ -3049,7 +3050,7 @@ return
 				if (清包保留Array[slotIdx])
 					continue
 				slotY := Round(掃描開始左上_Y + (rowIdx - 1) * 背包步長_Y)
-				ToolTip("🔮 批次洗圖中：第 " . colIdx . " 欄 第 " . rowIdx . " 列 (已完成 " . craftedCount . " 張 / 按 Esc 停止)")
+				ToolTip("🔮 批次洗圖中：第 " . colIdx . " 欄 第 " . rowIdx . " 列 (完成 " . craftedCount . " / 跳過 " . skippedCount . " / 按 Esc 停止)")
 				res := CraftSingleTarget(slotX, slotY, true)
 				if (res = "STOP")
 				{
@@ -3113,7 +3114,7 @@ UseCurrencyOnTarget(currX, currY, tgtX, tgtY, delayMs)
 
 ParsePoEItemInfo(itemText)
 {
-	info := {rarity: "", isCorrupted: false, isMap: false, modText: "", modLineCount: 0, modCount: 0}
+	info := {rarity: "", isCorrupted: false, isUnidentified: false, isMap: false, modText: "", modLineCount: 0, modCount: 0}
 	if InStr(itemText, "稀有度: 普通") || InStr(itemText, "Rarity: Normal")
 		info.rarity := "Normal"
 	else if InStr(itemText, "稀有度: 魔法") || InStr(itemText, "Rarity: Magic")
@@ -3123,13 +3124,21 @@ ParsePoEItemInfo(itemText)
 	else if InStr(itemText, "稀有度: 傳奇") || InStr(itemText, "Rarity: Unique")
 		info.rarity := "Unique"
 
-	if RegExMatch(itemText, "m)^(已腐化|Corrupted)\r?$")
-		info.isCorrupted := true
 	if InStr(itemText, "物品種類: 地圖") || InStr(itemText, "Item Class: Maps")
 		info.isMap := true
 
-	; 擷取「物品等級 / Item Level」之後的純詞綴段落，排除名稱、基本資訊與 { ... } 進階詞綴標記行
+	; 逐行 Trim 正規化檢查不可洗狀態（已汙染/二次汙染/已腐化/已複製/未鑑定），避免換行或空白影響正則
 	normalized := StrReplace(itemText, "`r", "")
+	Loop, Parse, normalized, `n
+	{
+		chkLn := Trim(A_LoopField, " `t")
+		if (chkLn = "已腐化" || chkLn = "已汙染" || chkLn = "已污染" || chkLn = "二次汙染" || chkLn = "二次污染" || chkLn = "Corrupted" || chkLn = "Twice Corrupted" || chkLn = "已複製" || chkLn = "Mirrored")
+			info.isCorrupted := true
+		else if (chkLn = "未鑑定" || chkLn = "Unidentified")
+			info.isUnidentified := true
+	}
+
+	; 擷取「物品等級 / Item Level」之後的純詞綴段落，排除名稱、基本資訊與 { ... } 進階詞綴標記行
 	blocks := StrSplit(normalized, "--------")
 	ilvlIdx := 0
 	for idx, blk in blocks
@@ -3341,14 +3350,14 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 		}
 
 		info := ParsePoEItemInfo(itemText)
-		if (info.rarity = "" || info.rarity = "Unique" || info.isCorrupted)
+		if (info.rarity = "" || info.rarity = "Unique" || info.isCorrupted || info.isUnidentified)
 		{
-			if (mapOnly && tries = 0)
+			if (mapOnly)
 				return "SKIP"
-			ToolTip("⚠️ 目標為傳奇/已腐化/無法洗詞物品，已安全停止。")
+			ToolTip("⚠️ 目標為傳奇/未鑑定/已汙染/已腐化/無法洗詞物品，已安全停止。")
 			return "STOP"
 		}
-		if (mapOnly && !info.isMap && tries = 0)
+		if (mapOnly && !info.isMap)
 			return "SKIP"
 
 		if (tries > 0 && itemText = prevText)

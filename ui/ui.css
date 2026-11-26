@@ -774,22 +774,41 @@ select,
 
 #craft .craft-grid-2,
 #craft .craft-grid-3 {
-    display: table;
-    width: calc(100% + 28px);
-    margin-left: -14px;
-    table-layout: fixed;
-    border-collapse: separate;
-    border-spacing: 14px 0;
+    display: block;
+    width: 100%;
+    font-size: 0;
     margin-bottom: 14px;
 }
 
+#craft .craft-col,
+#craft .craft-col-top {
+    display: inline-block;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+#craft .craft-grid-2 > .craft-col,
+#craft .craft-grid-2 > .craft-col-top {
+    width: 49%;
+    margin-right: 2%;
+}
+
+#craft .craft-grid-3 > .craft-col,
+#craft .craft-grid-3 > .craft-col-top {
+    width: 32%;
+    margin-right: 2%;
+}
+
+#craft .craft-grid-2 > :last-child,
+#craft .craft-grid-3 > :last-child {
+    margin-right: 0;
+}
+
 #craft .craft-col {
-    display: table-cell;
     vertical-align: bottom;
 }
 
 #craft .craft-col-top {
-    display: table-cell;
     vertical-align: top;
 }
 
@@ -807,6 +826,27 @@ select,
 #craft .craft-col-top .form-control {
     width: 100%;
     box-sizing: border-box;
+}
+
+#craft .craft-row-required td {
+    background-color: rgba(255, 193, 7, 0.08) !important;
+}
+
+#craft .badge-required {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 4px;
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.5);
+    vertical-align: middle;
+}
+
+#craft .badge-required:empty {
+    display: none;
 }
 
 #craft .craft-rule-hint {

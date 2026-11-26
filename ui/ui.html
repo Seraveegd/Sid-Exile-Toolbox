@@ -945,14 +945,20 @@
 
       <!-- Panel 10: 自動洗詞 (PoE 1) -->
       <div id="craft" class="panel">
-        <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">🔮 自動洗詞設置 (僅限 PoE 1 通貨頁)</div>
-          <div class="panel-subtitle">透過 Ctrl+C 自動判斷詞綴、過濾黑名單並套用對應通貨；執行中按 Esc 或再按一次熱鍵即可立即停止。</div>
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div>
+            <div class="panel-title mb-1">🔮 自動洗詞設置 (僅限 PoE 1 通貨頁)</div>
+            <div class="panel-subtitle">透過 Ctrl+Alt+C 自動判斷詞綴、過濾黑名單並套用對應通貨；執行中按 Esc 或再按一次熱鍵即可立即停止。</div>
+          </div>
+          <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" style="font-size: 14px;">● 即時自動儲存</span>
         </div>
 
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
             <h6 class="card-title text-light mb-2">1. 通貨頁與目標座標定位 (點擊抓取後按 F7)</h6>
+            <div id="craftBatchHint" class="alert alert-info py-2 px-3 mb-3" style="display: none; font-size: 16px;">
+              ℹ️ <strong>目前為批次洗背包地圖模式：</strong>將自動掃描「清包設置」中未勾選保留的 5×12 背包格子（自動跳過空格、非地圖與已汙染/二次汙染地圖），第 1 列「目標格」免設定。
+            </div>
             <div class="table-responsive">
               <table class="table table-dark table-sm table-bordered align-middle mb-0">
                 <thead>
@@ -964,50 +970,50 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>目標裝備 / 地圖格 (單一模式必填)</td>
+                  <tr id="craftRow1">
+                    <td>目標裝備 / 地圖格<span class="badge-required" id="craftReq1"></span></td>
                     <td id="craft1_x" class="text-info">未設定</td>
                     <td id="craft1_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 1)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>改造石 (Orb of Alteration)</td>
+                  <tr id="craftRow2">
+                    <td>改造石 (Orb of Alteration)<span class="badge-required" id="craftReq2"></span></td>
                     <td id="craft2_x" class="text-info">未設定</td>
                     <td id="craft2_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 2)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>增幅石 (Orb of Augmentation)</td>
+                  <tr id="craftRow3">
+                    <td>增幅石 (Orb of Augmentation)<span class="badge-required" id="craftReq3"></span></td>
                     <td id="craft3_x" class="text-info">未設定</td>
                     <td id="craft3_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 3)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>蛻變石 (Orb of Transmutation)</td>
+                  <tr id="craftRow4">
+                    <td>蛻變石 (Orb of Transmutation)<span class="badge-required" id="craftReq4"></span></td>
                     <td id="craft4_x" class="text-info">未設定</td>
                     <td id="craft4_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 4)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>重鑄石 (Orb of Scouring)</td>
+                  <tr id="craftRow5">
+                    <td>重鑄石 (Orb of Scouring)<span class="badge-required" id="craftReq5"></span></td>
                     <td id="craft5_x" class="text-info">未設定</td>
                     <td id="craft5_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 5)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>混沌石 (Chaos Orb)</td>
+                  <tr id="craftRow6">
+                    <td>混沌石 (Chaos Orb)<span class="badge-required" id="craftReq6"></span></td>
                     <td id="craft6_x" class="text-info">未設定</td>
                     <td id="craft6_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 6)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>點金石 (Orb of Alchemy)</td>
+                  <tr id="craftRow7">
+                    <td>點金石 (Orb of Alchemy)<span class="badge-required" id="craftReq7"></span></td>
                     <td id="craft7_x" class="text-info">未設定</td>
                     <td id="craft7_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 7)">📍 抓取</button></td>
                   </tr>
-                  <tr>
-                    <td>瓦爾寶珠 (Vaal Orb)</td>
+                  <tr id="craftRow8">
+                    <td>瓦爾寶珠 (Vaal Orb)<span class="badge-required" id="craftReq8"></span></td>
                     <td id="craft8_x" class="text-info">未設定</td>
                     <td id="craft8_y" class="text-info">未設定</td>
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture" onclick="captureAnchorPoint('craft', 8)">📍 抓取</button></td>
@@ -1025,16 +1031,16 @@
             <div class="craft-grid-2">
               <div class="craft-col">
                 <label for="craftScope" class="form-label">目標範圍</label>
-                <select id="craftScope" class="form-select">
+                <select id="craftScope" class="form-select" onchange="onCraftOptionChange()">
                   <option value="單一目標格">單一目標格 (通貨頁中央)</option>
                   <option value="批次洗背包地圖">批次洗背包所有地圖 (依清包未勾選格)</option>
                 </select>
               </div>
               <div class="craft-col">
                 <label for="craftMode" class="form-label">洗詞模式</label>
-                <select id="craftMode" class="form-select">
-                  <option value="改造石模式">改造石模式 (白裝蛻變/黃裝重鑄)</option>
-                  <option value="改造+增幅模式">改造 + 增幅模式 (單詞自動補增幅)</option>
+                <select id="craftMode" class="form-select" onchange="onCraftOptionChange()">
+                  <option value="改造石模式">改造石模式 (達標才補增幅雙詞)</option>
+                  <option value="改造+增幅模式">改造 + 增幅模式 (每輪單詞必補增幅)</option>
                   <option value="混沌石模式">混沌石模式</option>
                   <option value="點金+重鑄模式">點金 + 重鑄模式 (地圖/黃裝)</option>
                 </select>
@@ -1044,23 +1050,23 @@
             <div class="craft-grid-3">
               <div class="craft-col">
                 <label for="craftMatchLogic" class="form-label">目標詞匹配方式</label>
-                <select id="craftMatchLogic" class="form-select">
+                <select id="craftMatchLogic" class="form-select" onchange="onCraftOptionChange()">
                   <option value="OR">OR (滿足任一目標詞即停)</option>
                   <option value="AND">AND (需同時滿足全部目標詞)</option>
                 </select>
               </div>
               <div class="craft-col">
                 <label for="craftMaxTries" class="form-label">最大洗詞次數上限</label>
-                <input type="number" id="craftMaxTries" class="form-control" placeholder="200">
+                <input type="number" id="craftMaxTries" class="form-control" placeholder="200" oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
               </div>
               <div class="craft-col">
                 <label for="craftDelay" class="form-label">洗詞操作延遲 (ms)</label>
-                <input type="number" id="craftDelay" class="form-control" placeholder="120">
+                <input type="number" id="craftDelay" class="form-control" placeholder="120" oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
               </div>
             </div>
 
             <div class="custom-check-row mt-1">
-              <input type="checkbox" id="craftUseVaal">
+              <input type="checkbox" id="craftUseVaal" onchange="onCraftOptionChange()">
               <label class="text-warning" for="craftUseVaal">⚠️ 達標後自動使用瓦爾寶珠（不可逆腐化，請務必確認已設定瓦爾寶珠座標）</label>
             </div>
           </div>
@@ -1092,23 +1098,18 @@
             <div class="craft-grid-2" style="margin-bottom: 0;">
               <div class="craft-col-top">
                 <label for="craftWhitelist" class="form-label text-success">✅ 目標詞綴（白名單）</label>
-                <textarea id="craftWhitelist" class="form-control" rows="5" placeholder="每行一項（洗圖只過濾黑名單可留空）&#10;例如：&#10;攻擊速度提高 (>10)&#10;最大生命 (>=90)&#10;全部法術技能寶石等級 +1"></textarea>
+                <textarea id="craftWhitelist" class="form-control" rows="5" oninput="onCraftTextChange()" onchange="onCraftOptionChange()" placeholder="每行一項（洗圖只過濾黑名單可留空）&#10;例如：&#10;攻擊速度提高 (>10)&#10;最大生命 (>=90)&#10;全部法術技能寶石等級 +1"></textarea>
               </div>
               <div class="craft-col-top">
                 <label for="craftBlacklist" class="form-label text-danger">🚫 過濾詞綴（黑名單，命中重洗）</label>
-                <textarea id="craftBlacklist" class="form-control" rows="5" placeholder="每行一項（命中任一即強制重洗）&#10;例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取&#10;物品數量 (<70)"></textarea>
+                <textarea id="craftBlacklist" class="form-control" rows="5" oninput="onCraftTextChange()" onchange="onCraftOptionChange()" placeholder="每行一項（命中任一即強制重洗）&#10;例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取&#10;物品數量 (<70)"></textarea>
               </div>
             </div>
 
             <div class="craft-rule-hint">
-              💡 <strong>語法提示：</strong>支援行尾數字篩選 <code>(>10)</code>、<code>(>=15)</code>、<code>(&lt;70)</code>、<code>(=1)</code>，以及正則表達式（如 <code>反射.*傷害</code> 或 <code>re:...</code>）。
+              💡 <strong>語法提示：</strong>支援行尾數字篩選 <code>(>10)</code>、<code>(>=15)</code>、<code>(&lt;70)</code>、<code>(=1)</code>，以及正則表達式（如 <code>反射.*傷害</code> 或 <code>re:...</code>）；所有變更均即時自動儲存，回遊戲按 <strong>F6</strong> 即可啟動。
             </div>
           </div>
-        </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini（預設 F6 啟動/停止）</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveCraftConfig()">💾 儲存洗詞設置</button>
         </div>
       </div>
 
