@@ -227,13 +227,11 @@
               </div>
             </div>
             <!-- 副手換寶石選項 -->
-            <div class="p-2 border border-secondary-subtle rounded bg-dark-subtle">
-              <div class="form-check form-switch mb-0">
-                <input class="form-check-input" type="checkbox" id="gemWeaponSwap" onchange="saveGemSwapConfig()">
-                <label class="form-check-label text-light small fw-bold" for="gemWeaponSwap">
-                  🔄 需切換副手（Weapon Swap，於換寶石過程中自動按 X 切換與切回）
-                </label>
-              </div>
+            <div class="custom-check-row mb-0">
+              <input type="checkbox" id="gemWeaponSwap" onchange="saveGemSwapConfig()">
+              <label class="text-light" for="gemWeaponSwap">
+                🔄 需切換副手（Weapon Swap，於換寶石過程中自動按 X 切換與切回）
+              </label>
             </div>
             <div class="mt-2 text-muted small">
               💡 <strong>初次使用：</strong>請至左側選單的 <a href="javascript:void(0)" onclick="showSection('anchor')" class="text-info text-decoration-none fw-bold">「📍 座標與顏色定位設置」</a> 抓取【交換寶石1】與【交換寶石2】座標。
@@ -1022,16 +1020,17 @@
 
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
-            <h6 class="card-title text-light mb-2">2. 洗詞模式與詞綴過濾規則</h6>
-            <div class="row g-2 mb-2">
-              <div class="col-md-6">
+            <h6 class="card-title text-light mb-3">2. 洗詞模式與基本參數</h6>
+
+            <div class="craft-grid-2">
+              <div class="craft-col">
                 <label for="craftScope" class="form-label">目標範圍</label>
                 <select id="craftScope" class="form-select">
                   <option value="單一目標格">單一目標格 (通貨頁中央)</option>
                   <option value="批次洗背包地圖">批次洗背包所有地圖 (依清包未勾選格)</option>
                 </select>
               </div>
-              <div class="col-md-6">
+              <div class="craft-col">
                 <label for="craftMode" class="form-label">洗詞模式</label>
                 <select id="craftMode" class="form-select">
                   <option value="改造石模式">改造石模式 (白裝蛻變/黃裝重鑄)</option>
@@ -1042,57 +1041,67 @@
               </div>
             </div>
 
-            <div class="row g-2 mb-2">
-              <div class="col-md-4">
+            <div class="craft-grid-3">
+              <div class="craft-col">
                 <label for="craftMatchLogic" class="form-label">目標詞匹配方式</label>
                 <select id="craftMatchLogic" class="form-select">
                   <option value="OR">OR (滿足任一目標詞即停)</option>
                   <option value="AND">AND (需同時滿足全部目標詞)</option>
                 </select>
               </div>
-              <div class="col-md-4">
+              <div class="craft-col">
                 <label for="craftMaxTries" class="form-label">最大洗詞次數上限</label>
                 <input type="number" id="craftMaxTries" class="form-control" placeholder="200">
               </div>
-              <div class="col-md-4">
+              <div class="craft-col">
                 <label for="craftDelay" class="form-label">洗詞操作延遲 (ms)</label>
                 <input type="number" id="craftDelay" class="form-control" placeholder="120">
               </div>
             </div>
 
-            <div class="form-check form-switch mb-3 mt-2">
-              <input class="form-check-input" type="checkbox" id="craftUseVaal">
-              <label class="form-check-label text-warning" for="craftUseVaal">⚠️ 達標後自動使用瓦爾寶珠（不可逆腐化，請務必確認已設定瓦爾寶珠座標）</label>
+            <div class="custom-check-row mt-1">
+              <input type="checkbox" id="craftUseVaal">
+              <label class="text-warning" for="craftUseVaal">⚠️ 達標後自動使用瓦爾寶珠（不可逆腐化，請務必確認已設定瓦爾寶珠座標）</label>
             </div>
+          </div>
+        </div>
 
-            <div class="preset-toolbar mb-3">
-              <div class="row g-2 align-items-end">
-                <div class="col-md-4">
-                  <label for="craftPresetSelect" class="form-label mb-1">📂 快速選取已存群組</label>
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-3">
+            <h6 class="card-title text-light mb-3">3. 詞綴群組與過濾規則</h6>
+
+            <div class="craft-preset-box">
+              <div class="craft-grid-2" style="margin-bottom: 0;">
+                <div class="craft-col">
+                  <label for="craftPresetSelect" class="form-label">📂 快速選取已存群組</label>
                   <select id="craftPresetSelect" class="form-select" onchange="onCraftPresetSelect()">
                     <option value="">-- 請選擇詞綴群組 --</option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label for="craftPresetName" class="form-label mb-1">🏷️ 群組名稱</label>
-                  <input type="text" id="craftPresetName" class="form-control" placeholder="例如：T1攻速 / 防反傷洗圖">
+                <div class="craft-col">
+                  <label for="craftPresetName" class="form-label">🏷️ 群組名稱</label>
+                  <input type="text" id="craftPresetName" class="form-control" placeholder="例如：T1攻速 / 洗圖">
                 </div>
-                <div class="col-md-4 d-flex flex-wrap">
-                  <button type="button" class="btn btn-primary btn-sm" onclick="saveCraftPreset()">💾 儲存群組</button>
-                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteCraftPreset()">🗑️ 刪除</button>
-                </div>
+              </div>
+              <div class="craft-preset-actions">
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveCraftPreset()">💾 儲存 / 更新群組</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteCraftPreset()">🗑️ 刪除群組</button>
               </div>
             </div>
 
-            <div class="row g-2">
-              <div class="col-md-6">
-                <label for="craftWhitelist" class="form-label text-success">✅ 目標詞綴（白名單，支援行尾數字篩選如 (>10)）</label>
-                <textarea id="craftWhitelist" class="form-control" rows="4" placeholder="例如：&#10;攻擊速度提高 (>10)&#10;最大生命 (>=90)&#10;全部法術技能寶石等級 +1"></textarea>
+            <div class="craft-grid-2" style="margin-bottom: 0;">
+              <div class="craft-col-top">
+                <label for="craftWhitelist" class="form-label text-success">✅ 目標詞綴（白名單）</label>
+                <textarea id="craftWhitelist" class="form-control" rows="5" placeholder="每行一項（洗圖只過濾黑名單可留空）&#10;例如：&#10;攻擊速度提高 (>10)&#10;最大生命 (>=90)&#10;全部法術技能寶石等級 +1"></textarea>
               </div>
-              <div class="col-md-6">
-                <label for="craftBlacklist" class="form-label text-danger">🚫 過濾詞綴（黑名單，支援 (>N) / (<N)；命中重洗）</label>
-                <textarea id="craftBlacklist" class="form-control" rows="4" placeholder="例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取&#10;物品數量 (<70)"></textarea>
+              <div class="craft-col-top">
+                <label for="craftBlacklist" class="form-label text-danger">🚫 過濾詞綴（黑名單，命中重洗）</label>
+                <textarea id="craftBlacklist" class="form-control" rows="5" placeholder="每行一項（命中任一即強制重洗）&#10;例如：&#10;反射.*物理傷害&#10;反射.*元素傷害&#10;無法偷取&#10;物品數量 (<70)"></textarea>
               </div>
+            </div>
+
+            <div class="craft-rule-hint">
+              💡 <strong>語法提示：</strong>支援行尾數字篩選 <code>(>10)</code>、<code>(>=15)</code>、<code>(&lt;70)</code>、<code>(=1)</code>，以及正則表達式（如 <code>反射.*傷害</code> 或 <code>re:...</code>）。
             </div>
           </div>
         </div>

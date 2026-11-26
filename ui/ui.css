@@ -271,6 +271,11 @@ header {
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
+select,
+.form-select {
+    cursor: pointer;
+}
+
 /* ==================== 按鈕系統 (字體清晰、間距寬敞) ==================== */
 .btn {
     display: inline-flex;
@@ -689,55 +694,38 @@ header {
     cursor: pointer;
     margin: 0 auto;
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+    zoom: 1.15;
 }
 
-/* ==================== 全域 Checkbox 與開關放大強化 ==================== */
-.form-check {
-    display: flex;
-    align-items: center;
-    padding-left: 0;
-    min-height: 32px;
-    gap: 10px;
+/* ==================== IE11 / Neutron 相容大型 Checkbox 列 ==================== */
+.custom-check-row {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid #353a47;
 }
 
-.form-check .form-check-input {
-    float: none;
-    margin-left: 0;
-    margin-top: 0;
-    flex-shrink: 0;
+.custom-check-row input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px 0 0;
+    zoom: 1.45;
     cursor: pointer;
-    border: 2px solid #7d8999;
-    background-color: #21252e;
 }
 
-.form-check-input[type="checkbox"] {
-    width: 24px;
-    height: 24px;
-    border-radius: 5px;
-}
-
-.form-check-input[type="checkbox"]:checked {
-    background-color: #0d6efd;
-    border-color: #3d8bfd;
-}
-
-.form-switch .form-check-input {
-    width: 50px;
-    height: 26px;
-    border-radius: 26px;
-}
-
-.form-check-label {
+.custom-check-row label {
+    display: inline;
+    vertical-align: middle;
     font-size: 18px;
-    font-weight: 500;
-    color: #e9ecef;
+    font-weight: 600;
     cursor: pointer;
     line-height: 1.4;
 }
 
-/* ==================== 自動洗詞頁面文字放大 ==================== */
+/* ==================== 自動洗詞頁面文字與群組列優化 ==================== */
 #craft .card-title {
     font-size: 20px;
     font-weight: 700;
@@ -762,4 +750,71 @@ header {
 #craft textarea.form-control {
     font-size: 17px;
     line-height: 1.5;
+}
+
+#craft .craft-preset-box {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    background: #171a24;
+    border: 1px solid #2d3446;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+#craft .craft-preset-actions {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+}
+
+#craft .craft-preset-actions .btn {
+    margin: 2px 4px;
+}
+
+#craft .craft-grid-2,
+#craft .craft-grid-3 {
+    display: table;
+    width: calc(100% + 28px);
+    margin-left: -14px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 14px 0;
+    margin-bottom: 14px;
+}
+
+#craft .craft-col {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+#craft .craft-col-top {
+    display: table-cell;
+    vertical-align: top;
+}
+
+#craft .craft-col .form-label,
+#craft .craft-col-top .form-label {
+    display: block;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#craft .craft-col .form-control,
+#craft .craft-col .form-select,
+#craft .craft-col-top .form-control {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#craft .craft-rule-hint {
+    font-size: 15px;
+    color: #9ea9ba;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    border: 1px solid #2d3446;
 }
