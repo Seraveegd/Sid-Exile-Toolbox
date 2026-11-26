@@ -114,7 +114,7 @@ function syncDataFromAHK() {
             loadClearBagIgnoreSlots(data.clearBagIgnoreSlots);
         }
 
-        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_WinZ', 'hk_Space', 'hk_Insert', 'hk_End'];
+        var hkFields = ['hk_F1', 'hk_F2', 'hk_F3', 'hk_Space', 'hk_Insert', 'hk_End'];
         hkFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && data[id]) {
@@ -153,7 +153,6 @@ var defaultHotkeys = {
     hk_F1: '*F1',
     hk_F2: 'F2',
     hk_F3: 'F3',
-    hk_WinZ: '`',
     hk_Space: '~*space',
     hk_Insert: '*Insert',
     hk_End: 'End'
@@ -272,7 +271,7 @@ function saveCustomHotkeys() {
     if (typeof ahk === 'undefined') return;
 
     var hkFields = [
-        'hk_F1', 'hk_F2', 'hk_F3', 'hk_WinZ',
+        'hk_F1', 'hk_F2', 'hk_F3',
         'hk_Space', 'hk_Insert', 'hk_End'
     ];
 
@@ -282,7 +281,6 @@ function saveCustomHotkeys() {
         hk_F1: '返回角色',
         hk_F2: '暫離 / 勿擾',
         hk_F3: '清包切換',
-        hk_WinZ: '開啟菜單視窗',
         hk_Space: '一鍵喝水',
         hk_Insert: '自動循環技能',
         hk_End: '快速申請組隊'
@@ -319,7 +317,6 @@ function saveCustomHotkeys() {
 
     ahk.NeutronSaveCustomHotkeys(
         values.hk_F1, values.hk_F2, values.hk_F3,
-        values.hk_WinZ,
         values.hk_Space, values.hk_Insert, values.hk_End
     );
 }

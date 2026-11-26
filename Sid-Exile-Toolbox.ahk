@@ -1,5 +1,4 @@
 #NoEnv
-#NoTrayIcon
 #SingleInstance force
 #MaxHotkeysPerInterval 400
 SetBatchLines -1
@@ -223,7 +222,24 @@ if 引爆延遲2 = ERROR
 }
 ;------------------------------------------------------------------------------------------------------
 
+Menu, Tray, NoStandard
+Menu, Tray, Tip, Sid 流亡超級工具箱
+Menu, Tray, Add, 開啟設定面板, 呼叫菜單
+Menu, Tray, Add
+Menu, Tray, Add, 重新載入 (F11), Tray_Reload
+Menu, Tray, Add, 結束工具 (F12), Tray_Exit
+Menu, Tray, Default, 開啟設定面板
+Menu, Tray, Click, 1
+
 gosub,起始盒子
+return
+
+Tray_Reload:
+	Reload
+return
+
+Tray_Exit:
+	ExitApp
 return
 
 ;[菜單設置區]------------------------------------------------------------------------------------------------------
@@ -277,10 +293,6 @@ OpenUISection(section) {
 		Toolbutton:= 0
 		if WinActive("ahk_group PoEGames")
 			ToolTip("(ESC)，關閉面板，返回遊戲模式")
-	return
-
-	HK_WinZ_Label:
-		gosub,呼叫菜單
 	return
 
 #ifwinactive, ahk_group PoEGames
@@ -1206,7 +1218,7 @@ OpenUISection(section) {
 		{
 			if Enter除錯提醒次數 = 0
 			{
-				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕！非常重要，不然打字會誤觸喝水與技能熱鍵。`r若您第一次使用，請按下確認查看教學圖片。`r確定後，請開啟設定面板 (Win+Z 或 ~鍵)，至「座標定位」點選「抓取」，依指示按 F7 設定對話框(1)與(2)！
+				msgbox,16,錯誤,尚未設定偵測對話框(1)&(2)黑幕！非常重要，不然打字會誤觸喝水與技能熱鍵。`r若您第一次使用，請按下確認查看教學圖片。`r確定後，請點擊右下角系統匣圖示開啟設定面板，至「座標定位」點選「抓取」，依指示按 F7 設定對話框(1)與(2)！
 				run,https://lelive.weebly.com/uploads/7/7/0/3/77032051/editor/1847905122_2.png,,UseErrorLevel
 				Enter除錯提醒次數:= 1
 			}
@@ -1698,7 +1710,7 @@ else
 Critical
 	if (背包左上_X = "error" or 背包右下_X = "error" or 背包左上_X = "ERROR" or 背包右下_X = "ERROR" or 背包左上_X = "" or 背包右下_X = "" or 背包左上_X = "未設定" or 背包右下_X = "未設定" or !RegExMatch(背包左上_X, "^\d+$") or !RegExMatch(背包右下_X, "^\d+$"))
 	{
-		msgbox,16,錯誤,尚未設定 [背包左上角第一格中心點] 與 [背包右下角最末格中心點]，請開啟設定選單(Win+Z)進行定位點抓取。
+		msgbox,16,錯誤,尚未設定 [背包左上角第一格中心點] 與 [背包右下角最末格中心點]，請點擊右下角系統匣圖示開啟設定選單進行定位點抓取。
 		return
 	}
 	if (InStr(清包模式, "按壓"))
@@ -2305,7 +2317,6 @@ NeutronGetSettings(neutron) {
 	json .= """hk_F2"":""" . 快捷鍵_F2 . ""","
 	json .= """hk_F3"":""" . 快捷鍵_F3 . ""","
 	json .= """hk_F7"":""" . 快捷鍵_F7 . ""","
-	json .= """hk_WinZ"":""" . 快捷鍵_WinZ . ""","
 	json .= """hk_Space"":""" . 快捷鍵_Space . ""","
 	json .= """hk_Insert"":""" . 快捷鍵_Insert . ""","
 	json .= """hk_End"":""" . 快捷鍵_End . ""","
@@ -2346,14 +2357,13 @@ Iniread, 快捷鍵_F1, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F1, *F1
 Iniread, 快捷鍵_F2, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F2, F2
 Iniread, 快捷鍵_F3, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F3, F3
 Iniread, 快捷鍵_F7, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_F7, *F7
-Iniread, 快捷鍵_WinZ, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_WinZ, ``
 Iniread, 快捷鍵_Space, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Space, ~*space
 Iniread, 快捷鍵_Insert, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_Insert, *Insert
 Iniread, 快捷鍵_End, sidtooldata.ini, 自訂快捷鍵, 快捷鍵_End, End
 Return
 
 註冊動態熱鍵:
-keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
+keysList:= "F1,F2,F3,F7,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName:= A_LoopField
@@ -2361,10 +2371,7 @@ Loop, parse, keysList, % ","
     lbl:= "HK_" . kName . "_Label"
     if (hkVal != "" && hkVal != "ERROR")
     {
-        if (kName = "WinZ")
-            Hotkey, IfWinActive, ahk_group DualWins
-        else
-            Hotkey, IfWinActive, ahk_group PoEGames
+        Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, %lbl%, On
         }
@@ -2388,17 +2395,14 @@ Hotkey, IfWinActive
 Return
 
 解開動態熱鍵:
-keysList:= "F1,F2,F3,F7,WinZ,Space,Insert,End"
+keysList:= "F1,F2,F3,F7,Space,Insert,End"
 Loop, parse, keysList, % ","
 {
     kName:= A_LoopField
     hkVal:= 快捷鍵_%kName%
     if (hkVal != "" && hkVal != "ERROR")
     {
-        if (kName = "WinZ")
-            Hotkey, IfWinActive, ahk_group DualWins
-        else
-            Hotkey, IfWinActive, ahk_group PoEGames
+        Hotkey, IfWinActive, ahk_group PoEGames
         try {
             Hotkey, %hkVal%, Off
         }
@@ -2419,18 +2423,17 @@ Loop, parse, keysList, % ","
 Hotkey, IfWinActive
 Return
 
-NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkWinZ, hkSpace, hkInsert, hkEnd) {
+NeutronSaveCustomHotkeys(neutron, hkF1, hkF2, hkF3, hkSpace, hkInsert, hkEnd) {
 	global
 	gosub, 解開動態熱鍵
 	快捷鍵_F1:= hkF1
 	快捷鍵_F2:= hkF2
 	快捷鍵_F3:= hkF3
-	快捷鍵_WinZ:= hkWinZ
 	快捷鍵_Space:= hkSpace
 	快捷鍵_Insert:= hkInsert
 	快捷鍵_End:= hkEnd
 
-	keysList:= "F1,F2,F3,WinZ,Space,Insert,End"
+	keysList:= "F1,F2,F3,Space,Insert,End"
 	Loop, parse, keysList, % ","
 	{
 		kName:= A_LoopField

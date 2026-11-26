@@ -20,7 +20,7 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 
 | Category | Feature | Hotkey |
 |----------|---------|--------|
-| Combat | One-key flask / cyclic flask / flask anti-fail | Space (configured via Win+Z) |
+| Combat | One-key flask / cyclic flask / flask anti-fail | Space (configured via Tray Icon) |
 |        | Manual logout (F1 toggle to logout mode) | F1 (toggle with Win+F1 first) |
 |        | Skill combo | Q/W/E/R/T (configuration required) |
 |        | Auto detonate mines | Q/W/E/R/T (configuration required) |
@@ -33,14 +33,14 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 | Expedition (PoE 1 Only) | Tujen haggle quick buy & reroll | CapsLock + 1 / CapsLock + 2 |
 | Gem Swap | One-key gem swap | CapsLock + 4 |
 | Mouse | Auto-click (wheel button / Ctrl+Left) | MButton / Ctrl+LButton |
-|        | Auto-click speed panel | Win+Z → Mouse auto-click settings |
+|        | Auto-click speed panel | Tray Icon → Mouse auto-click settings |
 | System | AFK / Do-Not-Disturb / Auto-reply (3 modes) | F2 (select mode with Win+F2 first) |
 |        | Pause tool (restore keyboard) | F9 |
 |        | Reload tool / Exit tool | F11 / F12 |
 | Mode Detection | Text / game mode auto switch | Enter / Ctrl+F / paste item / hold left click |
 
 **Advanced Settings**:
-- **Win + Z**: Open the full feature menu for parameter adjustments
+- **Tray Icon (Click)**: Open the full feature menu for parameter adjustments
   - Tool intro (full feature list / hotkey list)
   - Flask trigger settings
   - Skill combo settings
@@ -53,7 +53,7 @@ This toolbox provides a variety of auxiliary features to help players enjoy Path
 - **Win + F1**: F1 hotkey toggle (original keyboard / logout mode)
 - **Win + F2**: F2 hotkey toggle (AFK / Do-Not-Disturb / Auto-reply)
 - **Win + F3**: F3 hotkey toggle (hold / auto / scan / quick-scan cleanup)
-- **F7**: Capture inventory and color detection points (initiated via Win+Z UI menu)
+- **F7**: Capture inventory and color detection points (initiated via Tray Icon UI menu)
 
 ## 📺 Tutorials
 
@@ -95,7 +95,7 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 After extracting, double-click `Sid-Exile-Toolbox.ahk` to start.
 
 ### 3. Initial Setup
-1. Press **Win + Z** to open the feature menu, then enter "Detection flask settings" and "Flask trigger settings" to adjust your preferences
+1. Click the **Tray Icon** to open the feature menu, then enter "Detection flask settings" and "Flask trigger settings" to adjust your preferences
 2. Press **Win + C** to set the screen detection points
 3. Press **F7** to locate your stash, trade window, and other coordinates
 
@@ -171,7 +171,7 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 
 | 類別 | 功能 | 熱鍵 |
 |------|------|------|
-| 戰鬥輔助 | 一鍵喝水/循環喝水/藥劑防呆 | Space (搭配 Win+Z 設定) |
+| 戰鬥輔助 | 一鍵喝水/循環喝水/藥劑防呆 | Space (搭配系統匣圖示設定) |
 |          | 手動返角 (F1 切換至返角模式) | F1 (需先用 Win+F1 切換) |
 |          | 技能連段 | Q/W/E/R/T (需設定) |
 |          | 自動引爆地雷 | Q/W/E/R/T (需設定) |
@@ -184,14 +184,14 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 | 探險輔助 (僅限 PoE 1) | 探險討價還價 (快速購買/重骰) | CapsLock + 1 / CapsLock + 2 |
 | 寶石管理 | 一鍵快速交換寶石 | CapsLock + 4 |
 | 滑鼠輔助 | 滑鼠連點 (滾輪下壓/Ctrl+左鍵) | MButton / Ctrl+LButton |
-|          | 滑鼠連點速度設定面板 | Win+Z → 滑鼠連點設置 |
+|          | 滑鼠連點速度設定面板 | 系統匣圖示 → 滑鼠連點設置 |
 | 系統控制 | 暫離/勿擾/自動回復 (三模式切換) | F2 (需先用 Win+F2 選擇模式) |
 |          | 暫停工具 (回復鍵盤) | F9 |
 |          | 重新載入工具 / 結束工具 | F11 / F12 |
 | 模式偵測 | 文字/遊戲模式自動切換 | Enter / Ctrl+F / 貼上物品 / 長按左鍵 |
 
 **進階設定**：  
-- **Win + Z**：開啟完整功能菜單，可進行各項參數調整  
+- **系統匣圖示（左鍵點擊）**：開啟完整功能菜單，可進行各項參數調整  
   - 工具介紹（完整功能列表 / 熱鍵列表）  
   - 藥劑觸發設置  
   - 技能連段設置  
@@ -204,7 +204,7 @@ If you like this tool, please give it a ⭐ Star and share it with other players
 - **Win + F1**：F1 熱鍵切換（原始鍵盤 / 返角模式）  
 - **Win + F2**：F2 熱鍵切換（暫離 / 勿擾 / 自動回復）  
 - **Win + F3**：F3 熱鍵切換（按壓 / 自動 / 掃描 / 掃描快搜清包）  
-- **F7**：捕捉背包與對話框顏色偵測點（由 Win+Z 菜單點擊抓取後使用）  
+- **F7**：捕捉背包與對話框顏色偵測點（由系統匣圖示開啟菜單點擊抓取後使用）  
 
 ## 📺 教學影片與圖片
 
@@ -246,7 +246,7 @@ git clone https://github.com/Sid-1996/Sid-Exile-Toolbox.git
 解壓後雙擊 `Sid-Exile-Toolbox.ahk` 即可啟動。
 
 ### 3. 初始設定
-1. 按 **Win + Z** 打開功能選單，進入「偵測喝水設置」與「藥劑觸發設置」調整偏好
+1. 點擊右下角**系統匣圖示**打開功能選單，進入「偵測喝水設置」與「藥劑觸發設置」調整偏好
 2. 按 **Win + C** 設定畫面偵測點
 3. 按 **F7** 定位背包、交易視窗等座標
 
