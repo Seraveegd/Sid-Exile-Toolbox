@@ -260,6 +260,15 @@
           座標與顏色，寫入設定檔並即時回填此面板。
         </div>
 
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body py-2">
+            <label class="custom-check-row" for="enableStatusHud">
+              <input type="checkbox" id="enableStatusHud" onchange="saveHudConfig()">
+              <span>啟用遊戲／文字模式「微型狀態指示點 HUD」（於遊戲左上角顯示 🟢 遊戲模式 / 🟠 文字模式 / 🔵 洗詞中）</span>
+            </label>
+          </div>
+        </div>
+
         <!-- 畫面偵測點 (Win + C / 1~9) -->
         <div class="card mb-3 shadow-sm">
           <div class="card-body py-3">
@@ -843,8 +852,8 @@
       <!-- Panel 3: 藥劑觸發設置 -->
       <div id="flask" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">藥劑觸發設置</div>
-          <div class="panel-subtitle">設定藥劑觸發模式、防呆鎖定及使用技能時自動喝水。</div>
+          <div class="panel-title mb-1">藥劑觸發設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">設定藥劑觸發模式、防呆鎖定及使用技能時自動喝水（所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -916,20 +925,13 @@
             </div>
           </div>
         </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveFlaskConfig()">💾 儲存藥劑設置</button>
-        </div>
       </div>
-
-
 
       <!-- Panel 5: 技能連段設置 -->
       <div id="combo" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">技能連段設置</div>
-          <div class="panel-subtitle">設定按壓技能時自動依序發放的連線招式。</div>
+          <div class="panel-title mb-1">技能連段設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">設定按壓技能時自動依序發放的連線招式（所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -971,18 +973,13 @@
             </div>
           </div>
         </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveComboConfig()">💾 儲存連段設置</button>
-        </div>
       </div>
 
       <!-- Panel 6: 循環技能設置 -->
       <div id="loop" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">循環技能設置 (Insert 開關)</div>
-          <div class="panel-subtitle">定時自動施放輔助技能或BUFF。</div>
+          <div class="panel-title mb-1">循環技能設置 (Insert 開關) <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">定時自動施放輔助技能或BUFF（所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -1009,18 +1006,13 @@
             </div>
           </div>
         </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveLoopConfig()">💾 儲存循環技能設置</button>
-        </div>
       </div>
 
       <!-- Panel 7: 快搜倉庫設置 -->
       <div id="stash" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">快搜倉庫設置</div>
-          <div class="panel-subtitle">倉庫快速搜尋與頁面自動翻頁功能。</div>
+          <div class="panel-title mb-1">快搜倉庫設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">倉庫快速搜尋與頁面自動翻頁功能（所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -1122,12 +1114,6 @@
                 <input type="number" id="pageReturn" class="form-control" placeholder="0">
               </div>
             </div>
-
-            <div class="panel-actions mt-3 pt-3 border-top border-secondary-subtle">
-              <span class="text-secondary small">💡 修改倉庫頁數後請點擊儲存，設定將即時生效</span>
-              <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveWarehouseConfig()">💾
-                儲存倉庫頁面設置</button>
-            </div>
           </div>
         </div>
       </div>
@@ -1135,8 +1121,8 @@
       <!-- Panel 8: 滑鼠連點設置 -->
       <div id="clicker" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">滑鼠連點設置</div>
-          <div class="panel-subtitle">自動連續點擊滑鼠左鍵（左鍵組合模式需長按超過 0.2 秒啟動，避免單點誤觸）。</div>
+          <div class="panel-title mb-1">滑鼠連點設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">自動連續點擊滑鼠左鍵（左鍵組合模式需長按超過 0.1 秒啟動；所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -1157,19 +1143,13 @@
             </div>
           </div>
         </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveClickerConfig()">💾
-            儲存連點設置</button>
-        </div>
       </div>
 
       <!-- Panel 9: 自動引爆地雷 -->
       <div id="mine" class="panel">
         <div class="mb-3 pb-2 border-bottom border-secondary-subtle">
-          <div class="panel-title mb-1">自動引爆地雷設置</div>
-          <div class="panel-subtitle">地雷流派自動引爆與地雷杖輔助。</div>
+          <div class="panel-title mb-1">自動引爆地雷設置 <span class="badge bg-success-subtle text-success border border-success-subtle ms-2" style="font-size: 14px;">● 即時自動儲存</span></div>
+          <div class="panel-subtitle">地雷流派自動引爆與地雷杖輔助（所有變更均即時自動儲存）。</div>
         </div>
 
         <div class="card mb-3 shadow-sm">
@@ -1205,11 +1185,6 @@
                   class="form-control" placeholder="300"></div>
             </div>
           </div>
-        </div>
-
-        <div class="panel-actions">
-          <span class="text-secondary small">💡 修改完成後請點擊儲存，設定將即時寫入 sidtooldata.ini</span>
-          <button type="button" class="btn btn-success btn-sm px-4 py-2" onclick="saveMineConfig()">💾 儲存地雷設置</button>
         </div>
       </div>
 
@@ -1297,6 +1272,27 @@
                     <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture"
                         onclick="captureAnchorPoint('craft', 8)">📍 抓取</button></td>
                   </tr>
+                  <tr id="craftRow9">
+                    <td>工匠石 (Jeweller's Orb)<span class="badge-required" id="craftReq9"></span></td>
+                    <td id="craft9_x" class="text-info">未設定</td>
+                    <td id="craft9_y" class="text-info">未設定</td>
+                    <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture"
+                        onclick="captureAnchorPoint('craft', 9)">📍 抓取</button></td>
+                  </tr>
+                  <tr id="craftRow10">
+                    <td>連結石 (Orb of Fusing)<span class="badge-required" id="craftReq10"></span></td>
+                    <td id="craft10_x" class="text-info">未設定</td>
+                    <td id="craft10_y" class="text-info">未設定</td>
+                    <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture"
+                        onclick="captureAnchorPoint('craft', 10)">📍 抓取</button></td>
+                  </tr>
+                  <tr id="craftRow11">
+                    <td>幻色石 (Chromatic Orb)<span class="badge-required" id="craftReq11"></span></td>
+                    <td id="craft11_x" class="text-info">未設定</td>
+                    <td id="craft11_y" class="text-info">未設定</td>
+                    <td class="text-center"><button type="button" class="btn btn-outline-warning btn-capture"
+                        onclick="captureAnchorPoint('craft', 11)">📍 抓取</button></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -1322,7 +1318,43 @@
                   <option value="改造+增幅模式">改造 + 增幅模式 (先排黑名單，單詞補增幅後再判)</option>
                   <option value="混沌石模式">混沌石模式</option>
                   <option value="點金+重鑄模式">點金 + 重鑄模式 (地圖/黃裝)</option>
+                  <option value="工匠石模式">工匠石模式 (6S / 指定洞數)</option>
+                  <option value="連結石模式">連結石模式 (6L / 指定連線)</option>
+                  <option value="幻色石模式">幻色石模式 (指定色洞 R-G-B)</option>
                 </select>
+              </div>
+            </div>
+
+            <div id="craftSocketOptions" class="p-2 mb-3 rounded border border-info-subtle bg-dark bg-opacity-25" style="display: none;">
+              <div id="craftSocketsGroup" style="display: none;">
+                <label for="craftTargetSockets" class="form-label text-info">🎯 目標插槽數 (1 ~ 6)</label>
+                <input type="number" id="craftTargetSockets" class="form-control" min="1" max="6" placeholder="6"
+                  oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
+              </div>
+              <div id="craftLinksGroup" style="display: none;">
+                <label for="craftTargetLinks" class="form-label text-info">🔗 目標最大連線數 (2 ~ 6)</label>
+                <input type="number" id="craftTargetLinks" class="form-control" min="2" max="6" placeholder="6"
+                  oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
+              </div>
+              <div id="craftColorsGroup" style="display: none;">
+                <div class="craft-grid-3" style="margin-bottom: 0;">
+                  <div class="craft-col">
+                    <label for="craftColorR" class="form-label text-danger">🔴 紅洞 (R)</label>
+                    <input type="number" id="craftColorR" class="form-control" min="0" max="6" placeholder="0"
+                      oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
+                  </div>
+                  <div class="craft-col">
+                    <label for="craftColorG" class="form-label text-success">🟢 綠洞 (G)</label>
+                    <input type="number" id="craftColorG" class="form-control" min="0" max="6" placeholder="0"
+                      oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
+                  </div>
+                  <div class="craft-col">
+                    <label for="craftColorB" class="form-label text-info">🔵 藍洞 (B)</label>
+                    <input type="number" id="craftColorB" class="form-control" min="0" max="6" placeholder="0"
+                      oninput="onCraftTextChange()" onchange="onCraftOptionChange()">
+                  </div>
+                </div>
+                <div class="text-secondary small mt-1">💡 若裝備含有白洞 (W)，系統會自動計入可替補任何顏色需求。</div>
               </div>
             </div>
 
@@ -1353,7 +1385,7 @@
           </div>
         </div>
 
-        <div class="card mb-3 shadow-sm">
+        <div id="craftRulesCard" class="card mb-3 shadow-sm">
           <div class="card-body py-3">
             <h6 class="card-title text-light mb-3">3. 詞綴群組與過濾規則</h6>
 

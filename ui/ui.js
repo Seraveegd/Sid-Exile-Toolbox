@@ -65,6 +65,7 @@ function syncDataFromAHK() {
             clickSpeed: 'clickSpeed',
             clearBagMode: 'clearBagMode',
             clearBagRefillPortal: 'clearBagRefillPortal',
+            enableStatusHud: 'enableStatusHud',
             mineMode: 'mineMode',
             mineStaffMode: 'mineStaffMode',
             mineKey: 'mineKey',
@@ -99,7 +100,12 @@ function syncDataFromAHK() {
             craftMaxTries: 'craftMaxTries',
             craftDelay: 'craftDelay',
             craftWhitelist: 'craftWhitelist',
-            craftBlacklist: 'craftBlacklist'
+            craftBlacklist: 'craftBlacklist',
+            craftTargetSockets: 'craftTargetSockets',
+            craftTargetLinks: 'craftTargetLinks',
+            craftColorR: 'craftColorR',
+            craftColorG: 'craftColorG',
+            craftColorB: 'craftColorB'
         };
 
         Object.keys(fieldMap).forEach(function (key) {
@@ -148,8 +154,8 @@ function syncDataFromAHK() {
         updateAnchorPoint('gemSwap', 1, data['gem1_X'], data['gem1_Y'], '');
         updateAnchorPoint('gemSwap', 2, data['gem2_X'], data['gem2_Y'], '');
 
-        // 同步自動洗詞定位點 (1~8)
-        [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (cr) {
+        // 同步自動洗詞定位點 (1~11)
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].forEach(function (cr) {
             updateAnchorPoint('craft', cr, data['craft' + cr + '_X'], data['craft' + cr + '_Y'], '');
         });
 
@@ -361,7 +367,7 @@ function resetDefaultHotkeys() {
 }
 
 //儲存喝水設定
-function saveFlaskConfig() {
+function saveFlaskConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveFlaskConfig(
         document.getElementById('flaskMode').value,
@@ -372,12 +378,13 @@ function saveFlaskConfig() {
         document.getElementById('dur2').value,
         document.getElementById('dur3').value,
         document.getElementById('dur4').value,
-        document.getElementById('dur5').value
+        document.getElementById('dur5').value,
+        silent ? 1 : 0
     );
 }
 
 //儲存技能連段設定
-function saveComboConfig() {
+function saveComboConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveSkillComboConfig(
         document.getElementById('comboStatus').value,
@@ -385,12 +392,13 @@ function saveComboConfig() {
         document.getElementById('comboDelay1').value,
         document.getElementById('comboKey2').value,
         document.getElementById('comboDelay2').value,
-        document.getElementById('comboKey3').value
+        document.getElementById('comboKey3').value,
+        silent ? 1 : 0
     );
 }
 
 //儲存循環技能設定
-function saveLoopConfig() {
+function saveLoopConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveLoopSkillConfig(
         document.getElementById('loop1').value,
@@ -398,7 +406,8 @@ function saveLoopConfig() {
         document.getElementById('loop2').value,
         document.getElementById('loopT2').value,
         document.getElementById('loop3').value,
-        document.getElementById('loopT3').value
+        document.getElementById('loopT3').value,
+        silent ? 1 : 0
     );
 }
 
@@ -501,16 +510,17 @@ function clearBagSelectPreset(preset) {
 }
 
 //儲存滑鼠連點設定
-function saveClickerConfig() {
+function saveClickerConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveClickerConfig(
         document.getElementById('clickMode').value,
-        document.getElementById('clickSpeed').value
+        document.getElementById('clickSpeed').value,
+        silent ? 1 : 0
     );
 }
 
 //儲存地雷設置
-function saveMineConfig() {
+function saveMineConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveMineConfig(
         document.getElementById('mineMode').value,
@@ -518,14 +528,15 @@ function saveMineConfig() {
         document.getElementById('mineKey').value,
         document.getElementById('mineDelay1').value,
         document.getElementById('smokeKey').value,
-        document.getElementById('mineDelay2').value
+        document.getElementById('mineDelay2').value,
+        silent ? 1 : 0
     );
 }
 
 
 
 //儲存倉庫頁面設置
-function saveWarehouseConfig() {
+function saveWarehouseConfig(silent) {
     if (typeof ahk === 'undefined') return;
     ahk.NeutronSaveWarehouseConfig(
         document.getElementById('pageEnchant').value,
@@ -547,8 +558,46 @@ function saveWarehouseConfig() {
         document.getElementById('pageUniqueBoots').value,
         document.getElementById('pageUniqueAccessory').value,
         document.getElementById('pageUniqueWeapon').value,
-        document.getElementById('pageReturn').value
+        document.getElementById('pageReturn').value,
+        silent ? 1 : 0
     );
+}
+
+function saveHudConfig() {
+    var el = document.getElementById('enableStatusHud');
+    if (!el || typeof ahk === 'undefined') return;
+    ahk.NeutronSaveHudConfig(el.checked ? 1 : 0);
+}
+
+var autoSaveTimers = {};
+function bindAutoSavePanel(panelId, saveFn) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    var els = panel.querySelectorAll('select, input');
+    for (var i = 0; i < els.length; i++) {
+        (function (el) {
+            if (el.tagName === 'SELECT' || el.type === 'checkbox') {
+                el.onchange = function () { saveFn(true); };
+            } else {
+                el.onchange = function () { saveFn(true); };
+                el.onkeyup = function () {
+                    if (autoSaveTimers[panelId]) clearTimeout(autoSaveTimers[panelId]);
+                    autoSaveTimers[panelId] = setTimeout(function () { saveFn(true); }, 300);
+                };
+            }
+        })(els[i]);
+    }
+}
+
+if (window.addEventListener) {
+    window.addEventListener('DOMContentLoaded', function () {
+        bindAutoSavePanel('flask', saveFlaskConfig);
+        bindAutoSavePanel('combo', saveComboConfig);
+        bindAutoSavePanel('loop', saveLoopConfig);
+        bindAutoSavePanel('stash', saveWarehouseConfig);
+        bindAutoSavePanel('clicker', saveClickerConfig);
+        bindAutoSavePanel('mine', saveMineConfig);
+    });
 }
 
 //格式化 0xRRGGBB / 0xBBGGRR 色碼為 HTML #RRGGBB 供預覽色塊使用
@@ -595,6 +644,11 @@ var craftSaveTimer = null;
 
 function saveCraftConfig(silent) {
     if (typeof ahk === 'undefined') return;
+    var elSock = document.getElementById('craftTargetSockets');
+    var elLink = document.getElementById('craftTargetLinks');
+    var elR = document.getElementById('craftColorR');
+    var elG = document.getElementById('craftColorG');
+    var elB = document.getElementById('craftColorB');
     ahk.NeutronSaveCraftConfig(
         document.getElementById('craftScope').value,
         document.getElementById('craftMode').value,
@@ -604,7 +658,12 @@ function saveCraftConfig(silent) {
         document.getElementById('craftDelay').value,
         document.getElementById('craftWhitelist').value,
         document.getElementById('craftBlacklist').value,
-        silent ? 1 : 0
+        silent ? 1 : 0,
+        elSock ? elSock.value : 6,
+        elLink ? elLink.value : 6,
+        elR ? elR.value : 0,
+        elG ? elG.value : 0,
+        elB ? elB.value : 0
     );
 }
 
@@ -613,15 +672,26 @@ function updateCraftUIHints() {
     var elMode = document.getElementById('craftMode');
     var elVaal = document.getElementById('craftUseVaal');
     var elBatchHint = document.getElementById('craftBatchHint');
+    var elSockOpts = document.getElementById('craftSocketOptions');
+    var elSockGrp = document.getElementById('craftSocketsGroup');
+    var elLinkGrp = document.getElementById('craftLinksGroup');
+    var elColorGrp = document.getElementById('craftColorsGroup');
+    var elRulesCard = document.getElementById('craftRulesCard');
     if (!elScope || !elMode) return;
 
     var scope = elScope.value;
     var mode = elMode.value;
     var useVaal = elVaal ? elVaal.checked : false;
+    var isSocketMode = (mode === '工匠石模式' || mode === '連結石模式' || mode === '幻色石模式');
 
     if (elBatchHint) {
         elBatchHint.style.display = (scope === '批次洗背包地圖') ? 'block' : 'none';
     }
+    if (elSockOpts) elSockOpts.style.display = isSocketMode ? 'block' : 'none';
+    if (elSockGrp) elSockGrp.style.display = (mode === '工匠石模式') ? 'block' : 'none';
+    if (elLinkGrp) elLinkGrp.style.display = (mode === '連結石模式') ? 'block' : 'none';
+    if (elColorGrp) elColorGrp.style.display = (mode === '幻色石模式') ? 'block' : 'none';
+    if (elRulesCard) elRulesCard.style.display = isSocketMode ? 'none' : 'block';
 
     var reqMap = {};
     if (scope === '單一目標格') reqMap[1] = '★ 必填';
@@ -635,10 +705,16 @@ function updateCraftUIHints() {
         reqMap[7] = '★ 必填';
     } else if (mode === '混沌石模式') {
         reqMap[6] = '★ 必填';
+    } else if (mode === '工匠石模式') {
+        reqMap[9] = '★ 必填';
+    } else if (mode === '連結石模式') {
+        reqMap[10] = '★ 必填';
+    } else if (mode === '幻色石模式') {
+        reqMap[11] = '★ 必填';
     }
     if (useVaal) reqMap[8] = '★ 必填';
 
-    for (var i = 1; i <= 8; i++) {
+    for (var i = 1; i <= 11; i++) {
         var row = document.getElementById('craftRow' + i);
         var badge = document.getElementById('craftReq' + i);
         if (row) {
