@@ -3388,6 +3388,7 @@ CraftSingleTarget(tgtX, tgtY, mapOnly := false)
 			}
 			else
 			{
+				; 改造+增幅模式：① 已於上方排除黑名單 → ② 無黑名單且單詞先補增幅 → ③ 下一輪重新判斷黑白名單
 				if (info.modCount < 2 && !augAttemptedOnCurrent)
 				{
 					UseCurrencyOnTarget(洗詞增幅_X, 洗詞增幅_Y, tgtX, tgtY, delayMs)
